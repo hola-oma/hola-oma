@@ -6,6 +6,17 @@ import { RouteComponentProps } from 'react-router-dom'; // give us 'history' obj
 
 import { getUserSettings, updateUserSettings, getUserProfile, updateUserProfile } from '../../services/user';
 
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import SettingsIcon from '@material-ui/icons/Settings';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+
+
 interface ISettingsView extends RouteComponentProps<any>{
 }
 
@@ -20,7 +31,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
   /* UPDATE ACCOUNT SETTINGS */
   const handleForm = async (e: any) => {
     e.preventDefault();
-    
+
     try {
       let updateProfileDone = await updateUserProfile(displayName, email);
       let updateSettingsDone = await updateUserSettings({role});
@@ -47,59 +58,114 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
       })
   }, []); // fires on page load if this is empty [] 
 
+  const useStyles = makeStyles((theme) => ({
+    paper: {
+      marginTop: theme.spacing(8),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: theme.spacing(3),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+  }));
+
+  const classes = useStyles();
+  
   return (
-    <div>
-      <h2>Account Settings</h2>
-      <form onSubmit={e => handleForm(e)}>
-        Display Name
-        <input
-          value={displayName? displayName : ''}
-          onChange={e => setDisplayName(e.target.value)}
-          name="displayName"
-          type="displayName"
-        />
-        <br/>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <SettingsIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Account settings
+        </Typography>
 
-        Email address
-        <input
-          value={email? email : ''}
-          onChange={e => setEmail(e.target.value)}
-          name="email"
-          type="email"
-          placeholder="email"
-        />
-        <br/>
+        <p>Update your name, email address, and other settings here.</p>
 
-        <h2>Role [be careful changing this!]</h2>
-        <label>
-        <input
-          type="radio"
-          name="accountType"
-          id="receiver"
-          value="receiver"
-          checked={role === roles.receiver}
-          onChange={e => setRole(roles.receiver)}
-          />
-          <b>Receive</b> posts
-        </label>
-        <br/>
-        <label>
-          <input
-            type="radio"
-            name="accountType"
-            id="poster"
-            value="poster"
-            checked={role === roles.poster}
-            onChange={e => setRole(roles.poster)}
-            />
-           <b>Make</b> posts
-        </label>
+        <form onSubmit={e => handleForm(e)}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="dname"
+                name="displayName"
+                variant="outlined"
+                required
+                fullWidth
+                id="displayName"
+                label="Display name"
+                autoFocus
+                value={displayName}
+                onChange={e => setDisplayName(e.target.value)}
+              />
+            </Grid>
 
-      <br />
-      <button type="submit">Update settings</button>
+            <Grid item xs={12}>
+              <TextField
+                name="email"
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email address"
+                value={email? email: ''}
+                onChange={e => setEmail(e.target.value)}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+            <Typography component="h2" variant="h5">
+              Role [be careful changing this!]
+            </Typography>
+
+              <label>
+              <input
+                type="radio"
+                name="accountType"
+                id="receiver"
+                value="receiver"
+                checked={role === roles.receiver}
+                onChange={e => setRole(roles.receiver)}
+                />
+                <b>Receive</b> posts
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="radio"
+                  name="accountType"
+                  id="poster"
+                  value="poster"
+                  checked={role === roles.poster}
+                  onChange={e => setRole(roles.poster)}
+                  />
+                <b>Make</b> posts
+              </label>
+            </Grid>
+
+          </Grid>
+
+          <Button type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}>
+            Update settings
+          </Button>
       
-      </form>
-    </div>
+        </form>
+      </div>
+    </Container>
   )
 }
 
