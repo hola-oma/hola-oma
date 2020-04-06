@@ -1,5 +1,8 @@
 export interface Post {
+  creatorID: string,
   id: string,
   from: string,
-  read: boolean
+  read: boolean,
+  message: string,
+  photoURL: string
 } 

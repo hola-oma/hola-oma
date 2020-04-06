@@ -17,8 +17,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Box } from '@material-ui/core';
 
-
 interface ISettingsView extends RouteComponentProps<any>{
+  // empty for now 
 }
 
 const SettingsView: React.FC<ISettingsView> = ({ history }) => {
@@ -26,6 +26,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
+  const [userID, setUserID] = useState("");
 
   const [error, setErrors] = useState("");
 
@@ -56,6 +57,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
       .then((userProfile: any) => {
         setDisplayName(userProfile.displayName);
         setEmail(userProfile.email);
+        setUserID(userProfile.uid);
       })
   }, []); // fires on page load if this is empty [] 
 
@@ -173,6 +175,8 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
         <li>This page looks too much like the log in/register page, I always think I accidentally logged out when I visit</li>
         <li>Make role buttons BIG BUTTONS</li>
       </ul>
+      <b>Debug</b>
+      <p>User ID: {userID}</p>
     </Box>
 
     </Container>
