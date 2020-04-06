@@ -1,0 +1,21 @@
+.headerBar {
+  background-color:gray;
+  text-decoration: none;
+  list-style-type: none;
+  padding: 10px;
+  color:white;
+  height:100px;
+  text-align:left;
+}
+
+.nav {
+  color:white;
+}
+
+.nav a {
+  color: white;
+}
+
+.nav li {
+  margin: 0 10px;
+}
