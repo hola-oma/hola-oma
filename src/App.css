@@ -36,3 +36,9 @@ input {
   margin: 0 5px;
   vertical-align: middle;
 }
+
+.todo {
+  float: left;
+  text-align:left;
+  padding-left:10px;
+}

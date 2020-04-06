@@ -15,6 +15,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { Box } from '@material-ui/core';
 
 
 interface ISettingsView extends RouteComponentProps<any>{
@@ -165,6 +166,15 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
       
         </form>
       </div>
+
+      <Box className="todo">
+      <h3>To do items:</h3>
+      <ul>
+        <li>This page looks too much like the log in/register page, I always think I accidentally logged out when I visit</li>
+        <li>Make role buttons BIG BUTTONS</li>
+      </ul>
+    </Box>
+
     </Container>
   )
 }
