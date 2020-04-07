@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Container, Grid, Card, CardHeader, CardActions, CardContent } from '@material-ui/core';
-import ButtonBase from '@material-ui/core/ButtonBase';
+import { Container, Grid, Card, CardHeader, CardContent } from '@material-ui/core';
 import MailIcon from '@material-ui/icons/Mail';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import { Link } from 'react-router-dom';
@@ -49,7 +48,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
             // @ts-ignore
             return (
               <div className={"inboxCard"}>
-                <Link to={"/settings"}>
+                <Link to={"/viewPost"}>
                 <Card className={classes.root} variant="outlined">
 
                   {/* Doesn't have to be a card, just something I put in to get it started */}
