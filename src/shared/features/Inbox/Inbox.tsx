@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Container, Grid, Card, CardHeader, CardContent } from '@material-ui/core';
+import { Container, Grid, Card, CardHeader, CardActions, CardContent } from '@material-ui/core';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import MailIcon from '@material-ui/icons/Mail';
 import DraftsIcon from '@material-ui/icons/Drafts';
 
@@ -47,14 +48,18 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
             return (
               <div className={"inboxCard"}>
                 <Card className={classes.root} variant="outlined">
+                  <ButtonBase
+                    onClick={event => console.log("button clicked")}
+                  >
                   {/* Doesn't have to be a card, just something I put in to get it started */}
-                  <CardHeader title={post.from}>
+                  <CardHeader
+                      title={post.from}>
                   </CardHeader>
 
                   <CardContent>
                     {post.read? <DraftsIcon className="icon"/> : <MailIcon className="icon"/>}
                   </CardContent>
-
+                  </ButtonBase>
                 </Card>
 
               </div>
