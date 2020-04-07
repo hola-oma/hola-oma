@@ -5,6 +5,7 @@ import { Container, Grid, Card, CardHeader, CardActions, CardContent } from '@ma
 import ButtonBase from '@material-ui/core/ButtonBase';
 import MailIcon from '@material-ui/icons/Mail';
 import DraftsIcon from '@material-ui/icons/Drafts';
+import { Link } from 'react-router-dom';
 
 import { Post } from 'shared/models/post.model';
 
@@ -45,12 +46,12 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
         {/* Todo: loop through passed-in posts to build inbox item for each one */}
         {
           posts.map((post: Post, index: number) => {
+            // @ts-ignore
             return (
               <div className={"inboxCard"}>
+                <Link to={"/settings"}>
                 <Card className={classes.root} variant="outlined">
-                  <ButtonBase
-                    onClick={event => console.log("button clicked")}
-                  >
+
                   {/* Doesn't have to be a card, just something I put in to get it started */}
                   <CardHeader
                       title={post.from}>
@@ -59,9 +60,9 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                   <CardContent>
                     {post.read? <DraftsIcon className="icon"/> : <MailIcon className="icon"/>}
                   </CardContent>
-                  </ButtonBase>
                 </Card>
 
+              </Link>
               </div>
             )
           })
