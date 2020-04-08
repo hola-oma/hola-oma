@@ -33,6 +33,6 @@ export const getPosts = async (): Promise<Post[]> => {
                         });
   
   return posts;
-}
+};
 
 // todo: createPost

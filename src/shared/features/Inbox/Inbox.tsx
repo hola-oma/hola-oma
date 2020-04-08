@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Container, Grid, Card, CardHeader, CardContent } from '@material-ui/core';
 import MailIcon from '@material-ui/icons/Mail';
 import DraftsIcon from '@material-ui/icons/Drafts';
+import { Link } from 'react-router-dom';
 
 import { Post } from 'shared/models/post.model';
 
@@ -44,19 +45,23 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
         {/* Todo: loop through passed-in posts to build inbox item for each one */}
         {
           posts.map((post: Post, index: number) => {
+            // @ts-ignore
             return (
               <div className={"inboxCard"}>
+                <Link to={"/viewPost"}>
                 <Card className={classes.root} variant="outlined">
+
                   {/* Doesn't have to be a card, just something I put in to get it started */}
-                  <CardHeader title={post.from}>
+                  <CardHeader
+                      title={post.from}>
                   </CardHeader>
 
                   <CardContent>
                     {post.read? <DraftsIcon className="icon"/> : <MailIcon className="icon"/>}
                   </CardContent>
-
                 </Card>
 
+              </Link>
               </div>
             )
           })

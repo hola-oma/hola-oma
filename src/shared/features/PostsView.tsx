@@ -41,7 +41,7 @@ const PostsView: React.FC = () => {
     {id: "xyz458", creatorID: "123abc", from: "Jacqueline Quentin", message: "Funny thing Jackie did at dinnertime", photoURL: "", read: false},
     {id: "xyz459", creatorID: "123abc", from: "Ashley, Mary, and Johnny's Mom", message: "Pic from the zoo", photoURL: "", read: false},
     {id: "xyz460", creatorID: "123abc", from: "The Smiths", message: "One more pic from the water park", photoURL: "", read: false},
-  ]
+  ];
 
   return (
     <>
@@ -61,6 +61,6 @@ const PostsView: React.FC = () => {
     </Box>
     </>
   )
-}
+};
 
 export default PostsView;
