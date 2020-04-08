@@ -9,11 +9,13 @@ import { getPosts } from 'services/post';
 
 import { Post } from '../../shared/models/post.model';
 
-const OnePostView: React.FC = () => {
+const PostDetails: React.FC = () => {
 
-    const [displayName, setDisplayName] = useState("");
     const [role, setRole] = useState("");
+    const post = useState<Post>();
     const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects
+
+    // Get one post
 
     let mockPost = {id: "xyz456", creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false};
 
@@ -21,18 +23,21 @@ const OnePostView: React.FC = () => {
         <>
         <h1>Letter from {mockPost["from"]}</h1>
         {role === roles.poster && <div>Offer the option to make a post</div>}
-        {role === roles.receiver && <OnePostView/>}
+        {role === roles.receiver && <PostDetails/>}
+
 
         <Box className="todo">
             <h3>To do items:</h3>
-        <ul>
-            <li>Show post</li>
-            <li>Show edit options</li>
-            <li>Make edit options clickable</li>
-        </ul>
+                <ul>
+                    <li>Show post</li>
+                    <li>Show edit options</li>
+                    <li>Make edit options clickable</li>
+                </ul>
         </Box>
+
+
         </>
-        )
+    )
 };
 
-export default OnePostView;
+export default PostDetails;
