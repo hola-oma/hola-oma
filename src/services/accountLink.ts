@@ -1,13 +1,27 @@
 import firebase from "firebase";
+import { AccountLink } from "shared/models/accountLink.model";
 
-export const getLinkedAccounts = async (): Promise<string[]> => {
+
+export const getLinkedAccounts = async (): Promise<AccountLink[]> => {
   var user = firebase.auth().currentUser;
   const db = firebase.firestore();
 
   const links = await db.collection("accountLinks").doc(user?.uid).get();
   const linkData = links.data() as Object;
+  console.log(linkData);
 
-  return Object.keys(linkData) ?? [];
+  //return Object?.entries(linkData) ?? AccountLink[];
+  let accountLinks: AccountLink[] = [];
+
+  if (linkData) {
+    Object.keys(linkData).forEach((key, value) => {
+      accountLinks.push({id: key, verified: !!value});
+    })
+  } else {
+    accountLinks = [];
+  }
+
+  return accountLinks;
 }
 
 
@@ -15,14 +29,29 @@ export const getLinkedAccounts = async (): Promise<string[]> => {
 // this is just for the first-pass implementation 
 // later, we'll give the user a simple "pass phrase" to share or allow them to link up by entering the other user's email address
 export const createLinkByID = async(id: string) => {
-  console.log("Got this id: " + id);
   const user = firebase.auth().currentUser;
   const db = firebase.firestore();
 
   try {
+    // create a document with the signed in user's ID
+    // add the desired account ID as an "accountLink"
+    // set it to FALSE because it is PENDING at this point
     await db.collection("accountLinks").doc(user?.uid).set({
-      [id]: true,
+      [id]: false,
     });
+
+    // create another document, this one with the pending user's ID 
+    // add the desired account ID as an "accountLink"
+    // set it to FALSE because it is PENDING at this point
+    let userID = user?.uid.toString();
+    if (userID) {
+      await db.collection("accountLinks").doc(id).set({
+        [userID]: false,
+      });
+    } else {
+      console.log("error creating linked account entry");
+      return false;
+    }
 
     return true;
 

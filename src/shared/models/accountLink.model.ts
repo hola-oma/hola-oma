@@ -1,4 +1,5 @@
 export interface AccountLink {
-  id: string
-} 
+  id: string,
+  verified: boolean,
+}
 

@@ -11,13 +11,14 @@ import { Post } from '../../shared/models/post.model';
 
 import { getLinkedAccounts } from 'services/accountLink';
 import { Link } from 'react-router-dom';
+import { AccountLink } from 'shared/models/accountLink.model';
 
 const PostsView: React.FC = () => {
 
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
   const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects 
-  const [linkedAccounts, setLinkedAccounts] = useState<string[]>([]); // an array of Post type objects 
+  const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of Post type objects 
 
   useEffect(() => {
     // todo: get user posts
@@ -44,6 +45,7 @@ const PostsView: React.FC = () => {
     getLinkedAccounts()
       .then((links:any) => {
       console.log(links);
+      // [ {id: abc123, verified: false }, { id:xyz123, verified: false }]
       setLinkedAccounts(links);
     })
   }, []);
@@ -60,13 +62,27 @@ const PostsView: React.FC = () => {
     <>
     <h1>Welcome, {displayName}!</h1>
     <h2>Account type: {role}</h2>
-    <h3>Linked accounts: {
-      linkedAccounts.map((accountID) => {
-        return (
-          <p>{accountID}</p>
-        )
-      })} 
-    </h3>
+
+    {/* One or more linked accounts exists, display their IDs here */}
+    {linkedAccounts.length > 0 && 
+      <Box className="devBox">
+        <h3>Linked accounts:</h3> {
+          linkedAccounts.map((linkedAccount) => {
+            return (
+              <ul>
+                <li>ID: {linkedAccount.id}</li>
+                <li>Verified: {linkedAccount.verified.toString()}</li>
+              </ul>
+            )
+          })
+        } 
+      </Box>
+    }
+
+    {/* No linked accounts exist */}
+    {linkedAccounts.length == 0 && 
+      <h3>No linked accounts!</h3>
+    }
     <Link to="/addAccountLink">Invite someone</Link>
 
     {role === roles.poster && 
