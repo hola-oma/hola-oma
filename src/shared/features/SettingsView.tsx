@@ -17,6 +17,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Box } from '@material-ui/core';
 import { getLinkedAccounts } from 'services/accountLink';
+import { AccountLink } from 'shared/models/accountLink.model';
 
 interface ISettingsView extends RouteComponentProps<any>{
   // empty for now 
@@ -29,7 +30,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
   const [role, setRole] = useState("");
   const [userID, setUserID] = useState("");
 
-  const [linkedAccounts, setLinkedAccounts] = useState();
+  const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
 
   const [error, setErrors] = useState("");
 
@@ -177,7 +178,24 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
           </Button>
       
         </form>
+        <span className="error">{error}</span>
       </div>
+
+      {/* One or more linked accounts exists, display their IDs here */}
+      {linkedAccounts.length > 0 && 
+        <Box className="devBox">
+          <h3>Linked accounts:</h3> {
+            linkedAccounts.map((linkedAccount) => {
+              return (
+                <ul>
+                  <li>ID: {linkedAccount.id}</li>
+                  <li>Verified: {linkedAccount.verified.toString()}</li>
+                </ul>
+              )
+            })
+          } 
+        </Box>
+      }
 
       <Box className="todo">
       <h3>To do items:</h3>

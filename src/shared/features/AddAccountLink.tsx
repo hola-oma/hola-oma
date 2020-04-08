@@ -11,7 +11,7 @@ interface IAddAccountLink extends RouteComponentProps {
 
 const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
   const [accountID, setAccountID] = useState("");
-  const [errors, setErrors] = useState("");
+  const [error, setErrors] = useState("");
 
   const handleForm = async (e: any) => {
     e.preventDefault();
@@ -65,6 +65,7 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
             Link to this account
           </Button>
       </form>
+      <span className="error">{error}</span>
     </Container>
   );
 }

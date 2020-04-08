@@ -45,7 +45,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
         {
           posts.map((post: Post, index: number) => {
             return (
-              <div className={"inboxCard"}>
+              <div className={"inboxCard"} key={index}>
                 <Card className={classes.root} variant="outlined">
                   {/* Doesn't have to be a card, just something I put in to get it started */}
                   <CardHeader title={post.from}>

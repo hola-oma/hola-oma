@@ -4,7 +4,7 @@ import { roles } from '../../enums/enums';
 
 import { getUserSettings, getUserProfile } from "services/user";
 import Inbox from './Inbox/Inbox';
-import { Box } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import { getPosts } from 'services/post';
 
 import { Post } from '../../shared/models/post.model';
@@ -13,15 +13,16 @@ import { getLinkedAccounts } from 'services/accountLink';
 import { Link } from 'react-router-dom';
 import { AccountLink } from 'shared/models/accountLink.model';
 
+import Alert from '@material-ui/lab/Alert';
+
 const PostsView: React.FC = () => {
 
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
   const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects 
-  const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of Post type objects 
+  const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
 
   useEffect(() => {
-    // todo: get user posts
     getUserProfile()
       .then((userProfile:any) => {
         setDisplayName(userProfile.displayName);
@@ -44,7 +45,6 @@ const PostsView: React.FC = () => {
   useEffect(() => {
     getLinkedAccounts()
       .then((links:any) => {
-      console.log(links);
       // [ {id: abc123, verified: false }, { id:xyz123, verified: false }]
       setLinkedAccounts(links);
     })
@@ -61,29 +61,28 @@ const PostsView: React.FC = () => {
   return (
     <>
     <h1>Welcome, {displayName}!</h1>
-    <h2>Account type: {role}</h2>
 
-    {/* One or more linked accounts exists, display their IDs here */}
-    {linkedAccounts.length > 0 && 
-      <Box className="devBox">
-        <h3>Linked accounts:</h3> {
-          linkedAccounts.map((linkedAccount) => {
-            return (
-              <ul>
-                <li>ID: {linkedAccount.id}</li>
-                <li>Verified: {linkedAccount.verified.toString()}</li>
-              </ul>
-            )
-          })
-        } 
-      </Box>
+    {role === roles.poster &&
+      <Link to="/addAccountLink">Invite someone</Link>
     }
 
-    {/* No linked accounts exist */}
-    {linkedAccounts.length == 0 && 
-      <h3>No linked accounts!</h3>
+    {role === roles.poster &&
+      <>
+      {linkedAccounts.length === 0 && 
+        <Alert variant="filled" severity="warning">
+          You are not linked with any accounts yet! <Link to="/addAccountLink">Invite someone</Link>
+        </Alert>
+      }
+      </>
     }
-    <Link to="/addAccountLink">Invite someone</Link>
+
+    {role === roles.receiver &&
+      <>
+        <Alert variant="filled" severity="warning">
+          You have a pending invitation from displayName. <Button>View invitation</Button>
+        </Alert>
+      </>
+    }
 
     {role === roles.poster && 
       <Box className="devBox">

@@ -30,7 +30,6 @@ interface IRegister extends RouteComponentProps<any> {
 }
 
 const Register: React.FC<IRegister> = ({ history }) => {
-  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setErrors] = useState("");
