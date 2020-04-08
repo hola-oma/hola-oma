@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Box } from '@material-ui/core';
+import { getLinkedAccounts } from 'services/accountLink';
 
 interface ISettingsView extends RouteComponentProps<any>{
   // empty for now 
@@ -27,6 +28,8 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [userID, setUserID] = useState("");
+
+  const [linkedAccounts, setLinkedAccounts] = useState();
 
   const [error, setErrors] = useState("");
 
@@ -60,6 +63,13 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
         setUserID(userProfile.uid);
       })
   }, []); // fires on page load if this is empty [] 
+
+  useEffect(() => {
+    getLinkedAccounts()
+      .then((links:any) => {
+      setLinkedAccounts(links);
+    })
+  }, []);
 
   const useStyles = makeStyles((theme) => ({
     paper: {
@@ -174,9 +184,12 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
       <ul>
         <li>This page looks too much like the log in/register page, I always think I accidentally logged out when I visit</li>
         <li>Make role buttons BIG BUTTONS</li>
+        <li>Display a table of linked accounts, with the option to remove individual links and a confirmation modal</li>
       </ul>
       <b>Debug</b>
       <p>User ID: {userID}</p>
+      <p>Linked accounts, by ID: {linkedAccounts}</p>
+
     </Box>
 
     </Container>

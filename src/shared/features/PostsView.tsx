@@ -9,11 +9,15 @@ import { getPosts } from 'services/post';
 
 import { Post } from '../../shared/models/post.model';
 
+import { getLinkedAccounts } from 'services/accountLink';
+import { Link } from 'react-router-dom';
+
 const PostsView: React.FC = () => {
 
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
   const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects 
+  const [linkedAccounts, setLinkedAccounts] = useState<string[]>([]); // an array of Post type objects 
 
   useEffect(() => {
     // todo: get user posts
@@ -35,6 +39,15 @@ const PostsView: React.FC = () => {
     })
   }, []);
 
+  // On page load, this calls getLinkedAccounts from the link service
+  useEffect(() => {
+    getLinkedAccounts()
+      .then((links:any) => {
+      console.log(links);
+      setLinkedAccounts(links);
+    })
+  }, []);
+
   let mockPosts = [
     {id: "xyz456", creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false},
     {id: "xyz457", creatorID: "123abc", from: "Elizabeth H.", message: "Thinking of you", photoURL: "", read: false},
@@ -47,7 +60,26 @@ const PostsView: React.FC = () => {
     <>
     <h1>Welcome, {displayName}!</h1>
     <h2>Account type: {role}</h2>
-    {role === roles.poster && <div>Offer the option to make a post</div>}
+    <h3>Linked accounts: {
+      linkedAccounts.map((accountID) => {
+        return (
+          <p>{accountID}</p>
+        )
+      })} 
+    </h3>
+    <Link to="/addAccountLink">Invite someone</Link>
+
+    {role === roles.poster && 
+      <Box className="devBox">
+        <p>CREATE POST</p>
+        <ul>
+          <li>Post from earlier #3</li>
+          <li>Post from earlier #2</li>
+          <li>Post from earlier #1</li>
+        </ul>
+
+      </Box>
+    }
     {role === roles.receiver && <Inbox posts={mockPosts}/>}
 
     <Box className="todo">

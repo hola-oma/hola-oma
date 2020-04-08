@@ -42,3 +42,15 @@ input {
   text-align:left;
   padding-left:10px;
 }
+
+/* For development purposes only, creates a centered box with a gray outline
+that can act as a placeholder for elements not yet implemented. 
+
+Use: <Box className="devBox">...stuff here...</Box> */
+.devBox {
+  margin: auto auto;
+  text-align:left;
+  width:400px;
+  border:solid 1px gray;
+  padding:20px;
+}

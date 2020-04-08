@@ -140,7 +140,7 @@ export const createUserSettings = async (userID: string, role: string) => {
 
   try {
     await db.collection("users").doc(userID).set({
-      role: role,
+      role: role
     });
 
     return true;

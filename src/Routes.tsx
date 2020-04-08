@@ -4,6 +4,8 @@ import Register from "./shared/features/Register";
 import RegisterDetails from './shared/features/RegisterDetails'
 import PostsView from './shared/features/PostsView';
 import SettingsView from './shared/features/SettingsView';
+import AddAccountLink from './shared/features/AddAccountLink';
+
 import { RouteComponentProps, withRouter, Switch } from "react-router";
 import { Route } from "react-router-dom";
 import ProtectedRouteHoc from "ProtectedRouteHoc";
@@ -25,6 +27,7 @@ class Routes extends React.Component<RouteComponentProps & IRoutes, {}> {   // {
           <ProtectedRouteHoc exact path="/registerDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={RegisterDetails} />
           <ProtectedRouteHoc exact path="/posts" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostsView} />
           <ProtectedRouteHoc exact path="/settings" isLoggedIn={isLoggedIn} public={false} RouteComponent={SettingsView} />
+          <ProtectedRouteHoc exact path="/addAccountLink" isLoggedIn={isLoggedIn} public={false} RouteComponent={AddAccountLink} />
         </Switch>
       </div>
     );
