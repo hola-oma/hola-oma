@@ -2,7 +2,7 @@ import React from "react";
 import Login from "./shared/features/Login";
 import Register from "./shared/features/Register";
 import RegisterDetails from './shared/features/RegisterDetails'
-import PostsView from './shared/features/PostsView';
+import PostsView from './shared/features/PostsView/PostsView';
 import SettingsView from './shared/features/SettingsView';
 import AddAccountLink from './shared/features/AddAccountLink';
 

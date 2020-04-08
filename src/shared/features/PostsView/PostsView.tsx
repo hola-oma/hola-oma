@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
-import { roles } from '../../enums/enums';
+import { roles } from '../../../enums/enums';
 
 import { getUserSettings, getUserProfile } from "services/user";
-import Inbox from './Inbox/Inbox';
-import { Box, Button } from '@material-ui/core';
+import Inbox from '../Inbox/Inbox';
+import { Box, Link as ButtonLink} from '@material-ui/core';
 import { getPosts } from 'services/post';
 
-import { Post } from '../../shared/models/post.model';
+import { Post } from '../../models/post.model';
 
 import { getLinkedAccounts } from 'services/accountLink';
 import { Link } from 'react-router-dom';
 import { AccountLink } from 'shared/models/accountLink.model';
+
+import PendingInvitationModal from './components/PendingInvitationModal';
 
 import Alert from '@material-ui/lab/Alert';
 
@@ -21,6 +23,9 @@ const PostsView: React.FC = () => {
   const [role, setRole] = useState("");
   const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects 
   const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
+  const [pendingInvitations, setPendingInvitations] = useState<boolean>(false);
+  const [invite, setInvite] = useState<AccountLink>();
+  const [invitationModalOpen, setInvitationModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     getUserProfile()
@@ -45,10 +50,20 @@ const PostsView: React.FC = () => {
   useEffect(() => {
     getLinkedAccounts()
       .then((links:any) => {
+        links.forEach((link:any) => {
+          if (link.verified === false) {
+            setInvite(link);
+            setPendingInvitations(true);
+          }
+        });
       // [ {id: abc123, verified: false }, { id:xyz123, verified: false }]
       setLinkedAccounts(links);
     })
   }, []);
+
+  const handleInvitationModalClose = () => {
+    setInvitationModalOpen(false);
+  }
 
   let mockPosts = [
     {id: "xyz456", creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false},
@@ -76,25 +91,20 @@ const PostsView: React.FC = () => {
       </>
     }
 
-    {role === roles.receiver &&
+    {role === roles.receiver && pendingInvitations === true &&
       <>
         <Alert variant="filled" severity="warning">
-          You have a pending invitation from displayName. <Button>View invitation</Button>
+          You have a pending invitation from displayName. 
+          <ButtonLink component="button" variant="body2" onClick={() => {setInvitationModalOpen(true)}}>View invitation</ButtonLink>
+          <PendingInvitationModal isOpen={invitationModalOpen} invite={invite} onClose={handleInvitationModalClose} />
         </Alert>
       </>
     }
 
     {role === roles.poster && 
-      <Box className="devBox">
-        <p>CREATE POST</p>
-        <ul>
-          <li>Post from earlier #3</li>
-          <li>Post from earlier #2</li>
-          <li>Post from earlier #1</li>
-        </ul>
-
-      </Box>
+      <p>Show list of posts here</p>
     }
+
     {role === roles.receiver && <Inbox posts={mockPosts}/>}
 
     <Box className="todo">
