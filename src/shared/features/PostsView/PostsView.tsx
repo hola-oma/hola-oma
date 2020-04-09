@@ -106,7 +106,7 @@ const PostsView: React.FC = () => {
       <>
         <Alert variant="filled" severity="warning">
           <span>
-            You have a pending invitation from displayName.   
+            You have a pending invitation from {invite?.id}.   
           <ButtonLink 
             component="button" 
             variant="body2" 

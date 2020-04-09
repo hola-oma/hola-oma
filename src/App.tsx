@@ -43,6 +43,7 @@ function App() {
 
   useEffect(() => {
     readSession();
+    
   }, []); // whenever page loads, read session and see if we're logged in
 
 

@@ -1,8 +1,10 @@
 import firebase from "firebase";
 import { AccountLink } from "shared/models/accountLink.model";
+import { authenticateFromStore } from "./user";
 
 
 export const getLinkedAccounts = async (): Promise<AccountLink[]> => {
+  await authenticateFromStore();
   var user = firebase.auth().currentUser;
   const db = firebase.firestore();
 

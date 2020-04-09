@@ -6,7 +6,7 @@ import { resolve } from "dns";
 // ** SETTINGS = our custom user-settings table (role)
 
 export const getUserProfile = async () => {
-
+  await authenticateFromStore();
   const user = firebase.auth().currentUser;
   console.log(user);
   return user;
@@ -36,6 +36,7 @@ export const updateUserProfile = async (displayName: string, email: string) => {
 
 // Retrieves user settings from our users db
 export const getUserSettings = async () => {
+  await authenticateFromStore();
   var user = firebase.auth().currentUser;
   const db = firebase.firestore();
 
@@ -155,14 +156,19 @@ export const createUserSettings = async (userID: string, role: string) => {
 
 export const authenticateFromStore = async () => {
   const user = firebase.auth().currentUser;
-  const isAuthenticated = new Promise(resolve => true);
+  let resolveAuthPromise = () => {};
+
+  const isAuthenticated = new Promise(resolve => {
+    resolveAuthPromise = resolve;
+  });
 
   if (user) {
-    Promise.resolve(isAuthenticated);
+    resolveAuthPromise();
   }
   
   firebase.auth().onAuthStateChanged(function(user) {
-    Promise.resolve(isAuthenticated);
+    resolveAuthPromise();
+  
   });
 
   return isAuthenticated;
