@@ -37,6 +37,22 @@ input {
   vertical-align: middle;
 }
 
+.colorYes {
+  background-color:#28a745 !important;
+}
+
+.colorNo {
+  background-color: #dc3545 !important;
+}
+
+.colorWarning {
+  background-color: #ffc107 !important;
+}
+
+.colorInfo {
+  background-color: #17a2b8 !important;
+}
+
 .todo {
   float: left;
   text-align:left;

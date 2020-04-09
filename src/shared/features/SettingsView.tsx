@@ -23,6 +23,16 @@ interface ISettingsView extends RouteComponentProps<any>{
   // empty for now 
 }
 
+const getLinkedAccountsList = (items: AccountLink[]) => {
+  return items.map((link, index) => {
+    return (
+      <>
+      <li key={index}>{link.id}<br/>{link.verified ? 'verified' : 'unverified'}</li>
+      </>
+    );
+  })
+};
+
 const SettingsView: React.FC<ISettingsView> = ({ history }) => {
 
   const [displayName, setDisplayName] = useState("");
@@ -59,16 +69,22 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
 
     getUserProfile()
       .then((userProfile: any) => {
-        setDisplayName(userProfile.displayName);
-        setEmail(userProfile.email);
-        setUserID(userProfile.uid);
+        setDisplayName(userProfile?.displayName);
+        setEmail(userProfile?.email);
+        setUserID(userProfile?.uid);
       })
   }, []); // fires on page load if this is empty [] 
 
+  // On page load, this calls getLinkedAccounts from the link service
   useEffect(() => {
     getLinkedAccounts()
       .then((links:any) => {
-      setLinkedAccounts(links);
+        let accounts: AccountLink[] = [];
+        links.forEach((link:AccountLink) => {
+          accounts.push(link);
+        });
+        console.log(accounts);
+        setLinkedAccounts(accounts);
     })
   }, []);
 
@@ -184,16 +200,8 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
       {/* One or more linked accounts exists, display their IDs here */}
       {linkedAccounts.length > 0 && 
         <Box className="devBox">
-          <h3>Linked accounts:</h3> {
-            linkedAccounts.map((linkedAccount) => {
-              return (
-                <ul>
-                  <li>ID: {linkedAccount.id}</li>
-                  <li>Verified: {linkedAccount.verified.toString()}</li>
-                </ul>
-              )
-            })
-          } 
+          <h3>Linked accounts:</h3>
+          <ul>{getLinkedAccountsList(linkedAccounts)}</ul>
         </Box>
       }
 
@@ -206,7 +214,6 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
       </ul>
       <b>Debug</b>
       <p>User ID: {userID}</p>
-      <p>Linked accounts, by ID: {linkedAccounts}</p>
 
     </Box>
 

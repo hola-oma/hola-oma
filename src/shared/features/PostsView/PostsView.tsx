@@ -30,6 +30,7 @@ const PostsView: React.FC = () => {
   useEffect(() => {
     getUserProfile()
       .then((userProfile:any) => {
+        console.log(userProfile);
         setDisplayName(userProfile.displayName);
       });
 
@@ -60,6 +61,16 @@ const PostsView: React.FC = () => {
       setLinkedAccounts(links);
     })
   }, []);
+
+  const acceptInvite = () => {
+    console.log("accepted invite");
+    setInvitationModalOpen(false);
+  }
+
+  const declineInvite = () => {
+    console.log("rejected invite");
+    setInvitationModalOpen(false);
+  }
 
   const handleInvitationModalClose = () => {
     setInvitationModalOpen(false);
@@ -94,9 +105,22 @@ const PostsView: React.FC = () => {
     {role === roles.receiver && pendingInvitations === true &&
       <>
         <Alert variant="filled" severity="warning">
-          You have a pending invitation from displayName. 
-          <ButtonLink component="button" variant="body2" onClick={() => {setInvitationModalOpen(true)}}>View invitation</ButtonLink>
-          <PendingInvitationModal isOpen={invitationModalOpen} invite={invite} onClose={handleInvitationModalClose} />
+          <span>
+            You have a pending invitation from displayName.   
+          <ButtonLink 
+            component="button" 
+            variant="body2" 
+            onClick={() => {setInvitationModalOpen(true)}}
+            >View invitation
+          </ButtonLink>
+
+          <PendingInvitationModal 
+            isOpen={invitationModalOpen} 
+            invite={invite} 
+            acceptInvite={acceptInvite}
+            declineInvite={declineInvite}
+            onClose={handleInvitationModalClose} />
+          </span>
         </Alert>
       </>
     }
