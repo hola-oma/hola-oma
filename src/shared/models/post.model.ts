@@ -4,5 +4,6 @@ export interface Post {
   from: string,
   read: boolean,
   message: string,
-  photoURL: string
+  photoURL: string,
+  timestamp: string
 } 

@@ -4,6 +4,7 @@ import { roles } from '../../enums/enums';
 
 import { getUserSettings, getUserProfile } from "services/user";
 import Inbox from './Inbox/Inbox';
+import PostManagement from './PostManagement/PostManagement';
 import { Box } from '@material-ui/core';
 import { getPosts } from 'services/post';
 
@@ -36,18 +37,18 @@ const PostsView: React.FC = () => {
   }, []);
 
   let mockPosts = [
-    {id: "xyz456", creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false},
-    {id: "xyz457", creatorID: "123abc", from: "Elizabeth H.", message: "Thinking of you", photoURL: "", read: false},
-    {id: "xyz458", creatorID: "123abc", from: "Jacqueline Quentin", message: "Funny thing Jackie did at dinnertime", photoURL: "", read: false},
-    {id: "xyz459", creatorID: "123abc", from: "Ashley, Mary, and Johnny's Mom", message: "Pic from the zoo", photoURL: "", read: false},
-    {id: "xyz460", creatorID: "123abc", from: "The Smiths", message: "One more pic from the water park", photoURL: "", read: false},
+    {id: "xyz456", creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false, timestamp: "Wednesday, 4/1/20, 3:12pm"},
+    {id: "xyz457", creatorID: "123abc", from: "Elizabeth H.", message: "Thinking of you", photoURL: "", read: false, timestamp: "Wednesday, 4/1/20, 3:45pm"},
+    {id: "xyz458", creatorID: "123abc", from: "Jacqueline Quentin", message: "Funny thing Jackie did at dinnertime", photoURL: "", read: false, timestamp: "Wednesday, 4/1/20, 3:12pm"},
+    {id: "xyz459", creatorID: "123abc", from: "Ashley, Mary, and Johnny's Mom", message: "Pic from the zoo", photoURL: "", read: false, timestamp: "Wednesday, 4/1/20, 3:12pm"},
+    {id: "xyz460", creatorID: "123abc", from: "The Smiths", message: "One more pic from the water park", photoURL: "", read: false, timestamp: "Wednesday, 4/1/20, 3:12pm"},
   ];
 
   return (
     <>
     <h1>Welcome, {displayName}!</h1>
     <h2>Account type: {role}</h2>
-    {role === roles.poster && <div>Offer the option to make a post</div>}
+    {role === roles.poster && <PostManagement posts={mockPosts}/>}
     {role === roles.receiver && <Inbox posts={mockPosts}/>}
 
     <Box className="todo">

@@ -24,7 +24,8 @@ export const getPosts = async (): Promise<Post[]> => {
                               from: data.from,
                               message: data.message,
                               photoURL: data.photoURL,
-                              read: data.read
+                              read: data.read,
+                              timestamp: data.timestamp
                             });
                           });
                         })
