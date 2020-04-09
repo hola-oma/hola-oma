@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-size:1em;
 }
 
 input {
@@ -53,6 +54,7 @@ input {
   background-color: #17a2b8 !important;
 }
 
+/* For a list of to-do items we can place on each page, just for dev purposes */
 .todo {
   float: left;
   text-align:left;

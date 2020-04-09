@@ -17,6 +17,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from "shared/components/Copyright";
+import BigInput from "shared/components/BigInput/BigInput";
 
 interface ILogin extends RouteComponentProps<any> {
   // this was different from the tutorial, got typescript help from: 
@@ -29,6 +30,14 @@ const Login: React.FC<ILogin> = ({ history }) => {
   const [error, setErrors] = useState("");
 
   const Auth = useContext(AuthContext);
+
+  const updateEmail = (e: any) => {
+    setEmail(e.target.value);
+  }
+
+  const updatePassword = (e: any) => {
+    setPassword(e.target.value);
+  }
 
     /* EMAIL/PASS LOGIN, must exist in database */
   const handleEmailAndPasswordLogin = async (e: any) => {
@@ -95,34 +104,26 @@ const Login: React.FC<ILogin> = ({ history }) => {
         <form className={classes.form} noValidate onSubmit={e => handleEmailAndPasswordLogin(e)}>
 
           {/* Email address */}
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
+          <BigInput 
+              labelText="E-mail Address"
+              name="email"
+              required={true} 
+              value={email}
+              autoFocus={true}
+              autoComplete="current-email"
+              type="text"
+              onChange={updateEmail}/>
 
           {/* Password */ }
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
+          <BigInput 
+              labelText="Password"
+              name="password"
+              required={true} 
+              value={password}
+              autoFocus={false}
+              autoComplete="current-password"
+              type="password"
+              onChange={updatePassword}/>
 
           {/* Sign in button */}
           <Button

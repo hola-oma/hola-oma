@@ -6,18 +6,17 @@ import { RouteComponentProps } from 'react-router-dom'; // give us 'history' obj
 
 import { getUserSettings, updateUserSettings, getUserProfile, updateUserProfile } from '../../services/user';
 
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import SettingsIcon from '@material-ui/icons/Settings';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Box } from '@material-ui/core';
 import { getLinkedAccounts } from 'services/accountLink';
 import { AccountLink } from 'shared/models/accountLink.model';
+
+import BigInput from 'shared/components/BigInput/BigInput';
 
 interface ISettingsView extends RouteComponentProps<any>{
   // empty for now 
@@ -43,6 +42,14 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
   const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
 
   const [error, setErrors] = useState("");
+
+  const updateDisplayName = (e: any) => {
+    setDisplayName(e.target.value);
+  }
+
+  const updateEmail = (e: any) => {
+    setEmail(e.target.value);
+  }
 
   /* UPDATE ACCOUNT SETTINGS */
   const handleForm = async (e: any) => {
@@ -93,7 +100,8 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
       marginTop: theme.spacing(8),
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
+      alignItems: 'flex-start',
+      textAlign: 'left'
     },
     avatar: {
       margin: theme.spacing(1),
@@ -105,7 +113,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
     },
     submit: {
       margin: theme.spacing(3, 0, 2),
-    },
+    }
   }));
 
   const classes = useStyles();
@@ -114,48 +122,41 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <SettingsIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h4">
           Account settings
         </Typography>
 
         <p>Update your name, email address, and other settings here.</p>
 
         <form onSubmit={e => handleForm(e)}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} alignItems="flex-start">
             <Grid item xs={12}>
-              <TextField
-                autoComplete="dname"
+              <BigInput 
+                labelText="Display Name"
                 name="displayName"
-                variant="outlined"
-                required
-                fullWidth
-                id="displayName"
-                label="Display name"
-                autoFocus
+                required={true} 
                 value={displayName}
-                onChange={e => setDisplayName(e.target.value)}
-              />
+                autoFocus={true}
+                autoComplete="none"
+                type="text"
+                onChange={updateDisplayName}/>
             </Grid>
 
             <Grid item xs={12}>
-              <TextField
+              <BigInput 
+                labelText="E-mail address"
                 name="email"
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email address"
-                value={email? email: ''}
-                onChange={e => setEmail(e.target.value)}
-              />
+                required={true} 
+                value={displayName}
+                autoFocus={false}
+                autoComplete="none"
+                type="text"
+                onChange={updateEmail}/>
             </Grid>
 
             <Grid item xs={12}>
             <Typography component="h2" variant="h5">
-              Role [be careful changing this!]
+              Account type
             </Typography>
 
               <label>
