@@ -103,27 +103,34 @@ const Login: React.FC<ILogin> = ({ history }) => {
         {/* Begin form */}
         <form className={classes.form} noValidate onSubmit={e => handleEmailAndPasswordLogin(e)}>
 
-          {/* Email address */}
-          <BigInput 
-              labelText="E-mail Address"
-              name="email"
-              required={true} 
-              value={email}
-              autoFocus={true}
-              autoComplete="current-email"
-              type="text"
-              onChange={updateEmail}/>
+          <Grid container spacing={2}>
 
-          {/* Password */ }
-          <BigInput 
-              labelText="Password"
-              name="password"
-              required={true} 
-              value={password}
-              autoFocus={false}
-              autoComplete="current-password"
-              type="password"
-              onChange={updatePassword}/>
+            {/* Email address */}
+            <Grid item xs={12}>
+              <BigInput 
+                  labelText="E-mail Address"
+                  name="email"
+                  required={true} 
+                  value={email}
+                  autoFocus={true}
+                  autoComplete="current-email"
+                  type="text"
+                  onChange={updateEmail}/>
+            </Grid>
+
+            {/* Password */ }
+            <Grid item xs={12}>
+              <BigInput 
+                  labelText="Password"
+                  name="password"
+                  required={true} 
+                  value={password}
+                  autoFocus={false}
+                  autoComplete="current-password"
+                  type="password"
+                  onChange={updatePassword}/>
+            </Grid>
+          </Grid>
 
           {/* Sign in button */}
           <Button
