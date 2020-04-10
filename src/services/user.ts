@@ -8,7 +8,6 @@ import { resolve } from "dns";
 export const getUserProfile = async () => {
   await authenticateFromStore();
   const user = firebase.auth().currentUser;
-  console.log(user);
   return user;
 }
 

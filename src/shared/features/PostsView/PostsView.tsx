@@ -9,7 +9,7 @@ import { getPosts } from 'services/post';
 
 import { Post } from '../../models/post.model';
 
-import { getLinkedAccounts } from 'services/accountLink';
+import { getLinkedAccounts, acceptLink } from 'services/accountLink';
 import { Link } from 'react-router-dom';
 import { AccountLink } from 'shared/models/accountLink.model';
 
@@ -27,10 +27,16 @@ const PostsView: React.FC = () => {
   const [invite, setInvite] = useState<AccountLink>();
   const [invitationModalOpen, setInvitationModalOpen] = useState<boolean>(false);
 
+  const setInviteToLink = (link: AccountLink) => {
+    setInvite(link);
+    setPendingInvitations(true);
+    console.log("Invite: ", invite);
+    console.log("Pending invitations?", pendingInvitations);
+  }
+
   useEffect(() => {
     getUserProfile()
       .then((userProfile:any) => {
-        console.log(userProfile);
         setDisplayName(userProfile.displayName);
       });
 
@@ -51,10 +57,13 @@ const PostsView: React.FC = () => {
   useEffect(() => {
     getLinkedAccounts()
       .then((links:any) => {
-        links.forEach((link:any) => {
+        links.forEach((link:AccountLink) => {
           if (link.verified === false) {
-            setInvite(link);
-            setPendingInvitations(true);
+            console.log("Found a pending invitation!");
+            setInviteToLink(link);
+            // setInvite(link);
+            //console.log(invite); // logs as undefined 
+            //setPendingInvitations(true); // logs as false
           }
         });
       // [ {id: abc123, verified: false }, { id:xyz123, verified: false }]
@@ -63,7 +72,13 @@ const PostsView: React.FC = () => {
   }, []);
 
   const acceptInvite = () => {
-    console.log("accepted invite");
+    if (invite) {
+      console.log("Attempting to accept invite from user with ID:", invite?.id);
+      acceptLink(invite?.id);
+    } else {
+      console.log("Invitation invalid");
+    }
+    // close the modal
     setInvitationModalOpen(false);
   }
 

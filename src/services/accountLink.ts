@@ -10,15 +10,21 @@ export const getLinkedAccounts = async (): Promise<AccountLink[]> => {
 
   const links = await db.collection("accountLinks").doc(user?.uid).get();
   const linkData = links.data() as Object;
-  console.log(linkData);
 
   //return Object?.entries(linkData) ?? AccountLink[];
   let accountLinks: AccountLink[] = [];
 
   if (linkData) {
-    Object.keys(linkData).forEach((key, value) => {
-      accountLinks.push({id: key, verified: !!value});
-    })
+    console.log(linkData); // object with key value pairs as fields 
+    const linkDataEntries = Object.entries(linkData); // turns it into an array of arrays
+    accountLinks = linkDataEntries.reduce((accum: any, current) => { //accum is the array it built so far (on each iteration)
+      const obj = {
+        id: current[0],
+        verified: current[1]
+      }
+      return accum.concat(obj)
+    }, []); // start with empty array 
+
   } else {
     accountLinks = [];
   }
@@ -26,28 +32,28 @@ export const getLinkedAccounts = async (): Promise<AccountLink[]> => {
   return accountLinks;
 }
 
-
 // obviously we won't ask users to input the actual ID of the user they want to link with
 // this is just for the first-pass implementation 
 // later, we'll give the user a simple "pass phrase" to share or allow them to link up by entering the other user's email address
-export const createLinkByID = async(id: string) => {
+export const createLinkByID = async(otherUserID: string) => {
   const user = firebase.auth().currentUser;
   const db = firebase.firestore();
 
   try {
     // create a document with the signed in user's ID
     // add the desired account ID as an "accountLink"
-    // set it to FALSE because it is PENDING at this point
+    // set it to TRUE because this user initiated the link, they already approve
     await db.collection("accountLinks").doc(user?.uid).set({
-      [id]: false,
+      [otherUserID]: true,
     });
 
     // create another document, this one with the pending user's ID 
     // add the desired account ID as an "accountLink"
     // set it to FALSE because it is PENDING at this point
+    // we don't know yet if this user approves of the link 
     let userID = user?.uid.toString();
     if (userID) {
-      await db.collection("accountLinks").doc(id).set({
+      await db.collection("accountLinks").doc(otherUserID).set({
         [userID]: false,
       });
     } else {
@@ -57,6 +63,24 @@ export const createLinkByID = async(id: string) => {
 
     return true;
 
+  } catch(e) {
+    console.log(e.message);
+    throw Error(e.message);
+  }
+}
+
+export const acceptLink = async(acceptThisUserLinkID: string) => {
+  const user = firebase.auth().currentUser;
+  const db = firebase.firestore();
+
+  // Get the document by current user's ID
+  // The pending link is the other user's ID within that doc 
+  try {
+    await db.collection("accountLinks").doc(user?.uid).update({
+      [acceptThisUserLinkID]: true,
+    });
+
+    return true;
   } catch(e) {
     console.log(e.message);
     throw Error(e.message);
