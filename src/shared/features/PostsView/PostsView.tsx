@@ -23,15 +23,16 @@ const PostsView: React.FC = () => {
   const [role, setRole] = useState("");
   const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects 
   const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
-  const [pendingInvitations, setPendingInvitations] = useState<boolean>(false);
+  const [pendingInvitations, setPendingInvitations] = useState<AccountLink[]>([]);
   const [invite, setInvite] = useState<AccountLink>();
   const [invitationModalOpen, setInvitationModalOpen] = useState<boolean>(false);
 
-  const setInviteToLink = (link: AccountLink) => {
-    setInvite(link);
-    setPendingInvitations(true);
-    console.log("Invite: ", invite);
-    console.log("Pending invitations?", pendingInvitations);
+  const updatePendingInvitations = (dataArr: AccountLink[]) => {
+    if (dataArr.length > 0) {
+      setPendingInvitations(dataArr);
+      setInvite(dataArr[dataArr.length-1]);
+      console.log(pendingInvitations);
+    }
   }
 
   useEffect(() => {
@@ -56,27 +57,23 @@ const PostsView: React.FC = () => {
   // On page load, this calls getLinkedAccounts from the link service
   useEffect(() => {
     getLinkedAccounts()
-      .then((links:any) => {
-        links.forEach((link:AccountLink) => {
-          if (link.verified === false) {
-            console.log("Found a pending invitation!");
-            setInviteToLink(link);
-            // setInvite(link);
-            //console.log(invite); // logs as undefined 
-            //setPendingInvitations(true); // logs as false
-          }
-        });
-      // [ {id: abc123, verified: false }, { id:xyz123, verified: false }]
-      setLinkedAccounts(links);
-    })
+      .then((links:AccountLink[]) => {
+        const pendingInvitations = links.filter(link => link.verified === false);
+        updatePendingInvitations(pendingInvitations);
+      });
   }, []);
 
   const acceptInvite = () => {
     if (invite) {
-      console.log("Attempting to accept invite from user with ID:", invite?.id);
-      acceptLink(invite?.id);
+      const accepted = acceptLink(invite?.id);
+      if (accepted) {
+        console.log("Accepted invite from user with ID:", invite?.id);
+        let temp = pendingInvitations;
+        temp.pop();
+        updatePendingInvitations(pendingInvitations);
+      }
     } else {
-      console.log("Invitation invalid");
+      console.log("Problem accepting invitation");
     }
     // close the modal
     setInvitationModalOpen(false);
@@ -117,11 +114,11 @@ const PostsView: React.FC = () => {
       </>
     }
 
-    {role === roles.receiver && pendingInvitations === true &&
+    {role === roles.receiver && pendingInvitations.length > 0 &&
       <>
         <Alert variant="filled" severity="warning">
           <span>
-            You have a pending invitation from {invite?.id}.   
+            You have a pending invitation from {invite?.id}.&nbsp;   
           <ButtonLink 
             component="button" 
             variant="body2" 

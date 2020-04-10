@@ -7,7 +7,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 
 interface IPendingInvitationModal {
-  invite: any,
+  invite: any;
   isOpen: boolean;
   onClose: () => void;
   acceptInvite: () => void;
@@ -52,7 +52,7 @@ const PendingInvitationModal: React.FC<IPendingInvitationModal> = ({ invite, isO
         <div className={classes.paper}>
           <Grid container direction="column" spacing={4}>
             
-            <h2>Accept invite from {invite.id}?</h2>
+            <h2>Accept invite from {invite?.id}?</h2>
 
             <Grid item xs={12}>
               <Button 
