@@ -13,8 +13,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Box } from '@material-ui/core';
-import { getLinkedAccounts } from 'services/accountLink';
-import { AccountLink } from 'shared/models/accountLink.model';
 
 import BigInput from 'shared/components/BigInput/BigInput';
 import LinkedAccountManagement from './components/LinkedAccountManagement';
@@ -24,17 +22,12 @@ interface ISettingsView extends RouteComponentProps<any>{
 }
 
 const SettingsView: React.FC<ISettingsView> = ({ history }) => {
-
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [userID, setUserID] = useState("");
 
-  const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
-  const [pendingAccounts, setPendingAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
-
   const [error, setErrors] = useState("");
-
 
   const updateDisplayName = (e: any) => {
     setDisplayName(e.target.value);
@@ -74,18 +67,6 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
         setUserID(userProfile?.uid);
       })
   }, []); // fires on page load if this is empty [] 
-
-  // On page load, this calls getLinkedAccounts from the link service
-  useEffect(() => {
-    getLinkedAccounts()
-      .then((links:AccountLink[]) => {
-        let verifiedAccounts: AccountLink[] = links.filter(link => link.verified === true);
-        setLinkedAccounts(verifiedAccounts);
-
-        let pendingAccounts: AccountLink[] = links.filter(link => link.verified === false);
-        setPendingAccounts(pendingAccounts);
-    })
-  }, []);
 
   const useStyles = makeStyles((theme) => ({
     paper: {
@@ -190,14 +171,15 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
         <span className="error">{error}</span>
       </div>
 
-      <LinkedAccountManagement role={role} linkedAccounts={linkedAccounts} pendingAccounts={pendingAccounts}/>
+      <LinkedAccountManagement role={role} />
 
       <Box className="todo">
       <h3>To do items:</h3>
       <ul>
-        <li>This page looks too much like the log in/register page, I always think I accidentally logged out when I visit</li>
-        <li>Make role buttons BIG BUTTONS</li>
-        <li>Display a table of linked accounts, with the option to remove individual links and a confirmation modal</li>
+        <li>Make this page look less like the login/register pages</li>
+        <li>Change role should have a confirmation of some sort</li>
+        <li>Fade out removed invites/deleted friends</li>
+        <li>[Stretch goal] Friend profile pics?</li>
       </ul>
       <b>Debug</b>
       <p>User ID: {userID}</p>

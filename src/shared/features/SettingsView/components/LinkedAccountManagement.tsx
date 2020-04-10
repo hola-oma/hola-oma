@@ -1,22 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AccountLink } from 'shared/models/accountLink.model';
 import { Box, List, ListItem, ListItemAvatar, Avatar, ListItemText, ListItemSecondaryAction, Button } from '@material-ui/core';
 import { roles } from 'enums/enums';
 
 import PersonIcon from '@material-ui/icons/Person';
 import ManageAccountLinkAlert from './ManageAccountLinkAlert';
-import { acceptLink, removeLink } from 'services/accountLink';
+import { acceptLink, removeLink, getLinkedAccounts } from 'services/accountLink';
 
 interface ILinkedAccountManagement {
   role: string;
-  linkedAccounts: AccountLink[];
-  pendingAccounts: AccountLink[];
 }
 
-const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role, linkedAccounts, pendingAccounts }) => { 
+const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) => { 
 
   const [selectedFriend, setSelectedFriend] = useState<AccountLink>();
   const [manageAccountLinkAlertOpen, setManageAccountLinkAlertOpen] = useState<boolean>(false);
+
+  const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
+  const [pendingAccounts, setPendingAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
+
+
+  // On page load, this calls getLinkedAccounts from the link service
+  useEffect(() => {
+    getLinkedAccounts()
+      .then((links:AccountLink[]) => {
+        let verifiedAccounts: AccountLink[] = links.filter(link => link.verified === true);
+        setLinkedAccounts(verifiedAccounts);
+
+        let pendingAccounts: AccountLink[] = links.filter(link => link.verified === false);
+        setPendingAccounts(pendingAccounts);
+    })
+  }, []);
 
   const handleManageAccountLinkAlertClose = () => {
     setManageAccountLinkAlertOpen(false);
@@ -43,9 +57,21 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role, lin
     const deleted = removeLink(friend?.id);
     if (deleted) {
       setManageAccountLinkAlertOpen(false);
-      console.log("Todo: Friend link deleted, refresh account lists and pop a confirmation toast");
+      removeFriendFromDOM(friend);
     } else {
       console.log("Problem deleting friend");
+    }
+  }
+
+  const removeFriendFromDOM = (friend: AccountLink) => {
+    if (friend.verified) {
+      // removing a verified friend
+      const temp = linkedAccounts.filter(account => account.id != friend.id); // keep the links that don't have the removed-friend's ID 
+      setLinkedAccounts(temp);
+    } else if (!friend.verified) {
+      // removing a pending invite
+      const temp = pendingAccounts.filter(account => account.id != friend.id); // keep the remaining links
+      setPendingAccounts(temp);
     }
   }
 
@@ -70,26 +96,24 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role, lin
   const generateLinkedAccountsList = (items: AccountLink[]) => {
     return items.map((friend, index) => {
       return (
-        <ListItem key={index}>
+          <ListItem key={index}>
+            {/* Icon to the left */}
+            <ListItemAvatar>
+              <Avatar>
+                <PersonIcon />
+              </Avatar>
+            </ListItemAvatar>
 
-          {/* Icon to the left */}
-          <ListItemAvatar>
-            <Avatar>
-              <PersonIcon />
-            </Avatar>
-          </ListItemAvatar>
-
-          {/* Text */}
-          <ListItemText
-            primary={friend.id}
-            secondary={friend.verified ? 'Verified' : 'Pending'}
-          />
-          {/* Button to the right */}
-          <ListItemSecondaryAction>
-            {friend.verified ? <>{manageButton(friend)}</> : <>{declineButton(friend)} {acceptButton(friend)}</>}
-          </ListItemSecondaryAction>
-
-        </ListItem>
+            {/* Text */}
+            <ListItemText
+              primary={friend.id}
+              secondary={friend.verified ? 'Verified' : 'Pending'}
+            />
+            {/* Button to the right */}
+            <ListItemSecondaryAction>
+              {friend.verified ? <>{manageButton(friend)}</> : <>{declineButton(friend)} {acceptButton(friend)}</>}
+            </ListItemSecondaryAction>
+          </ListItem>
       );
     })
   };
