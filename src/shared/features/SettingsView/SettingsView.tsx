@@ -139,7 +139,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
                 labelText="E-mail address"
                 name="email"
                 required={true} 
-                value={displayName}
+                value={email}
                 autoFocus={false}
                 autoComplete="none"
                 type="text"
