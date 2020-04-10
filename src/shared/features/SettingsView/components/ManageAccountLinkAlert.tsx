@@ -6,11 +6,10 @@ interface IManageAccountLinkAlert {
   isOpen: boolean;
   onClose: () => void;
   friend: AccountLink;
-  muteFriend: (friend: AccountLink) => void;
   unfriendFriend: (friend: AccountLink) => void;
 }
 
-const ManageAccountLinkAlert: React.FC<IManageAccountLinkAlert> = ({ isOpen, onClose, friend, muteFriend, unfriendFriend }) => { 
+const ManageAccountLinkAlert: React.FC<IManageAccountLinkAlert> = ({ isOpen, onClose, friend, unfriendFriend }) => { 
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -24,22 +23,22 @@ const ManageAccountLinkAlert: React.FC<IManageAccountLinkAlert> = ({ isOpen, onC
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-    <DialogTitle id="alert-dialog-title">{"Manage link"}</DialogTitle>
+    <DialogTitle id="alert-dialog-title">No more updates from {friend.id}</DialogTitle>
     <DialogContent>
       <DialogContentText id="alert-dialog-description">
-        What do you want to do with this person?
+        You will no longer receive updates from {friend.id}. Are you sure you wish to remove {friend.id} from your friends list?
       </DialogContentText>
     </DialogContent>
     <DialogActions>
 
       {/* Delete account link */}
       <Button onClick={() => unfriendFriend(friend)} color="primary" autoFocus>
-        Remove friend
+        Yes, remove them.
       </Button>
 
       {/* Cancel */}
       <Button onClick={onClose} variant="outlined" color="primary">
-        Nevermind (don't change anything)
+        Nevermind, don't change anything.
       </Button>
       
     </DialogActions>

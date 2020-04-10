@@ -17,12 +17,8 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role, lin
   const [selectedFriend, setSelectedFriend] = useState<AccountLink>();
   const [manageAccountLinkAlertOpen, setManageAccountLinkAlertOpen] = useState<boolean>(false);
 
-  const muteFriend = (friend: AccountLink) => {
-    console.log("Stub: Muting friend");
-  }
-
   const unfriendFriend = (friend: AccountLink) => {
-    console.log("Stub: Unfriending friend");
+    console.log("Stub: Unfriending friend: ", friend);
   }
 
   const handleManageAccountLinkAlertClose = () => {
@@ -33,6 +29,32 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role, lin
     console.log("Opening alert to manage this friend: ", friend);
     setSelectedFriend(friend);
     setManageAccountLinkAlertOpen(true);
+  }
+
+  const acceptAccountLink = (friend: AccountLink) => {
+    console.log("accepting friend request");
+  }
+
+  const declineAccountLink = (friend: AccountLink) => {
+    console.log("declining friend request");
+  }
+
+  const manageButton = (friend: AccountLink) => {
+    return (
+      <Button color="primary" onClick={() => manageAccountLink(friend)}>Remove</Button>
+    )
+  }
+
+  const acceptButton = (friend: AccountLink) => {
+    return (
+      <Button color="primary" onClick={() => acceptAccountLink(friend)}>Accept</Button>
+    )
+  }
+
+  const declineButton = (friend: AccountLink) => {
+    return (
+      <Button color="primary" onClick={() => declineAccountLink(friend)}>Decline</Button>
+    )
   }
   
   const generateLinkedAccountsList = (items: AccountLink[]) => {
@@ -54,9 +76,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role, lin
           />
           {/* Button to the right */}
           <ListItemSecondaryAction>
-            <Button color="primary" onClick={() => manageAccountLink(friend)}>
-              Manage
-            </Button>
+            {friend.verified ? <>{manageButton(friend)}</> : <>{declineButton(friend)} {acceptButton(friend)}</>}
           </ListItemSecondaryAction>
 
         </ListItem>
@@ -77,7 +97,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role, lin
     <br/>
 
     <Box className="devBox">
-      <h3>Pending accounts</h3>
+      <h3>Pending invitations</h3>
       <div>
         <List>
           {generateLinkedAccountsList(pendingAccounts)}
@@ -90,7 +110,6 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role, lin
       <ManageAccountLinkAlert 
         isOpen={manageAccountLinkAlertOpen} 
         friend={selectedFriend} 
-        muteFriend={() => muteFriend(selectedFriend)}
         unfriendFriend={() => unfriendFriend(selectedFriend)}
         onClose={handleManageAccountLinkAlertClose} 
       />

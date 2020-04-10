@@ -68,7 +68,7 @@ Use: <Box className="devBox">...stuff here...</Box> */
 .devBox {
   margin: auto auto;
   text-align:left;
-  width:400px;
+  width:480px;
   border:solid 1px gray;
   padding:20px;
 }
