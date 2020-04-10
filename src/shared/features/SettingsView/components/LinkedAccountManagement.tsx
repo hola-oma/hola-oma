@@ -5,6 +5,7 @@ import { roles } from 'enums/enums';
 
 import PersonIcon from '@material-ui/icons/Person';
 import ManageAccountLinkAlert from './ManageAccountLinkAlert';
+import { acceptLink, removeLink } from 'services/accountLink';
 
 interface ILinkedAccountManagement {
   role: string;
@@ -17,26 +18,35 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role, lin
   const [selectedFriend, setSelectedFriend] = useState<AccountLink>();
   const [manageAccountLinkAlertOpen, setManageAccountLinkAlertOpen] = useState<boolean>(false);
 
-  const unfriendFriend = (friend: AccountLink) => {
-    console.log("Stub: Unfriending friend: ", friend);
-  }
-
   const handleManageAccountLinkAlertClose = () => {
     setManageAccountLinkAlertOpen(false);
   }
 
   const manageAccountLink = (friend: AccountLink) => {
-    console.log("Opening alert to manage this friend: ", friend);
+    console.log("Opening alert to manage this friend: ", friend.id);
     setSelectedFriend(friend);
     setManageAccountLinkAlertOpen(true);
   }
 
-  const acceptAccountLink = (friend: AccountLink) => {
-    console.log("accepting friend request");
+  const acceptAccountLink = (invite: AccountLink) => {
+    console.log("accepting friend request from: ", invite.id);
+
+    const accepted = acceptLink(invite?.id);
+    if (accepted) {
+      console.log("Todo: refresh account lists and pop a confirmation toast");
+    } else {
+      console.log("Problem accepting invitation");
+    }
   }
 
-  const declineAccountLink = (friend: AccountLink) => {
-    console.log("declining friend request");
+  const deleteAccountLink = (friend: AccountLink) => {
+    const deleted = removeLink(friend?.id);
+    if (deleted) {
+      setManageAccountLinkAlertOpen(false);
+      console.log("Todo: Friend link deleted, refresh account lists and pop a confirmation toast");
+    } else {
+      console.log("Problem deleting friend");
+    }
   }
 
   const manageButton = (friend: AccountLink) => {
@@ -53,7 +63,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role, lin
 
   const declineButton = (friend: AccountLink) => {
     return (
-      <Button color="primary" onClick={() => declineAccountLink(friend)}>Decline</Button>
+      <Button color="primary" onClick={() => deleteAccountLink(friend)}>Decline</Button>
     )
   }
   
@@ -110,7 +120,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role, lin
       <ManageAccountLinkAlert 
         isOpen={manageAccountLinkAlertOpen} 
         friend={selectedFriend} 
-        unfriendFriend={() => unfriendFriend(selectedFriend)}
+        unfriendFriend={() => deleteAccountLink(selectedFriend)}
         onClose={handleManageAccountLinkAlertClose} 
       />
     }

@@ -86,3 +86,23 @@ export const acceptLink = async(acceptThisUserLinkID: string) => {
     throw Error(e.message);
   }
 }
+
+/* Removes a link, regardless of whether it was pending or verified */
+/* Currently, there is no way to remove a link but return it to 'pending' or 'soft delete' it */
+export const removeLink = async(removeThisUserLinkID: string) => {
+  const user = firebase.auth().currentUser;
+  const db = firebase.firestore();
+
+  // Get the document by current user's ID
+  // The pending link is the other user's ID within that doc 
+  try {
+    await db.collection("accountLinks").doc(user?.uid).update({
+      [removeThisUserLinkID]: firebase.firestore.FieldValue.delete(),
+    });
+
+    return true;
+  } catch(e) {
+    console.log(e.message);
+    throw Error(e.message);
+  }
+}

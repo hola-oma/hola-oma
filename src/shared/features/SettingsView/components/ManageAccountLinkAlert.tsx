@@ -26,7 +26,7 @@ const ManageAccountLinkAlert: React.FC<IManageAccountLinkAlert> = ({ isOpen, onC
     <DialogTitle id="alert-dialog-title">No more updates from {friend.id}</DialogTitle>
     <DialogContent>
       <DialogContentText id="alert-dialog-description">
-        You will no longer receive updates from {friend.id}. Are you sure you wish to remove {friend.id} from your friends list?
+        Are you sure you wish to remove {friend.id}? You will no longer receive updates from {friend.id}. 
       </DialogContentText>
     </DialogContent>
     <DialogActions>
