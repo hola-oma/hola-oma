@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 
 import { roles } from '../../enums/enums';
 
-import { getUserSettings, getUserProfile } from "services/user";
-import {Box, Card, CardContent, CardHeader, Button} from '@material-ui/core';
+import { getUserSettings} from "services/user";
+import {Box } from '@material-ui/core';
 
 import { Post } from '../../shared/models/post.model';
 import { Link } from "react-router-dom";
+import GrandparentMsgView from "./GrandparentMsgView";
 
 const PostDetails: React.FC = () => {
 
@@ -14,43 +15,20 @@ const PostDetails: React.FC = () => {
     const [post] = useState<Post>();
     const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects
 
+    useEffect(() => {
+        getUserSettings()
+            .then((doc:any) => {
+                setRole(doc?.role);
+            });
+    }, []); // fires on page load if this is empty []
+
     // TODO: Get clicked-on post
     let mockPost = {id: "xyz456", creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false};
 
     return (
         <>
-        <h1>Letter from {mockPost["from"]}</h1>
         {role === roles.poster && <div>Offer the option to make a post</div>}
-        {role === roles.receiver && <PostDetails/>}
-
-        <Card variant="outlined">
-            <CardContent>
-                {mockPost.message}
-            </CardContent>
-        </Card>
-
-        <div className={"replyButton"}>
-            <Link to={"/reply"}>
-                <Button variant="outlined">Reply</Button>
-            </Link>
-        </div>
-
-        <div className={"returnButton"}>
-            <Link to={"/posts"}>
-                <Button variant="outlined">Close</Button>
-            </Link>
-        </div>
-
-
-        <Box className="todo">
-            <h3>To do items:</h3>
-            <ul>
-                <li>Pass in clicked post</li>
-                <li>Make pretty</li>
-            </ul>
-        </Box>
-
-
+        {role === roles.receiver && <GrandparentMsgView/>}
         </>
     )
 };

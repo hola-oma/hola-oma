@@ -8,7 +8,7 @@ import {Box, Card, CardContent, CardHeader, Button} from '@material-ui/core';
 import { Post } from '../../shared/models/post.model';
 import { Link } from "react-router-dom";
 
-const ReplyOptions: React.FC = () => {
+const GrandparentReplyOpts: React.FC = () => {
 //
     const [role, setRole] = useState("");
 //     const [post] = useState<Post>();
@@ -16,7 +16,8 @@ const ReplyOptions: React.FC = () => {
 //
     // TODO: Get clicked-on post
     let mockPost = {id: "xyz456", creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false};
-//
+    let replyOpt = "";
+
     return (
         <>
 
@@ -28,36 +29,31 @@ const ReplyOptions: React.FC = () => {
             </CardContent>
         </Card>
 
-         <div className={"voiceButton"}>
-             <Link to={"/"}>
-                 <Button variant="outlined">Voice Message</Button>
-             </Link>
+         {/*<div className={"voiceButton"} onClick={setReplyOpt}>*/}  //TODO
+         <div className={"voiceButton"} >
+             <Button variant="outlined">Voice Message</Button>
          </div>
 
          <div className={"picButton"}>
-             <Link to={"/"}>
-                 <Button variant="outlined">Your Picture</Button>
-             </Link>
+             <Button variant="outlined">Your Picture</Button>
          </div>
 
          <div className={"emojiButton"}>
-             <Link to={"/"}>
-                 <Button variant="outlined">Smiley</Button>
-             </Link>
+             <Button variant="outlined">Smiley</Button>
          </div>
 
-
-             <Box className="todo">
-         <h3>To do items:</h3>
-         <ul>
-             <li>Create routes for each reply option</li>
-             <li>Make pretty</li>
-         </ul>
-     </Box>
-
-
+         <Box className="todo">
+            <h3>To do items:</h3>
+            <ul>
+                <li>"setReplyOpt" function</li>
+                <li>Create component for each reply option</li>
+                <li>Option to return to message</li>
+                <li>"Sent reply" View</li>
+                <li>Make pretty</li>
+            </ul>
+        </Box>
      </>
     )
 };
 
-export default ReplyOptions;
+export default GrandparentReplyOpts;
