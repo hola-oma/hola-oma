@@ -8,7 +8,7 @@ import { RouteComponentProps, withRouter, Switch } from "react-router";
 import { Route } from "react-router-dom";
 import ProtectedRouteHoc from "ProtectedRouteHoc";
 import PostDetails from "./shared/features/PostDetails";
-import GrandparentReplyOpts from "./shared/features/GrandparentReplyOpts";
+import CreatePost from "./shared/features/CreatePost";
 
 interface IRoutes {
   isLoggedIn: boolean;
@@ -27,7 +27,7 @@ class Routes extends React.Component<RouteComponentProps & IRoutes, {}> {   // {
           <ProtectedRouteHoc exact path="/registerDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={RegisterDetails} />
           <ProtectedRouteHoc exact path="/posts" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostsView} />
           <ProtectedRouteHoc exact path="/postDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostDetails} />
-          <ProtectedRouteHoc exact path="/newPost" isLoggedIn={isLoggedIn} public={false} RouteComponent={GrandparentReplyOpts} />
+          <ProtectedRouteHoc exact path="/newPost" isLoggedIn={isLoggedIn} public={false} RouteComponent={CreatePost} />
           <ProtectedRouteHoc exact path="/settings" isLoggedIn={isLoggedIn} public={false} RouteComponent={SettingsView} />
         </Switch>
       </div>
