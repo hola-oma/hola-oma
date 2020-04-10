@@ -12,15 +12,12 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Box, List, ListItem, ListItemAvatar, Avatar, ListItemText, ListItemSecondaryAction, IconButton } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { getLinkedAccounts } from 'services/accountLink';
 import { AccountLink } from 'shared/models/accountLink.model';
 
-import PersonIcon from '@material-ui/icons/Person';
-import DeleteIcon from '@material-ui/icons/Delete';
-
 import BigInput from 'shared/components/BigInput/BigInput';
-import ManageAccountLinkAlert from './components/ManageAccountLinkAlert';
+import LinkedAccountManagement from './components/LinkedAccountManagement';
 
 interface ISettingsView extends RouteComponentProps<any>{
   // empty for now 
@@ -34,58 +31,10 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
   const [userID, setUserID] = useState("");
 
   const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
-  const [selectedFriend, setSelectedFriend] = useState<AccountLink>();
+  const [pendingAccounts, setPendingAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
 
   const [error, setErrors] = useState("");
 
-  const [manageAccountLinkAlertOpen, setManageAccountLinkAlertOpen] = useState<boolean>(false);
-
-  const muteFriend = (friend: AccountLink) => {
-    console.log("Stub: Muting friend");
-  }
-
-  const unfriendFriend = (friend: AccountLink) => {
-    console.log("Stub: Unfriending friend");
-  }
-
-  const handleManageAccountLinkAlertClose = () => {
-    setManageAccountLinkAlertOpen(false);
-  }
-
-  const manageAccountLink = (friend: AccountLink) => {
-    console.log("Opening alert to manage this friend: ", friend);
-    setSelectedFriend(friend);
-    setManageAccountLinkAlertOpen(true);
-  }
-
-  const generateLinkedAccountsList = (items: AccountLink[]) => {
-    return items.map((friend, index) => {
-      return (
-        <ListItem key={index}>
-
-          {/* Icon to the left */}
-          <ListItemAvatar>
-            <Avatar>
-              <PersonIcon />
-            </Avatar>
-          </ListItemAvatar>
-
-          {/* Text */}
-          <ListItemText
-            primary={friend.id}
-            secondary={friend.verified ? 'Verified' : 'Pending'}
-          />
-          {/* Button to the right */}
-          <ListItemSecondaryAction>
-            <IconButton color="primary" onClick={() => manageAccountLink(friend)}>
-              <DeleteIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-
-        </ListItem>
-      );
-    })
-  };
 
   const updateDisplayName = (e: any) => {
     setDisplayName(e.target.value);
@@ -129,13 +78,12 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
   // On page load, this calls getLinkedAccounts from the link service
   useEffect(() => {
     getLinkedAccounts()
-      .then((links:any) => {
-        let accounts: AccountLink[] = [];
-        links.forEach((link:AccountLink) => {
-          accounts.push(link);
-        });
-        console.log(accounts);
-        setLinkedAccounts(accounts);
+      .then((links:AccountLink[]) => {
+        let verifiedAccounts: AccountLink[] = links.filter(link => link.verified === true);
+        setLinkedAccounts(verifiedAccounts);
+
+        let pendingAccounts: AccountLink[] = links.filter(link => link.verified === false);
+        setPendingAccounts(pendingAccounts);
     })
   }, []);
 
@@ -242,28 +190,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
         <span className="error">{error}</span>
       </div>
 
-      {/* One or more linked accounts exists, display their IDs here */}
-      {linkedAccounts.length > 0 && 
-        <Box className="devBox">
-          <h3>Getting updates from:</h3>
-          <div>
-            <List>
-              {generateLinkedAccountsList(linkedAccounts)}
-            </List>
-          </div>
-        </Box>
-      }
-      
-      {/* Ensure 'selectedFriend' is set before attempting to render this component */}
-      {selectedFriend && 
-        <ManageAccountLinkAlert 
-          isOpen={manageAccountLinkAlertOpen} 
-          friend={selectedFriend} 
-          muteFriend={() => muteFriend(selectedFriend)}
-          unfriendFriend={() => unfriendFriend(selectedFriend)}
-          onClose={handleManageAccountLinkAlertClose} 
-        />
-      }
+      <LinkedAccountManagement role={role} linkedAccounts={linkedAccounts} pendingAccounts={pendingAccounts}/>
 
       <Box className="todo">
       <h3>To do items:</h3>
