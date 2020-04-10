@@ -62,7 +62,7 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
             color="primary"
             size="large"
           >
-            Link to this account
+            Send Invitation
           </Button>
       </form>
       <span className="error">{error}</span>

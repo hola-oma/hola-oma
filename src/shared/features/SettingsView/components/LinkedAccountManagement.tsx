@@ -37,17 +37,19 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
   }
 
   const manageAccountLink = (friend: AccountLink) => {
-    console.log("Opening alert to manage this friend: ", friend.id);
     setSelectedFriend(friend);
     setManageAccountLinkAlertOpen(true);
   }
 
-  const acceptAccountLink = (invite: AccountLink) => {
-    console.log("accepting friend request from: ", invite.id);
+  const acceptAccountLink = (friend: AccountLink) => {
+    console.log("accepting friend request from: ", friend.id);
 
-    const accepted = acceptLink(invite?.id);
-    if (accepted) {
-      console.log("Todo: refresh account lists and pop a confirmation toast");
+    const accepted = acceptLink(friend?.id);
+    if (accepted) {      
+      // remove from pending (works for any list, really)
+      removeFriendFromDOM(friend);
+      // add to friends (works for any list type)
+      addFriendToVerifiedList(friend);
     } else {
       console.log("Problem accepting invitation");
     }
@@ -61,6 +63,13 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
     } else {
       console.log("Problem deleting friend");
     }
+  }
+
+  const addFriendToVerifiedList = (friend: AccountLink) => {
+    const temp = linkedAccounts;
+    friend.verified = true;
+    temp.push(friend);
+    setLinkedAccounts(temp);
   }
 
   const removeFriendFromDOM = (friend: AccountLink) => {
@@ -92,8 +101,14 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
       <Button color="primary" onClick={() => deleteAccountLink(friend)}>Decline</Button>
     )
   }
+
+  const cancelButton = (friend: AccountLink) => {
+    return (
+      <Button color="primary" onClick={() => deleteAccountLink(friend)}>Cancel</Button>
+    )
+  }
   
-  const generateLinkedAccountsList = (items: AccountLink[]) => {
+  const generateLinkedAccountsList = (role: string, items: AccountLink[]) => {
     return items.map((friend, index) => {
       return (
           <ListItem key={index}>
@@ -107,11 +122,11 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
             {/* Text */}
             <ListItemText
               primary={friend.id}
-              secondary={friend.verified ? 'Verified' : 'Pending'}
+              secondary={friend.verified ? 'Verified' : role === roles.poster ? 'Waiting for them to accept' : 'Pending'}
             />
             {/* Button to the right */}
             <ListItemSecondaryAction>
-              {friend.verified ? <>{manageButton(friend)}</> : <>{declineButton(friend)} {acceptButton(friend)}</>}
+              {friend.verified ? <>{manageButton(friend)}</> : role === roles.poster ? <>{cancelButton(friend)}</> : <>{declineButton(friend)} {acceptButton(friend)}</>}
             </ListItemSecondaryAction>
           </ListItem>
       );
@@ -121,20 +136,20 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
   return (
     <>
     <Box className="devBox">
-      <h3>{role === roles.poster ? 'Sending posts to:' : 'Getting updates from:'}</h3>
+      <h3>{role === roles.poster ? 'Sharing posts with:' : 'Getting updates from:'}</h3>
       <div>
         <List>
-          {generateLinkedAccountsList(linkedAccounts)}
+          {generateLinkedAccountsList(role, linkedAccounts)}
         </List>
       </div>
     </Box>
     <br/>
 
     <Box className="devBox">
-      <h3>Pending invitations</h3>
+      <h3>{role === roles.poster ? 'Sent invitations:' : 'Pending invitations:'}</h3>
       <div>
         <List>
-          {generateLinkedAccountsList(pendingAccounts)}
+          {generateLinkedAccountsList(role, pendingAccounts)}
         </List>
       </div>
     </Box>

@@ -55,7 +55,8 @@ const Register: React.FC<IRegister> = ({ history }) => {
       const userCreated = await createNewUserWithEmailAndPassword(email, password);
       
       if (userCreated) {
-        Auth?.setLoggedIn(true); 
+        console.log("Created user, going to registerDetails: ", userCreated);
+        Auth?.setLoggedIn(true);
         if (history) history.push('/registerDetails');
       }
     } catch(e) {
@@ -68,6 +69,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
     try {
       const userCreated = await createNewUserWithGoogleCredentials();
       if (userCreated) {
+        console.log("Created user, going to registerDetails: ", userCreated);
         Auth?.setLoggedIn(true);
         if (history) history.push('/registerDetails');
       } 

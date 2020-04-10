@@ -28,22 +28,25 @@ function App() {
       const db = event.target.result;
   
       // create transaction from database
-      const transaction = db.transaction('firebaseLocalStorage', 'readwrite');
-      const authStore = transaction.objectStore('firebaseLocalStorage')
-      const authResult = authStore.getAll();
-      authResult.onsuccess = async (event: any) => {
-        const [targetResult] = event.target.result;
-        if (targetResult?.value?.uid) {
-          setLoggedIn(true);
+      try {
+        const transaction = db.transaction('firebaseLocalStorage', 'readwrite');
+        const authStore = transaction.objectStore('firebaseLocalStorage')
+        const authResult = authStore.getAll();
+        authResult.onsuccess = async (event: any) => {
+          const [targetResult] = event.target.result;
+          if (targetResult?.value?.uid) {
+            setLoggedIn(true);
+          }
         }
+        console.log(firebase.auth().currentUser?.getIdToken());
+      } catch(e) {
+        console.log(e);
       }
-      console.log(firebase.auth().currentUser?.getIdToken());
     }
   };
 
   useEffect(() => {
     readSession();
-    
   }, []); // whenever page loads, read session and see if we're logged in
 
 
@@ -54,7 +57,7 @@ function App() {
     <div className="App">
       <Router>
         <Header isLoggedIn={isLoggedIn} />
-        <Routes isLoggedIn={isLoggedIn } />
+        <Routes isLoggedIn={isLoggedIn} />
       </Router>
     </div>
     </AuthContext.Provider>

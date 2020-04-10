@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
+import { AuthContext } from "./App";
+
 import Login from "./shared/features/Login";
 import Register from "./shared/features/Register";
 import RegisterDetails from './shared/features/RegisterDetails'
@@ -14,21 +16,15 @@ interface IRoutes {
   isLoggedIn: boolean;
 }
 
-// componentDidUpdate() {
-//   console.log(this.props);
-//   // every time the app loads... 
-//   if ( this.props.isLoggedIn ) {
-//     console.log("trying to go to posts");
-//     this.props.history.push('/posts');
-//   }
-// }
-
 const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is a better alternative to "any"
     const { isLoggedIn } = props;
     const history = useHistory();
 
+    const Auth = useContext(AuthContext);
+
     useEffect(() => {
-      console.log(isLoggedIn)
+      // this is what keeps you on PostsView by default, but it also has an unwanted
+      // side-effect of making new users skip the role and display name steps of account creation
       if (isLoggedIn) {
         history.push('/posts');
       }

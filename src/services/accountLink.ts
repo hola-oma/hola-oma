@@ -2,7 +2,6 @@ import firebase from "firebase";
 import { AccountLink } from "shared/models/accountLink.model";
 import { authenticateFromStore } from "./user";
 
-
 export const getLinkedAccounts = async (): Promise<AccountLink[]> => {
   await authenticateFromStore();
   var user = firebase.auth().currentUser;
@@ -42,9 +41,9 @@ export const createLinkByID = async(otherUserID: string) => {
   try {
     // create a document with the signed in user's ID
     // add the desired account ID as an "accountLink"
-    // set it to TRUE because this user initiated the link, they already approve
+    // set it to FALSE because the other user has not accepted the link
     await db.collection("accountLinks").doc(user?.uid).set({
-      [otherUserID]: true,
+      [otherUserID]: false,
     });
 
     // create another document, this one with the pending user's ID 
@@ -76,9 +75,17 @@ export const acceptLink = async(acceptThisUserLinkID: string) => {
   // Get the document by current user's ID
   // The pending link is the other user's ID within that doc 
   try {
-    await db.collection("accountLinks").doc(user?.uid).update({
-      [acceptThisUserLinkID]: true,
-    });
+    let userID = user?.uid.toString();
+    if (userID) {
+      await db.collection("accountLinks").doc(user?.uid).update({
+        [acceptThisUserLinkID]: true,
+      });
+
+      // tell the "inviter" that their invitation was accepted from this specific user 
+      await db.collection("accountLinks").doc(acceptThisUserLinkID).update({
+        [userID]: true,
+      })
+    }
 
     return true;
   } catch(e) {
@@ -93,16 +100,25 @@ export const removeLink = async(removeThisUserLinkID: string) => {
   const user = firebase.auth().currentUser;
   const db = firebase.firestore();
 
+  let userID = user?.uid.toString();
+
   // Get the document by current user's ID
   // The pending link is the other user's ID within that doc 
-  try {
-    await db.collection("accountLinks").doc(user?.uid).update({
-      [removeThisUserLinkID]: firebase.firestore.FieldValue.delete(),
-    });
-
-    return true;
-  } catch(e) {
-    console.log(e.message);
-    throw Error(e.message);
+  if (userID) {
+    try {
+      await db.collection("accountLinks").doc(user?.uid).update({
+        [removeThisUserLinkID]: firebase.firestore.FieldValue.delete(),
+      });
+  
+      await db.collection("accountLinks").doc(removeThisUserLinkID).update({
+          [userID]: firebase.firestore.FieldValue.delete(),
+      });
+      return true;
+    } catch(e) {
+      console.log(e.message);
+      throw Error(e.message);
+    }
+  } else {
+    console.log("Problem with user ID");
   }
 }

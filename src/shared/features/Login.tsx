@@ -97,7 +97,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Log in to your existing account
         </Typography>
 
         {/* Begin form */}
@@ -171,19 +171,24 @@ const Login: React.FC<ILogin> = ({ history }) => {
 
         </form>
 
-        {/* 
         <hr />
-        <h2>Other sign-in methods</h2>
-        <button className="googleBtn" type="button" onClick={ () => handleGoogleLogin() }>
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-            alt="logo"
-          />
-          Log in With Google
-        </button>
-
-        */}
-
+        {/* Google sign in */}
+        <Grid container>
+        <Grid item xs>
+          <Button 
+            onClick={handleGoogleLogin} 
+            className="googleBtn" 
+            type="button"
+            variant="contained"
+          >
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+              alt="logo"
+            />
+            Log in with Google
+          </Button> 
+        </Grid>
+      </Grid>
 
       <span className="error">{error}</span>
     </div>
