@@ -11,6 +11,7 @@ import { RouteComponentProps, withRouter, Switch, useHistory } from "react-route
 import { Route } from "react-router-dom";
 import ProtectedRouteHoc from "ProtectedRouteHoc";
 import { User } from "shared/models/user.model";
+import PostDetails from "./shared/features/PostDetails";
 
 interface IRoutes {
   isLoggedIn: boolean;
@@ -39,6 +40,7 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
           <Route exact path="/login" component={Login} />
           <ProtectedRouteHoc exact path="/registerDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={RegisterDetails} />
           <ProtectedRouteHoc exact path="/posts" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostsView} />
+          <ProtectedRouteHoc exact path="/viewPost" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostDetails} />
           <ProtectedRouteHoc exact path="/settings" isLoggedIn={isLoggedIn} public={false} RouteComponent={SettingsView} />
           <ProtectedRouteHoc exact path="/addAccountLink" isLoggedIn={isLoggedIn} public={false} RouteComponent={AddAccountLink} />
         </Switch>
