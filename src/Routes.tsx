@@ -11,24 +11,36 @@ import AddAccountLink from './shared/features/AddAccountLink';
 import { RouteComponentProps, withRouter, Switch, useHistory } from "react-router";
 import { Route } from "react-router-dom";
 import ProtectedRouteHoc from "ProtectedRouteHoc";
+import { User } from "shared/models/user.model";
 
 interface IRoutes {
   isLoggedIn: boolean;
+  userData: User | undefined;
 }
 
 const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is a better alternative to "any"
-    const { isLoggedIn } = props;
+    const { isLoggedIn, userData } = props;
     const history = useHistory();
 
     const Auth = useContext(AuthContext);
 
     useEffect(() => {
+      //console.log(Auth);
+      console.log("userData: ", userData)
+      console.log("isLoggedIn: ", isLoggedIn)
       // this is what keeps you on PostsView by default, but it also has an unwanted
       // side-effect of making new users skip the role and display name steps of account creation
       if (isLoggedIn) {
-        history.push('/posts');
+        console.log("Logged in, user data is: ", userData);
+        if (userData?.role) {
+          history.push('/posts');
+        } else {
+          // else go to set role page
+          history.push('/registerDetails');
+        }
+
       }
-    }, [isLoggedIn]);
+    }, [isLoggedIn, userData]);
 
     return (
       <div>

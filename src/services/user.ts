@@ -166,8 +166,11 @@ export const authenticateFromStore = async () => {
   }
   
   firebase.auth().onAuthStateChanged(function(user) {
-    resolveAuthPromise();
-  
+    if (user) {
+      console.log(user);
+      resolveAuthPromise();
+    }
+
   });
 
   return isAuthenticated;

@@ -5,4 +5,4 @@ export interface Post {
   read: boolean,
   message: string,
   photoURL: string
-} 
+}

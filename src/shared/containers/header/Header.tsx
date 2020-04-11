@@ -6,6 +6,7 @@ import './Header.css';
 
 import { useHistory } from "react-router-dom";
 import { signUserOut } from "services/user";
+import * as firebase from 'firebase';
 
 interface IHeader {
   isLoggedIn: boolean;
@@ -18,6 +19,7 @@ const Header: React.FC<IHeader> = ({ isLoggedIn }) => {
 
   const handleSignOut = () => {
     signUserOut().then(function() {
+      
       Auth?.setLoggedIn(false);
       history.push('/');
     }).catch(function(error) {

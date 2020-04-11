@@ -9,26 +9,32 @@ import './App.css';
 import firebase from 'firebase/app';
 import firebaseConfig from './firebase.config';
 
+import { User } from 'shared/models/user.model';
+import { getUserSettings } from 'services/user';
+
 firebase.initializeApp(firebaseConfig);
 
 interface IAuthContext {
   isLoggedIn: boolean;
   setLoggedIn: any;
+  userData: User | undefined;
 }
 
 export const AuthContext = React.createContext<IAuthContext | null>(null);
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [userData, setUserData] = useState<User>();// call db and get stuff, put it in here 
 
-  const readSession = () => {
+  const readSession = async () => {
     const request = window.indexedDB.open("firebaseLocalStorageDb", 1);
-    request.onsuccess = function(event: any) {
+    request.onsuccess = async function(event: any) {
       // get database from event
       const db = event.target.result;
   
       // create transaction from database
       try {
+        console.log("trying to get from local storage");
         const transaction = db.transaction('firebaseLocalStorage', 'readwrite');
         const authStore = transaction.objectStore('firebaseLocalStorage')
         const authResult = authStore.getAll();
@@ -38,26 +44,33 @@ function App() {
             setLoggedIn(true);
           }
         }
+
         console.log(firebase.auth().currentUser?.getIdToken());
       } catch(e) {
         console.log(e);
       }
     }
+
+    // get user from db
+    await getUserSettings().then((settings:any) => {
+      console.log("Setting user data to: ", settings);
+      setUserData(settings);
+    });
   };
 
   useEffect(() => {
     readSession();
-  }, []); // whenever page loads, read session and see if we're logged in
+  }, [isLoggedIn])
 
 
   return (
     /* https://reactjs.org/docs/context.html */
-    <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, setLoggedIn }}>
+    <AuthContext.Provider value={{ isLoggedIn, setLoggedIn, userData }}>
 
     <div className="App">
       <Router>
         <Header isLoggedIn={isLoggedIn} />
-        <Routes isLoggedIn={isLoggedIn} />
+        <Routes userData={userData} isLoggedIn={isLoggedIn} />
       </Router>
     </div>
     </AuthContext.Provider>
