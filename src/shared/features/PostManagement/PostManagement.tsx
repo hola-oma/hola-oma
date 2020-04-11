@@ -42,7 +42,7 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
     <Container>
       <Container>
           {/* Todo: Make CreatePost page */}
-          <Link to={"/createPost"}>
+          <Link to={"/newPost"}>
             <Card>
                 <CardContent>
                     Make a new post
@@ -55,7 +55,7 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
           posts.map((post: Post, index: number) => {
             return (
               <div className={"postCard"}>
-                <Link to={"/viewPost"}>
+                <Link to={"/postDetails"}>
                 <Card className={classes.root} variant="outlined">
 
                   <CardHeader

@@ -8,6 +8,7 @@ import {Box } from '@material-ui/core';
 import { Post } from '../../shared/models/post.model';
 import { Link } from "react-router-dom";
 import GrandparentMsgView from "./GrandparentMsgView";
+import FamilyMsgView from "./FamilyMsgView/FamilyMsgView";
 
 const PostDetails: React.FC = () => {
 
@@ -27,7 +28,7 @@ const PostDetails: React.FC = () => {
 
     return (
         <>
-        {role === roles.poster && <div>Offer the option to make a post</div>}
+        {role === roles.poster && <FamilyMsgView/>}
         {role === roles.receiver && <GrandparentMsgView/>}
         </>
     )

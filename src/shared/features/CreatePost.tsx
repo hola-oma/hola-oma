@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import Inbox from "./Inbox/Inbox";
 import GrandparentReplyOpts from "./GrandparentReplyOpts";
 import GrandparentMsgView from "./GrandparentMsgView";
+import NewFamilyPost from "./NewFamilyPost/NewFamilyPost";
 
 const CreatePost: React.FC = () => {
 
@@ -31,7 +32,7 @@ const CreatePost: React.FC = () => {
         <>
             <h2>Create Post</h2>
             <>
-                {role === roles.poster && <div>Create a new post</div>}
+                {role === roles.poster && <NewFamilyPost/>}
                 {role === roles.receiver && <GrandparentReplyOpts/>}
             </>
         </>
