@@ -2,18 +2,20 @@ import React, { useState, useEffect } from 'react';
 
 import { roles } from '../../enums/enums';
 
-import { getUserSettings} from "services/user";
-import {Box } from '@material-ui/core';
+import { getUserSettings, getUserProfile } from "services/user";
+import {Box, Card, CardContent, CardHeader, Button} from '@material-ui/core';
 
 import { Post } from '../../shared/models/post.model';
 import { Link } from "react-router-dom";
+import Inbox from "./Inbox/Inbox";
+import GrandparentReplyOpts from "./GrandparentReplyOpts";
 import GrandparentMsgView from "./GrandparentMsgView";
 
-const PostDetails: React.FC = () => {
+const CreatePost: React.FC = () => {
 
     const [role, setRole] = useState("");
-    const [post] = useState<Post>();
-    const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects
+//     const [post] = useState<Post>();
+//     const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects
 
     useEffect(() => {
         getUserSettings()
@@ -27,10 +29,13 @@ const PostDetails: React.FC = () => {
 
     return (
         <>
-        {role === roles.poster && <div>Offer the option to make a post</div>}
-        {role === roles.receiver && <GrandparentMsgView/>}
+            <h2>Create Post</h2>
+            <>
+                {role === roles.poster && <div>Create a new post</div>}
+                {role === roles.receiver && <GrandparentReplyOpts/>}
+            </>
         </>
     )
 };
 
-export default PostDetails;
+export default CreatePost;
