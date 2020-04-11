@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from "react";
-import { AuthContext } from "./App";
+import React, { useEffect } from "react";
 
 import Login from "./shared/features/Login";
 import Register from "./shared/features/Register";
@@ -22,23 +21,13 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
     const { isLoggedIn, userData } = props;
     const history = useHistory();
 
-    const Auth = useContext(AuthContext);
-
     useEffect(() => {
-      //console.log(Auth);
-      console.log("userData: ", userData)
-      console.log("isLoggedIn: ", isLoggedIn)
-      // this is what keeps you on PostsView by default, but it also has an unwanted
-      // side-effect of making new users skip the role and display name steps of account creation
       if (isLoggedIn) {
-        console.log("Logged in, user data is: ", userData);
         if (userData?.role) {
           history.push('/posts');
         } else {
-          // else go to set role page
           history.push('/registerDetails');
         }
-
       }
     }, [isLoggedIn, userData]);
 

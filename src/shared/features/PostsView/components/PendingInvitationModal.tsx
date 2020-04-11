@@ -17,13 +17,6 @@ interface IPendingInvitationModal {
 // todo: pass "Posts" into this functional component
 const PendingInvitationModal: React.FC<IPendingInvitationModal> = ({ invite, isOpen, acceptInvite, declineInvite, onClose }) => {
 
-  const [open, setOpen] = React.useState(false);
-
-  const handleClose = () => {
-    console.log("closing modal");
-    setOpen(false);
-  };
-
   const useStyles = makeStyles((theme) => ({
     paper: {
         position: 'absolute',
@@ -45,7 +38,7 @@ const PendingInvitationModal: React.FC<IPendingInvitationModal> = ({ invite, isO
   return (
       <Modal
         open={isOpen}
-        onClose={handleClose}
+        onClose={onClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >

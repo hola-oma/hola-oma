@@ -21,7 +21,6 @@ import 'firebase/database'; // for additional user properties, like role
 
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
-import { roles } from '../../enums/enums';
 import { createNewUserWithEmailAndPassword, createNewUserWithGoogleCredentials } from "services/user";
 import BigInput from "shared/components/BigInput/BigInput";
 
@@ -34,8 +33,6 @@ const Register: React.FC<IRegister> = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setErrors] = useState("");
-
-  const [role, setRole] = useState(roles.receiver); // maybe make this an enum next time 
 
   const Auth = useContext(AuthContext);
 
@@ -55,7 +52,6 @@ const Register: React.FC<IRegister> = ({ history }) => {
       const userCreated = await createNewUserWithEmailAndPassword(email, password);
       
       if (userCreated) {
-        console.log("Created user, going to registerDetails: ", userCreated);
         Auth?.setLoggedIn(true);
         if (history) history.push('/registerDetails');
       }

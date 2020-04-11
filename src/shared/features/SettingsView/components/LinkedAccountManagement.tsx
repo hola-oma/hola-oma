@@ -75,11 +75,11 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
   const removeFriendFromDOM = (friend: AccountLink) => {
     if (friend.verified) {
       // removing a verified friend
-      const temp = linkedAccounts.filter(account => account.id != friend.id); // keep the links that don't have the removed-friend's ID 
+      const temp = linkedAccounts.filter(account => account.id !== friend.id); // keep the links that don't have the removed-friend's ID 
       setLinkedAccounts(temp);
     } else if (!friend.verified) {
       // removing a pending invite
-      const temp = pendingAccounts.filter(account => account.id != friend.id); // keep the remaining links
+      const temp = pendingAccounts.filter(account => account.id !== friend.id); // keep the remaining links
       setPendingAccounts(temp);
     }
   }

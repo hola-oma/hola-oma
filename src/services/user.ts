@@ -1,5 +1,4 @@
-import firebase from "firebase";
-import { resolve } from "dns";
+import * as firebase from "firebase/app";
 
 // NAMING CONVENTIONS - 
 // ** PROFILE = "built-in" params for Firebase auth profiles (displayName, email, password)
@@ -167,7 +166,6 @@ export const authenticateFromStore = async () => {
   
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      console.log(user);
       resolveAuthPromise();
     }
 

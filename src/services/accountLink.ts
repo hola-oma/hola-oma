@@ -1,4 +1,4 @@
-import firebase from "firebase";
+import * as firebase from "firebase/app";
 import { AccountLink } from "shared/models/accountLink.model";
 import { authenticateFromStore } from "./user";
 

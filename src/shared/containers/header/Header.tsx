@@ -6,7 +6,6 @@ import './Header.css';
 
 import { useHistory } from "react-router-dom";
 import { signUserOut } from "services/user";
-import * as firebase from 'firebase';
 
 interface IHeader {
   isLoggedIn: boolean;

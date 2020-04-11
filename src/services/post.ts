@@ -1,4 +1,4 @@
-import firebase from "firebase";
+import * as firebase from "firebase/app";
 import { Post } from '../shared/models/post.model';
 import { authenticateFromStore } from "./user";
 

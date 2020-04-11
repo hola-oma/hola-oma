@@ -47,19 +47,18 @@ const PostsView: React.FC = () => {
       });
   }, []); // fires on page load if this is empty [] 
 
-  // On page load, this calls getPosts() from the post service
   useEffect(() => {
     getPosts().then((docs:Post[]) => {
       setPosts(docs);
     })
   }, []);
 
-  // On page load, this calls getLinkedAccounts from the link service
   useEffect(() => {
     getLinkedAccounts()
       .then((links:AccountLink[]) => {
         const pendingInvitations = links.filter(link => link.verified === false);
         updatePendingInvitations(pendingInvitations);
+        setLinkedAccounts(links);
       });
   }, []);
 
@@ -67,7 +66,6 @@ const PostsView: React.FC = () => {
     if (invite) {
       const accepted = acceptLink(invite?.id);
       if (accepted) {
-        console.log("Accepted invite from user with ID:", invite?.id);
         let temp = pendingInvitations;
         temp.pop();
         updatePendingInvitations(pendingInvitations);

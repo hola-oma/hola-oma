@@ -34,7 +34,6 @@ function App() {
   
       // create transaction from database
       try {
-        console.log("trying to get from local storage");
         const transaction = db.transaction('firebaseLocalStorage', 'readwrite');
         const authStore = transaction.objectStore('firebaseLocalStorage')
         const authResult = authStore.getAll();
@@ -44,8 +43,6 @@ function App() {
             setLoggedIn(true);
           }
         }
-
-        console.log(firebase.auth().currentUser?.getIdToken());
       } catch(e) {
         console.log(e);
       }
@@ -53,7 +50,6 @@ function App() {
 
     // get user from db
     await getUserSettings().then((settings:any) => {
-      console.log("Setting user data to: ", settings);
       setUserData(settings);
     });
   };
