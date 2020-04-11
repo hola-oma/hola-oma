@@ -1,25 +1,42 @@
 import React, { useState } from 'react';
 
-import {Box} from '@material-ui/core';
+import { Box, TextField, Button } from '@material-ui/core';
 
 import './NewFamilyPost.css';
 
 const NewFamilyPost: React.FC = () => {
     const [selectedFile, onSelect] = useState<File | null>();
+    const [textValue, updateTextValue] = useState("");
+
+    const submitPost = async (e: any) => {
+        e.preventDefault();
+    
+        // To be implemented
+      };
 
     return (
         <>
+        <form noValidate onSubmit={e => submitPost(e)}>
         <Box>
-            <input type="file" onChange={(event) => onSelect(event.target.files ? event.target.files[0] : null)}></input>
+            <input
+                type="file"
+                onChange={(event) => onSelect(event.target.files ? event.target.files[0] : null)} />
         </Box>
-         <Box className="todo">
-            <h3>To do items:</h3>
-            <ul>
-                <li>Photo/Video file selection</li>
-                <li>Text field</li>
-                <li>Send post to database</li>
-            </ul>
-        </Box>
+        <TextField
+            multiline
+            fullWidth
+            margin="normal"
+            rows="10"
+            variant="outlined"
+            label="Type a Message"
+            value={textValue}
+            onChange={e => updateTextValue(e.target.value)}/>
+        <Button
+            type="submit"
+            variant="contained">
+            Send Post
+        </Button>
+        </form>
      </>
     )
 };
