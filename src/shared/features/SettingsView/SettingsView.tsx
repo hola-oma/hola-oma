@@ -1,34 +1,41 @@
 import React, { useState, useEffect } from 'react';
 
-import { roles } from '../../enums/enums';
+import { roles } from '../../../enums/enums';
 
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
-import { getUserSettings, updateUserSettings, getUserProfile, updateUserProfile } from '../../services/user';
+import { getUserSettings, updateUserSettings, getUserProfile, updateUserProfile } from '../../../services/user';
 
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import SettingsIcon from '@material-ui/icons/Settings';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Box } from '@material-ui/core';
+
+import BigInput from 'shared/components/BigInput/BigInput';
+import LinkedAccountManagement from './components/LinkedAccountManagement';
 
 interface ISettingsView extends RouteComponentProps<any>{
   // empty for now 
 }
 
 const SettingsView: React.FC<ISettingsView> = ({ history }) => {
-
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [userID, setUserID] = useState("");
 
   const [error, setErrors] = useState("");
+
+  const updateDisplayName = (e: any) => {
+    setDisplayName(e.target.value);
+  }
+
+  const updateEmail = (e: any) => {
+    setEmail(e.target.value);
+  }
 
   /* UPDATE ACCOUNT SETTINGS */
   const handleForm = async (e: any) => {
@@ -55,9 +62,9 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
 
     getUserProfile()
       .then((userProfile: any) => {
-        setDisplayName(userProfile.displayName);
-        setEmail(userProfile.email);
-        setUserID(userProfile.uid);
+        setDisplayName(userProfile?.displayName);
+        setEmail(userProfile?.email);
+        setUserID(userProfile?.uid);
       })
   }, []); // fires on page load if this is empty [] 
 
@@ -66,7 +73,8 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
       marginTop: theme.spacing(8),
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
+      alignItems: 'flex-start',
+      textAlign: 'left'
     },
     avatar: {
       margin: theme.spacing(1),
@@ -78,7 +86,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
     },
     submit: {
       margin: theme.spacing(3, 0, 2),
-    },
+    }
   }));
 
   const classes = useStyles();
@@ -87,48 +95,41 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <SettingsIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h4">
           Account settings
         </Typography>
 
         <p>Update your name, email address, and other settings here.</p>
 
         <form onSubmit={e => handleForm(e)}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} alignItems="flex-start">
             <Grid item xs={12}>
-              <TextField
-                autoComplete="dname"
+              <BigInput 
+                labelText="Display Name"
                 name="displayName"
-                variant="outlined"
-                required
-                fullWidth
-                id="displayName"
-                label="Display name"
-                autoFocus
+                required={true} 
                 value={displayName}
-                onChange={e => setDisplayName(e.target.value)}
-              />
+                autoFocus={true}
+                autoComplete="none"
+                type="text"
+                onChange={updateDisplayName}/>
             </Grid>
 
             <Grid item xs={12}>
-              <TextField
+              <BigInput 
+                labelText="E-mail address"
                 name="email"
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email address"
-                value={email? email: ''}
-                onChange={e => setEmail(e.target.value)}
-              />
+                required={true} 
+                value={email}
+                autoFocus={false}
+                autoComplete="none"
+                type="text"
+                onChange={updateEmail}/>
             </Grid>
 
             <Grid item xs={12}>
             <Typography component="h2" variant="h5">
-              Role [be careful changing this!]
+              Account type
             </Typography>
 
               <label>
@@ -167,16 +168,22 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
           </Button>
       
         </form>
+        <span className="error">{error}</span>
       </div>
+
+      <LinkedAccountManagement role={role} />
 
       <Box className="todo">
       <h3>To do items:</h3>
       <ul>
-        <li>This page looks too much like the log in/register page, I always think I accidentally logged out when I visit</li>
-        <li>Make role buttons BIG BUTTONS</li>
+        <li>Make this page look less like the login/register pages</li>
+        <li>Change role should have a confirmation of some sort</li>
+        <li>Fade out removed invites/deleted friends</li>
+        <li>[Stretch goal] Friend profile pics?</li>
       </ul>
       <b>Debug</b>
       <p>User ID: {userID}</p>
+
     </Box>
 
     </Container>

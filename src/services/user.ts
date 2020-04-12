@@ -1,10 +1,11 @@
-import firebase from "firebase";
+import * as firebase from "firebase/app";
 
 // NAMING CONVENTIONS - 
 // ** PROFILE = "built-in" params for Firebase auth profiles (displayName, email, password)
 // ** SETTINGS = our custom user-settings table (role)
 
 export const getUserProfile = async () => {
+  await authenticateFromStore();
   const user = firebase.auth().currentUser;
   return user;
 }
@@ -20,7 +21,6 @@ export const updateUserProfile = async (displayName: string, email: string) => {
         displayName: displayName
       });
 
-      console.log("updating email to: ", email);
       await user.updateEmail(email);
     }
 
@@ -34,6 +34,7 @@ export const updateUserProfile = async (displayName: string, email: string) => {
 
 // Retrieves user settings from our users db
 export const getUserSettings = async () => {
+  await authenticateFromStore();
   var user = firebase.auth().currentUser;
   const db = firebase.firestore();
 
@@ -140,7 +141,7 @@ export const createUserSettings = async (userID: string, role: string) => {
 
   try {
     await db.collection("users").doc(userID).set({
-      role: role,
+      role: role
     });
 
     return true;
@@ -149,4 +150,26 @@ export const createUserSettings = async (userID: string, role: string) => {
     console.log(e.message);
     throw Error(e.message);
   }
+}
+
+export const authenticateFromStore = async () => {
+  const user = firebase.auth().currentUser;
+  let resolveAuthPromise = () => {};
+
+  const isAuthenticated = new Promise(resolve => {
+    resolveAuthPromise = resolve;
+  });
+
+  if (user) {
+    resolveAuthPromise();
+  }
+  
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      resolveAuthPromise();
+    }
+
+  });
+
+  return isAuthenticated;
 }

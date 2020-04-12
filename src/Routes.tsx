@@ -1,22 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
+
 import Login from "./shared/features/Login";
 import Register from "./shared/features/Register";
 import RegisterDetails from './shared/features/RegisterDetails'
-import PostsView from './shared/features/PostsView';
-import SettingsView from './shared/features/SettingsView';
-import { RouteComponentProps, withRouter, Switch } from "react-router";
+import PostsView from './shared/features/PostsView/PostsView';
+import SettingsView from './shared/features/SettingsView/SettingsView';
+import AddAccountLink from './shared/features/AddAccountLink';
+
+import { RouteComponentProps, withRouter, Switch, useHistory } from "react-router";
 import { Route } from "react-router-dom";
 import ProtectedRouteHoc from "ProtectedRouteHoc";
+import { User } from "shared/models/user.model";
 import PostDetails from "./shared/features/PostDetails";
 import CreatePost from "./shared/features/CreatePost";
 
 interface IRoutes {
   isLoggedIn: boolean;
+  userData: User | undefined;
 }
 
-class Routes extends React.Component<RouteComponentProps & IRoutes, {}> {   // {} is a better alternative to "any"
-  render() {
-    const { isLoggedIn } = this.props;
+const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is a better alternative to "any"
+    const { isLoggedIn, userData } = props;
+    const history = useHistory();
+
+    useEffect(() => {
+      if (isLoggedIn) {
+        if (userData?.role) {
+          history.push('/posts');
+        } else {
+          history.push('/registerDetails');
+        }
+      }
+    }, [isLoggedIn, userData]);
 
     return (
       <div>
@@ -29,11 +44,10 @@ class Routes extends React.Component<RouteComponentProps & IRoutes, {}> {   // {
           <ProtectedRouteHoc exact path="/postDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostDetails} />
           <ProtectedRouteHoc exact path="/newPost" isLoggedIn={isLoggedIn} public={false} RouteComponent={CreatePost} />
           <ProtectedRouteHoc exact path="/settings" isLoggedIn={isLoggedIn} public={false} RouteComponent={SettingsView} />
+          <ProtectedRouteHoc exact path="/addAccountLink" isLoggedIn={isLoggedIn} public={false} RouteComponent={AddAccountLink} />
         </Switch>
       </div>
     );
-  }
-}
+  };
 
 export default withRouter(Routes);
-

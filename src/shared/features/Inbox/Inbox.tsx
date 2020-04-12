@@ -47,7 +47,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
         {
           posts.map((post: Post, index: number) => {
             return (
-              <div className={"inboxCard"}>
+              <div className={"inboxCard"} key={index}>
                 <Link to={"/postDetails"}>
                 <Card className={classes.root} variant="outlined">
 
