@@ -8,7 +8,6 @@ import { signUserInWithEmailAndPassword, signUserInWithGoogle } from "services/u
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -17,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from "shared/components/Copyright";
+import BigInput from "shared/components/BigInput/BigInput";
 
 interface ILogin extends RouteComponentProps<any> {
   // this was different from the tutorial, got typescript help from: 
@@ -30,6 +30,14 @@ const Login: React.FC<ILogin> = ({ history }) => {
 
   const Auth = useContext(AuthContext);
 
+  const updateEmail = (e: any) => {
+    setEmail(e.target.value);
+  }
+
+  const updatePassword = (e: any) => {
+    setPassword(e.target.value);
+  }
+
     /* EMAIL/PASS LOGIN, must exist in database */
   const handleEmailAndPasswordLogin = async (e: any) => {
     e.preventDefault();
@@ -42,7 +50,6 @@ const Login: React.FC<ILogin> = ({ history }) => {
       setErrors(e.message);
     }
   };
-
 
   const handleGoogleLogin = async () => {
     try {
@@ -88,41 +95,40 @@ const Login: React.FC<ILogin> = ({ history }) => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Log in to your existing account
         </Typography>
 
         {/* Begin form */}
         <form className={classes.form} noValidate onSubmit={e => handleEmailAndPasswordLogin(e)}>
 
-          {/* Email address */}
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
+          <Grid container spacing={2}>
 
-          {/* Password */ }
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
+            {/* Email address */}
+            <Grid item xs={12}>
+              <BigInput 
+                  labelText="E-mail Address"
+                  name="email"
+                  required={true} 
+                  value={email}
+                  autoFocus={true}
+                  autoComplete="current-email"
+                  type="text"
+                  onChange={updateEmail}/>
+            </Grid>
+
+            {/* Password */ }
+            <Grid item xs={12}>
+              <BigInput 
+                  labelText="Password"
+                  name="password"
+                  required={true} 
+                  value={password}
+                  autoFocus={false}
+                  autoComplete="current-password"
+                  type="password"
+                  onChange={updatePassword}/>
+            </Grid>
+          </Grid>
 
           {/* Sign in button */}
           <Button
@@ -163,19 +169,24 @@ const Login: React.FC<ILogin> = ({ history }) => {
 
         </form>
 
-        {/* 
         <hr />
-        <h2>Other sign-in methods</h2>
-        <button className="googleBtn" type="button" onClick={ () => handleGoogleLogin() }>
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-            alt="logo"
-          />
-          Log in With Google
-        </button>
-
-        */}
-
+        {/* Google sign in */}
+        <Grid container>
+        <Grid item xs>
+          <Button 
+            onClick={handleGoogleLogin} 
+            className="googleBtn" 
+            type="button"
+            variant="contained"
+          >
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+              alt="logo"
+            />
+            Log in with Google
+          </Button> 
+        </Grid>
+      </Grid>
 
       <span className="error">{error}</span>
     </div>

@@ -1,7 +1,9 @@
-import firebase from "firebase";
+import * as firebase from "firebase/app";
 import { Post } from '../shared/models/post.model';
+import { authenticateFromStore } from "./user";
 
 export const getPosts = async (): Promise<Post[]> => {
+  await authenticateFromStore();
   const user = firebase.auth().currentUser;
   const db = firebase.firestore();
 

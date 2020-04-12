@@ -2,11 +2,11 @@ import React, { useState, useContext } from "react";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
+
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import PersonIcon from '@material-ui/icons/Person';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -21,8 +21,8 @@ import 'firebase/database'; // for additional user properties, like role
 
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
-import { roles } from '../../enums/enums';
 import { createNewUserWithEmailAndPassword, createNewUserWithGoogleCredentials } from "services/user";
+import BigInput from "shared/components/BigInput/BigInput";
 
 interface IRegister extends RouteComponentProps<any> {
   // empty for now 
@@ -30,14 +30,20 @@ interface IRegister extends RouteComponentProps<any> {
 }
 
 const Register: React.FC<IRegister> = ({ history }) => {
-  const [displayName, setDisplayName] = useState("");
+  // const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setErrors] = useState("");
 
-  const [role, setRole] = useState(roles.receiver); // maybe make this an enum next time 
-
   const Auth = useContext(AuthContext);
+
+  const updateEmail = (e: any) => {
+    setEmail(e.target.value);
+  }
+
+  const updatePassword = (e: any) => {
+    setPassword(e.target.value);
+  }
 
   /* EMAIL & PASSWORD ACCOUNT CREATION */
   const handleForm = async (e: any) => {
@@ -47,7 +53,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
       const userCreated = await createNewUserWithEmailAndPassword(email, password);
       
       if (userCreated) {
-        Auth?.setLoggedIn(true); 
+        Auth?.setLoggedIn(true);
         if (history) history.push('/registerDetails');
       }
     } catch(e) {
@@ -60,6 +66,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
     try {
       const userCreated = await createNewUserWithGoogleCredentials();
       if (userCreated) {
+        console.log("Created user, going to registerDetails: ", userCreated);
         Auth?.setLoggedIn(true);
         if (history) history.push('/registerDetails');
       } 
@@ -95,7 +102,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
+          <PersonIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Register a new account
@@ -104,7 +111,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
 
         <Grid container justify="center">
           <Grid item>
-            <Link href="#" variant="body2">
+            <Link href="/login" variant="body2">
               Already have an account? Log in instead
             </Link>
           </Grid>
@@ -116,35 +123,32 @@ const Register: React.FC<IRegister> = ({ history }) => {
           
             {/* Email address */}
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
+              <BigInput 
+                labelText="E-Mail Address"
                 name="email"
-                autoComplete="email"
+                required={true} 
                 value={email}
-                onChange={e => setEmail(e.target.value)}
-              />
+                autoFocus={true}
+                autoComplete="off"
+                type="text"
+                onChange={updateEmail}/>
+
             </Grid>
 
             {/* Password */ }
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-              />
+            <BigInput 
+              labelText="Password"
+              name="password"
+              required={true} 
+              value={password}
+              autoFocus={false}
+              autoComplete="off"
+              type="password"
+              onChange={updatePassword}/>
             </Grid>
 
+            {/* 
             <Grid item xs={12}>
             <label>
               <input
@@ -169,7 +173,10 @@ const Register: React.FC<IRegister> = ({ history }) => {
                 I want to <b>make</b> posts
               </label>
             </Grid>
+              */}
+
           </Grid>
+
 
           <Button 
             type="submit"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {Container, Grid, Card, CardHeader, CardContent, Box} from '@material-ui/core';
@@ -47,7 +47,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
         {
           posts.map((post: Post, index: number) => {
             return (
-              <div className={"inboxCard"}>
+              <div className={"inboxCard"} key={index}>
                 <Link to={"/postDetails"}>
                 <Card className={classes.root} variant="outlined">
 
