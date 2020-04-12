@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { roles } from '../../enums/enums';
+import React from 'react';
+// import { roles } from '../../enums/enums';
 
-import { getUserSettings, getUserProfile } from "services/user";
-import {Box, Card, CardContent, CardHeader, Button} from '@material-ui/core';
+// import { getUserSettings, getUserProfile } from "services/user";
+import {Box, Card, CardContent, Button} from '@material-ui/core';
 
-import { Post } from '../../shared/models/post.model';
+// import { Post } from '../../shared/models/post.model';
 import { Link } from "react-router-dom";
 
 const GrandparentMsgView: React.FC = () => {
