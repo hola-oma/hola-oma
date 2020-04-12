@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Container, Grid, Card, CardHeader, CardContent, Typography, Box } from '@material-ui/core';
+import { Container, Grid, Card, CardHeader, CardContent, Typography } from '@material-ui/core';
 import Alarm from '@material-ui/icons/Alarm';
 import { Link } from 'react-router-dom';
 
@@ -54,7 +54,7 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
         {
           posts.map((post: Post, index: number) => {
             return (
-              <div className={"postCard"}>
+              <div className={"postCard"} key={index}>
                 <Link to={"/postDetails"}>
                 <Card className={classes.root} variant="outlined">
 
