@@ -68,7 +68,7 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
                             <Typography variant="subtitle2">
                                 Sent message
                                 <br/>
-                                {post.timestamp}
+                                {post.date}
                             </Typography>
                         </Grid>
                         <Grid item xs={6}>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, TextField, Button } from '@material-ui/core';
+import { createPost } from "services/post";
 
 import './NewFamilyPost.css';
 
@@ -11,8 +12,18 @@ const NewFamilyPost: React.FC = () => {
     const submitPost = async (e: any) => {
         e.preventDefault();
     
-        // To be implemented
+        try {
+            const postSent = await createPost(mockPost);
+            if (postSent) {
+                console.log("success sending post!");
+            }
+          } catch(e) {
+            console.error(e.message);
+          }
       };
+
+    let mockPost =
+    {creatorID: "APFeMtfQFUacmEAk5pDD1TuMNHn2", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false, date: new Date().getTime(), receiverIDs: ["xyz789"]};
 
     return (
         <>

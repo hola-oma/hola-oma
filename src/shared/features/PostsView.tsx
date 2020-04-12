@@ -37,11 +37,11 @@ const PostsView: React.FC = () => {
     }, []);
 
   let mockPosts = [
-    {id: "xyz456", creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false, timestamp: "Wednesday, 4/1/20, 3:12pm"},
-    {id: "xyz457", creatorID: "123abc", from: "Elizabeth H.", message: "Thinking of you", photoURL: "", read: false, timestamp: "Wednesday, 4/1/20, 3:45pm"},
-    {id: "xyz458", creatorID: "123abc", from: "Jacqueline Quentin", message: "Funny thing Jackie did at dinnertime", photoURL: "", read: false, timestamp: "Wednesday, 4/1/20, 3:12pm"},
-    {id: "xyz459", creatorID: "123abc", from: "Ashley, Mary, and Johnny's Mom", message: "Pic from the zoo", photoURL: "", read: false, timestamp: "Wednesday, 4/1/20, 3:12pm"},
-    {id: "xyz460", creatorID: "123abc", from: "The Smiths", message: "One more pic from the water park", photoURL: "", read: false, timestamp: "Wednesday, 4/1/20, 3:12pm"},
+    {creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false, date: 12045710394870, receiverIDs: ["xyz789"]},
+    {creatorID: "123abc", from: "Elizabeth H.", message: "Thinking of you", photoURL: "", read: false, date: 12045710394870, receiverIDs: ["xyz789"]},
+    {creatorID: "123abc", from: "Jacqueline Quentin", message: "Funny thing Jackie did at dinnertime", photoURL: "", read: false, date: 12045710394870, receiverIDs: ["xyz789"]},
+    {creatorID: "123abc", from: "Ashley, Mary, and Johnny's Mom", message: "Pic from the zoo", photoURL: "", read: false, date: 12045710394870, receiverIDs: ["xyz789"]},
+    {creatorID: "123abc", from: "The Smiths", message: "One more pic from the water park", photoURL: "", read: false, date: 12045710394870, receiverIDs: ["xyz789"]},
   ];
 
     return (
