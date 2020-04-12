@@ -1,15 +1,16 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Container, Grid, Card, CardHeader, CardContent } from '@material-ui/core';
+import {Container, Grid, Card, CardHeader, CardContent, Box} from '@material-ui/core';
 import MailIcon from '@material-ui/icons/Mail';
 import DraftsIcon from '@material-ui/icons/Drafts';
-import { Link } from 'react-router-dom';
 
+import { Link } from 'react-router-dom';
 import { Post } from 'shared/models/post.model';
 
 import './Inbox.css';
 
+// todo: question: why here versus Inbox.css ?
 const useStyles = makeStyles({
   root: {
     minWidth: 250,
@@ -45,10 +46,9 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
         {/* Todo: loop through passed-in posts to build inbox item for each one */}
         {
           posts.map((post: Post, index: number) => {
-            // @ts-ignore
             return (
               <div className={"inboxCard"} key={index}>
-                <Link to={"/viewPost"}>
+                <Link to={"/postDetails"}>
                 <Card className={classes.root} variant="outlined">
 
                   {/* Doesn't have to be a card, just something I put in to get it started */}
@@ -60,15 +60,26 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                     {post.read? <DraftsIcon className="icon"/> : <MailIcon className="icon"/>}
                   </CardContent>
                 </Card>
+                </Link>
 
-              </Link>
+
               </div>
             )
           })
         }
       </Grid>
+
+      <Box className="todo">
+        <h3>To do items:</h3>
+        <ul>
+          <li>Make the envelope cards clickable, clicking one goes to a page to view it</li>
+          <li>Add a service for getting post data from database</li>
+          <li>If no account is linked, remind the user to link with another user</li>
+          <li>Shrink font or truncate sender's name when sender's names are so long they distort the length of the card</li>
+        </ul>
+      </Box>
     </Container>
   )
-}
+};
 
 export default Inbox;
