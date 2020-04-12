@@ -38,6 +38,11 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
 
   const classes = useStyles();
 
+  const getDateAsString = function(postDate: number) {
+    let date = new Date(postDate).toString()
+    return date.substring(0, 15);
+  }
+
   return (
     <Container>
       <Container>
@@ -68,7 +73,7 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
                             <Typography variant="subtitle2">
                                 Sent message
                                 <br/>
-                                {post.date}
+                                {getDateAsString(post.date)}
                             </Typography>
                         </Grid>
                         <Grid item xs={6}>

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { roles } from '../../enums/enums';
 import { getUserSettings} from "services/user";
 
-import { Post } from '../../shared/models/post.model';
+// import { Post } from '../../shared/models/post.model';
 import GrandparentMsgView from "./GrandparentMsgView";
 import FamilyMsgView from "./FamilyMsgView/FamilyMsgView";
 
