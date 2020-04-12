@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Box, TextField, Button } from '@material-ui/core';
 import { createPost } from "services/post";
+import { getUserProfile } from "services/user";
 
 import './NewFamilyPost.css';
 
 const NewFamilyPost: React.FC = () => {
     const [selectedFile, onSelect] = useState<File | null>();
     const [textValue, updateTextValue] = useState("");
+    const [displayName, setDisplayName] = useState("");
+    const [userId, setUserId] = useState("");
 
     const submitPost = async (e: any) => {
         e.preventDefault();
@@ -22,8 +25,17 @@ const NewFamilyPost: React.FC = () => {
           }
       };
 
+    useEffect(() => {
+        getUserProfile()
+        .then((userProfile:any) => {
+            console.log(userProfile);
+            setDisplayName(userProfile.displayName);
+            setUserId(userProfile?.uid);
+        });
+    }, []); // fires on page load if this is empty [] 
+
     let mockPost =
-    {creatorID: "APFeMtfQFUacmEAk5pDD1TuMNHn2", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false, date: new Date().getTime(), receiverIDs: ["xyz789"]};
+    {creatorID: userId, from: displayName, message: textValue, photoURL: "", read: false, date: new Date().getTime(), receiverIDs: ["xyz789"]};
 
     return (
         <>
