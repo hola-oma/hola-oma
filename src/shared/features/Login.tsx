@@ -51,7 +51,6 @@ const Login: React.FC<ILogin> = ({ history }) => {
     }
   };
 
-/*
   const handleGoogleLogin = async () => {
     try {
       const loggedInUser = await signUserInWithGoogle();
@@ -60,7 +59,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
     } catch(e) {
       setErrors(e.message);
     }
-*/
+  }
 
   const useStyles = makeStyles((theme) => ({
     paper: {
