@@ -47,11 +47,10 @@ const PostsView: React.FC = () => {
       });
   }, []); // fires on page load if this is empty [] 
 
-  // todo: pass actual role
   useEffect(() => {
-    getPosts(roles.receiver).then((docs:Post[]) => {
+    let typedRole: roles = roles[role as keyof typeof roles];     // https://stackoverflow.com/questions/17380845/how-do-i-convert-a-string-to-enum-in-typescript
+    getPosts(typedRole).then((docs:Post[]) => {
       setPosts(docs);
-      console.log(posts);
     })
   }, []);
 
@@ -87,14 +86,6 @@ const PostsView: React.FC = () => {
   const handleInvitationModalClose = () => {
     setInvitationModalOpen(false);
   }
-
-  let mockPosts = [
-    {id: "xyz456", creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false},
-    {id: "xyz457", creatorID: "123abc", from: "Elizabeth H.", message: "Thinking of you", photoURL: "", read: false},
-    {id: "xyz458", creatorID: "123abc", from: "Jacqueline Quentin", message: "Funny thing Jackie did at dinnertime", photoURL: "", read: false},
-    {id: "xyz459", creatorID: "123abc", from: "Ashley, Mary, and Johnny's Mom", message: "Pic from the zoo", photoURL: "", read: false},
-    {id: "xyz460", creatorID: "123abc", from: "The Smiths", message: "One more pic from the water park", photoURL: "", read: false},
-  ]
 
   return (
     <>

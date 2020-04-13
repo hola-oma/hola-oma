@@ -13,7 +13,7 @@ interface IPostDetails {
 const PostDetails: React.FC<IPostDetails> = ({ currentPost }) => {
 
     const [role, setRole] = useState("");
-    const [post] = useState<Post>();
+    // const [post] = useState<Post>();
 
     useEffect(() => {
         getUserSettings()

@@ -4,7 +4,6 @@ import * as firebase from "firebase/app";
 import {Post} from '../shared/models/post.model';
 import {authenticateFromStore} from "./user";
 import {roles} from "../enums/enums";
-import FieldPath from "firebase/firestore";
 
 export const getPosts = async (role: roles): Promise<Post[]> => {
   await authenticateFromStore();
@@ -17,7 +16,7 @@ export const getPosts = async (role: roles): Promise<Post[]> => {
   console.log("user id: " + userId);
 
   // Set query options based on whether user is a poster or a receiver
-  let queryOptions = [ [<string>"receiverIDs", "array-contains"], ["users", "=="] ];
+  let queryOptions = [ ["receiverIDs" as string, "array-contains"], ["users", "=="] ];
   let queryWhere = queryOptions[0];     // for receiver
   if (role === roles.poster) {          // else if poster
     queryWhere = queryOptions[1];
@@ -25,8 +24,8 @@ export const getPosts = async (role: roles): Promise<Post[]> => {
 
   // Get posts
   await db.collection("posts")
-    .where(<string>queryWhere[0],                 // FieldPath
-      <"==" | "array-contains-any">queryWhere[1], // string Opt
+    .where(queryWhere[0] as string,                 // FieldPath
+      queryWhere[1] as "==" | "array-contains-any",   // opStr
       userId).get()
     .then((snapshot) => {
       if (snapshot.empty) {
