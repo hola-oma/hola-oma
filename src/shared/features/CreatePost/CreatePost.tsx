@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
-import { roles } from '../../enums/enums';
+import { roles } from '../../../enums/enums';
 import { getUserSettings } from "services/user";
 
-// import { Post } from '../../shared/models/post.model';
+// import { Post } from '../../shared/models/currentPost.model';
 import GrandparentReplyOptions from "./GrandparentReplyOpts";
 
 const CreatePost: React.FC = () => {
 
     const [role, setRole] = useState("");
-    // const [post] = useState<Post>();
+    // const [currentPost] = useState<Post>();
     // const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects
 
     useEffect(() => {
@@ -19,7 +19,7 @@ const CreatePost: React.FC = () => {
             });
     }, []); // fires on page load if this is empty []
 
-    // TODO: Get clicked-on post
+    // TODO: Get clicked-on currentPost
     // let mockPost = {id: "xyz456", creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false};
 
     return (

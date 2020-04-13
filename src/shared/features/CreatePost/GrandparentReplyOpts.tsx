@@ -4,16 +4,16 @@ import React  from 'react';
 // import { getUserSettings, getUserProfile } from "services/user";
 import {Box, Card, CardContent, Button} from '@material-ui/core';
 
-// import { Post } from '../../shared/models/post.model';
+// import { Post } from '../../shared/models/currentPost.model';
 // import { Link } from "react-router-dom";
 
 const GrandparentReplyOpts: React.FC = () => {
 
     // const [role, setRole] = useState("");
-    // const [post] = useState<Post>();
+    // const [currentPost] = useState<Post>();
     // const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects
 
-    // TODO: Get clicked-on post
+    // TODO: Get clicked-on currentPost
     let mockPost = {id: "xyz456", creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false};
     // let replyOpt = "";
 

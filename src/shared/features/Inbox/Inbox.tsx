@@ -35,7 +35,6 @@ interface IInbox {
   posts: Array<Post>; // array of type "Post"
 }
 
-// todo: pass "Posts" into this functional component
 const Inbox: React.FC<IInbox> = ({ posts }) => {
 
   const classes = useStyles();
@@ -50,19 +49,14 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
               <div className={"inboxCard"} key={index}>
                 <Link to={"/postDetails"}>
                 <Card className={classes.root} variant="outlined">
-
-                  {/* Doesn't have to be a card, just something I put in to get it started */}
                   <CardHeader
                       title={post.from}>
                   </CardHeader>
-
                   <CardContent>
                     {post.read? <DraftsIcon className="icon"/> : <MailIcon className="icon"/>}
                   </CardContent>
                 </Card>
                 </Link>
-
-
               </div>
             )
           })

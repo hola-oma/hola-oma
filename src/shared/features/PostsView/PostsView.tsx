@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 
-import { roles } from '../../../enums/enums';
+import {roles} from '../../../enums/enums';
 
-import { getUserSettings, getUserProfile } from "services/user";
+import {getUserProfile, getUserSettings} from "services/user";
 import Inbox from '../Inbox/Inbox';
-import { Box, Link as ButtonLink} from '@material-ui/core';
-import { getPosts } from 'services/post';
+import {Link as ButtonLink} from '@material-ui/core';
+import {getPosts} from 'services/post';
 
-import { Post } from '../../models/post.model';
+import {Post} from '../../models/post.model';
 
-import { getLinkedAccounts, acceptLink } from 'services/accountLink';
-import { Link } from 'react-router-dom';
-import { AccountLink } from 'shared/models/accountLink.model';
+import {acceptLink, getLinkedAccounts} from 'services/accountLink';
+import {Link} from 'react-router-dom';
+import {AccountLink} from 'shared/models/accountLink.model';
 
 import PendingInvitationModal from './components/PendingInvitationModal';
 
@@ -37,9 +37,9 @@ const PostsView: React.FC = () => {
 
   useEffect(() => {
     getUserProfile()
-      .then((userProfile:any) => {
+      .then((userProfile: any) => {
         setDisplayName(userProfile.displayName);
-      });
+      })
 
     getUserSettings()
       .then((doc:any) => {
@@ -47,9 +47,11 @@ const PostsView: React.FC = () => {
       });
   }, []); // fires on page load if this is empty [] 
 
+  // todo: pass actual role
   useEffect(() => {
-    getPosts().then((docs:Post[]) => {
+    getPosts(roles.receiver).then((docs:Post[]) => {
       setPosts(docs);
+      console.log(posts);
     })
   }, []);
 
@@ -138,18 +140,8 @@ const PostsView: React.FC = () => {
     {role === roles.poster && 
       <p>Show list of posts here</p>
     }
+    {role === roles.receiver && <Inbox posts={posts}/>}
 
-    {role === roles.receiver && <Inbox posts={mockPosts}/>}
-
-    <Box className="todo">
-      <h3>To do items:</h3>
-      <ul>
-        <li>Make the envelope cards clickable, clicking one goes to a page to view it</li>
-        <li>Add a service for getting post data from database</li>
-        <li>If no account is linked, remind the user to link with another user</li>
-        <li>Shrink font or truncate sender's name when sender's names are so long they distort the length of the card</li>
-      </ul>
-    </Box>
     </>
   )
 }

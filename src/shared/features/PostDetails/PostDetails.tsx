@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
-import { roles } from '../../enums/enums';
+import { roles } from '../../../enums/enums';
 import { getUserSettings} from "services/user";
 
-import { Post } from '../../shared/models/post.model';
+import { Post } from '../../models/post.model';
 import GrandparentMsgView from "./GrandparentMsgView";
 
-const PostDetails: React.FC = () => {
+interface IPostDetails {
+    currentPost: Post;
+}
+
+const PostDetails: React.FC<IPostDetails> = ({ currentPost }) => {
 
     const [role, setRole] = useState("");
-    // const [post] = useState<Post>();
+    const [post] = useState<Post>();
 
     useEffect(() => {
         getUserSettings()
@@ -17,9 +21,6 @@ const PostDetails: React.FC = () => {
                 setRole(doc?.role);
             });
     }, []); // fires on page load if this is empty []
-
-    // TODO: Get clicked-on post
-    // let mockPost = {id: "xyz456", creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false};
 
     return (
         <>

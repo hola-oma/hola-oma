@@ -11,8 +11,8 @@ import { RouteComponentProps, withRouter, Switch, useHistory } from "react-route
 import { Route } from "react-router-dom";
 import ProtectedRouteHoc from "ProtectedRouteHoc";
 import { User } from "shared/models/user.model";
-import PostDetails from "./shared/features/PostDetails";
-import CreatePost from "./shared/features/CreatePost";
+import PostDetails from "./shared/features/PostDetails/PostDetails";
+import CreatePost from "./shared/features/CreatePost/CreatePost";
 
 interface IRoutes {
   isLoggedIn: boolean;
