@@ -58,7 +58,7 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history }) => {
     e.preventDefault();
 
     try {
-      const userCreated = await createUserSettings(userID, role);
+      const userCreated = await createUserSettings(userID, role, displayName, email);
       const profileUpdated = await updateUserProfile(displayName, email);
       
       if (userCreated && profileUpdated) {

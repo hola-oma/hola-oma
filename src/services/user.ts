@@ -136,12 +136,14 @@ export const createNewUserWithGoogleCredentials = async () => {
 // To store settings like "role", we must create a user entry in a separate "users" database.
 
 // Note: displayName is stored on the userProfile, role is stored in our separate "users" db
-export const createUserSettings = async (userID: string, role: string) => {
+export const createUserSettings = async (userID: string, role: string, displayName: string, email: string) => {
   const db = firebase.firestore();
 
   try {
     await db.collection("users").doc(userID).set({
-      role: role
+      role: role,
+      displayName: displayName,
+      email: email
     });
 
     return true;

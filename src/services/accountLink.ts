@@ -1,4 +1,5 @@
 import * as firebase from "firebase/app";
+
 import { AccountLink } from "shared/models/accountLink.model";
 import { authenticateFromStore } from "./user";
 
@@ -66,6 +67,29 @@ export const createLinkByID = async(otherUserID: string) => {
     console.log(e.message);
     throw Error(e.message);
   }
+}
+
+// Retrieves user settings from our users db
+export const getUserSettings = async () => {
+  await authenticateFromStore();
+  var user = firebase.auth().currentUser;
+  const db = firebase.firestore();
+
+  const userdoc = await db.collection("users").doc(user?.uid).get();
+  return userdoc.data();
+}
+
+export const createLinkByEmail = async(otherUserEmail: string) => {
+  await authenticateFromStore();
+  var user = firebase.auth().currentUser;
+  const db = firebase.firestore();
+
+  // doc for user with the ID that matches otherUsersEmail
+  const userdoc = await db.collection("users").doc(otherUserEmail).get();
+  console.log(userdoc);
+
+  return true;
+  
 }
 
 export const acceptLink = async(acceptThisUserLinkID: string) => {

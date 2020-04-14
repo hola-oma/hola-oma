@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom'; // give us 'history' obj
 
 import { Container, Grid, TextField, Button, Box } from '@material-ui/core';
 
-import { createLinkByID } from 'services/accountLink';
+import { createLinkByID, createLinkByEmail } from 'services/accountLink';
 
 interface IAddAccountLink extends RouteComponentProps {
   // empty for now, just need this for the "extends RouteComponentProps" part 
@@ -11,7 +11,25 @@ interface IAddAccountLink extends RouteComponentProps {
 
 const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
   const [accountID, setAccountID] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
+
   const [error, setErrors] = useState("");
+
+  const handleEmailForm = async (e: any) => {
+    e.preventDefault();
+
+    try {
+      let linkCreated = await createLinkByEmail(emailAddress);
+
+      if (linkCreated) {
+        console.log("invite successfully sent to: ", emailAddress);
+        if (history) history.push('/posts');
+      }
+
+    } catch(e) {
+      setErrors(e.message);
+    }
+  }
 
   const handleForm = async (e: any) => {
     e.preventDefault();
@@ -36,7 +54,7 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
         <p>Ask your family member to enter this pass phrase to link your accounts.</p>
       </Box>
 
-      <p>Alternatively, link to them by entering their ACCOUNT ID below:</p>
+      <p>Enter another person's ACCOUNT ID below:</p>
       <form onSubmit={e => handleForm(e)} noValidate>
         <Grid container spacing={2}>
           <p>[Linking by account ID is temporary and for dev purposes only]</p>
@@ -51,6 +69,36 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
               autoComplete="accountID"
               value={accountID}
               onChange={e => setAccountID(e.target.value)}
+            />
+          </Grid>
+        </Grid>
+
+        <Button 
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            size="large"
+          >
+            Send Invitation
+          </Button>
+      </form>
+
+      <p>Enter another person's EMAIL address below:</p>
+      <form onSubmit={e => handleEmailForm(e)} noValidate>
+        <Grid container spacing={2}>
+          <p>[Enter email address of existing account]</p>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="emailAddress"
+              label="Email Address"
+              name="emailAddress"
+              autoComplete="emailAddress"
+              value={emailAddress}
+              onChange={e => setEmailAddress(e.target.value)}
             />
           </Grid>
         </Grid>

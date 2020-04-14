@@ -43,7 +43,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
 
     try {
       let updateProfileDone = await updateUserProfile(displayName, email);
-      let updateSettingsDone = await updateUserSettings({role});
+      let updateSettingsDone = await updateUserSettings({role, displayName, email});
 
       if (updateProfileDone && updateSettingsDone) {
         if (history) history.push('/posts');
