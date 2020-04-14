@@ -121,7 +121,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
 
             {/* Text */}
             <ListItemText
-              primary={friend.id}
+              primary={friend.displayName}
               secondary={friend.verified ? 'Verified' : role === roles.poster ? 'Waiting for them to accept' : 'Pending'}
             />
             {/* Button to the right */}

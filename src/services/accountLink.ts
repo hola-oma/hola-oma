@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 
 import { AccountLink } from "shared/models/accountLink.model";
 import { authenticateFromStore } from "./user";
+import { getDisplayNameByID } from "services/user";
 
 export const getLinkedAccounts = async (): Promise<AccountLink[]> => {
   await authenticateFromStore();
@@ -17,10 +18,11 @@ export const getLinkedAccounts = async (): Promise<AccountLink[]> => {
   if (linkData) {
     console.log(linkData); // object with key value pairs as fields 
     const linkDataEntries = Object.entries(linkData); // turns it into an array of arrays
-    accountLinks = linkDataEntries.reduce((accum: any, current) => { //accum is the array it built so far (on each iteration)
+    accountLinks = linkDataEntries.reduce( async (accum: any, current) => { //accum is the array it built so far (on each iteration)
       const obj = {
         id: current[0],
-        verified: current[1]
+        verified: current[1],
+        displayName: await getDisplayNameByID(current[0])
       }
       return accum.concat(obj)
     }, []); // start with empty array 
