@@ -47,7 +47,7 @@ export const updateUserSettings = async (settings: {[key: string]: any}) => {
   var user = firebase.auth().currentUser;
   const db = firebase.firestore();
 
-  db.collection("users").doc(user?.uid).set(settings);
+  db.collection("users").doc(user?.uid).update(settings);
 
   // we can remove this later in development (after week 5+)
   // it's just here so existing accounts get an id applied to their users record when settings are updated
