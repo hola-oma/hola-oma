@@ -4,8 +4,9 @@ import {roles} from '../../../enums/enums';
 
 import {getUserProfile, getUserSettings} from "services/user";
 import Inbox from '../Inbox/Inbox';
-import {Link as ButtonLink} from '@material-ui/core';
-import {getPosts} from 'services/post';
+import PostManagement from '../PostManagement/PostManagement';
+import { Box, Link as ButtonLink} from '@material-ui/core';
+import { getPosts } from 'services/post';
 
 import {Post} from '../../models/post.model';
 
@@ -129,7 +130,7 @@ const PostsView: React.FC = () => {
     }
 
     {role === roles.poster && 
-      <p>Show list of posts here</p>
+      <PostManagement posts={mockPosts}/>
     }
     {role === roles.receiver && <Inbox posts={posts}/>}
 
