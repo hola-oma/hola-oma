@@ -50,7 +50,7 @@ export const createLinkByID = async(otherUserID: string) => {
     // set it to FALSE because the other user has not accepted the link
     await db.collection("accountLinks").doc(user?.uid).set({
       [otherUserID]: false,
-    });
+    }, {merge: true});
 
     // create another document, this one with the pending user's ID 
     // add the desired account ID as an "accountLink"
@@ -60,7 +60,7 @@ export const createLinkByID = async(otherUserID: string) => {
     if (userID) {
       await db.collection("accountLinks").doc(otherUserID).set({
         [userID]: false,
-      });
+      }, {merge: true});
     } else {
       console.log("error creating linked account entry");
       return false;

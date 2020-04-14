@@ -24,13 +24,10 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
   useEffect(() => {
     getLinkedAccounts()
       .then((links:AccountLink[]) => {
-        console.log("all links: ", links);
         let verifiedAccounts: AccountLink[] = links.filter(link => link.verified === true);
-        console.log("verifiedAccounts", verifiedAccounts);
         setLinkedAccounts(verifiedAccounts);
 
-        let pendingAccounts: AccountLink[] = links.filter(link => link.verified === false);
-        console.log("pendingAccounts", pendingAccounts);       
+        let pendingAccounts: AccountLink[] = links.filter(link => link.verified === false);     
         setPendingAccounts(pendingAccounts);
     })
   }, []);
