@@ -1,6 +1,7 @@
 export interface AccountLink {
   id: string,
   verified: boolean,
-  displayName: string
+  displayName: string,
+  email: string
 }
 

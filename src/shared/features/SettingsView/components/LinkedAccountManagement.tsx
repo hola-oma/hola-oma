@@ -107,6 +107,23 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
       <Button color="primary" onClick={() => deleteAccountLink(friend)}>Cancel</Button>
     )
   }
+
+  const showPendingName = (friend: AccountLink) => {
+    let name = '';
+    if (friend.verified) {
+      // Verified friends show displayName no matter what the logged in user's role is 
+      name = friend.displayName;
+    } else if (role === roles.poster) {
+      // I invited this person, but they haven't accepted so show only their email address
+      name = friend.email;
+    } else if (role === roles.receiver) {
+      // I'm a grandparent and this person invited me, but I haven't accepted. 
+      // Show them as their displayName so I know who they are
+      name = friend.displayName;
+    }
+
+    return name;
+  }
   
   const generateLinkedAccountsList = (role: string, items: AccountLink[]) => {
     return items.map((friend, index) => {
@@ -121,7 +138,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
 
             {/* Text */}
             <ListItemText
-              primary={friend.displayName}
+              primary={showPendingName(friend)}
               secondary={friend.verified ? 'Verified' : role === roles.poster ? 'Waiting for them to accept' : 'Pending'}
             />
             {/* Button to the right */}

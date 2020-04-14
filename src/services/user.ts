@@ -49,6 +49,12 @@ export const getDisplayNameByID = async (id: string) => {
   return userdoc?.data()?.displayName;
 }
 
+export const getUserDataByID = async (id: string) => {
+  const db = firebase.firestore();
+  const userdoc = await db.collection("users").doc(id).get();
+  return userdoc?.data();
+}
+
 // Updates user settings for our db, can handle N key/value pairs 
 export const updateUserSettings = async (settings: {[key: string]: any}) => {
   var user = firebase.auth().currentUser;
