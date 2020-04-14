@@ -4,7 +4,7 @@ import { roles } from '../../../enums/enums';
 import { getUserSettings} from "services/user";
 
 import { Post } from '../../models/post.model';
-import GrandparentMsgView from "./GrandparentMsgView";
+import GrandparentMsgView from "../GrandparentMsgView/GrandparentMsgView";
 
 interface IPostDetails {
     currentPost: Post;
@@ -13,7 +13,7 @@ interface IPostDetails {
 const PostDetails: React.FC<IPostDetails> = ({ currentPost }) => {
 
     const [role, setRole] = useState("");
-    // const [post] = useState<Post>();
+    const [post] = useState<Post>();
 
     useEffect(() => {
         getUserSettings()

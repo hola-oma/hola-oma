@@ -33,15 +33,17 @@ export const getPosts = async (role: roles): Promise<Post[]> => {
         return;
       }
       snapshot.forEach(doc => {
-      //console.log(doc.id, '->', doc.data());
+      console.log(doc.id, '->', doc.data());
         let data = doc.data();
         posts.push({
-          id: data.id,
+          id: doc.id,
           creatorID: data.creatorID,
           from: data.from,
           message: data.message,
           photoURL: data.photoURL,
-          read: data.read
+          read: data.read,
+          date: data.date,
+          receiverIDs: data.receiverIDs
         });
       });
     })

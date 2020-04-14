@@ -1,5 +1,6 @@
 import React from 'react';
 // import { roles } from '../../enums/enums';
+import {Post} from "../../models/post.model";
 
 // import { getUserSettings, getUserProfile } from "services/user";
 import {Box, Card, CardContent, Button} from '@material-ui/core';

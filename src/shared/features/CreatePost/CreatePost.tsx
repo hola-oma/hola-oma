@@ -6,7 +6,7 @@ import { getUserSettings } from "services/user";
 // import { Post } from '../../shared/models/currentPost.model';
 import GrandparentReplyOptions from "./GrandparentReplyOpts";
 
-import NewFamilyPost from "./NewFamilyPost/NewFamilyPost";
+import NewFamilyPost from ".././NewFamilyPost/NewFamilyPost";
 
 const CreatePost: React.FC = () => {
 

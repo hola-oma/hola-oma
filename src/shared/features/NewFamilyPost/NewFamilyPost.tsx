@@ -35,7 +35,7 @@ const NewFamilyPost: React.FC = () => {
     }, []); // fires on page load if this is empty [] 
 
     let mockPost =
-    {creatorID: userId, from: displayName, message: textValue, photoURL: "", read: false, date: new Date().getTime(), receiverIDs: ["xyz789"]};
+    {id: "change this", creatorID: userId, from: displayName, message: textValue, photoURL: "", read: false, date: new Date().getTime(), receiverIDs: ["xyz789"]};
 
     return (
         <>

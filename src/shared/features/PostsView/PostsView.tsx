@@ -18,6 +18,7 @@ import PendingInvitationModal from './components/PendingInvitationModal';
 
 import Alert from '@material-ui/lab/Alert';
 
+
 const PostsView: React.FC = () => {
 
   const [displayName, setDisplayName] = useState("");
@@ -36,6 +37,7 @@ const PostsView: React.FC = () => {
     }
   }
 
+  // Get display name
   useEffect(() => {
     getUserProfile()
       .then((userProfile: any) => {
@@ -48,6 +50,7 @@ const PostsView: React.FC = () => {
       });
   }, []); // fires on page load if this is empty [] 
 
+  // Get all posts for receiver or sent by poster
   useEffect(() => {
     let typedRole: roles = roles[role as keyof typeof roles];     // https://stackoverflow.com/questions/17380845/how-do-i-convert-a-string-to-enum-in-typescript
     getPosts(typedRole).then((docs:Post[]) => {
@@ -55,6 +58,7 @@ const PostsView: React.FC = () => {
     })
   }, []);
 
+  // Get linked accounts
   useEffect(() => {
     getLinkedAccounts()
       .then((links:AccountLink[]) => {
@@ -130,7 +134,7 @@ const PostsView: React.FC = () => {
     }
 
     {role === roles.poster && 
-      <PostManagement posts={mockPosts}/>
+      <PostManagement posts={posts}/>
     }
     {role === roles.receiver && <Inbox posts={posts}/>}
 
