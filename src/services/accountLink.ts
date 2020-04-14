@@ -17,7 +17,6 @@ export const getLinkedAccounts = async (): Promise<AccountLink[]> => {
 
   if (linkData) {
     const linkDataEntries = Object.entries(linkData); // turns it into an array of arrays
-    console.log(linkDataEntries);
     for await (let entry of linkDataEntries) {
       let userData = await getUserDataByID(entry[0]);
       if (userData) {

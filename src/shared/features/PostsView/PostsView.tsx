@@ -31,7 +31,6 @@ const PostsView: React.FC = () => {
     if (dataArr.length > 0) {
       setPendingInvitations(dataArr);
       setInvite(dataArr[dataArr.length-1]);
-      console.log(pendingInvitations);
     }
   }
 

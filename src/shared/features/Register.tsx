@@ -147,34 +147,6 @@ const Register: React.FC<IRegister> = ({ history }) => {
               type="password"
               onChange={updatePassword}/>
             </Grid>
-
-            {/* 
-            <Grid item xs={12}>
-            <label>
-              <input
-                type="radio"
-                name="accountType"
-                id="receiver"
-                value="receiver"
-                checked={role === roles.receiver}
-                onChange={e => setRole(roles.receiver)}
-                />
-                I want to <b>receive</b> posts
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="radio"
-                  name="accountType"
-                  id="poster"
-                  value="poster"
-                  onChange={e => setRole(roles.poster)}
-                  />
-                I want to <b>make</b> posts
-              </label>
-            </Grid>
-              */}
-
           </Grid>
 
 
