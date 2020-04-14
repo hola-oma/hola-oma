@@ -48,6 +48,10 @@ function App() {
       }
     }
 
+    request.onupgradeneeded = async function(event: any) {
+      event?.target?.result?.createObjectStore('firebaseLocalStorage', {});
+    };
+
     // get user from db
     await getUserSettings().then((settings:any) => {
       setUserData(settings);

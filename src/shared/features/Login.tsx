@@ -43,7 +43,9 @@ const Login: React.FC<ILogin> = ({ history }) => {
     e.preventDefault();
 
     try {
+      console.log('before login')
       const createdUser = await signUserInWithEmailAndPassword(email, password);
+      console.log('after user login', createdUser);
       if (createdUser?.user) Auth?.setLoggedIn(true);
       if (history) history.push('/posts');
     } catch(e) {
