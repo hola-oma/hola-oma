@@ -84,11 +84,22 @@ export const createLinkByEmail = async(otherUserEmail: string) => {
   var user = firebase.auth().currentUser;
   const db = firebase.firestore();
 
-  // doc for user with the ID that matches otherUsersEmail
-  const userdoc = await db.collection("users").doc(otherUserEmail).get();
-  console.log(userdoc);
+  // get userdoc that has an email matching the "otherUserEmail" var passed in
+  await db.collection("users")
+    .where("email", "==", otherUserEmail).get()
+      .then((snapshot) => {
+        if (snapshot.empty) {
+          console.log("No users with this email address were found");
+          return;
+        }
 
-  return true;
+        console.log(snapshot.docs[0].data());
+    })
+    .catch(err => {
+      console.log('Error getting documents', err);
+    });
+
+return true;
   
 }
 

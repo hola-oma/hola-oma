@@ -58,12 +58,12 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
     getUserSettings()
       .then((settings:any) => {
         setRole(settings.role);
+        setDisplayName(settings?.displayName);
+        setEmail(settings?.email);
       });
 
     getUserProfile()
       .then((userProfile: any) => {
-        setDisplayName(userProfile?.displayName);
-        setEmail(userProfile?.email);
         setUserID(userProfile?.uid);
       })
   }, []); // fires on page load if this is empty [] 

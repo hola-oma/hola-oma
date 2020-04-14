@@ -49,6 +49,13 @@ export const updateUserSettings = async (settings: {[key: string]: any}) => {
 
   db.collection("users").doc(user?.uid).set(settings);
 
+  // we can remove this later in development (after week 5+)
+  // it's just here so existing accounts get an id applied to their users record when settings are updated
+  // normally the id field is written when the account is created and never again
+  db.collection("users").doc(user?.uid).update({
+    uid: user?.uid
+  })
+
   return true;
 }
 
@@ -143,7 +150,8 @@ export const createUserSettings = async (userID: string, role: string, displayNa
     await db.collection("users").doc(userID).set({
       role: role,
       displayName: displayName,
-      email: email
+      email: email,
+      uid: userID
     });
 
     return true;
