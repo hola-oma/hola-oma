@@ -2,7 +2,7 @@ import * as firebase from "firebase/app";
 
 import { AccountLink } from "shared/models/accountLink.model";
 import { authenticateFromStore } from "./user";
-import { getDisplayNameByID, getUserDataByID } from "services/user";
+import { getUserDataByID } from "services/user";
 
 export const getLinkedAccounts = async (): Promise<AccountLink[]> => {
   await authenticateFromStore();
@@ -16,21 +16,20 @@ export const getLinkedAccounts = async (): Promise<AccountLink[]> => {
   let accountLinks: AccountLink[] = [];
 
   if (linkData) {
-    console.log(linkData); // object with key value pairs as fields 
     const linkDataEntries = Object.entries(linkData); // turns it into an array of arrays
-    accountLinks = linkDataEntries.reduce( async (accum: any, current) => { //accum is the array it built so far (on each iteration)
-      let userData = await getUserDataByID(current[0]);
+    console.log(linkDataEntries);
+    for await (let entry of linkDataEntries) {
+      let userData = await getUserDataByID(entry[0]);
       if (userData) {
         const obj = {
-          id: current[0],
-          verified: current[1],
+          id: entry[0],
+          verified: entry[1],
           displayName: userData.displayName,
           email: userData.email
         }
-        return accum.concat(obj)
+        accountLinks.push(obj);
       }
-    }, []); // start with empty array 
-
+    };
   } else {
     accountLinks = [];
   }
@@ -66,7 +65,6 @@ export const createLinkByID = async(otherUserID: string) => {
       console.log("error creating linked account entry");
       return false;
     }
-
     return true;
 
   } catch(e) {
