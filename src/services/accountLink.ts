@@ -79,28 +79,36 @@ export const getUserSettings = async () => {
   return userdoc.data();
 }
 
-export const createLinkByEmail = async(otherUserEmail: string) => {
+export const createLinkByEmail = async (otherUserEmail: string) => {
   await authenticateFromStore();
-  var user = firebase.auth().currentUser;
   const db = firebase.firestore();
 
   // get userdoc that has an email matching the "otherUserEmail" var passed in
   await db.collection("users")
     .where("email", "==", otherUserEmail).get()
-      .then((snapshot) => {
+      .then( async (snapshot) => {
         if (snapshot.empty) {
           console.log("No users with this email address were found");
           return;
         }
 
-        console.log(snapshot.docs[0].data());
+        const matchingRecord = snapshot.docs[0].data();
+        console.log(matchingRecord);
+        if (!matchingRecord.uid) {
+          throw Error("Invited user does not have an ID in their users record");
+        } else {
+          try {
+            createLinkByID(matchingRecord.uid);
+          } catch(e) {
+            console.log("Something went wrong trying to create a link with this user");
+          }
+        }
     })
     .catch(err => {
-      console.log('Error getting documents', err);
+      console.log('Error finding a user that matches the email address you provided', err);
     });
 
-return true;
-  
+    return true;
 }
 
 export const acceptLink = async(acceptThisUserLinkID: string) => {
