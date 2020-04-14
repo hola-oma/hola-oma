@@ -108,22 +108,27 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
     )
   }
 
-  const showPendingName = (friend: AccountLink) => {
+  const showPrimaryText = (friend: AccountLink) => {
     let name = '';
     if (friend.verified) {
-      // Verified friends show displayName no matter what the logged in user's role is 
       name = friend.displayName;
-    } else if (role === roles.poster) {
-      // I invited this person, but they haven't accepted so show only their email address
-      name = friend.email;
-    } else if (role === roles.receiver) {
-      // I'm a grandparent and this person invited me, but I haven't accepted. 
-      // Show them as their displayName so I know who they are
-      name = friend.displayName;
+    } else {
+      name = role === roles.poster ? friend.email : friend.displayName;
     }
 
     return name;
   }
+
+  const showSecondaryText = (friend: AccountLink) => {
+    let secondaryText = '';
+    if (role === roles.poster) {
+      secondaryText = friend.verified ? friend.email : 'Waiting for them to accept';
+    } else if (role === roles.receiver) {
+      secondaryText = friend.verified ? '' : 'Pending';
+    }
+    return secondaryText;
+  }
+  
   
   const generateLinkedAccountsList = (role: string, items: AccountLink[]) => {
     return items.map((friend, index) => {
@@ -138,8 +143,8 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
 
             {/* Text */}
             <ListItemText
-              primary={showPendingName(friend)}
-              secondary={friend.verified ? 'Verified' : role === roles.poster ? 'Waiting for them to accept' : 'Pending'}
+              primary={showPrimaryText(friend)}
+              secondary={showSecondaryText(friend)}
             />
             {/* Button to the right */}
             <ListItemSecondaryAction>
