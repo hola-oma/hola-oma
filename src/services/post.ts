@@ -10,7 +10,7 @@ export const getPosts = async (): Promise<Post[]> => {
   const posts: Array<Post> = [];
 
   await db.collection("posts")
-                        .where("creatorID", "==", user?.uid).get()
+                        .where("creatorID", "==", user?.uid).orderBy("date", "desc").get()
                         .then((snapshot) => {
                           if (snapshot.empty) {
                             console.log("No posts found");

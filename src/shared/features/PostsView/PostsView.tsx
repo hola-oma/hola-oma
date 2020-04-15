@@ -136,7 +136,7 @@ const PostsView: React.FC = () => {
     }
 
     {role === roles.poster && 
-      <PostManagement posts={mockPosts}/>
+      <PostManagement posts={posts}/>
     }
 
     {role === roles.receiver && <Inbox posts={mockPosts}/>}

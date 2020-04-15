@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import { useHistory } from "react-router";
+
 import { Box, TextField, Button } from '@material-ui/core';
 import { createPost } from "services/post";
 import { getUserProfile } from "services/user";
@@ -11,6 +13,7 @@ const NewFamilyPost: React.FC = () => {
     const [textValue, updateTextValue] = useState("");
     const [displayName, setDisplayName] = useState("");
     const [userId, setUserId] = useState("");
+    const history = useHistory();
 
     const submitPost = async (e: any) => {
         e.preventDefault();
@@ -20,6 +23,7 @@ const NewFamilyPost: React.FC = () => {
             if (postSent) {
                 console.log("success sending post!");
             }
+            if (history) history.push('/posts');
           } catch(e) {
             console.error(e.message);
           }
@@ -39,7 +43,7 @@ const NewFamilyPost: React.FC = () => {
 
     return (
         <>
-        <form noValidate onSubmit={e => submitPost(e)}>
+        <form className="newFamilyPostForm" noValidate onSubmit={e => submitPost(e)}>
         <Box>
             <input
                 type="file"
