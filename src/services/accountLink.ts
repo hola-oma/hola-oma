@@ -87,31 +87,24 @@ export const createLinkByEmail = async (otherUserEmail: string) => {
   const db = firebase.firestore();
 
   // get userdoc that has an email matching the "otherUserEmail" var passed in
-  await db.collection("users")
-    .where("email", "==", otherUserEmail).get()
-      .then( async (snapshot) => {
-        if (snapshot.empty) {
-          console.log("No users with this email address were found");
-          return;
-        }
+  const snapshot = await db.collection("users").where("email", "==", otherUserEmail).get();
 
-        const matchingRecord = snapshot.docs[0].data();
-        console.log(matchingRecord);
-        if (!matchingRecord.uid) {
-          throw Error("Invited user does not have an ID in their users record");
-        } else {
-          try {
-            createLinkByID(matchingRecord.uid);
-          } catch(e) {
-            console.log("Something went wrong trying to create a link with this user");
-          }
-        }
-    })
-    .catch(err => {
-      console.log('Error finding a user that matches the email address you provided', err);
-    });
-
-    return true;
+  if (snapshot.empty) {
+    throw Error("There is no user with this email address: " + otherUserEmail);
+  } else {
+    const matchingRecord = snapshot.docs[0].data();
+    if (!matchingRecord.uid) {
+      throw Error("Invited user does not have an ID in their users record");
+    } else {
+      try {
+        createLinkByID(matchingRecord.uid);
+      } catch(e) {
+        console.log("Something went wrong trying to create a link with this user");
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 export const acceptLink = async(acceptThisUserLinkID: string) => {

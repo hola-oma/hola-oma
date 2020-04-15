@@ -28,6 +28,8 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
       if (linkCreated) {
         console.log("invite successfully sent to: ", emailAddress);
         if (history) history.push('/posts');
+      } else {
+        console.log("No invite was sent");
       }
 
     } catch(e) {

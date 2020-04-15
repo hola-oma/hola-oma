@@ -69,7 +69,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
 
   return (
     <Grid container className="settingsForm" spacing={2} alignItems="flex-start">
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={5}>
           <div>
             <Typography component="h1" variant="h4">
               Account settings
