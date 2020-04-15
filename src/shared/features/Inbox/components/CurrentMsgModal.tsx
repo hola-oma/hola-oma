@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Modal, Button, Grid, Box } from '@material-ui/core';
+import {Modal, Button, Grid, Box, Dialog} from '@material-ui/core';
 
 import {Post} from "../../../models/post.model";
 
@@ -14,41 +14,28 @@ interface ICurrentMsgModal {
 
 const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , currentPost, replyToMessage, returnToInbox}) => {
 
-  console.log("current post: " + currentPost);
-
-  // todo: style and make full screen
+  // todo: style
   const useStyles = makeStyles((theme) => ({
-    root: {
-      maxWidth: 345,
+    appBar: {
+      position: 'relative',
     },
-    paper: {
-        position: 'absolute',
-        width: 500,
-        height: 380,
-        backgroundColor: "white",
-        border: '2px solid gray',
-        padding: theme.spacing(2,4,3),
-        top: '50%',
-        left: '50%',
-        transform: `translate(-50%, -50%)`,
-      },
-    media: {
-      height: 140,
+    title: {
+      marginLeft: theme.spacing(2),
+      flex: 1,
     },
-    })
-  );
+  }));
 
   const classes = useStyles();
 
   // todo: styling and make full screen
   return (
-    <Modal
+    <Dialog fullScreen
       open={isOpen}
       onClose={returnToInbox}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
     >
-      <div className={classes.paper}>
+      <div>
         <Grid container spacing={4}>
 
           <h2>Letter from {currentPost?.from}</h2>
@@ -84,7 +71,7 @@ const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , currentPost, re
         </Grid>
 
       </div>
-    </Modal>
+    </Dialog>
   );
 }
 
