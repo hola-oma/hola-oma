@@ -1,4 +1,5 @@
 import * as firebase from "firebase/app";
+import 'firebase/storage';
 import { Post } from '../shared/models/post.model';
 import { authenticateFromStore } from "./user";
 
@@ -58,4 +59,15 @@ export const createPost = async (post: Post) => {
     console.log(e.message);
     throw Error(e.message);
   }
+}
+
+export const uploadFile = async(selectedFile: File) => {
+  // Get a unique name to store the file under
+  let fileName = Date.now(); 
+  let storageRef = firebase.storage().ref().child('/images/'+ fileName); 
+  let downloadURL = "";
+
+  let uploadTask = await storageRef.put(selectedFile);
+  downloadURL = await uploadTask.ref.getDownloadURL();
+  return downloadURL;
 }
