@@ -21,12 +21,13 @@ export const getPosts = async (): Promise<Post[]> => {
                             //console.log(doc.id, '->', doc.data());
                             let data = doc.data();
                             posts.push({
-                              id: data.id,
                               creatorID: data.creatorID,
                               from: data.from,
                               message: data.message,
                               photoURL: data.photoURL,
-                              read: data.read
+                              read: data.read,
+                              date: data.date,
+                              receiverIDs: data.receiverIDs
                             });
                           });
                         })
@@ -37,4 +38,24 @@ export const getPosts = async (): Promise<Post[]> => {
   return posts;
 };
 
-// todo: createPost
+export const createPost = async (post: Post) => {
+  const db = firebase.firestore();
+
+  try {
+    await db.collection("posts").add({
+      creatorID: post.creatorID,
+      from: post.from,
+      message: post.message,
+      photoURL: post.photoURL,
+      read: post.read,
+      date: post.date,
+      receiverIDs: post.receiverIDs
+    });
+
+    return true;
+
+  } catch(e) {
+    console.log(e.message);
+    throw Error(e.message);
+  }
+}

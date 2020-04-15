@@ -6,6 +6,8 @@ import { getUserSettings } from "services/user";
 // import { Post } from '../../shared/models/post.model';
 import GrandparentReplyOptions from "./GrandparentReplyOpts";
 
+import NewFamilyPost from "./NewFamilyPost/NewFamilyPost";
+
 const CreatePost: React.FC = () => {
 
     const [role, setRole] = useState("");
@@ -26,7 +28,7 @@ const CreatePost: React.FC = () => {
         <>
             <h2>Create Post</h2>
             <>
-                {role === roles.poster && <div>Create a new post</div>}
+                {role === roles.poster && <NewFamilyPost/>}
                 {role === roles.receiver && <GrandparentReplyOptions/>}
             </>
         </>

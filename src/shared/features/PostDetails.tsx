@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { roles } from '../../enums/enums';
 import { getUserSettings} from "services/user";
 
-import { Post } from '../../shared/models/post.model';
+// import { Post } from '../../shared/models/post.model';
 import GrandparentMsgView from "./GrandparentMsgView";
+import FamilyMsgView from "./FamilyMsgView/FamilyMsgView";
 
 const PostDetails: React.FC = () => {
 
@@ -23,7 +24,7 @@ const PostDetails: React.FC = () => {
 
     return (
         <>
-        {role === roles.poster && <div>Offer the option to make a post</div>}
+        {role === roles.poster && <FamilyMsgView/>}
         {role === roles.receiver && <GrandparentMsgView/>}
         </>
     )
