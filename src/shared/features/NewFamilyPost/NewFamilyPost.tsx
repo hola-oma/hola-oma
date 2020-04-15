@@ -39,7 +39,7 @@ const NewFamilyPost: React.FC = () => {
 
     return (
         <>
-        <form noValidate onSubmit={e => submitPost(e)}>
+        <form className="newFamilyPostForm" noValidate onSubmit={e => submitPost(e)}>
         <Box>
             <input
                 type="file"
