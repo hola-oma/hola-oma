@@ -70,37 +70,15 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history }) => {
     }
   }
 
-  const useStyles = makeStyles((theme) => ({
-    paper: {
-      marginTop: theme.spacing(8),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(3),
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-  }));
-
-  const classes = useStyles();
-
   return (
+    <Grid container>
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Typography component="h1" variant="h5">
+      <div>
+        <Typography component="h1" variant="h4">
           Display my name as
         </Typography>
 
-        <form onSubmit={e => handleForm(e)} className={classes.form} noValidate>
+        <form onSubmit={e => handleForm(e)} className="" noValidate>
 
         <Grid container spacing={2}>
             {/* Display name */}
@@ -151,7 +129,7 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history }) => {
             variant="contained"
             color="primary"
             size="large"
-            className={classes.submit}
+            className="bigButton"
           >
             Done
           </Button>
@@ -164,6 +142,7 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history }) => {
         <Copyright />      
       </Box>
     </Container>
+    </Grid>
   );
 };
 

@@ -63,52 +63,30 @@ const Login: React.FC<ILogin> = ({ history }) => {
     }
   }
 
-  const useStyles = makeStyles((theme) => ({
-    paper: {
-      marginTop: theme.spacing(8),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-  }));
-
-  const classes = useStyles();
-
   return (
     /* Adapted from Material React UI documentation - sign-in page example 
     https://github.com/mui-org/material-ui/blob/master/docs/src/pages/getting-started/templates/sign-in/SignIn.js
     */
 
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
+    <Grid container className="credentialsForm" spacing={2} justify="center">
+      <Grid item xs={6}>
+      <div>
+        <Avatar className="formAvatar">
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
-          Log in to your existing account
+        <Typography component="h1" variant="h3">
+          Log in to existing account
         </Typography>
 
         {/* Begin form */}
-        <form className={classes.form} noValidate onSubmit={e => handleEmailAndPasswordLogin(e)}>
+        <form noValidate onSubmit={e => handleEmailAndPasswordLogin(e)}>
 
           <Grid container spacing={2}>
 
             {/* Email address */}
             <Grid item xs={12}>
               <BigInput 
-                  labelText="E-mail Address"
+                  labelText="E-Mail Address"
                   name="email"
                   required={true} 
                   value={email}
@@ -138,36 +116,26 @@ const Login: React.FC<ILogin> = ({ history }) => {
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            className="bigButton"
           >
             Log In
           </Button>
 
           {/* Account maintenance options */}
-          <Grid container>
+          <Grid container justify="center">
 
-            <Grid item xs>
-              <Link href="#" variant="body2">
+            <Grid item xs={6}>
+              <Link href="#" className="bigLink">
                 Forgot password?
               </Link>
             </Grid>
 
-            <Grid item>
-              <Link href="/register" variant="body2">
-                {"Don't have an account? Sign Up"}
+            <Grid item xs={6}>
+              <Link href="/register" className="bigLink">
+                Don't have an account? Sign Up
               </Link>
             </Grid>
           </Grid>
-
-          {/* 
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                  {"Other sign-in options"}
-              </Link>
-            </Grid>
-          </Grid>
-          */} 
 
         </form>
 
@@ -192,10 +160,13 @@ const Login: React.FC<ILogin> = ({ history }) => {
 
       <span className="error">{error}</span>
     </div>
+
     <Box mt={8}>
       <Copyright />      
     </Box>
-  </Container>
+
+    </Grid>
+  </Grid>
   );
 };
 

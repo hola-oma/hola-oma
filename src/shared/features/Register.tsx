@@ -75,117 +75,100 @@ const Register: React.FC<IRegister> = ({ history }) => {
     }
   }
 
-  const useStyles = makeStyles((theme) => ({
-    paper: {
-      marginTop: theme.spacing(8),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(3),
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-  }));
-
-  const classes = useStyles();
-
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <PersonIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Register a new account
-        </Typography>
-        {/* Switch to "Sign In" page */ }
+    <Grid container className="credentialsForm" spacing={2} justify="center">
+      <Grid item xs={6}>
+        <div>
+          <Avatar className="formAvatar">
+            <PersonIcon />
+          </Avatar>
+          <Typography component="h1" variant="h3">
+            Register a new account
+          </Typography>
+          {/* Switch to "Sign In" page */ }
 
-        <Grid container justify="center">
-          <Grid item>
-            <Link href="/login" variant="body2">
-              Already have an account? Log in instead
-            </Link>
+          <Grid container justify="center">
+            <Grid item>
+              <Link href="/login" className="bigLink">
+                Already have an account? Log in instead
+              </Link>
+            </Grid>
           </Grid>
-        </Grid>
 
-        <form onSubmit={e => handleForm(e)} className={classes.form} noValidate>
+          <form onSubmit={e => handleForm(e)} noValidate>
 
-        <Grid container spacing={2}>
-          
-            {/* Email address */}
-            <Grid item xs={12}>
+          <Grid container spacing={2}>
+            
+              {/* Email address */}
+              <Grid item xs={12}>
+                <BigInput 
+                  labelText="E-Mail Address"
+                  name="email"
+                  required={true} 
+                  value={email}
+                  autoFocus={true}
+                  autoComplete="off"
+                  type="text"
+                  onChange={updateEmail}/>
+
+              </Grid>
+
+              {/* Password */ }
+              <Grid item xs={12}>
               <BigInput 
-                labelText="E-Mail Address"
-                name="email"
+                labelText="Password"
+                name="password"
                 required={true} 
-                value={email}
-                autoFocus={true}
+                value={password}
+                autoFocus={false}
                 autoComplete="off"
-                type="text"
-                onChange={updateEmail}/>
-
+                type="password"
+                onChange={updatePassword}/>
+              </Grid>
             </Grid>
 
-            {/* Password */ }
-            <Grid item xs={12}>
-            <BigInput 
-              labelText="Password"
-              name="password"
-              required={true} 
-              value={password}
-              autoFocus={false}
-              autoComplete="off"
-              type="password"
-              onChange={updatePassword}/>
-            </Grid>
-          </Grid>
 
-
-          <Button 
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            size="large"
-            className={classes.submit}
-          >
-            Sign up
-          </Button>
-
-        {/* Google sign in */}
-        <Grid container>
-          <Grid item xs>
             <Button 
-              onClick={handleGoogleJoin} 
-              className="googleBtn" 
-              type="button"
+              type="submit"
+              fullWidth
               variant="contained"
+              color="primary"
+              size="large"
+              className="bigButton"
             >
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                alt="logo"
-              />
-              Join With Google
-            </Button> 
-          </Grid>
-        </Grid>
+              Sign up
+            </Button>
 
-        </form>
-        <span className="error">{error}</span>
-      </div>
-      <Box mt={8}>
-        <Copyright />      
-      </Box>
-    </Container>
+          {/* Google sign in */}
+          <Grid container>
+            <Grid item xs>
+              <Button 
+                onClick={handleGoogleJoin} 
+                className="googleBtn" 
+                type="button"
+                variant="contained"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                  alt="logo"
+                />
+                Join With Google
+              </Button> 
+            </Grid>
+          </Grid>
+
+          </form>
+          <span className="error">{error}</span>
+        </div>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Box mt={6}>
+          <Copyright />      
+        </Box>
+      </Grid>
+
+    </Grid>
   );
 };
 
