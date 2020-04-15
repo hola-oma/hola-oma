@@ -4,3 +4,14 @@
   text-align:left;
 }
 
+.friend {
+  max-height:72px;
+  overflow-y:hidden;
+  transition-property:all;
+  transition-duration: .5s;
+  transition-timing-function: ease;
+}
+
+.unfriend {
+  max-height:0;
+}

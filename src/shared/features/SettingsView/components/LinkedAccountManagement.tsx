@@ -133,6 +133,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
   const generateLinkedAccountsList = (role: string, items: AccountLink[]) => {
     return items.map((friend, index) => {
       return (
+        /* className={`friend ${!friend.verified ? 'unfriend' : ''}`}> */
           <ListItem key={index}>
             {/* Icon to the left */}
             <ListItemAvatar>
