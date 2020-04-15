@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
-import { Container, Grid, TextField, Button, Box } from '@material-ui/core';
+import { Container, Grid, Button, Box } from '@material-ui/core';
 
 import { createLinkByEmail } from 'services/accountLink';
 import BigInput from 'shared/components/BigInput/BigInput';
@@ -58,7 +58,7 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
                 value={emailAddress}
                 autoFocus={true}
                 autoComplete="off"
-                type="password"
+                type="text"
                 onChange={updateEmailInput}/>
           </Grid>
 

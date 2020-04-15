@@ -109,7 +109,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
                 name="displayName"
                 required={true} 
                 value={displayName}
-                autoFocus={true}
+                autoFocus={false}
                 autoComplete="none"
                 type="text"
                 onChange={updateDisplayName}/>
