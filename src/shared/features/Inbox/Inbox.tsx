@@ -38,16 +38,20 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
   const classes = useStyles();
   const [currentMsgModalOpen, setCurrentMsgModalOpen] = useState<boolean>(false);
+
+  const pressEnvelope = function(envelopePost: Post) {
+    currentPost = envelopePost;
+    setCurrentMsgModalOpen(true);
+  }
+
   const returnToInbox = () => {
-    console.log("button clicked");
+    console.log("Message closed");
     setCurrentMsgModalOpen(false);
   }
 
-  let pressEnvelope = function(envelopePost: Post) {
-    console.log("envelope clicked");
-    console.log("message: " + envelopePost.message);
-    // setCurrentMsgModalOpen(true);
-    currentPost = envelopePost;
+  const replyToMessage = () => {
+    console.log("Grandparent wants to reply!");
+    setCurrentMsgModalOpen(false);
   }
 
   return (
@@ -76,12 +80,14 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
         isOpen={currentMsgModalOpen}
         currentPost={currentPost}
         returnToInbox={returnToInbox}
+        replyToMessage={replyToMessage}
       />
 
       <Box className="todo">
         <h3>To do items:</h3>
         <ul>
-          <li>Clicking an envelope goes to a page to view it</li>
+          <li>Style modal and make full screen</li>
+          <li>General UI styling</li>
           <li>Shrink font or truncate sender's name when sender's names are so long they distort the length of the card</li>
         </ul>
       </Box>

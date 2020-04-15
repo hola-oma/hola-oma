@@ -1,22 +1,27 @@
 import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import {Modal, Button, Grid, Card, CardContent, Box} from '@material-ui/core';
+import { Modal, Button, Grid, Box } from '@material-ui/core';
 
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import {Post} from "../../../models/post.model";
-import {Link} from "react-router-dom";
 
 interface ICurrentMsgModal {
   isOpen: boolean;
   currentPost: Post;
   returnToInbox: () => void;
+  replyToMessage: () => void;
 }
 
-const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , currentPost, returnToInbox}) => {
+const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , currentPost, replyToMessage, returnToInbox}) => {
 
+  console.log("current post: " + currentPost);
+
+  // todo: style and make full screen
   const useStyles = makeStyles((theme) => ({
-      paper: {
+    root: {
+      maxWidth: 345,
+    },
+    paper: {
         position: 'absolute',
         width: 500,
         height: 380,
@@ -27,40 +32,32 @@ const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , currentPost, re
         left: '50%',
         transform: `translate(-50%, -50%)`,
       },
+    media: {
+      height: 140,
+    },
     })
   );
 
   const classes = useStyles();
 
+  // todo: styling and make full screen
   return (
     <Modal
       open={isOpen}
+      onClose={returnToInbox}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
     >
-
       <div className={classes.paper}>
-        <Grid container direction="column" spacing={4}>
+        <Grid container spacing={4}>
 
-          <h1>Letter from {currentPost["from"]}</h1>
+          <h2>Letter from {currentPost?.from}</h2>
 
-          <Card variant="outlined">
-            <CardContent>
-              {currentPost.message}
-            </CardContent>
-          </Card>
-
-          <div className={"replyButton"}>
-            <Link to={"/newPost"}>
-              <Button variant="outlined">Reply</Button>
-            </Link>
-          </div>
-
-          <div className={"returnButton"}>
-            <Link to={"/posts"}>
-              <Button variant="outlined">Close</Button>
-            </Link>
-          </div>
+          <Grid item xs={12}>
+            <Box>
+              {currentPost?.message}
+            </Box>
+          </Grid>
 
           <Grid item xs={12}>
             <Button
@@ -68,22 +65,23 @@ const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , currentPost, re
               variant="contained"
               size="large"
               fullWidth
-              startIcon={<CheckCircleIcon />}
-              onClick={returnToInbox}>See all your messages
+              // startIcon={<CheckCircleIcon />}
+              onClick={replyToMessage}>Reply
             </Button>
           </Grid>
 
-          <p>{currentPost}</p>
+          <Grid item xs={12}>
+            <Button
+              className="colorNo"
+              variant="contained"
+              size="large"
+              fullWidth
+              // startIcon={<CancelIcon />}
+              onClick={returnToInbox}>Return to messages
+            </Button>
+          </Grid>
 
         </Grid>
-
-        <Box className="todo">
-          <h3>To do items:</h3>
-          <ul>
-            <li>Create routes for each reply option</li>
-            <li>Make pretty</li>
-          </ul>
-        </Box>
 
       </div>
     </Modal>
