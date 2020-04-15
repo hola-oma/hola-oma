@@ -16,7 +16,7 @@ export const getPosts = async (role: roles): Promise<Post[]> => {
   console.log("user id: " + userId);
 
   // Set query options based on whether user is a poster or a receiver
-  let queryOptions = [ ["receiverIDs" as string, "array-contains"], ["users", "=="] ];
+  let queryOptions = [ ["receiverIDs", "array-contains"], ["users", "=="] ];
   let queryWhere = queryOptions[0];     // for receiver
   if (role === roles.poster) {          // else if poster
     queryWhere = queryOptions[1];
@@ -24,7 +24,7 @@ export const getPosts = async (role: roles): Promise<Post[]> => {
 
   // Get posts
   await db.collection("posts")
-    .where(queryWhere[0] as string,                 // FieldPath
+    .where(queryWhere[0] as string,                   // FieldPath
       queryWhere[1] as "==" | "array-contains-any",   // opStr
       userId).get()
     .then((snapshot) => {
@@ -36,7 +36,6 @@ export const getPosts = async (role: roles): Promise<Post[]> => {
       console.log(doc.id, '->', doc.data());
         let data = doc.data();
         posts.push({
-          id: doc.id,
           creatorID: data.creatorID,
           from: data.from,
           message: data.message,

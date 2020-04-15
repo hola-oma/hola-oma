@@ -1,5 +1,4 @@
 export interface Post {
-  id: string,
   creatorID: string,
   from: string,
   read: boolean,

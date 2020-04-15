@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Modal, Button, Grid } from '@material-ui/core';
+import {Modal, Button, Grid, Card, CardContent, Box} from '@material-ui/core';
 
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import {Post} from "../../../models/post.model";
+import {Link} from "react-router-dom";
 
 interface ICurrentMsgModal {
   isOpen: boolean;
@@ -37,10 +38,29 @@ const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , currentPost, re
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
     >
+
       <div className={classes.paper}>
         <Grid container direction="column" spacing={4}>
 
-          <h2>Letter from {currentPost}</h2>
+          <h1>Letter from {currentPost["from"]}</h1>
+
+          <Card variant="outlined">
+            <CardContent>
+              {currentPost.message}
+            </CardContent>
+          </Card>
+
+          <div className={"replyButton"}>
+            <Link to={"/newPost"}>
+              <Button variant="outlined">Reply</Button>
+            </Link>
+          </div>
+
+          <div className={"returnButton"}>
+            <Link to={"/posts"}>
+              <Button variant="outlined">Close</Button>
+            </Link>
+          </div>
 
           <Grid item xs={12}>
             <Button
@@ -56,6 +76,14 @@ const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , currentPost, re
           <p>{currentPost}</p>
 
         </Grid>
+
+        <Box className="todo">
+          <h3>To do items:</h3>
+          <ul>
+            <li>Create routes for each reply option</li>
+            <li>Make pretty</li>
+          </ul>
+        </Box>
 
       </div>
     </Modal>

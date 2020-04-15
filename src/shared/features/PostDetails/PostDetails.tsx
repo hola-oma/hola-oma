@@ -4,7 +4,6 @@ import { roles } from '../../../enums/enums';
 import { getUserSettings} from "services/user";
 
 import { Post } from '../../models/post.model';
-import GrandparentMsgView from "../GrandparentMsgView/GrandparentMsgView";
 
 interface IPostDetails {
     currentPost: Post;
@@ -25,7 +24,7 @@ const PostDetails: React.FC<IPostDetails> = ({ currentPost }) => {
     return (
         <>
         {role === roles.poster && <div>Offer the option to make a post</div>}
-        {role === roles.receiver && <GrandparentMsgView/>}
+        {role === roles.receiver && <div>View Grandparent Post</div>}
         </>
     )
 };

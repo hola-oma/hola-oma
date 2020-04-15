@@ -43,28 +43,11 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
     setCurrentMsgModalOpen(false);
   }
 
-  let myAdd = function(x: number, y: number): number
-  { return x + y;
-  };
-
-  let pressEnvelope = function(envelopePost: Post):undefined {
+  let pressEnvelope = function(envelopePost: Post) {
     console.log("envelope clicked");
-    setCurrentMsgModalOpen(true);
+    console.log("message: " + envelopePost.message);
+    // setCurrentMsgModalOpen(true);
     currentPost = envelopePost;
-    return undefined;
-  }
-
-  let renderModal = function(currentPost: Post) {
-    console.log("render modal?");
-    return (
-      <>
-        <CurrentMsgModal
-          isOpen={currentMsgModalOpen}
-          currentPost={currentPost}
-          returnToInbox={returnToInbox}
-        />
-      </>
-    )
   }
 
   return (
@@ -73,16 +56,14 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
       <Grid container>
         {
           posts.map((post: Post, index: number) => {
-            console.log(post);
             return (
-              <div className={"inboxCard"} key={index} onClick={pressEnvelope(post)}>
+              <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)}>
                 <Card className={classes.root} variant="outlined">
                   <CardHeader
                       title={post.from}>
                   </CardHeader>
                   <CardContent>
                     {post.read? <DraftsIcon className="icon"/> : <MailIcon className="icon"/>}
-                    {post.id}
                   </CardContent>
                 </Card>
               </div>
@@ -91,11 +72,11 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
         }
       </Grid>
 
-      {/*<CurrentMsgModal*/}
-      {/*  isOpen={currentMsgModalOpen}*/}
-      {/*  currentPost={currentPost}*/}
-      {/*  returnToInbox={returnToInbox}*/}
-      {/*/>*/}
+      <CurrentMsgModal
+        isOpen={currentMsgModalOpen}
+        currentPost={currentPost}
+        returnToInbox={returnToInbox}
+      />
 
       <Box className="todo">
         <h3>To do items:</h3>
