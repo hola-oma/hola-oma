@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router";
 
 import { Box, TextField, Button } from '@material-ui/core';
-import { createPost } from "services/post";
+import { createPost, uploadFile } from "services/post";
 import { getUserProfile } from "services/user";
 
 import './NewFamilyPost.css';
@@ -17,9 +17,17 @@ const NewFamilyPost: React.FC = () => {
 
     const submitPost = async (e: any) => {
         e.preventDefault();
+        let post = {creatorID: userId, from: displayName, message: textValue, photoURL: "", read: false, date: new Date().getTime(), receiverIDs: ["xyz789"]};
+
+        if (selectedFile) {
+            const fileURL = await uploadFile(selectedFile);
+            if (fileURL) {
+                post.photoURL = fileURL;
+            }
+        }
     
         try {
-            const postSent = await createPost(mockPost);
+            const postSent = await createPost(post);
             if (postSent) {
                 console.log("success sending post!");
             }
@@ -37,9 +45,6 @@ const NewFamilyPost: React.FC = () => {
             setUserId(userProfile?.uid);
         });
     }, []); // fires on page load if this is empty [] 
-
-    let mockPost =
-    {id: "change this", creatorID: userId, from: displayName, message: textValue, photoURL: "", read: false, date: new Date().getTime(), receiverIDs: ["xyz789"]};
 
     return (
         <>
