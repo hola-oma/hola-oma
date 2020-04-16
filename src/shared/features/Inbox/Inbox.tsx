@@ -61,7 +61,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
         {
           posts.map((post: Post, index: number) => {
             return (
-              <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)}>
+              <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)} >
                 <Card className={classes.root} variant="outlined">
                   <CardHeader
                       title={post.from}>

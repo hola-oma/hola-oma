@@ -4,6 +4,7 @@ import * as firebase from "firebase/app";
 import 'firebase/storage';
 import { Post } from '../shared/models/post.model';
 import { authenticateFromStore } from "./user";
+import {roles} from "../enums/enums";
 
 export const getPosts = async (role: roles): Promise<Post[]> => {
   await authenticateFromStore();
