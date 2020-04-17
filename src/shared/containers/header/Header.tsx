@@ -38,7 +38,6 @@ const Header: React.FC<IHeader> = ({ isLoggedIn }) => {
           {!isLoggedIn && <li><Link to="/register">Register</Link></li>}
           {!isLoggedIn && <li><Link to="/login">Login</Link></li>}
           {isLoggedIn && <li><Link to="/settings">Settings</Link></li>}
-          {isLoggedIn && <li><Link to="/addAccountLink">Add link</Link></li>}
           {isLoggedIn && <li><Link to="/posts">Posts</Link></li>}
           {isLoggedIn && <li><button onClick={handleSignOut}>Sign out</button></li>}
         </ul>

@@ -42,21 +42,43 @@ export const getUserSettings = async () => {
   return userdoc.data();
 }
 
+// get just the display name for the user with the given ID 
+export const getDisplayNameByID = async (id: string) => {
+  const db = firebase.firestore();
+  const userdoc = await db.collection("users").doc(id).get();
+  return userdoc?.data()?.displayName;
+}
+
+export const getUserDataByID = async (id: string) => {
+  const db = firebase.firestore();
+  const userdoc = await db.collection("users").doc(id).get();
+  return userdoc?.data();
+}
+
 // Updates user settings for our db, can handle N key/value pairs 
 export const updateUserSettings = async (settings: {[key: string]: any}) => {
   var user = firebase.auth().currentUser;
   const db = firebase.firestore();
 
-  db.collection("users").doc(user?.uid).set(settings);
+  db.collection("users").doc(user?.uid).update(settings);
+
+  // we can remove this later in development (after week 5+)
+  // it's just here so existing accounts get an id applied to their users record when settings are updated
+  // normally the id field is written when the account is created and never again
+  db.collection("users").doc(user?.uid).update({
+    uid: user?.uid
+  })
 
   return true;
 }
 
 export const signUserInWithEmailAndPassword = async (email: string, password: string) => {
   try {
+    console.log('setting persistence');
     await firebase
           .auth()
           .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    console.log('after setpersistence');
 
     const signIn = await firebase
        .auth()
@@ -136,12 +158,15 @@ export const createNewUserWithGoogleCredentials = async () => {
 // To store settings like "role", we must create a user entry in a separate "users" database.
 
 // Note: displayName is stored on the userProfile, role is stored in our separate "users" db
-export const createUserSettings = async (userID: string, role: string) => {
+export const createUserSettings = async (userID: string, role: string, displayName: string, email: string) => {
   const db = firebase.firestore();
 
   try {
     await db.collection("users").doc(userID).set({
-      role: role
+      role: role,
+      displayName: displayName,
+      email: email,
+      uid: userID
     });
 
     return true;

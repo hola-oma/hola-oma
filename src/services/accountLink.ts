@@ -1,6 +1,8 @@
 import * as firebase from "firebase/app";
+
 import { AccountLink } from "shared/models/accountLink.model";
 import { authenticateFromStore } from "./user";
+import { getUserDataByID } from "services/user";
 
 export const getLinkedAccounts = async (): Promise<AccountLink[]> => {
   await authenticateFromStore();
@@ -14,16 +16,19 @@ export const getLinkedAccounts = async (): Promise<AccountLink[]> => {
   let accountLinks: AccountLink[] = [];
 
   if (linkData) {
-    console.log(linkData); // object with key value pairs as fields 
     const linkDataEntries = Object.entries(linkData); // turns it into an array of arrays
-    accountLinks = linkDataEntries.reduce((accum: any, current) => { //accum is the array it built so far (on each iteration)
-      const obj = {
-        id: current[0],
-        verified: current[1]
+    for await (let entry of linkDataEntries) {
+      let userData = await getUserDataByID(entry[0]);
+      if (userData) {
+        const obj = {
+          id: entry[0],
+          verified: entry[1],
+          displayName: userData.displayName,
+          email: userData.email
+        }
+        accountLinks.push(obj);
       }
-      return accum.concat(obj)
-    }, []); // start with empty array 
-
+    };
   } else {
     accountLinks = [];
   }
@@ -44,7 +49,7 @@ export const createLinkByID = async(otherUserID: string) => {
     // set it to FALSE because the other user has not accepted the link
     await db.collection("accountLinks").doc(user?.uid).set({
       [otherUserID]: false,
-    });
+    }, {merge: true});
 
     // create another document, this one with the pending user's ID 
     // add the desired account ID as an "accountLink"
@@ -54,18 +59,52 @@ export const createLinkByID = async(otherUserID: string) => {
     if (userID) {
       await db.collection("accountLinks").doc(otherUserID).set({
         [userID]: false,
-      });
+      }, {merge: true});
     } else {
       console.log("error creating linked account entry");
       return false;
     }
-
     return true;
 
   } catch(e) {
     console.log(e.message);
     throw Error(e.message);
   }
+}
+
+// Retrieves user settings from our users db
+export const getUserSettings = async () => {
+  await authenticateFromStore();
+  var user = firebase.auth().currentUser;
+  const db = firebase.firestore();
+
+  const userdoc = await db.collection("users").doc(user?.uid).get();
+  return userdoc.data();
+}
+
+export const createLinkByEmail = async (otherUserEmail: string) => {
+  await authenticateFromStore();
+  const db = firebase.firestore();
+
+  // get userdoc that has an email matching the "otherUserEmail" var passed in
+  const snapshot = await db.collection("users").where("email", "==", otherUserEmail).get();
+
+  if (snapshot.empty) {
+    throw Error("There is no user with this email address: " + otherUserEmail);
+  } else {
+    const matchingRecord = snapshot.docs[0].data();
+    if (!matchingRecord.uid) {
+      throw Error("Invited user does not have an ID in their users record");
+    } else {
+      try {
+        createLinkByID(matchingRecord.uid);
+      } catch(e) {
+        console.log("Something went wrong trying to create a link with this user");
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 export const acceptLink = async(acceptThisUserLinkID: string) => {

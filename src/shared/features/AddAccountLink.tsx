@@ -1,28 +1,37 @@
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
-import { Container, Grid, TextField, Button, Box } from '@material-ui/core';
+import { Container, Grid, Button, Box } from '@material-ui/core';
 
-import { createLinkByID } from 'services/accountLink';
+import { createLinkByEmail } from 'services/accountLink';
+import BigInput from 'shared/components/BigInput/BigInput';
 
 interface IAddAccountLink extends RouteComponentProps {
   // empty for now, just need this for the "extends RouteComponentProps" part 
 }
 
 const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
-  const [accountID, setAccountID] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
+
   const [error, setErrors] = useState("");
 
-  const handleForm = async (e: any) => {
+  const updateEmailInput = (e: any) => {
+    setEmailAddress(e.target.value);
+  }
+
+  const handleEmailForm = async (e: any) => {
     e.preventDefault();
 
     try {
-      let linkCreated = await createLinkByID(accountID);
-      
+      let linkCreated = await createLinkByEmail(emailAddress);
+
       if (linkCreated) {
-        console.log("link to account successfully created");
+        console.log("invite successfully sent to: ", emailAddress);
         if (history) history.push('/posts');
+      } else {
+        console.log("No invite was sent");
       }
+
     } catch(e) {
       setErrors(e.message);
     }
@@ -30,40 +39,44 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Box className="devBox">
-        <p>Passphrase</p>
-        <h1>AB4P</h1>
-        <p>Ask your family member to enter this pass phrase to link your accounts.</p>
-      </Box>
 
-      <p>Alternatively, link to them by entering their ACCOUNT ID below:</p>
-      <form onSubmit={e => handleForm(e)} noValidate>
+      <form onSubmit={e => handleEmailForm(e)} noValidate>
+        
         <Grid container spacing={2}>
-          <p>[Linking by account ID is temporary and for dev purposes only]</p>
-          <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              required
-              fullWidth
-              id="accountID"
-              label="Account ID"
-              name="accountID"
-              autoComplete="accountID"
-              value={accountID}
-              onChange={e => setAccountID(e.target.value)}
-            />
-          </Grid>
-        </Grid>
 
-        <Button 
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            size="large"
-          >
-            Send Invitation
-          </Button>
+          <Grid item xs={12}>
+            <Box className="devBox">
+              <p>Passphrase</p>
+              <h1>AB4P</h1>
+              <p>Ask your family member to enter this pass phrase to link your accounts. [Not yet implemented]</p>
+            </Box>
+          </Grid>
+          
+          <Grid item xs={12}>
+            <BigInput 
+                labelText="Enter someone's e-mail address"
+                name="emailAddress"
+                required={true} 
+                value={emailAddress}
+                autoFocus={true}
+                autoComplete="off"
+                type="text"
+                onChange={updateEmailInput}/>
+          </Grid>
+
+
+          <Grid item xs={12}>
+            <Button 
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              size="large"
+            >
+              Send Invitation
+            </Button>
+            </Grid>
+          </Grid>
       </form>
       <span className="error">{error}</span>
     </Container>
