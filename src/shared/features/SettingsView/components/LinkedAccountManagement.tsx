@@ -86,25 +86,25 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
 
   const manageButton = (friend: AccountLink) => {
     return (
-      <Button color="primary" onClick={() => manageAccountLink(friend)}>Remove</Button>
+      <Button variant="outlined" className="buttonDanger" onClick={() => manageAccountLink(friend)}>Remove</Button>
     )
   }
 
   const acceptButton = (friend: AccountLink) => {
     return (
-      <Button color="primary" onClick={() => acceptAccountLink(friend)}>Accept</Button>
+      <Button variant="outlined" className="buttonAccept" onClick={() => acceptAccountLink(friend)}>Accept</Button>
     )
   }
 
   const declineButton = (friend: AccountLink) => {
     return (
-      <Button color="primary" onClick={() => deleteAccountLink(friend)}>Decline</Button>
+      <Button variant="outlined" className="buttonDanger" onClick={() => deleteAccountLink(friend)}>Decline</Button>
     )
   }
 
   const cancelButton = (friend: AccountLink) => {
     return (
-      <Button color="primary" onClick={() => deleteAccountLink(friend)}>Cancel</Button>
+      <Button variant="outlined" className="buttonDanger" onClick={() => deleteAccountLink(friend)}>Cancel</Button>
     )
   }
 

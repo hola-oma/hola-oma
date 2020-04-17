@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { roles } from '../../../enums/enums';
 
-import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
+import { RouteComponentProps, Link } from 'react-router-dom'; // give us 'history' object
 
 import { getUserSettings, updateUserSettings, getUserProfile, updateUserProfile } from '../../../services/user';
 
@@ -34,6 +34,10 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
 
   const updateEmail = (e: any) => {
     setEmail(e.target.value);
+  }
+
+  const openRoleModal = () => {
+    console.log("opening role change modal");
   }
 
   /* UPDATE ACCOUNT SETTINGS */
@@ -102,6 +106,10 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
                 </Grid>
 
                 <Grid item xs={12}>
+                  <Typography>Account type: {role.toString()} <Button variant="outlined" size="small" color="primary" onClick={() => openRoleModal()}>Change</Button></Typography>
+                </Grid>
+                {/* 
+                <Grid item xs={12}>
                 <Typography component="h2" variant="h5">
                   Account type
                 </Typography>
@@ -130,13 +138,14 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
                     <b>Make</b> posts
                   </label>
                 </Grid>
+                                */}
 
               <Button type="submit"
                 fullWidth
                 variant="contained"
-                color="primary"
+                color="secondary"
                 className="bigButton">
-                Update settings
+                Save settings
               </Button>
           
             </form>

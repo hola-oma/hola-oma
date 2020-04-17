@@ -6,6 +6,12 @@ import './Header.css';
 
 import { useHistory } from "react-router-dom";
 import { signUserOut } from "services/user";
+import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
+
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import MailIcon from '@material-ui/icons/Mail';
+import SettingsIcon from '@material-ui/icons/Settings';
+
 
 interface IHeader {
   isLoggedIn: boolean;
@@ -13,8 +19,25 @@ interface IHeader {
 
 const Header: React.FC<IHeader> = ({ isLoggedIn }) => {
 
+
   const Auth = useContext(AuthContext);
   let history = useHistory();
+
+  const goToRegistration = () => {
+    history.push('/register')
+  }
+
+  const goToLogin = () => {
+    history.push('/login')
+  }
+
+  const goToInbox = () => {
+    history.push('/posts')
+  }
+
+  const goToSettings = () => {
+    history.push('/settings')
+  }
 
   const handleSignOut = () => {
     signUserOut().then(function() {
@@ -27,23 +50,78 @@ const Header: React.FC<IHeader> = ({ isLoggedIn }) => {
   }
   
   return (
-    <div className="headerBar">
-      
-      <div className="pullLeft">
-        <h2>Hola Oma</h2>
-      </div>
-      
-      <div className="pullRight">
-        <ul className="nav">
-          {!isLoggedIn && <li><Link to="/register">Register</Link></li>}
-          {!isLoggedIn && <li><Link to="/login">Login</Link></li>}
-          {isLoggedIn && <li><Link to="/settings">Settings</Link></li>}
-          {isLoggedIn && <li><Link to="/posts">Posts</Link></li>}
-          {isLoggedIn && <li><button onClick={handleSignOut}>Sign out</button></li>}
-        </ul>
-      </div>
+    <AppBar position="static" className="headerBar">
+      <Toolbar>
 
-    </div>
+        <Typography className="pullLeft appTitle">
+          <Link to="/posts">Hola, Oma!</Link>
+        </Typography>
+        
+        <div className="nav">
+          {!isLoggedIn && 
+            <ul>
+              <li>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="large"
+                  className=""
+                  onClick={() => goToRegistration()}
+                  startIcon={<AccountCircleIcon />}
+                >
+                  Register
+                </Button>
+                </li>
+
+              <li><Button
+                  variant="contained"
+                  color="secondary"
+                  size="large"
+                  className=""
+                  onClick={() => goToLogin()}
+                  startIcon={<AccountCircleIcon />}
+                >
+                  Login
+                </Button></li>
+            </ul>
+          }
+
+          {isLoggedIn && 
+            <ul>
+              <li>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="large"
+                  className=""
+                  onClick={() => goToInbox()}
+                  startIcon={<MailIcon />}
+                >
+                  Inbox
+                </Button>
+              </li>
+
+              <li>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="large"
+                  className=""
+                  onClick={() => goToSettings()}
+                  startIcon={<SettingsIcon />}
+                >
+                  Settings
+                </Button>
+              </li>
+              
+              <li><button onClick={handleSignOut}>Sign out</button></li>
+            </ul>
+          }
+
+        </div>
+
+      </Toolbar>
+    </AppBar>
   );
 }
 

@@ -106,6 +106,16 @@ Use: <Box className="devBox">...stuff here...</Box> */
   background-color: #dc3545 !important;
 }
 
+.buttonDanger {
+  color: red !important;
+  border-color: red !important;
+}
+
+.buttonAccept {
+  color: green !important;
+  border-color: green !important;
+}
+
 /* 
   const useStyles = makeStyles((theme) => ({
     paper: {
