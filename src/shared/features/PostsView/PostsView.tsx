@@ -33,7 +33,6 @@ const PostsView: React.FC = () => {
     if (dataArr.length > 0) {
       setPendingInvitations(dataArr);
       setInvite(dataArr[dataArr.length-1]);
-      console.log(pendingInvitations);
     }
   }
 
@@ -114,7 +113,7 @@ const PostsView: React.FC = () => {
       <>
         <Alert variant="filled" severity="warning">
           <span>
-            You have a pending invitation from {invite?.id}.&nbsp;   
+            You have a pending invitation from {invite?.displayName}.&nbsp;   
           <ButtonLink 
             component="button" 
             variant="body2" 

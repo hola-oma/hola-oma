@@ -1,16 +1,12 @@
 import React, { useState, useContext } from "react";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import PersonIcon from '@material-ui/icons/Person';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-
 import Copyright from 'shared/components/Copyright';
 
 import { AuthContext } from "../../App";
@@ -75,145 +71,100 @@ const Register: React.FC<IRegister> = ({ history }) => {
     }
   }
 
-  const useStyles = makeStyles((theme) => ({
-    paper: {
-      marginTop: theme.spacing(8),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(3),
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-  }));
-
-  const classes = useStyles();
-
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <PersonIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Register a new account
-        </Typography>
-        {/* Switch to "Sign In" page */ }
+    <Grid container className="credentialsForm" spacing={2} justify="center">
+      <Grid item xs={6}>
+        <div>
+          <Avatar className="formAvatar">
+            <PersonIcon />
+          </Avatar>
+          <Typography component="h1" variant="h3">
+            Register a new account
+          </Typography>
+          {/* Switch to "Sign In" page */ }
 
-        <Grid container justify="center">
-          <Grid item>
-            <Link href="/login" variant="body2">
-              Already have an account? Log in instead
-            </Link>
+          <Grid container justify="center">
+            <Grid item>
+              <Link href="/login" className="bigLink">
+                Already have an account? Log in instead
+              </Link>
+            </Grid>
           </Grid>
-        </Grid>
 
-        <form onSubmit={e => handleForm(e)} className={classes.form} noValidate>
+          <form onSubmit={e => handleForm(e)} noValidate>
 
-        <Grid container spacing={2}>
-          
-            {/* Email address */}
-            <Grid item xs={12}>
+          <Grid container spacing={2}>
+            
+              {/* Email address */}
+              <Grid item xs={12}>
+                <BigInput 
+                  labelText="E-Mail Address"
+                  name="email"
+                  required={true} 
+                  value={email}
+                  autoFocus={true}
+                  autoComplete="off"
+                  type="text"
+                  onChange={updateEmail}/>
+
+              </Grid>
+
+              {/* Password */ }
+              <Grid item xs={12}>
               <BigInput 
-                labelText="E-Mail Address"
-                name="email"
+                labelText="Password"
+                name="password"
                 required={true} 
-                value={email}
-                autoFocus={true}
+                value={password}
+                autoFocus={false}
                 autoComplete="off"
-                type="text"
-                onChange={updateEmail}/>
-
+                type="password"
+                onChange={updatePassword}/>
+              </Grid>
             </Grid>
 
-            {/* Password */ }
-            <Grid item xs={12}>
-            <BigInput 
-              labelText="Password"
-              name="password"
-              required={true} 
-              value={password}
-              autoFocus={false}
-              autoComplete="off"
-              type="password"
-              onChange={updatePassword}/>
-            </Grid>
 
-            {/* 
-            <Grid item xs={12}>
-            <label>
-              <input
-                type="radio"
-                name="accountType"
-                id="receiver"
-                value="receiver"
-                checked={role === roles.receiver}
-                onChange={e => setRole(roles.receiver)}
-                />
-                I want to <b>receive</b> posts
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="radio"
-                  name="accountType"
-                  id="poster"
-                  value="poster"
-                  onChange={e => setRole(roles.poster)}
-                  />
-                I want to <b>make</b> posts
-              </label>
-            </Grid>
-              */}
-
-          </Grid>
-
-
-          <Button 
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            size="large"
-            className={classes.submit}
-          >
-            Sign up
-          </Button>
-
-        {/* Google sign in */}
-        <Grid container>
-          <Grid item xs>
             <Button 
-              onClick={handleGoogleJoin} 
-              className="googleBtn" 
-              type="button"
+              type="submit"
+              fullWidth
               variant="contained"
+              color="primary"
+              size="large"
+              className="bigButton"
             >
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                alt="logo"
-              />
-              Join With Google
-            </Button> 
-          </Grid>
-        </Grid>
+              Sign up
+            </Button>
 
-        </form>
-        <span className="error">{error}</span>
-      </div>
-      <Box mt={8}>
-        <Copyright />      
-      </Box>
-    </Container>
+          {/* Google sign in */}
+          <Grid container>
+            <Grid item xs>
+              <Button 
+                onClick={handleGoogleJoin} 
+                className="googleBtn" 
+                type="button"
+                variant="contained"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                  alt="logo"
+                />
+                Join With Google
+              </Button> 
+            </Grid>
+          </Grid>
+
+          </form>
+          <span className="error">{error}</span>
+        </div>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Box mt={6}>
+          <Copyright />      
+        </Box>
+      </Grid>
+
+    </Grid>
   );
 };
 

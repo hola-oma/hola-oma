@@ -31,7 +31,7 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
           history.push('/registerDetails');
         }
       }
-    }, [isLoggedIn, userData]);
+    }, [isLoggedIn, userData, history]);
 
     return (
       <div>
