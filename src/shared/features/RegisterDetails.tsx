@@ -41,13 +41,18 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history }) => {
   /* useEffect is a built-in React hook that fires when the page
   loads. When this page loads, it gets the signed in user from the db */
   useEffect(() => {
+    let mounted = true;
     getUserProfile().then((doc:any) => {
-      // Users who signed up using Google already have a display name, so 
-      // retrieve and display it if it's there 
-      setDisplayName(doc?.displayName ? doc.displayName : ''); 
-      setUserID(doc?.uid);
-      setEmail(doc?.email ? doc.email : '');
+      if (mounted) {
+        // Users who signed up using Google already have a display name, so 
+        // retrieve and display it if it's there 
+        setDisplayName(doc?.displayName ? doc.displayName : ''); 
+        setUserID(doc?.uid);
+        setEmail(doc?.email ? doc.email : '');
+      }
     });
+
+    return () => { mounted = false; }
   }, []); // fires on page load if this is empty [] 
 
 

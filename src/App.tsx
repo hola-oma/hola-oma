@@ -49,6 +49,7 @@ const theme = createMuiTheme({
 export const AuthContext = React.createContext<IAuthContext | null>(null);
 
 function App() {
+
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
   const [userData, setUserData] = useState<User>();// call db and get stuff, put it in here 
 
@@ -96,6 +97,7 @@ function App() {
     <AuthContext.Provider value={{ isLoggedIn, setLoggedIn, userData }}>
 
     <div className="App">
+      
       <Router>
         <ThemeProvider theme={theme}>
           <CssBaseline>

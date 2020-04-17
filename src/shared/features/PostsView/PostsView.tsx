@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { roles } from '../../../enums/enums';
 
-import { getUserSettings, getUserProfile } from "services/user";
+import { getUserSettings } from "services/user";
 import Inbox from '../Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
 import { Box, Link as ButtonLink} from '@material-ui/core';
@@ -18,7 +18,11 @@ import PendingInvitationModal from './components/PendingInvitationModal';
 
 import Alert from '@material-ui/lab/Alert';
 
-const PostsView: React.FC = () => {
+interface IPostsView {
+  setIsLoading: (loading: boolean) => void;
+}
+
+const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
 
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
@@ -36,29 +40,24 @@ const PostsView: React.FC = () => {
   }
 
   useEffect(() => {
-    getUserProfile()
-      .then((userProfile:any) => {
-        setDisplayName(userProfile.displayName);
-      });
+    setIsLoading(true);
 
-    getUserSettings()
-      .then((doc:any) => {
-        setRole(doc?.role);
-      });
-  }, []); // fires on page load if this is empty [] 
-
-  useEffect(() => {
-    getPosts().then((docs:Post[]) => {
-      setPosts(docs);
-    })
-  }, []);
-
-  useEffect(() => {
     getLinkedAccounts()
       .then((links:AccountLink[]) => {
         const pendingInvitations = links.filter(link => link.verified === false);
         updatePendingInvitations(pendingInvitations);
         setLinkedAccounts(links);
+        getPosts()
+          .then((docs:Post[]) => {
+            setPosts(docs);
+          }).then(() => {
+            getUserSettings()
+              .then((userSettings:any) => {
+                setDisplayName(userSettings.displayName);
+                setRole(userSettings.role);
+                setIsLoading(false);
+              });
+          })
       });
   }, []);
 

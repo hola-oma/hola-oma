@@ -16,10 +16,10 @@ import './SettingsView.css';
 import ChangeAccountTypeAlert from './components/ChangeAccountTypeAlert';
 
 interface ISettingsView extends RouteComponentProps<any>{
-  // empty for now 
+  setIsLoading: (loading: boolean) => void
 }
 
-const SettingsView: React.FC<ISettingsView> = ({ history }) => {
+const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
@@ -67,18 +67,28 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
 
   /* GET USER's PROFILE AND SETTINGS */
   useEffect(() => {
+    let isMounted = true;
+    setIsLoading(true);
+
     getUserSettings()
       .then((settings:any) => {
-        setRole(settings.role);
-        setDisplayName(settings?.displayName);
-        setEmail(settings?.email);
-      });
+        if (isMounted) {
+          setRole(settings.role);
+          setDisplayName(settings?.displayName);
+          setEmail(settings?.email);
+          
+          getUserProfile()
+          .then((userProfile: any) => {
+            setUserID(userProfile?.uid);
 
-    getUserProfile()
-      .then((userProfile: any) => {
-        setUserID(userProfile?.uid);
-      })
-  }, []); // fires on page load if this is empty [] 
+            setIsLoading(false);
+          });
+      }
+
+    });
+
+    return () => { isMounted = false; }
+  }, [setIsLoading]); // fires on page load if this is empty [] 
 
   return (
     <>

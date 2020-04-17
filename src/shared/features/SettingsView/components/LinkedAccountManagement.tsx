@@ -22,14 +22,24 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
 
   // On page load, this calls getLinkedAccounts from the link service
   useEffect(() => {
+    let isMounted = true;
+
     getLinkedAccounts()
       .then((links:AccountLink[]) => {
-        let verifiedAccounts: AccountLink[] = links.filter(link => link.verified === true);
-        setLinkedAccounts(verifiedAccounts);
+        if (isMounted) {
 
-        let pendingAccounts: AccountLink[] = links.filter(link => link.verified === false);     
-        setPendingAccounts(pendingAccounts);
-    })
+          let verifiedAccounts: AccountLink[] = links.filter(link => link.verified === true);
+          setLinkedAccounts(verifiedAccounts);
+
+          let pendingAccounts: AccountLink[] = links.filter(link => link.verified === false);     
+          setPendingAccounts(pendingAccounts);
+        }
+
+        // todo: send "isLoading = false" when these are done
+        // could work with a global isLoading hook? 
+    });
+
+    return () => { isMounted = false; }
   }, []);
 
   const handleManageAccountLinkAlertClose = () => {
