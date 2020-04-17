@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { roles } from '../../../enums/enums';
-
-import { RouteComponentProps, Link } from 'react-router-dom'; // give us 'history' object
+import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
 import { getUserSettings, updateUserSettings, getUserProfile, updateUserProfile } from '../../../services/user';
 
