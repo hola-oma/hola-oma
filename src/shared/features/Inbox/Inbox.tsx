@@ -9,6 +9,7 @@ import { Post } from 'shared/models/post.model';
 
 import './Inbox.css';
 import CurrentMsgModal from "./components/CurrentMsgModal";
+import {markPostRead} from "../../../services/post";
 
 const useStyles = makeStyles({
   root: {
@@ -39,9 +40,12 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
   const classes = useStyles();
   const [currentMsgModalOpen, setCurrentMsgModalOpen] = useState<boolean>(false);
 
-  const pressEnvelope = function(envelopePost: Post) {
+  const pressEnvelope = async function (envelopePost: Post) {
     currentPost = envelopePost;
     setCurrentMsgModalOpen(true);
+    let postID = currentPost?.read;
+    console.log(postID);
+    markPostRead(envelopePost).then(r => console.log("post read status not changed"));
   }
 
   const returnToInbox = () => {

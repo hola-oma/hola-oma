@@ -3,9 +3,8 @@
 import * as firebase from "firebase/app";
 import 'firebase/storage';
 import { Post } from '../shared/models/post.model';
-import {authenticateFromStore, getUserDataByID, getUserRoleByID} from "./user";
+import {authenticateFromStore, getUserRoleByID} from "./user";
 import {roles} from "../enums/enums";
-import {Simulate} from "react-dom/test-utils";
 
 export const getPosts = async (): Promise<Post[]> => {
   await authenticateFromStore();
@@ -50,6 +49,7 @@ export const getPosts = async (): Promise<Post[]> => {
 
 export const createPost = async (post: Post) => {
   const db = firebase.firestore();
+  let postID = ""
 
   try {
     await db.collection("posts").add({
@@ -60,14 +60,31 @@ export const createPost = async (post: Post) => {
       read: post.read,
       date: post.date,
       receiverIDs: post.receiverIDs
-    });
+      })
+      .then(function(docRef) {
+      console.log("Document written with ID: ", docRef.id);
+      postID = docRef.id;
 
-    return true;
+      })
+      .catch(function(error) {
+        console.error("Error adding document: ", error);
+      });
+    return postID;    // changed from bool
 
   } catch(e) {
     console.log(e.message);
     throw Error(e.message);
   }
+}
+
+export const updatePostID = async (postID: string) => {
+  const db = firebase.firestore();
+  db.collection("posts").doc(postID).update({
+    "pid": postID,
+  })
+    .then(function() {
+      console.log("Document successfully updated with post ID!");
+    });
 }
 
 export const uploadFile = async(selectedFile: File) => {
@@ -79,4 +96,13 @@ export const uploadFile = async(selectedFile: File) => {
   let uploadTask = await storageRef.put(selectedFile);
   downloadURL = await uploadTask.ref.getDownloadURL();
   return downloadURL;
+}
+
+export const markPostRead = async (post: Post) => {
+  const db = firebase.firestore();
+  db.collection("posts").get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      console.log(doc.id, " => ", doc.data());
+    });
+  });
 }
