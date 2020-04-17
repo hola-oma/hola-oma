@@ -14,7 +14,7 @@ import firebaseConfig from './firebase.config';
 import { User } from 'shared/models/user.model';
 import { getUserSettings } from 'services/user';
 import { CssBaseline } from '@material-ui/core';
-import { blueGrey, teal, orange, green, red } from '@material-ui/core/colors';
+import { blueGrey, teal } from '@material-ui/core/colors';
 
 firebase.initializeApp(firebaseConfig);
 

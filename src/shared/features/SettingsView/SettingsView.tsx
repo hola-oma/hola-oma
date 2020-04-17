@@ -15,6 +15,7 @@ import BigInput from 'shared/components/BigInput/BigInput';
 import LinkedAccountManagement from './components/LinkedAccountManagement';
 
 import './SettingsView.css';
+import ChangeAccountTypeAlert from './components/ChangeAccountTypeAlert';
 
 interface ISettingsView extends RouteComponentProps<any>{
   // empty for now 
@@ -25,6 +26,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [userID, setUserID] = useState("");
+  const [changeAccountTypeAlertOpen, setChangeAccountTypeAlertOpen] = useState<boolean>(false);
 
   const [error, setErrors] = useState("");
 
@@ -37,7 +39,16 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
   }
 
   const openRoleModal = () => {
-    console.log("opening role change modal");
+    setChangeAccountTypeAlertOpen(true);
+  }
+
+  const handleChangeAccountTypeAlertClose = () => {
+    setChangeAccountTypeAlertOpen(false);
+  }
+
+  const changeRole = (newRole: string) => {
+    setRole(newRole);
+    setChangeAccountTypeAlertOpen(false);
   }
 
   /* UPDATE ACCOUNT SETTINGS */
@@ -72,6 +83,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
   }, []); // fires on page load if this is empty [] 
 
   return (
+    <>
     <Grid container className="settingsForm" spacing={2} alignItems="flex-start">
         <Grid item xs={12} sm={5}>
           <div>
@@ -106,40 +118,17 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Typography>Account type: {role.toString()} <Button variant="outlined" size="small" color="primary" className="pullRight" onClick={() => openRoleModal()}>Change</Button></Typography>
+                  <Typography>Account type: {role.toString()} 
+                    <Button 
+                      variant="outlined" 
+                      size="small" 
+                      color="primary" 
+                      className="pullRight" 
+                      onClick={() => openRoleModal()}>Change</Button>
+                    </Typography>
                 </Grid>
-                {/* 
-                <Grid item xs={12}>
-                <Typography component="h2" variant="h5">
-                  Account type
-                </Typography>
 
-                  <label>
-                  <input
-                    type="radio"
-                    name="accountType"
-                    id="receiver"
-                    value="receiver"
-                    checked={role === roles.receiver}
-                    onChange={e => setRole(roles.receiver)}
-                    />
-                    <b>Receive</b> posts
-                  </label>
-                  <br/>
-                  <label>
-                    <input
-                      type="radio"
-                      name="accountType"
-                      id="poster"
-                      value="poster"
-                      checked={role === roles.poster}
-                      onChange={e => setRole(roles.poster)}
-                      />
-                    <b>Make</b> posts
-                  </label>
-                </Grid>
-                                */}
-
+                
               <Button type="submit"
                 fullWidth
                 variant="contained"
@@ -173,6 +162,15 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
       </Box>
     </Grid>
     </Grid>
+
+    <ChangeAccountTypeAlert 
+      isOpen={changeAccountTypeAlertOpen} 
+      role={role} 
+      changeRole={changeRole}
+      onClose={handleChangeAccountTypeAlertClose} 
+    />
+
+  </>
   )
 }
 
