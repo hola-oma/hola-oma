@@ -27,10 +27,11 @@ function App() {
   const [userData, setUserData] = useState<User>();// call db and get stuff, put it in here 
 
   const readSession = async () => {
+    let db;
     const request = window.indexedDB.open("firebaseLocalStorageDb", 1);
     request.onsuccess = async function(event: any) {
       // get database from event
-      const db = event.target.result;
+      db = event.target.result;
   
       // create transaction from database
       try {
@@ -49,7 +50,8 @@ function App() {
     }
 
     request.onupgradeneeded = async function(event: any) {
-      event?.target?.result?.createObjectStore('firebaseLocalStorage', {});
+      db = event.target.result;
+      db.createObjectStore('firebaseLocalStorage', {keyPath: 'fbase_key'});
     };
 
     // get user from db
