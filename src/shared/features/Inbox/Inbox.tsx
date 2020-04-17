@@ -86,9 +86,23 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
       <Box className="todo">
         <h3>To do items:</h3>
         <ul>
-          <li>Style modal and make full screen</li>
-          <li>General UI styling</li>
-          <li>Shrink font or truncate sender's name when sender's names are so long they distort the length of the card</li>
+          <li>UI:
+            <ul>Shrink font or truncate sender's name when sender's names are so long they distort the length of the card</ul>
+            <ul>Possibly limit number of characters of display name</ul>
+          </li>
+          <li>Pagination:
+            <ul>Max of 3 pages</ul>
+            <ul>Max of 6(?) messages per page </ul>
+            <ul>Only show most recent messages</ul>
+          </li>
+          <li>CurrentMsgModal:
+            <ul>Actually render photo from URL</ul>
+            <ul>Better styling</ul>
+            <ul>Fix: "Warning: findDOMNode is deprecated in StrictMode.
+              findDOMNode was passed an instance of Transition which is inside StrictMode.
+              Instead, add a ref directly to the element you want to reference.
+              Learn more about using refs safely here: https://fb.me/react-strict-mode-find-node"</ul>
+          </li>
         </ul>
       </Box>
     </Container>

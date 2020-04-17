@@ -90,7 +90,7 @@ const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , currentPost, re
                   color="primary"
                   className={classes.button}
                   startIcon={<CreateIcon />}
-                  onClick={returnToInbox}
+                  onClick={replyToMessage}
                 >
                   Reply
                 </Button>

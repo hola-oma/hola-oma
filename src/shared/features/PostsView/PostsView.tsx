@@ -2,10 +2,10 @@ import React, {useEffect, useState} from 'react';
 
 import {roles} from '../../../enums/enums';
 
-import {getUserProfile, getUserSettings} from "services/user";
+import {getUserDataByID, getUserProfile, getUserSettings} from "services/user";
 import Inbox from '../Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
-import { Box, Link as ButtonLink} from '@material-ui/core';
+import { Link as ButtonLink} from '@material-ui/core';
 import { getPosts } from 'services/post';
 
 import {Post} from '../../models/post.model';
@@ -17,6 +17,7 @@ import {AccountLink} from 'shared/models/accountLink.model';
 import PendingInvitationModal from './components/PendingInvitationModal';
 
 import Alert from '@material-ui/lab/Alert';
+import * as firebase from "firebase";
 
 
 const PostsView: React.FC = () => {
@@ -47,12 +48,11 @@ const PostsView: React.FC = () => {
       .then((doc:any) => {
         setRole(doc?.role);
       });
-  }, []); // fires on page load if this is empty [] 
+  }, []); // fires on page load if this is empty []
 
   // Get all posts for receiver or sent by poster
   useEffect(() => {
-    let typedRole: roles = roles[role as keyof typeof roles];     // https://stackoverflow.com/questions/17380845/how-do-i-convert-a-string-to-enum-in-typescript
-    getPosts(typedRole).then((docs:Post[]) => {
+    getPosts().then((docs:Post[]) => {
       setPosts(docs);
     })
   }, []);
@@ -61,7 +61,7 @@ const PostsView: React.FC = () => {
   useEffect(() => {
     getLinkedAccounts()
       .then((links:AccountLink[]) => {
-        const pendingInvitations = links.filter(link => link.verified === false);
+        const pendingInvitations = links.filter(link => !link.verified);
         updatePendingInvitations(pendingInvitations);
         setLinkedAccounts(links);
       });
