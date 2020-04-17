@@ -106,7 +106,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Typography>Account type: {role.toString()} <Button variant="outlined" size="small" color="primary" onClick={() => openRoleModal()}>Change</Button></Typography>
+                  <Typography>Account type: {role.toString()} <Button variant="outlined" size="small" color="primary" className="pullRight" onClick={() => openRoleModal()}>Change</Button></Typography>
                 </Grid>
                 {/* 
                 <Grid item xs={12}>

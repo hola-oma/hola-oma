@@ -111,9 +111,10 @@ Use: <Box className="devBox">...stuff here...</Box> */
   border-color: red !important;
 }
 
-.buttonAccept {
-  color: green !important;
+.buttonSafe {
+  color: #fff !important;
   border-color: green !important;
+  background-color: green !important;
 }
 
 /* 

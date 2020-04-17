@@ -92,7 +92,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
 
   const acceptButton = (friend: AccountLink) => {
     return (
-      <Button variant="outlined" className="buttonAccept" onClick={() => acceptAccountLink(friend)}>Accept</Button>
+      <Button className="buttonSafe" onClick={() => acceptAccountLink(friend)}>Accept</Button>
     )
   }
 
