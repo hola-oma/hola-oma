@@ -35,9 +35,6 @@ const ChangeAccountTypeAlert: React.FC<IChangeAccountTypeAlert> = ({ isOpen, onC
       {/* Delete account link */}
       <Grid container>
         <Grid item xs={12}>
-          <Typography component="h2" variant="h6">
-            Account type:
-          </Typography>
 
           <label>
           <input
