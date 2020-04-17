@@ -27,7 +27,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
         let verifiedAccounts: AccountLink[] = links.filter(link => link.verified === true);
         setLinkedAccounts(verifiedAccounts);
 
-        let pendingAccounts: AccountLink[] = links.filter(link => link.verified === false);
+        let pendingAccounts: AccountLink[] = links.filter(link => link.verified === false);     
         setPendingAccounts(pendingAccounts);
     })
   }, []);
@@ -107,10 +107,33 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
       <Button color="primary" onClick={() => deleteAccountLink(friend)}>Cancel</Button>
     )
   }
+
+  const showPrimaryText = (friend: AccountLink) => {
+    let name = '';
+    if (friend.verified) {
+      name = friend.displayName;
+    } else {
+      name = role === roles.poster ? friend.email : friend.displayName;
+    }
+
+    return name;
+  }
+
+  const showSecondaryText = (friend: AccountLink) => {
+    let secondaryText = '';
+    if (role === roles.poster) {
+      secondaryText = friend.verified ? friend.email : 'Waiting for them to accept';
+    } else if (role === roles.receiver) {
+      secondaryText = friend.verified ? '' : 'Pending';
+    }
+    return secondaryText;
+  }
+  
   
   const generateLinkedAccountsList = (role: string, items: AccountLink[]) => {
     return items.map((friend, index) => {
       return (
+        /* className={`friend ${!friend.verified ? 'unfriend' : ''}`}> */
           <ListItem key={index}>
             {/* Icon to the left */}
             <ListItemAvatar>
@@ -121,8 +144,8 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
 
             {/* Text */}
             <ListItemText
-              primary={friend.id}
-              secondary={friend.verified ? 'Verified' : role === roles.poster ? 'Waiting for them to accept' : 'Pending'}
+              primary={showPrimaryText(friend)}
+              secondary={showSecondaryText(friend)}
             />
             {/* Button to the right */}
             <ListItemSecondaryAction>
@@ -139,7 +162,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
       <h3>{role === roles.poster ? 'Sharing posts with:' : 'Getting updates from:'}</h3>
       <div>
         <List>
-          {generateLinkedAccountsList(role, linkedAccounts)}
+          {linkedAccounts.length ? generateLinkedAccountsList(role, linkedAccounts) : 'You are not following anyone. Ask a family member to send you an invitation so you can view their photos.'}
         </List>
       </div>
     </Box>
@@ -149,7 +172,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
       <h3>{role === roles.poster ? 'Sent invitations:' : 'Pending invitations:'}</h3>
       <div>
         <List>
-          {generateLinkedAccountsList(role, pendingAccounts)}
+          {pendingAccounts.length ? generateLinkedAccountsList(role, pendingAccounts) : 'No pending invitations'}
         </List>
       </div>
     </Box>
