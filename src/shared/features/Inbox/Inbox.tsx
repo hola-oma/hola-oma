@@ -43,9 +43,10 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
   const pressEnvelope = async function (envelopePost: Post) {
     currentPost = envelopePost;
     setCurrentMsgModalOpen(true);
-    let postID = currentPost?.read;
+    let postID = envelopePost?.pid;
     console.log(postID);
-    markPostRead(envelopePost).then(r => console.log("post read status not changed"));
+    markPostRead(postID)
+      .then(r => console.log("post read status changed"));
   }
 
   const returnToInbox = () => {

@@ -98,11 +98,17 @@ export const uploadFile = async(selectedFile: File) => {
   return downloadURL;
 }
 
-export const markPostRead = async (post: Post) => {
+export const markPostRead = async (postID: string) => {
   const db = firebase.firestore();
-  db.collection("posts").get().then(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
-      console.log(doc.id, " => ", doc.data());
-    });
+  let postRef = db.collection("posts").doc(postID);
+
+  postRef.get().then(function(doc) {
+    if (doc.exists) {
+      console.log("Document data:", doc.data());
+    } else {
+      console.log("No such document!");
+    }
+  }).catch(function(error) {
+    console.log("Error getting document:", error);
   });
 }
