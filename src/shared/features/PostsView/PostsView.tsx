@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import {roles} from '../../../enums/enums';
 
-import {getUserDataByID, getUserProfile, getUserSettings} from "services/user";
+import {getUserProfile, getUserSettings} from "services/user";
 import Inbox from '../Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
 import { Link as ButtonLink} from '@material-ui/core';
@@ -17,7 +17,6 @@ import {AccountLink} from 'shared/models/accountLink.model';
 import PendingInvitationModal from './components/PendingInvitationModal';
 
 import Alert from '@material-ui/lab/Alert';
-import * as firebase from "firebase";
 
 
 const PostsView: React.FC = () => {

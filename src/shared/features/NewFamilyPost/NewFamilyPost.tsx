@@ -31,6 +31,7 @@ const NewFamilyPost: React.FC = () => {
         }
 
         let post = {
+            pid: "",
             creatorID: userId,
             from: displayName,
             message: textValue,

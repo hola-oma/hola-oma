@@ -28,9 +28,10 @@ export const getPosts = async (): Promise<Post[]> => {
           return;
         }
         snapshot.forEach(doc => {
-          console.log(doc.id, '->', doc.data());
+          // console.log(doc.id, '->', doc.data());
           let data = doc.data();
           posts.push({
+            pid: data.pid,
             creatorID: data.creatorID,
             from: data.from,
             message: data.message,
@@ -79,7 +80,7 @@ export const createPost = async (post: Post) => {
 
 export const updatePostID = async (postID: string) => {
   const db = firebase.firestore();
-  db.collection("posts").doc(postID).update({
+  await db.collection("posts").doc(postID).update({
     "pid": postID,
   })
     .then(function() {
@@ -100,15 +101,26 @@ export const uploadFile = async(selectedFile: File) => {
 
 export const markPostRead = async (postID: string) => {
   const db = firebase.firestore();
-  let postRef = db.collection("posts").doc(postID);
+  let postRef: firebase.firestore.DocumentReference;
 
-  postRef.get().then(function(doc) {
-    if (doc.exists) {
-      console.log("Document data:", doc.data());
-    } else {
-      console.log("No such document!");
-    }
-  }).catch(function(error) {
-    console.log("Error getting document:", error);
-  });
+  try {
+    db.collection("posts").doc(postID);   // Catch error for posts that have no pid
+    
+    postRef = db.collection("posts").doc(postID);
+    postRef.get().then(function(doc) {
+      if (doc.exists) {
+        postRef.update({"read": true})
+      } else {
+        console.log("Post does not exist");
+      }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
+
+  }
+  catch (error) {
+    console.log("Invalid format: no post id");
+  }
+
+
 }
