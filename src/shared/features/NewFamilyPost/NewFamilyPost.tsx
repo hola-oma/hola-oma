@@ -5,6 +5,7 @@ import { useHistory } from "react-router";
 import { Box, TextField, Button, Checkbox } from '@material-ui/core';
 import { createPost, uploadFile } from "services/post";
 import { getUserProfile } from "services/user";
+import { getLinkedAccounts } from "services/accountLink";
 
 import './NewFamilyPost.css';
 
@@ -24,7 +25,20 @@ const NewFamilyPost: React.FC = () => {
 
     const submitPost = async (e: any) => {
         e.preventDefault();
-        let post = {creatorID: userId, from: displayName, message: textValue, photoURL: "", read: false, date: new Date().getTime(), receiverIDs: ["pfvIc4RIGmRz1gyqMxsHuLW5mNA3"]};
+        let receiverIDs = [];
+        for (let i = 0; i < receivers.length; i++) {
+            receiverIDs.push(receivers[i].id);
+        }
+
+        let post = {
+            creatorID: userId,
+            from: displayName,
+            message: textValue,
+            photoURL: "",
+            read: false,
+            date: new Date().getTime(),
+            receiverIDs: receiverIDs
+        };
 
         if (selectedFile) {
             const fileURL = await uploadFile(selectedFile);
@@ -59,8 +73,22 @@ const NewFamilyPost: React.FC = () => {
             setUserId(userProfile?.uid);
         });
         //Get connected accounts to populate receiver list
-        let rcvrs = [{id: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", name: "Kristin Grandparent Test", checked: false}];
-        setReceivers(rcvrs);
+        getLinkedAccounts()
+        .then((linkedAccounts) => {
+            console.log(linkedAccounts);
+            let rcvrs = [];
+            for (let i = 0; i < linkedAccounts.length; i++) {
+                if (linkedAccounts[i].verified === true) {
+                    let displayName = linkedAccounts[i].displayName ? linkedAccounts[i].displayName : "Unknown Username";
+                    let receiver = {
+                        id: linkedAccounts[i].id,
+                        name: displayName,
+                        checked: false};
+                    rcvrs.push(receiver);
+                }
+            }
+            setReceivers(rcvrs);
+        });
     }, []); // fires on page load if this is empty [] 
 
     return (
