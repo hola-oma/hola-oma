@@ -56,6 +56,11 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         setModalOpen(!modalOpen);
     }
 
+    const getDateAsString = function(postDate: number) {
+        let date = new Date(postDate).toString()
+        return date.substring(0, 21);
+    }
+
     return (
         <>
         <div className={"postCard"} onClick={handleClick}>
@@ -79,12 +84,17 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 </CardContent>
             </Card>
         </Container>
+        <Typography variant="subtitle2">
+            Sent message {getDateAsString(post.date)}
+            <br/>
+        </Typography>
 
          <Box className="todo">
             <h3>To do items:</h3>
             <ul>
                 <li>Display responses</li>
                 <li>Modal on response click</li>
+                <li>Seen by with checkmark icons and receiver list</li>
                 <li>Edit/delete options?</li>
             </ul>
         </Box>
