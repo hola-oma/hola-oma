@@ -21,7 +21,7 @@ export const getPosts = async (): Promise<Post[]> => {
   // Get posts (rearranged try / catch block to ensure empty post array caught)
   try {
     await db.collection("posts")
-      .where(fieldPath, opStr as "==" | "array-contains", userId).get()
+      .where(fieldPath, opStr as "==" | "array-contains", userId).orderBy("date", "desc").get()
       .then((snapshot) => {
         if (snapshot.empty) {
           console.log("No posts found for: " + userRole + ", userID: " + userId);
