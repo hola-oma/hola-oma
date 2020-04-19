@@ -59,7 +59,7 @@ const PostsView: React.FC = (props) => {
   }, []);
 
   useEffect(() => {
-    const db = firebase.firestore().collection('posts')
+    const db = firebase.firestore().collection('posts').where("receiverIDs", "array-contains", "RNkLHuJJc2cQgf5LyMz26ENr40r2").orderBy("date", "desc")
     db.onSnapshot( snapshot => {
       const retrievedPosts:Post[] = []
       snapshot.forEach( doc => {
@@ -75,7 +75,9 @@ const PostsView: React.FC = (props) => {
           receiverIDs: data.receiverIDs
         })
       })
-
+      retrievedPosts.forEach(indivPost => {
+        console.log(indivPost.from);
+      })
       setPosts(retrievedPosts);
     })
     // return () => db.off('value', listener);
