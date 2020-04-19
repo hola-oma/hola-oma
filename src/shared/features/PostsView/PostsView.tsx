@@ -6,7 +6,7 @@ import {getUserProfile, getUserSettings} from "services/user";
 import Inbox from '../Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
 import { Link as ButtonLink} from '@material-ui/core';
-import { getPosts } from 'services/post';
+import {getPosts, listenForStateChange} from 'services/post';
 
 import {Post} from '../../models/post.model';
 
@@ -29,7 +29,6 @@ const PostsView: React.FC = (props) => {
   const [pendingInvitations, setPendingInvitations] = useState<AccountLink[]>([]);
   const [invite, setInvite] = useState<AccountLink>();
   const [invitationModalOpen, setInvitationModalOpen] = useState<boolean>(false);
-  const db = firebase.firestore();
 
   const updatePendingInvitations = (dataArr: AccountLink[]) => {
     if (dataArr.length > 0) {
@@ -52,36 +51,18 @@ const PostsView: React.FC = (props) => {
   }, []); // fires on page load if this is empty []
 
   // Get all posts for receiver or sent by poster
+  // useEffect(() => {
+  //   getPosts().then((docs:Post[]) => {
+  //     setPosts(docs);
+  //   })
+  // }, []);
+
+  // Get state change of posts
   useEffect(() => {
-    getPosts().then((docs:Post[]) => {
-      setPosts(docs);
+    listenForStateChange().then((docs:Post[]) => {
+      setPosts(docs); // todo: clear previous posts so not rendered twice
     })
   }, []);
-
-  useEffect(() => {
-    const db = firebase.firestore().collection('posts').where("receiverIDs", "array-contains", "RNkLHuJJc2cQgf5LyMz26ENr40r2").orderBy("date", "desc")
-    db.onSnapshot( snapshot => {
-      const retrievedPosts:Post[] = []
-      snapshot.forEach( doc => {
-        const data = doc.data();
-        retrievedPosts.push({
-          pid: data.pid,
-          creatorID: data.creatorID,
-          from: data.from,
-          message: data.message,
-          photoURL: data.photoURL,
-          read: data.read,
-          date: data.date,
-          receiverIDs: data.receiverIDs
-        })
-      })
-      retrievedPosts.forEach(indivPost => {
-        console.log(indivPost.from);
-      })
-      setPosts(retrievedPosts);
-    })
-    // return () => db.off('value', listener);
-  }, [db]);
 
   // Get linked accounts
   useEffect(() => {

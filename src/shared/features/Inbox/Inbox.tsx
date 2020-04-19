@@ -55,7 +55,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
     const returnToInbox = () => {
       console.log("Message closed");
       setCurrentMsgModalOpen(false);
-      console.log("post read: " + currentPost?.read);
     }
 
     const replyToMessage = () => {

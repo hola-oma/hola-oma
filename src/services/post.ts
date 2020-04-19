@@ -18,7 +18,6 @@ export const getPosts = async (): Promise<Post[]> => {
   let fieldPath = (userRole === roles.receiver) ? "receiverIDs" : "creatorID";
   let opStr = (userRole === roles.receiver) ? "array-contains" : "==";
 
-  // Get posts (rearranged try / catch block to ensure empty post array caught)
   try {
     await db.collection("posts")
       .where(fieldPath, opStr as "==" | "array-contains", userId).orderBy("date", "desc").get()
@@ -46,7 +45,38 @@ export const getPosts = async (): Promise<Post[]> => {
         console.error(error);
       }
       return posts;
+}
+
+export const listenForStateChange = async (): Promise<Post[]> => {
+  const retrievedPosts:Post[] = [];
+  try {
+    const db = firebase.firestore().collection('posts')
+      .where("receiverIDs", "array-contains", "RNkLHuJJc2cQgf5LyMz26ENr40r2")
+      .orderBy("date", "desc")
+    db.onSnapshot(snapshot => {
+      snapshot.forEach(doc => {
+        // console.log(doc.id, '->', doc.data());
+        const data = doc.data();
+        retrievedPosts.push({
+          pid: data.pid,
+          creatorID: data.creatorID,
+          from: data.from,
+          message: data.message,
+          photoURL: data.photoURL,
+          read: data.read,
+          date: data.date,
+          receiverIDs: data.receiverIDs
+        })
+      })
+      retrievedPosts.forEach((indivPost => {
+        console.log(indivPost.from);
+      }))
+    })
+  } catch (error) {
+    console.error(error);
   }
+  return retrievedPosts;
+}
 
 export const createPost = async (post: Post) => {
   const db = firebase.firestore();
