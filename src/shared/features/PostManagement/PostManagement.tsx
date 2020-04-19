@@ -60,7 +60,10 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
           posts.map((post: Post, index: number) => {
             return (
               <div className={"postCard"} key={index}>
-                <Link to={"/postDetails"}>
+                <Link to={{
+                  pathname: "/postDetails",
+                  state: {post: post}
+                }}>
                 <Card className={classes.root} variant="outlined">
 
                   <CardHeader
