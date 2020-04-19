@@ -17,17 +17,19 @@ import {AccountLink} from 'shared/models/accountLink.model';
 import PendingInvitationModal from './components/PendingInvitationModal';
 
 import Alert from '@material-ui/lab/Alert';
+import * as firebase from "firebase";
 
 
-const PostsView: React.FC = () => {
+const PostsView: React.FC = (props) => {
 
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
-  const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects 
+  const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects
   const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
   const [pendingInvitations, setPendingInvitations] = useState<AccountLink[]>([]);
   const [invite, setInvite] = useState<AccountLink>();
   const [invitationModalOpen, setInvitationModalOpen] = useState<boolean>(false);
+  const db = firebase.firestore();
 
   const updatePendingInvitations = (dataArr: AccountLink[]) => {
     if (dataArr.length > 0) {
@@ -55,6 +57,29 @@ const PostsView: React.FC = () => {
       setPosts(docs);
     })
   }, []);
+
+  useEffect(() => {
+    const db = firebase.firestore().collection('posts')
+    db.onSnapshot( snapshot => {
+      const retrievedPosts:Post[] = []
+      snapshot.forEach( doc => {
+        const data = doc.data();
+        retrievedPosts.push({
+          pid: data.pid,
+          creatorID: data.creatorID,
+          from: data.from,
+          message: data.message,
+          photoURL: data.photoURL,
+          read: data.read,
+          date: data.date,
+          receiverIDs: data.receiverIDs
+        })
+      })
+
+      setPosts(retrievedPosts);
+    })
+    // return () => db.off('value', listener);
+  }, [db]);
 
   // Get linked accounts
   useEffect(() => {
@@ -131,9 +156,7 @@ const PostsView: React.FC = () => {
       </>
     }
 
-    {role === roles.poster && 
-      <PostManagement posts={posts}/>
-    }
+    {role === roles.poster && <PostManagement posts={posts}/>}
     {role === roles.receiver && <Inbox posts={posts}/>}
 
     </>
