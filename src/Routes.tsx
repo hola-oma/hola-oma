@@ -11,8 +11,8 @@ import { RouteComponentProps, withRouter, Switch, useHistory } from "react-route
 import { Route } from "react-router-dom";
 import ProtectedRouteHoc from "ProtectedRouteHoc";
 import { User } from "shared/models/user.model";
-import PostDetails from "./shared/features/PostDetails";
-import CreatePost from "./shared/features/CreatePost";
+// import PostDetails from "./shared/features/PostDetails/PostDetails";
+import CreatePost from "./shared/features/CreatePost/CreatePost";
 
 interface IRoutes {
   isLoggedIn: boolean;
@@ -41,7 +41,7 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
           <Route exact path="/login" component={Login} />
           <ProtectedRouteHoc exact path="/registerDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={RegisterDetails} />
           <ProtectedRouteHoc exact path="/posts" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostsView} />
-          <ProtectedRouteHoc exact path="/postDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostDetails} />
+          {/*<ProtectedRouteHoc exact path="/postDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostDetails} />*/} {/* use modals instead */}
           <ProtectedRouteHoc exact path="/newPost" isLoggedIn={isLoggedIn} public={false} RouteComponent={CreatePost} />
           <ProtectedRouteHoc exact path="/settings" isLoggedIn={isLoggedIn} public={false} RouteComponent={SettingsView} />
           <ProtectedRouteHoc exact path="/addAccountLink" isLoggedIn={isLoggedIn} public={false} RouteComponent={AddAccountLink} />

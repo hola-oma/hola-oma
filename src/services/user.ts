@@ -49,6 +49,12 @@ export const getDisplayNameByID = async (id: string) => {
   return userdoc?.data()?.displayName;
 }
 
+export const getUserRoleByID = async (id: string): Promise<string> => {
+  const db = firebase.firestore();
+  const userdoc = await db.collection("users").doc(id).get();
+  return userdoc?.data()?.role;
+}
+
 export const getUserDataByID = async (id: string) => {
   const db = firebase.firestore();
   const userdoc = await db.collection("users").doc(id).get();
