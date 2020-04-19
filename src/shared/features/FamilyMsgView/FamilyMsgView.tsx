@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import {Box, Card, Modal, CardContent, CardHeader} from '@material-ui/core';
+import {Box, Card, Modal, CardContent, Typography, Container} from '@material-ui/core';
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Post } from 'shared/models/post.model';
@@ -67,20 +67,22 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             <div className={classes.paper}>Insert full display of grandparent response here.</div>
         </Modal>
 
-        <Card className={classes.root} variant="outlined">
-            <CardHeader
-                title={"Sent Message"}>
-            </CardHeader>
-
-            <CardContent>
-                {post.message}
-            </CardContent>
-        </Card>
+        <Container>
+            <Card variant="outlined">
+                <CardContent>
+                    <Typography variant="subtitle2">
+                        Sent Message
+                    </Typography>
+                    <Typography variant="h5">
+                        {post.message}
+                    </Typography>
+                </CardContent>
+            </Card>
+        </Container>
 
          <Box className="todo">
             <h3>To do items:</h3>
             <ul>
-                <li>Display original message</li>
                 <li>Display responses</li>
                 <li>Modal on response click</li>
                 <li>Edit/delete options?</li>

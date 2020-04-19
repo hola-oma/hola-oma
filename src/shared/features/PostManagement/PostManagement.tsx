@@ -46,7 +46,6 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
   return (
     <Container>
       <Container>
-          {/* Todo: Make CreatePost page */}
           <Link to={"/newPost"}>
             <Card>
                 <CardContent>
