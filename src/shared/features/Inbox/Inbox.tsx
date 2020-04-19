@@ -11,6 +11,7 @@ import './Inbox.css';
 import CurrentMsgModal from "./components/CurrentMsgModal";
 import {markPostRead} from "../../../services/post";
 import PostsView from "../PostsView/PostsView";
+import * as firebase from "firebase";
 
 const useStyles = makeStyles({
   root: {
@@ -45,7 +46,16 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
     currentPost = envelopePost;
     let postID = currentPost?.pid;
     await markPostRead(postID)
-      .then(() => console.log("post read: " + currentPost?.read));
+      .then(() => console.log("updated post read in database"));
+
+    // Convert to function in post.ts
+    const db = firebase.firestore();
+    db.collection("posts").doc(postID)
+      .onSnapshot(function(doc) {
+        let data:any = doc.data();
+        console.log("Read status: ", data.read);
+      });
+
     setCurrentMsgModalOpen(true);
   }
 
@@ -53,7 +63,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
     console.log("Message closed");
     setCurrentMsgModalOpen(false);
     console.log("post read: " + currentPost?.read);
-    return (PostsView);     // re-render with post opened
   }
 
   const replyToMessage = () => {

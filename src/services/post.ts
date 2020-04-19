@@ -116,11 +116,8 @@ export const markPostRead = async (postID: string) => {
     }).catch(function(error) {
       console.log("Error getting document:", error);
     });
-
   }
   catch (error) {
     console.log("Invalid format: no post id");
   }
-
-
 }
