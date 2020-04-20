@@ -6,7 +6,7 @@ import {getUserProfile, getUserSettings} from "services/user";
 import Inbox from '../Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
 import { Link as ButtonLink} from '@material-ui/core';
-import { /*getPosts,*/ listenForStateChange} from 'services/post';
+import { /*getPosts,*/ getPosts} from 'services/post';
 
 import {Post} from '../../models/post.model';
 
@@ -49,16 +49,10 @@ const PostsView: React.FC = (props) => {
       });
   }, []); // fires on page load if this is empty []
 
-  // Get all posts for receiver or sent by poster
-  // useEffect(() => {
-  //   getPosts().then((docs:Post[]) => {
-  //     setPosts(docs);
-  //   })
-  // }, []);
 
-  // Get state change of posts
+  // Get posts and listen for state change
   useEffect(() => {
-    listenForStateChange().then((docs:Post[]) => {
+    getPosts().then((docs:Post[]) => {
       setPosts(docs);
     })
   }, []);

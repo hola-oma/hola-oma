@@ -6,7 +6,6 @@ import { Post } from '../shared/models/post.model';
 import {authenticateFromStore, getUserRoleByID} from "./user";
 import {roles} from "../enums/enums";
 
-/*
 export const getPosts = async (): Promise<Post[]> => {
   await authenticateFromStore();
   const user = firebase.auth().currentUser;
@@ -20,41 +19,10 @@ export const getPosts = async (): Promise<Post[]> => {
   let opStr = (userRole === roles.receiver) ? "array-contains" : "==";
 
   try {
-    await db.collection("posts")
-      .where(fieldPath, opStr as "==" | "array-contains", userId).orderBy("date", "desc").get()
-      .then((snapshot) => {
-        if (snapshot.empty) {
-          console.log("No posts found for: " + userRole + ", userID: " + userId);
-          return;
-        }
-        snapshot.forEach(doc => {
-          // console.log(doc.id, '->', doc.data());
-          let data = doc.data();
-          posts.push({
-            pid: data.pid,
-            creatorID: data.creatorID,
-            from: data.from,
-            message: data.message,
-            photoURL: data.photoURL,
-            read: data.read,
-            date: data.date,
-            receiverIDs: data.receiverIDs
-          });
-        });
-      })}
-      catch(error) {
-        console.error(error);
-      }
-      return posts;
-}
-*/
-export const listenForStateChange = async (): Promise<Post[]> => {
-  let retrievedPosts: Post[] = [];
-  try {
-    const db = firebase.firestore().collection('posts')
-      .where("receiverIDs", "array-contains", "RNkLHuJJc2cQgf5LyMz26ENr40r2")
+    const postRef = db.collection('posts')
+      .where(fieldPath, opStr as "==" | "array-contains", userId)
       .orderBy("date", "desc")
-    db.onSnapshot(snapshot => {
+    postRef.onSnapshot(snapshot => {          // listen for state change
       const currentPosts: Post[] = [];
       snapshot.forEach(doc => {
         // console.log(doc.id, '->', doc.data());
@@ -70,19 +38,13 @@ export const listenForStateChange = async (): Promise<Post[]> => {
           receiverIDs: data.receiverIDs
         })
       })
-      currentPosts.forEach((indivPost => {
-        console.log(indivPost.from);
-      }))
-      retrievedPosts.length = 0;      // Clear array so posts not appended on state change
-      retrievedPosts.push(...currentPosts);
-      retrievedPosts.forEach((indivPost => {
-        console.log(indivPost.from);
-      }))
+      posts.length = 0;      // Clear array so posts not appended on state change
+      posts.push(...currentPosts);
     })
   } catch (error) {
     console.error(error);
   }
-  return retrievedPosts;
+  return posts;
 }
 
 export const createPost = async (post: Post) => {
