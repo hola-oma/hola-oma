@@ -43,31 +43,8 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
 
   // Get display name
   useEffect(() => {
-<<<<<<< HEAD
     setIsLoading(true);
 
-=======
-    getUserProfile()
-      .then((userProfile: any) => {
-        setDisplayName(userProfile.displayName);
-      })
-
-    getUserSettings()
-      .then((doc:any) => {
-        setRole(doc?.role);
-      });
-  }, []); // fires on page load if this is empty []
-
-  // Get all posts for receiver or sent by poster
-  useEffect(() => {
-    getPosts().then((docs:Post[]) => {
-      setPosts(docs);
-    })
-  }, []);
-
-  // Get linked accounts
-  useEffect(() => {
->>>>>>> master
     getLinkedAccounts()
       .then((links:AccountLink[]) => {
         const pendingInvitations = links.filter(link => !link.verified);
