@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router";
 
 import { Box, TextField, Button, Checkbox } from '@material-ui/core';
-import { createPost, uploadFile } from "services/post";
+import { createPost, updatePostID, uploadFile } from "services/post";
 import { getUserProfile } from "services/user";
 import { getLinkedAccounts } from "services/accountLink";
 
@@ -31,6 +31,7 @@ const NewFamilyPost: React.FC = () => {
         }
 
         let post = {
+            pid: "",
             creatorID: userId,
             from: displayName,
             message: textValue,
@@ -51,6 +52,7 @@ const NewFamilyPost: React.FC = () => {
             const postSent = await createPost(post);
             if (postSent) {
                 console.log("success sending post!");
+                await updatePostID(postSent);       // Add post id to new post document
             }
             if (history) history.push('/posts');
           } catch(e) {

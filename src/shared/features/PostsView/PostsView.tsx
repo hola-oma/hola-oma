@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 
 import {roles} from '../../../enums/enums';
 
-import {getUserDataByID, getUserProfile, getUserSettings} from "services/user";
+import {getUserProfile, getUserSettings} from "services/user";
 import Inbox from '../Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
 import { Link as ButtonLink} from '@material-ui/core';
-import { getPosts } from 'services/post';
+import { /*getPosts,*/ getPosts} from 'services/post';
 
 import {Post} from '../../models/post.model';
 
@@ -17,7 +17,6 @@ import {AccountLink} from 'shared/models/accountLink.model';
 import PendingInvitationModal from './components/PendingInvitationModal';
 
 import Alert from '@material-ui/lab/Alert';
-import * as firebase from "firebase";
 
 
 interface IPostsView {
@@ -28,7 +27,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
 
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
-  const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects 
+  const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects
   const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
   const [pendingInvitations, setPendingInvitations] = useState<AccountLink[]>([]);
   const [invite, setInvite] = useState<AccountLink>();
@@ -129,9 +128,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
       </>
     }
 
-    {role === roles.poster && 
-      <PostManagement posts={posts}/>
-    }
+    {role === roles.poster && <PostManagement posts={posts}/>}
     {role === roles.receiver && <Inbox posts={posts}/>}
 
     </>
