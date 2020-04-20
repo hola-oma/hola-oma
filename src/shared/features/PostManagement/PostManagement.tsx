@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Container, Grid, Card, CardHeader, CardContent, Typography } from '@material-ui/core';
+import { Container, Grid, Card, CardHeader, CardContent, CardMedia, Typography } from '@material-ui/core';
 import Alarm from '@material-ui/icons/Alarm';
 import { Link } from 'react-router-dom';
 
@@ -25,6 +25,9 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
+  media: {
+    height: '140px'
+  }
 });
 
 interface IPostManagement {
@@ -64,6 +67,12 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
                   state: {post: post}
                 }}>
                 <Card className={classes.root} variant="outlined">
+
+                  {post.photoURL && <CardMedia
+                    component="img"
+                    className={classes.media}
+                    image={post.photoURL}
+                  />}
 
                   <CardHeader
                       title={post.message}>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import {Box, Card, Modal, CardContent, Typography, Container} from '@material-ui/core';
+import {Box, Card, Modal, CardContent, CardMedia, Typography, Container} from '@material-ui/core';
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Post } from 'shared/models/post.model';
@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     pos: {
         marginBottom: 12,
+    },
+    media: {
+        height: 500
     }
   })
 );
@@ -63,21 +66,17 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
 
     return (
         <>
-        <div className={"postCard"} onClick={handleClick}>
-            <Card variant="outlined">
-                Placeholder for response
-            </Card>
-        </div>
-        <Modal open={modalOpen} onClose={handleClick} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-            <div className={classes.paper}>Insert full display of grandparent response here.</div>
-        </Modal>
-
         <Container>
             <Card variant="outlined">
                 <CardContent>
                     <Typography variant="subtitle2">
                         Sent Message
                     </Typography>
+                    {post.photoURL && <CardMedia
+                        component="img"
+                        className={classes.media}
+                        image={post.photoURL}
+                    />}
                     <Typography variant="h5">
                         {post.message}
                     </Typography>
@@ -88,6 +87,15 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             Sent message {getDateAsString(post.date)}
             <br/>
         </Typography>
+
+        <div className={"postCard"} onClick={handleClick}>
+            <Card variant="outlined">
+                Placeholder for response
+            </Card>
+        </div>
+        <Modal open={modalOpen} onClose={handleClick} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <div className={classes.paper}>Insert full display of grandparent response here.</div>
+        </Modal>
 
          <Box className="todo">
             <h3>To do items:</h3>
