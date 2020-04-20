@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 
 import {roles} from '../../../enums/enums';
 
-import {getUserDataByID, getUserProfile, getUserSettings} from "services/user";
+import {getUserProfile, getUserSettings} from "services/user";
 import Inbox from '../Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
 import { Link as ButtonLink} from '@material-ui/core';
-import { getPosts } from 'services/post';
+import { /*getPosts,*/ getPosts} from 'services/post';
 
 import {Post} from '../../models/post.model';
 
@@ -17,14 +17,17 @@ import {AccountLink} from 'shared/models/accountLink.model';
 import PendingInvitationModal from './components/PendingInvitationModal';
 
 import Alert from '@material-ui/lab/Alert';
-import * as firebase from "firebase";
 
 
-const PostsView: React.FC = () => {
+interface IPostsView {
+  setIsLoading: (loading: boolean) => void;
+}
+
+const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
 
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
-  const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects 
+  const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects
   const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
   const [pendingInvitations, setPendingInvitations] = useState<AccountLink[]>([]);
   const [invite, setInvite] = useState<AccountLink>();
@@ -39,31 +42,24 @@ const PostsView: React.FC = () => {
 
   // Get display name
   useEffect(() => {
-    getUserProfile()
-      .then((userProfile: any) => {
-        setDisplayName(userProfile.displayName);
-      })
+    setIsLoading(true);
 
-    getUserSettings()
-      .then((doc:any) => {
-        setRole(doc?.role);
-      });
-  }, []); // fires on page load if this is empty []
-
-  // Get all posts for receiver or sent by poster
-  useEffect(() => {
-    getPosts().then((docs:Post[]) => {
-      setPosts(docs);
-    })
-  }, []);
-
-  // Get linked accounts
-  useEffect(() => {
     getLinkedAccounts()
       .then((links:AccountLink[]) => {
         const pendingInvitations = links.filter(link => !link.verified);
         updatePendingInvitations(pendingInvitations);
         setLinkedAccounts(links);
+        getPosts()
+          .then((docs:Post[]) => {
+            setPosts(docs);
+          }).then(() => {
+            getUserSettings()
+              .then((userSettings:any) => {
+                setDisplayName(userSettings.displayName);
+                setRole(userSettings.role);
+                setIsLoading(false);
+              });
+          })
       });
   }, []);
 
@@ -132,9 +128,7 @@ const PostsView: React.FC = () => {
       </>
     }
 
-    {role === roles.poster && 
-      <PostManagement posts={posts}/>
-    }
+    {role === roles.poster && <PostManagement posts={posts}/>}
     {role === roles.receiver && <Inbox posts={posts}/>}
 
     </>

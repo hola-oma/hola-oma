@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import { roles } from '../../../enums/enums';
-
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
 import { getUserSettings, updateUserSettings, getUserProfile, updateUserProfile } from '../../../services/user';
@@ -15,16 +13,18 @@ import BigInput from 'shared/components/BigInput/BigInput';
 import LinkedAccountManagement from './components/LinkedAccountManagement';
 
 import './SettingsView.css';
+import ChangeAccountTypeAlert from './components/ChangeAccountTypeAlert';
 
 interface ISettingsView extends RouteComponentProps<any>{
-  // empty for now 
+  setIsLoading: (loading: boolean) => void
 }
 
-const SettingsView: React.FC<ISettingsView> = ({ history }) => {
+const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [userID, setUserID] = useState("");
+  const [changeAccountTypeAlertOpen, setChangeAccountTypeAlertOpen] = useState<boolean>(false);
 
   const [error, setErrors] = useState("");
 
@@ -34,6 +34,19 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
 
   const updateEmail = (e: any) => {
     setEmail(e.target.value);
+  }
+
+  const openRoleModal = () => {
+    setChangeAccountTypeAlertOpen(true);
+  }
+
+  const handleChangeAccountTypeAlertClose = () => {
+    setChangeAccountTypeAlertOpen(false);
+  }
+
+  const changeRole = (newRole: string) => {
+    setRole(newRole);
+    setChangeAccountTypeAlertOpen(false);
   }
 
   /* UPDATE ACCOUNT SETTINGS */
@@ -54,20 +67,31 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
 
   /* GET USER's PROFILE AND SETTINGS */
   useEffect(() => {
+    let isMounted = true;
+    setIsLoading(true);
+
     getUserSettings()
       .then((settings:any) => {
-        setRole(settings.role);
-        setDisplayName(settings?.displayName);
-        setEmail(settings?.email);
-      });
+        if (isMounted) {
+          setRole(settings.role);
+          setDisplayName(settings?.displayName);
+          setEmail(settings?.email);
+          
+          getUserProfile()
+          .then((userProfile: any) => {
+            setUserID(userProfile?.uid);
 
-    getUserProfile()
-      .then((userProfile: any) => {
-        setUserID(userProfile?.uid);
-      })
-  }, []); // fires on page load if this is empty [] 
+            setIsLoading(false);
+          });
+      }
+
+    });
+
+    return () => { isMounted = false; }
+  }, [setIsLoading]); // fires on page load if this is empty [] 
 
   return (
+    <>
     <Grid container className="settingsForm" spacing={2} alignItems="flex-start">
         <Grid item xs={12} sm={5}>
           <div>
@@ -102,41 +126,23 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
                 </Grid>
 
                 <Grid item xs={12}>
-                <Typography component="h2" variant="h5">
-                  Account type
-                </Typography>
-
-                  <label>
-                  <input
-                    type="radio"
-                    name="accountType"
-                    id="receiver"
-                    value="receiver"
-                    checked={role === roles.receiver}
-                    onChange={e => setRole(roles.receiver)}
-                    />
-                    <b>Receive</b> posts
-                  </label>
-                  <br/>
-                  <label>
-                    <input
-                      type="radio"
-                      name="accountType"
-                      id="poster"
-                      value="poster"
-                      checked={role === roles.poster}
-                      onChange={e => setRole(roles.poster)}
-                      />
-                    <b>Make</b> posts
-                  </label>
+                  <Typography>Account type: {role.toString()} 
+                    <Button 
+                      variant="outlined" 
+                      size="small" 
+                      color="primary" 
+                      className="pullRight" 
+                      onClick={() => openRoleModal()}>Change</Button>
+                    </Typography>
                 </Grid>
 
+                
               <Button type="submit"
                 fullWidth
                 variant="contained"
-                color="primary"
+                color="secondary"
                 className="bigButton">
-                Update settings
+                Save settings
               </Button>
           
             </form>
@@ -164,6 +170,15 @@ const SettingsView: React.FC<ISettingsView> = ({ history }) => {
       </Box>
     </Grid>
     </Grid>
+
+    <ChangeAccountTypeAlert 
+      isOpen={changeAccountTypeAlertOpen} 
+      role={role} 
+      changeRole={changeRole}
+      onClose={handleChangeAccountTypeAlertClose} 
+    />
+
+  </>
   )
 }
 

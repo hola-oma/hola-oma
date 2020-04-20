@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Grid } from '@material-ui/core';
 import { AccountLink } from 'shared/models/accountLink.model';
 
 interface IManageAccountLinkAlert {
@@ -18,23 +18,29 @@ const ManageAccountLinkAlert: React.FC<IManageAccountLinkAlert> = ({ isOpen, onC
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-    <DialogTitle id="alert-dialog-title">No more updates from {friend.id}</DialogTitle>
+    <DialogTitle id="alert-dialog-title">No more updates from {friend.displayName}</DialogTitle>
     <DialogContent>
       <DialogContentText id="alert-dialog-description">
-        Are you sure you wish to remove {friend.id}? You will no longer receive updates from {friend.id}. 
+        Warning! You will not get any more updates from {friend.displayName}. Do you want to continue? 
       </DialogContentText>
     </DialogContent>
     <DialogActions>
 
       {/* Delete account link */}
-      <Button onClick={() => unfriendFriend(friend)} color="primary" autoFocus>
-        Yes, remove them.
-      </Button>
+      <Grid container>
+        <Grid item sm={4}>
+        <Button onClick={() => unfriendFriend(friend)} variant="outlined" size="small" className="buttonDanger" autoFocus>
+            Remove them
+          </Button>
+      </Grid>
 
       {/* Cancel */}
-      <Button onClick={onClose} variant="outlined" color="primary">
-        Nevermind, don't change anything.
-      </Button>
+        <Grid item sm={6}>
+          <Button onClick={onClose} size="small" className="buttonSafe pullRight">
+            Stay connected
+          </Button>
+        </Grid>
+      </Grid>
       
     </DialogActions>
   </Dialog>

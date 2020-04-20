@@ -80,11 +80,9 @@ export const updateUserSettings = async (settings: {[key: string]: any}) => {
 
 export const signUserInWithEmailAndPassword = async (email: string, password: string) => {
   try {
-    console.log('setting persistence');
     await firebase
           .auth()
           .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-    console.log('after setpersistence');
 
     const signIn = await firebase
        .auth()

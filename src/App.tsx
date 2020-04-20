@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+
 import Header from './shared/containers/header/Header';
 import Routes from './Routes';
 
@@ -11,6 +13,8 @@ import firebaseConfig from './firebase.config';
 
 import { User } from 'shared/models/user.model';
 import { getUserSettings } from 'services/user';
+import { CssBaseline } from '@material-ui/core';
+import { blueGrey, teal } from '@material-ui/core/colors';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -20,9 +24,32 @@ interface IAuthContext {
   userData: User | undefined;
 }
 
+/* https://material-ui.com/customization/default-theme/?expand-path=$.typography */
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: blueGrey[800]
+    },
+    secondary: {
+      main: teal[200],
+      contrastText: '#000',
+      dark: teal[800]
+    }
+  },
+  spacing: 4,
+  typography: {
+    fontSize: 18,
+    fontFamily: [
+      'Roboto',
+      'Pacifico'
+    ].join(','),
+  },
+})
+
 export const AuthContext = React.createContext<IAuthContext | null>(null);
 
 function App() {
+
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
   const [userData, setUserData] = useState<User>();// call db and get stuff, put it in here 
 
@@ -70,9 +97,14 @@ function App() {
     <AuthContext.Provider value={{ isLoggedIn, setLoggedIn, userData }}>
 
     <div className="App">
+      
       <Router>
-        <Header isLoggedIn={isLoggedIn} />
-        <Routes userData={userData} isLoggedIn={isLoggedIn} />
+        <ThemeProvider theme={theme}>
+          <CssBaseline>
+            <Header isLoggedIn={isLoggedIn} />
+            <Routes userData={userData} isLoggedIn={isLoggedIn} />
+          </CssBaseline>
+        </ThemeProvider>
       </Router>
     </div>
     </AuthContext.Provider>

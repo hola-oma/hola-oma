@@ -22,14 +22,24 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
 
   // On page load, this calls getLinkedAccounts from the link service
   useEffect(() => {
+    let isMounted = true;
+
     getLinkedAccounts()
       .then((links:AccountLink[]) => {
-        let verifiedAccounts: AccountLink[] = links.filter(link => link.verified === true);
-        setLinkedAccounts(verifiedAccounts);
+        if (isMounted) {
 
-        let pendingAccounts: AccountLink[] = links.filter(link => link.verified === false);     
-        setPendingAccounts(pendingAccounts);
-    })
+          let verifiedAccounts: AccountLink[] = links.filter(link => link.verified === true);
+          setLinkedAccounts(verifiedAccounts);
+
+          let pendingAccounts: AccountLink[] = links.filter(link => link.verified === false);     
+          setPendingAccounts(pendingAccounts);
+        }
+
+        // todo: send "isLoading = false" when these are done
+        // could work with a global isLoading hook? 
+    });
+
+    return () => { isMounted = false; }
   }, []);
 
   const handleManageAccountLinkAlertClose = () => {
@@ -86,25 +96,25 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
 
   const manageButton = (friend: AccountLink) => {
     return (
-      <Button color="primary" onClick={() => manageAccountLink(friend)}>Remove</Button>
+      <Button variant="outlined" className="buttonDanger" onClick={() => manageAccountLink(friend)}>Remove</Button>
     )
   }
 
   const acceptButton = (friend: AccountLink) => {
     return (
-      <Button color="primary" onClick={() => acceptAccountLink(friend)}>Accept</Button>
+      <Button className="buttonSafe" onClick={() => acceptAccountLink(friend)}>Accept</Button>
     )
   }
 
   const declineButton = (friend: AccountLink) => {
     return (
-      <Button color="primary" onClick={() => deleteAccountLink(friend)}>Decline</Button>
+      <Button variant="outlined" className="buttonDanger" onClick={() => deleteAccountLink(friend)}>Decline</Button>
     )
   }
 
   const cancelButton = (friend: AccountLink) => {
     return (
-      <Button color="primary" onClick={() => deleteAccountLink(friend)}>Cancel</Button>
+      <Button variant="outlined" className="buttonDanger" onClick={() => deleteAccountLink(friend)}>Cancel</Button>
     )
   }
 
