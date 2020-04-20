@@ -11,7 +11,7 @@ import { Post } from 'shared/models/post.model';
 
 import './Inbox.css';
 import CurrentMsgModal from "./components/CurrentMsgModal";
-import {markPostRead} from "../../../services/post";
+import {listenForStateChange, markPostRead} from "../../../services/post";
 import PostsView from "../PostsView/PostsView";
 import * as firebase from "firebase";
 
@@ -67,7 +67,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
       <Container>
         <Grid container>
           {
-            // {this.state.links.map((item) => // example from Stack Overflow
             posts.map((post: Post, index: number) => {
               return (
                 <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)} >

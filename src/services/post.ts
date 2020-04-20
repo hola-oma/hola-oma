@@ -6,6 +6,7 @@ import { Post } from '../shared/models/post.model';
 import {authenticateFromStore, getUserRoleByID} from "./user";
 import {roles} from "../enums/enums";
 
+/*
 export const getPosts = async (): Promise<Post[]> => {
   await authenticateFromStore();
   const user = firebase.auth().currentUser;
@@ -46,18 +47,19 @@ export const getPosts = async (): Promise<Post[]> => {
       }
       return posts;
 }
-
+*/
 export const listenForStateChange = async (): Promise<Post[]> => {
-  const retrievedPosts:Post[] = [];
+  let retrievedPosts: Post[] = [];
   try {
     const db = firebase.firestore().collection('posts')
       .where("receiverIDs", "array-contains", "RNkLHuJJc2cQgf5LyMz26ENr40r2")
       .orderBy("date", "desc")
     db.onSnapshot(snapshot => {
+      const currentPosts: Post[] = [];
       snapshot.forEach(doc => {
         // console.log(doc.id, '->', doc.data());
         const data = doc.data();
-        retrievedPosts.push({
+        currentPosts.push({
           pid: data.pid,
           creatorID: data.creatorID,
           from: data.from,
@@ -68,6 +70,11 @@ export const listenForStateChange = async (): Promise<Post[]> => {
           receiverIDs: data.receiverIDs
         })
       })
+      currentPosts.forEach((indivPost => {
+        console.log(indivPost.from);
+      }))
+      retrievedPosts.length = 0;      // Clear array so posts not appended on state change
+      retrievedPosts.push(...currentPosts);
       retrievedPosts.forEach((indivPost => {
         console.log(indivPost.from);
       }))
