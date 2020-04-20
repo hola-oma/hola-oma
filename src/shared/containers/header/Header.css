@@ -1,21 +1,26 @@
 .headerBar {
-  background-color:gray;
   text-decoration: none;
   list-style-type: none;
-  padding: 10px;
-  color:white;
-  height:100px;
-  text-align:left;
+  height:64px;
+}
+
+.appTitle a {
+  color:#fff;
+  font-family:'Pacifico';
+  font-size:2.0rem;
+  margin-left:10px;
 }
 
 .nav {
-  color:white;
+  flex-grow:1;
 }
 
-.nav a {
-  color: white;
+.nav ul {
+  justify-content: flex-end;
+  display: flex;
 }
 
 .nav li {
-  margin: 0 10px;
+  margin-right: 30px;
+  display:inline-block;
 }

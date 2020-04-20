@@ -19,7 +19,11 @@ import PendingInvitationModal from './components/PendingInvitationModal';
 import Alert from '@material-ui/lab/Alert';
 
 
-const PostsView: React.FC = (props) => {
+interface IPostsView {
+  setIsLoading: (loading: boolean) => void;
+}
+
+const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
 
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
@@ -38,32 +42,24 @@ const PostsView: React.FC = (props) => {
 
   // Get display name
   useEffect(() => {
-    getUserProfile()
-      .then((userProfile: any) => {
-        setDisplayName(userProfile.displayName);
-      })
+    setIsLoading(true);
 
-    getUserSettings()
-      .then((doc:any) => {
-        setRole(doc?.role);
-      });
-  }, []); // fires on page load if this is empty []
-
-
-  // Get posts and listen for state change
-  useEffect(() => {
-    getPosts().then((docs:Post[]) => {
-      setPosts(docs);
-    })
-  }, []);
-
-  // Get linked accounts
-  useEffect(() => {
     getLinkedAccounts()
       .then((links:AccountLink[]) => {
         const pendingInvitations = links.filter(link => !link.verified);
         updatePendingInvitations(pendingInvitations);
         setLinkedAccounts(links);
+        getPosts()
+          .then((docs:Post[]) => {
+            setPosts(docs);
+          }).then(() => {
+            getUserSettings()
+              .then((userSettings:any) => {
+                setDisplayName(userSettings.displayName);
+                setRole(userSettings.role);
+                setIsLoading(false);
+              });
+          })
       });
   }, []);
 
