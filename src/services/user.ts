@@ -39,6 +39,9 @@ export const getUserSettings = async () => {
   const db = firebase.firestore();
 
   const userdoc = await db.collection("users").doc(user?.uid).get();
+  if (!userdoc.data()) {
+    return "";
+  }
   return userdoc.data();
 }
 
