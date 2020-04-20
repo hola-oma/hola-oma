@@ -110,7 +110,8 @@ export const markPostRead = async (postID: string) => {
       if (doc.exists) {
         postRef.update({"read": true})
       } else {
-        console.log("Post does not exist");
+        console.log("Error updating post: " + postID +
+          "(probably an older post not created with pid)");
       }
     }).catch(function(error) {
       console.log("Error getting document:", error);
