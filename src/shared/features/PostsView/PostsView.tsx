@@ -20,7 +20,11 @@ import Alert from '@material-ui/lab/Alert';
 import * as firebase from "firebase";
 
 
-const PostsView: React.FC = () => {
+interface IPostsView {
+  setIsLoading: (loading: boolean) => void;
+}
+
+const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
 
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
@@ -39,31 +43,24 @@ const PostsView: React.FC = () => {
 
   // Get display name
   useEffect(() => {
-    getUserProfile()
-      .then((userProfile: any) => {
-        setDisplayName(userProfile.displayName);
-      })
+    setIsLoading(true);
 
-    getUserSettings()
-      .then((doc:any) => {
-        setRole(doc?.role);
-      });
-  }, []); // fires on page load if this is empty []
-
-  // Get all posts for receiver or sent by poster
-  useEffect(() => {
-    getPosts().then((docs:Post[]) => {
-      setPosts(docs);
-    })
-  }, []);
-
-  // Get linked accounts
-  useEffect(() => {
     getLinkedAccounts()
       .then((links:AccountLink[]) => {
         const pendingInvitations = links.filter(link => !link.verified);
         updatePendingInvitations(pendingInvitations);
         setLinkedAccounts(links);
+        getPosts()
+          .then((docs:Post[]) => {
+            setPosts(docs);
+          }).then(() => {
+            getUserSettings()
+              .then((userSettings:any) => {
+                setDisplayName(userSettings.displayName);
+                setRole(userSettings.role);
+                setIsLoading(false);
+              });
+          })
       });
   }, []);
 

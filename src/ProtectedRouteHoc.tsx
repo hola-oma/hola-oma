@@ -13,17 +13,18 @@ interface IProtectedRouteHoc {
   RouteComponent: any;
   path: string;
   component?: any;
-  exact: any;
+	exact: any;
+	setIsLoading?: (loading: boolean) => void
 }
 
-const ProtectedRouteHoc: React.FC<IProtectedRouteHoc & RouteComponentProps> = ({ RouteComponent, isLoggedIn, component, ...rest }: IProtectedRouteHoc) => {
+const ProtectedRouteHoc: React.FC<IProtectedRouteHoc & RouteComponentProps> = ({ RouteComponent, isLoggedIn, component, setIsLoading, ...rest }: IProtectedRouteHoc) => {
 	if (isLoggedIn || rest.public) {
     const user = firebase.auth().currentUser;
 		return (
 			<Route
 				{...rest}
 				render={props => {
-					return <RouteComponent user={user} {...props}></RouteComponent>;
+					return <RouteComponent setIsLoading={setIsLoading} user={user} {...props}></RouteComponent>;
 				}}
 			/>
 		);
