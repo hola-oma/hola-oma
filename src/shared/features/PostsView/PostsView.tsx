@@ -55,8 +55,8 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
           }).then(() => {
             getUserSettings()
               .then((userSettings:any) => {
-                setDisplayName(userSettings.displayName);
-                setRole(userSettings.role);
+                setDisplayName(userSettings.displayName ? userSettings.displayName : '');
+                setRole(userSettings.role ? userSettings.role : roles.receiver);
                 setIsLoading(false);
               });
           })
