@@ -1,22 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 
-import { roles } from '../../../enums/enums';
+import {roles} from '../../../enums/enums';
 
+<<<<<<< HEAD
 import { getUserSettings } from "services/user";
+=======
+import {getUserDataByID, getUserProfile, getUserSettings} from "services/user";
+>>>>>>> master
 import Inbox from '../Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
-import { Box, Link as ButtonLink} from '@material-ui/core';
+import { Link as ButtonLink} from '@material-ui/core';
 import { getPosts } from 'services/post';
 
-import { Post } from '../../models/post.model';
+import {Post} from '../../models/post.model';
 
-import { getLinkedAccounts, acceptLink } from 'services/accountLink';
-import { Link } from 'react-router-dom';
-import { AccountLink } from 'shared/models/accountLink.model';
+import {acceptLink, getLinkedAccounts} from 'services/accountLink';
+import {Link} from 'react-router-dom';
+import {AccountLink} from 'shared/models/accountLink.model';
 
 import PendingInvitationModal from './components/PendingInvitationModal';
 
 import Alert from '@material-ui/lab/Alert';
+import * as firebase from "firebase";
+
 
 interface IPostsView {
   setIsLoading: (loading: boolean) => void;
@@ -39,12 +45,36 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
     }
   }
 
+  // Get display name
   useEffect(() => {
+<<<<<<< HEAD
     setIsLoading(true);
 
+=======
+    getUserProfile()
+      .then((userProfile: any) => {
+        setDisplayName(userProfile.displayName);
+      })
+
+    getUserSettings()
+      .then((doc:any) => {
+        setRole(doc?.role);
+      });
+  }, []); // fires on page load if this is empty []
+
+  // Get all posts for receiver or sent by poster
+  useEffect(() => {
+    getPosts().then((docs:Post[]) => {
+      setPosts(docs);
+    })
+  }, []);
+
+  // Get linked accounts
+  useEffect(() => {
+>>>>>>> master
     getLinkedAccounts()
       .then((links:AccountLink[]) => {
-        const pendingInvitations = links.filter(link => link.verified === false);
+        const pendingInvitations = links.filter(link => !link.verified);
         updatePendingInvitations(pendingInvitations);
         setLinkedAccounts(links);
         getPosts()
@@ -84,14 +114,6 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
   const handleInvitationModalClose = () => {
     setInvitationModalOpen(false);
   }
-
-  let mockPosts = [
-    {creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false, date: 12045710394870, receiverIDs: ["xyz789"]},
-    {creatorID: "123abc", from: "Elizabeth H.", message: "Thinking of you", photoURL: "", read: false, date: 12045710394870, receiverIDs: ["xyz789"]},
-    {creatorID: "123abc", from: "Jacqueline Quentin", message: "Funny thing Jackie did at dinnertime", photoURL: "", read: false, date: 12045710394870, receiverIDs: ["xyz789"]},
-    {creatorID: "123abc", from: "Ashley, Mary, and Johnny's Mom", message: "Pic from the zoo", photoURL: "", read: false, date: 12045710394870, receiverIDs: ["xyz789"]},
-    {creatorID: "123abc", from: "The Smiths", message: "One more pic from the water park", photoURL: "", read: false, date: 12045710394870, receiverIDs: ["xyz789"]},
-  ];
 
   return (
     <>
@@ -137,18 +159,8 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
     {role === roles.poster && 
       <PostManagement posts={posts}/>
     }
+    {role === roles.receiver && <Inbox posts={posts}/>}
 
-    {role === roles.receiver && <Inbox posts={mockPosts}/>}
-
-    <Box className="todo">
-      <h3>To do items:</h3>
-      <ul>
-        <li>Make the envelope cards clickable, clicking one goes to a page to view it</li>
-        <li>Add a service for getting post data from database</li>
-        <li>If no account is linked, remind the user to link with another user</li>
-        <li>Shrink font or truncate sender's name when sender's names are so long they distort the length of the card</li>
-      </ul>
-    </Box>
     </>
   )
 }

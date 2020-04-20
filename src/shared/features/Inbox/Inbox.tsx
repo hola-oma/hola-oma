@@ -1,16 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {Container, Grid, Card, CardHeader, CardContent, Box} from '@material-ui/core';
 import MailIcon from '@material-ui/icons/Mail';
 import DraftsIcon from '@material-ui/icons/Drafts';
 
-import { Link } from 'react-router-dom';
 import { Post } from 'shared/models/post.model';
 
 import './Inbox.css';
+import CurrentMsgModal from "./components/CurrentMsgModal";
 
-// todo: question: why here versus Inbox.css ?
 const useStyles = makeStyles({
   root: {
     minWidth: 250,
@@ -30,55 +29,84 @@ const useStyles = makeStyles({
 });
 
 interface IInbox {
-  // add posts as Post model here
-  // For now, I made it a number to show how you might loop through a quantity of things passed in
   posts: Array<Post>; // array of type "Post"
 }
 
-// todo: pass "Posts" into this functional component
+let currentPost:Post;
+
 const Inbox: React.FC<IInbox> = ({ posts }) => {
 
   const classes = useStyles();
+  const [currentMsgModalOpen, setCurrentMsgModalOpen] = useState<boolean>(false);
+
+  const pressEnvelope = function(envelopePost: Post) {
+    currentPost = envelopePost;
+    setCurrentMsgModalOpen(true);
+  }
+
+  const returnToInbox = () => {
+    console.log("Message closed");
+    setCurrentMsgModalOpen(false);
+  }
+
+  const replyToMessage = () => {
+    console.log("Grandparent wants to reply!");
+    setCurrentMsgModalOpen(false);
+  }
 
   return (
+    <>
     <Container>
       <Grid container>
-        {/* Todo: loop through passed-in posts to build inbox item for each one */}
         {
           posts.map((post: Post, index: number) => {
             return (
-              <div className={"inboxCard"} key={index}>
-                <Link to={"/postDetails"}>
+              <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)} >
                 <Card className={classes.root} variant="outlined">
-
-                  {/* Doesn't have to be a card, just something I put in to get it started */}
                   <CardHeader
                       title={post.from}>
                   </CardHeader>
-
                   <CardContent>
                     {post.read? <DraftsIcon className="icon"/> : <MailIcon className="icon"/>}
                   </CardContent>
                 </Card>
-                </Link>
-
-
               </div>
             )
           })
         }
       </Grid>
 
+      <CurrentMsgModal
+        isOpen={currentMsgModalOpen}
+        currentPost={currentPost}
+        returnToInbox={returnToInbox}
+        replyToMessage={replyToMessage}
+      />
+
       <Box className="todo">
         <h3>To do items:</h3>
         <ul>
-          <li>Make the envelope cards clickable, clicking one goes to a page to view it</li>
-          <li>Add a service for getting post data from database</li>
-          <li>If no account is linked, remind the user to link with another user</li>
-          <li>Shrink font or truncate sender's name when sender's names are so long they distort the length of the card</li>
+          <li>UI:
+            <ul>Shrink font or truncate sender's name when sender's names are so long they distort the length of the card</ul>
+            <ul>Possibly limit number of characters of display name</ul>
+          </li>
+          <li>Pagination:
+            <ul>Max of 3 pages</ul>
+            <ul>Max of 6(?) messages per page </ul>
+            <ul>Only show most recent messages</ul>
+          </li>
+          <li>CurrentMsgModal:
+            <ul>Actually render photo from URL</ul>
+            <ul>Better styling</ul>
+            <ul>Fix: "Warning: findDOMNode is deprecated in StrictMode.
+              findDOMNode was passed an instance of Transition which is inside StrictMode.
+              Instead, add a ref directly to the element you want to reference.
+              Learn more about using refs safely here: https://fb.me/react-strict-mode-find-node"</ul>
+          </li>
         </ul>
       </Box>
     </Container>
+      </>
   )
 };
 
