@@ -3,6 +3,8 @@ import Webcam from "react-webcam";
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import { Button } from "@material-ui/core";
 
+import { uploadPhoto } from 'services/post';
+
 interface IPhotoReplyPrototype {
   // empty for now
 }
@@ -28,8 +30,8 @@ const PhotoReplyPrototype: React.FC<IPhotoReplyPrototype> = ({ }) => {
     [webcamRef]
   );
 
-  const sendPhoto = () => {
-    console.log("sending photo! [this doesn't do anything yet]");
+  const sendPhoto = (photoRef: string) => {
+    uploadPhoto(photoRef);
   }
 
   return (
@@ -83,7 +85,7 @@ const PhotoReplyPrototype: React.FC<IPhotoReplyPrototype> = ({ }) => {
           variant="contained"
           color="secondary"
           size="large"
-          onClick={() => sendPhoto()}
+          onClick={() => sendPhoto(photoPreview)}
         >
           Send photo!
         </Button>

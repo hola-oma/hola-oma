@@ -121,3 +121,26 @@ export const markPostRead = async (postID: string) => {
     console.log("Invalid format: no post id");
   }
 }
+
+
+export const uploadPhoto = async (photoData: string) => {
+  console.log(photoData);
+
+  const db = firebase.firestore();
+  const user = firebase.auth().currentUser;
+
+  // upload photo to firestore
+  // get url from the upload
+  // create a photo record in "photos" that contains the uploader's ID and the photo's URL 
+ 
+  // Create a root reference
+  let fileName = Date.now(); 
+  var storageRef = firebase.storage().ref().child('/images/' + user?.uid + '/' + fileName);
+
+  await storageRef.putString(photoData, 'data_url').then(function(snapshot) {
+    console.log(snapshot);
+    console.log("attach this url to the 'reply' data:");
+    console.log(snapshot.metadata.fullPath);
+  });
+
+}
