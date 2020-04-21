@@ -23,6 +23,10 @@ const Header: React.FC<IHeader> = ({ isLoggedIn }) => {
   const Auth = useContext(AuthContext);
   let history = useHistory();
 
+  const goToPhotoPrototype = () => {
+    history.push('/photoReplyPrototype')
+  }
+
   const goToRegistration = () => {
     history.push('/register')
   }
@@ -88,6 +92,19 @@ const Header: React.FC<IHeader> = ({ isLoggedIn }) => {
 
           {isLoggedIn && 
             <ul>
+              {/* Remove later */}
+              <li>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  size="small"
+                  className=""
+                  onClick={() => goToPhotoPrototype()}
+                  startIcon={<AccountCircleIcon />}
+                >Photo prototype
+                </Button>
+              </li>
+
               <li>
                 <Button
                   variant="contained"
