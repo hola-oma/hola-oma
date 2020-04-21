@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {roles} from '../../../enums/enums';
 
 import {getUserProfile, getUserSettings} from "services/user";
-import Inbox from '../GrandparentViews/Inbox/Inbox';
+import Inbox from '../Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
 import { Link as ButtonLink} from '@material-ui/core';
 import { /*getPosts,*/ getPosts} from 'services/post';
