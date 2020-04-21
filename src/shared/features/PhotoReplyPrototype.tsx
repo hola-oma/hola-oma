@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import { Button } from "@material-ui/core";
 
-import { uploadPhoto } from 'services/post';
+import { uploadPhoto } from 'services/reply';
 
 interface IPhotoReplyPrototype {
   // empty for now
@@ -18,6 +18,7 @@ const videoConstraints = {
 const PhotoReplyPrototype: React.FC<IPhotoReplyPrototype> = ({ }) => {
 
   const [photoPreview, setPhotoPreview] = useState("");
+  const [recentPhotos, setRecentPhotos] = useState([]);
 
   /* Adapted from https://www.npmjs.com/package/react-webcam */
 
@@ -31,7 +32,8 @@ const PhotoReplyPrototype: React.FC<IPhotoReplyPrototype> = ({ }) => {
   );
 
   const sendPhoto = (photoRef: string) => {
-    uploadPhoto(photoRef);
+    let replyID = uploadPhoto(photoRef);
+    console.log("Photo attached to reply with ID: ", replyID);
   }
 
   return (
