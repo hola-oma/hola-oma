@@ -1,15 +1,12 @@
 // https://stackoverflow.com/questions/58708542/how-to-properly-update-state-with-firebase-and-useeffect
 
-import React, {useState} from 'react';
+import React from 'react';
 
 import { Post } from 'shared/models/post.model';
 
 // import './GrandparentLayout.css';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {Grid, Box, Button, SvgIconProps} from '@material-ui/core';
-import CreateIcon from '@material-ui/icons/Create';
-import MailIcon from '@material-ui/icons/Mail';
-import {SvgIconComponent} from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,7 +38,6 @@ interface IGrandparentLayout {
 export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ post , buttonText,  buttonActions, buttonIcons}) => {
 
   const classes = useStyles();
-  const [currentMsgModalOpen, setCurrentMsgModalOpen] = useState<boolean>(false);
 
   return (
     <>
