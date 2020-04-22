@@ -46,6 +46,14 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
     return date.substring(0, 15);
   }
 
+  const getMessageSubstring = function(message: string) {
+    if (message.length > 100) {
+      return (message.substring(0, 100) + "...");
+    } else {
+      return message;
+    }
+  }
+
   return (
     <Container>
       <Container>
@@ -57,48 +65,50 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
             </Card>
           </Link>
       </Container>
-      <Grid container>
+      <Grid container justify="space-between" spacing={2}>
         {
           posts.map((post: Post, index: number) => {
             return (
-              <div className={"postCard"} key={index}>
-                <Link to={{
-                  pathname: "/postDetails",
-                  state: {post: post}
-                }}>
-                <Card className={classes.root} variant="outlined">
+              <Grid item xs={4} key={index}>
+                <div>
+                  <Link to={{
+                    pathname: "/postDetails",
+                    state: {post: post}
+                  }}>
+                  <Card variant="outlined">
 
-                  {post.photoURL && <CardMedia
-                    component="img"
-                    className={classes.media}
-                    image={post.photoURL}
-                  />}
+                    {post.photoURL && <CardMedia
+                      component="img"
+                      className={classes.media}
+                      image={post.photoURL}
+                    />}
 
-                  <CardHeader
-                      title={post.message}>
-                  </CardHeader>
+                    <CardHeader
+                        title={getMessageSubstring(post.message)}>
+                    </CardHeader>
 
-                  <CardContent>
-                      <Grid container>
-                        <Grid item xs={6}>
-                            <Typography variant="subtitle2">
-                                Sent message
-                                <br/>
-                                {getDateAsString(post.date)}
-                            </Typography>
+                    <CardContent>
+                        <Grid container>
+                          <Grid item xs={5}>
+                              <Typography variant="subtitle2">
+                                  Sent message
+                                  <br/>
+                                  {getDateAsString(post.date)}
+                              </Typography>
+                          </Grid>
+                          <Grid item xs={5}>
+                              <Alarm className="icon"/>
+                              <Typography variant="subtitle2">
+                                  New replies!
+                              </Typography>
+                          </Grid>
                         </Grid>
-                        <Grid item xs={6}>
-                            <Alarm className="icon"/>
-                            <Typography variant="subtitle2">
-                                New replies!
-                            </Typography>
-                        </Grid>
-                      </Grid>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
 
-              </Link>
-              </div>
+                </Link>
+                </div>
+              </Grid>
             )
           })
         }

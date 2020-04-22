@@ -85,7 +85,7 @@ const NewFamilyPost: React.FC = () => {
                     let receiver = {
                         id: linkedAccounts[i].id,
                         name: displayName,
-                        checked: false};
+                        checked: true};
                     rcvrs.push(receiver);
                 }
             }

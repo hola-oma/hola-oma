@@ -33,7 +33,8 @@ const useStyles = makeStyles((theme: Theme) =>
         marginBottom: 12,
     },
     media: {
-        height: 500
+        height: 750,
+        maxWidth: "100%"
     }
   })
 );
