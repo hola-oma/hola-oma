@@ -23,11 +23,23 @@ export const updateUserProfile = async (displayName: string, email: string) => {
 
       await user.updateEmail(email);
     }
-
     // todo: password update
     return true;
   } catch(e) {
     console.log(e.message);
+    throw Error(e.message);
+  }
+}
+
+export const sendPasswordResetEmail = async (emailAddress: string) => {
+  const auth = firebase.auth();
+
+  try {
+    console.log("Sending 'reset password' email to: ", emailAddress);
+    await auth.sendPasswordResetEmail(emailAddress);
+    return true;
+  } catch(e) {
+    // no user exists with this email 
     throw Error(e.message);
   }
 }
