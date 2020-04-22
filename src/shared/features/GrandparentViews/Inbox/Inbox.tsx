@@ -1,5 +1,3 @@
-// https://stackoverflow.com/questions/58708542/how-to-properly-update-state-with-firebase-and-useeffect
-
 import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 

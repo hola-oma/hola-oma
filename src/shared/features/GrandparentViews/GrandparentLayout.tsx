@@ -1,10 +1,7 @@
-// https://stackoverflow.com/questions/58708542/how-to-properly-update-state-with-firebase-and-useeffect
-
 import React from 'react';
 
 import { Post } from 'shared/models/post.model';
 
-// import './GrandparentLayout.css';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {Grid, Box, Button, SvgIconProps} from '@material-ui/core';
 
@@ -30,19 +27,20 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface IGrandparentLayout {
   post: Post;
+  headerText: string;
   buttonText: Array<string>;
   buttonActions: { (): void; } []   //  Array of functions
   buttonIcons: React.ReactElement<SvgIconProps>[]
 }
 
-export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ post , buttonText,  buttonActions, buttonIcons}) => {
+export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ post , headerText, buttonText,  buttonActions, buttonIcons}) => {
 
   const classes = useStyles();
 
   return (
     <>
       <div className={classes.title}>
-        <h1>Letter from {post?.from}</h1>
+        <h1>{headerText} {post?.from}</h1>
       </div>
 
       {/*Box for message content*/}

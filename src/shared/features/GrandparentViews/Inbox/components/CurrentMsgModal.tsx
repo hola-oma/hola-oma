@@ -27,9 +27,10 @@ const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , currentPost, re
 
       <GrandparentLayout
         post={currentPost}
+        headerText={"Letter from "}
         buttonText={["Go Back to All Messages", "Reply"]}
         buttonActions={[returnToInbox, replyToMessage]}
-        buttonIcons={[<CreateIcon />, <MailIcon />]}
+        buttonIcons={[<MailIcon />, <CreateIcon />]}
       />
       </Dialog>
 
