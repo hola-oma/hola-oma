@@ -1,6 +1,4 @@
-// https://stackoverflow.com/questions/58708542/how-to-properly-update-state-with-firebase-and-useeffect
-
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {Container, Grid, Card, CardHeader, CardContent, Box} from '@material-ui/core';
@@ -11,7 +9,7 @@ import { Post } from 'shared/models/post.model';
 
 import './Inbox.css';
 import CurrentMsgModal from "./components/CurrentMsgModal";
-import {markPostRead} from "../../../services/post";
+import { markPostRead } from "../../../../services/post";
 
 const useStyles = makeStyles({
   root: {
