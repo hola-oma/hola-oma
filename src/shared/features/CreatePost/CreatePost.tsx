@@ -4,7 +4,7 @@ import { roles } from '../../../enums/enums';
 import { getUserSettings } from "services/user";
 
 // import { Post } from '../../shared/models/currentPost.model';
-import GrandparentReplyOptions from "./GrandparentReplyOpts";
+import GrandparentReplyOptions from "../GrandparentViews/GrandparentReplyOpts";
 
 import NewFamilyPost from ".././NewFamilyPost/NewFamilyPost";
 
