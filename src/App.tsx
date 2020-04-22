@@ -88,16 +88,14 @@ function App() {
     await getUserSettings().then((settings:any) => {
       setUserData(settings);
       if (settings?.displayName && settings?.role) {
-        console.log("this user has a complete settings record")
-        console.log(settings);
-        setProfileComplete(true);
+        setSettingsComplete(true);
       }
     });
   };
 
   useEffect(() => {
     readSession();
-  }, [isLoggedIn])
+  }, [isLoggedIn, settingsComplete])
 
 
   return (

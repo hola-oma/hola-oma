@@ -48,6 +48,7 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
     signUserOut().then(function() {
       
       Auth?.setLoggedIn(false);
+      Auth?.setSettingsComplete(false);
       history.push('/');
     }).catch(function(error) {
       console.log(error);
@@ -65,6 +66,8 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
           {!settingsComplete && 
             <Link to="/registerDetails">Hola, Oma!</Link>
           }
+
+          {settingsComplete.toString()}
         </Typography>
         
         <div className="nav">
