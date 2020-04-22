@@ -14,7 +14,7 @@ interface ICurrentMsgModal {
   replyToMessage: () => void;
 }
 
-const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , currentPost, replyToMessage, returnToInbox}) => {
+const GrandparentViewMsg: React.FC<ICurrentMsgModal> = ({ isOpen , currentPost, replyToMessage, returnToInbox}) => {
 
   // todo: add Card (?) to display photo
   // todo: Fix - "Warning: findDOMNode is deprecated in StrictMode.... "
@@ -38,4 +38,4 @@ const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , currentPost, re
   );
 }
 
-export default CurrentMsgModal;
+export default GrandparentViewMsg;

@@ -36,6 +36,7 @@ interface IGrandparentLayout {
 export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ post , headerText, buttonText,  buttonActions, buttonIcons}) => {
 
   const classes = useStyles();
+  console.log("post: " + post)
 
   return (
     <>
