@@ -67,7 +67,6 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
             <Link to="/registerDetails">Hola, Oma!</Link>
           }
 
-          {settingsComplete.toString()}
         </Typography>
         
         <div className="nav">

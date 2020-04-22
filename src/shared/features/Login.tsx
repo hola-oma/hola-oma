@@ -47,10 +47,8 @@ const Login: React.FC<ILogin> = ({ history }) => {
         if (createdUser.user.uid) {
           let userSettings = await getUserSettings();
           if (userSettings && userSettings?.displayName) {
-            console.log("user settings exist, going to posts")
             if (history) history.push('/posts');
           } else {
-            console.log("no user settings found, going to register details");
             if (history) history.push('/registerDetails');
           }
         }
