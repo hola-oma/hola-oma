@@ -6,6 +6,7 @@ import RegisterDetails from './shared/features/RegisterDetails'
 import PostsView from './shared/features/PostsView/PostsView';
 import SettingsView from './shared/features/SettingsView/SettingsView';
 import AddAccountLink from './shared/features/AddAccountLink';
+import PhotoReplyPrototype from './shared/features/PhotoReplyPrototype';
 
 import { RouteComponentProps, withRouter, Switch, useHistory } from "react-router";
 import { Route } from "react-router-dom";
@@ -27,11 +28,13 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
 
     useEffect(() => {
       if (isLoggedIn) {
+        console.log("user is logged in");
+        /* 
         if (userData?.role) {
           history.push('/posts');
         } else {
           history.push('/registerDetails');
-        }
+        } */
       }
     }, [isLoggedIn, userData, history]);
 
@@ -50,6 +53,7 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
           {/*<ProtectedRouteHoc exact path="/postDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostDetails} />*/} {/* use modals instead */}
           <ProtectedRouteHoc exact path="/newPost" isLoggedIn={isLoggedIn} public={false} RouteComponent={CreatePost} />
           <ProtectedRouteHoc exact setIsLoading={setIsLoading} path="/settings" isLoggedIn={isLoggedIn} public={false} RouteComponent={SettingsView} />
+          <ProtectedRouteHoc exact path="/photoReplyPrototype" isLoggedIn={isLoggedIn} public={false} RouteComponent={PhotoReplyPrototype} />
           <ProtectedRouteHoc exact path="/addAccountLink" isLoggedIn={isLoggedIn} public={false} RouteComponent={AddAccountLink} />
         </Switch>
         </div>
