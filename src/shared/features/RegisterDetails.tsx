@@ -66,6 +66,7 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history }) => {
       
       if (userCreated && profileUpdated) {
         Auth?.setLoggedIn(true); 
+        Auth?.setSettingsComplete(true);
         if (history) history.push('/posts');
       }
     } catch(e) {
@@ -81,7 +82,7 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history }) => {
           Display my name as
         </Typography>
 
-        <form onSubmit={e => handleForm(e)} className="" noValidate>
+        <form onSubmit={e => handleForm(e)} className="">
 
         <Grid container spacing={2}>
             {/* Display name */}

@@ -3,7 +3,7 @@ import { AuthContext } from "../../App";
 import 'firebase/auth';
 
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object 
-import { signUserInWithEmailAndPassword, signUserInWithGoogle } from "services/user";
+import { signUserInWithEmailAndPassword, signUserInWithGoogle, getUserSettings } from "services/user";
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -41,8 +41,21 @@ const Login: React.FC<ILogin> = ({ history }) => {
 
     try {
       const createdUser = await signUserInWithEmailAndPassword(email, password);
-      if (createdUser?.user) Auth?.setLoggedIn(true);
-      if (history) history.push('/posts');
+      if (createdUser?.user) {
+        Auth?.setLoggedIn(true);
+
+        if (createdUser.user.uid) {
+          let userSettings = await getUserSettings();
+          if (userSettings && userSettings?.displayName) {
+            console.log("user settings exist, going to posts")
+            if (history) history.push('/posts');
+          } else {
+            console.log("no user settings found, going to register details");
+            if (history) history.push('/registerDetails');
+          }
+        }
+      }
+      // maybe this is where we should check if the user can go to posts or registerDetails
     } catch(e) {
       setErrors(e.message);
     }

@@ -28,15 +28,19 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
 
     useEffect(() => {
       if (isLoggedIn) {
-        console.log("user is logged in");
-        /* 
-        if (userData?.role) {
+        console.log(history);
+        if (userData == undefined) {
+          console.log("user data is undefined, redirecting to registerDetails");
+          history.replace('/registerDetails');
+        } else if (userData) {
+          console.log("user data exists, go to posts!");
           history.push('/posts');
         } else {
-          history.push('/registerDetails');
-        } */
+          console.log("User data in a weird state:");
+          console.log(userData);
+        }
       }
-    }, [isLoggedIn, userData, history]);
+    }, [isLoggedIn, userData, history]); 
 
     return (
       <div>

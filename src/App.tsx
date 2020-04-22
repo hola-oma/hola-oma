@@ -21,6 +21,8 @@ firebase.initializeApp(firebaseConfig);
 interface IAuthContext {
   isLoggedIn: boolean;
   setLoggedIn: any;
+  settingsComplete: boolean;
+  setSettingsComplete: any;
   userData: User | undefined;
 }
 
@@ -51,6 +53,7 @@ export const AuthContext = React.createContext<IAuthContext | null>(null);
 function App() {
 
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [settingsComplete, setSettingsComplete] = useState<boolean>(false);
   const [userData, setUserData] = useState<User>();// call db and get stuff, put it in here 
 
   const readSession = async () => {
@@ -84,6 +87,11 @@ function App() {
     // get user from db
     await getUserSettings().then((settings:any) => {
       setUserData(settings);
+      if (settings?.displayName && settings?.role) {
+        console.log("this user has a complete settings record")
+        console.log(settings);
+        setProfileComplete(true);
+      }
     });
   };
 
@@ -94,14 +102,14 @@ function App() {
 
   return (
     /* https://reactjs.org/docs/context.html */
-    <AuthContext.Provider value={{ isLoggedIn, setLoggedIn, userData }}>
+    <AuthContext.Provider value={{ isLoggedIn, setLoggedIn, userData, settingsComplete, setSettingsComplete }}>
 
     <div className="App">
       
       <Router>
         <ThemeProvider theme={theme}>
           <CssBaseline>
-            <Header isLoggedIn={isLoggedIn} />
+            <Header isLoggedIn={isLoggedIn} settingsComplete={settingsComplete} />
             <Routes userData={userData} isLoggedIn={isLoggedIn} />
           </CssBaseline>
         </ThemeProvider>

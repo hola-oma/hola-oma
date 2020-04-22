@@ -15,9 +15,10 @@ import SettingsIcon from '@material-ui/icons/Settings';
 
 interface IHeader {
   isLoggedIn: boolean;
+  settingsComplete: boolean;
 }
 
-const Header: React.FC<IHeader> = ({ isLoggedIn }) => {
+const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
 
 
   const Auth = useContext(AuthContext);
@@ -56,9 +57,14 @@ const Header: React.FC<IHeader> = ({ isLoggedIn }) => {
   return (
     <AppBar position="static" className="headerBar">
       <Toolbar>
-
         <Typography className="pullLeft appTitle">
-          <Link to="/posts">Hola, Oma!</Link>
+          {settingsComplete && 
+            <Link to="/posts">Hola, Oma!</Link>
+          }
+
+          {!settingsComplete && 
+            <Link to="/registerDetails">Hola, Oma!</Link>
+          }
         </Typography>
         
         <div className="nav">
@@ -90,7 +96,7 @@ const Header: React.FC<IHeader> = ({ isLoggedIn }) => {
             </ul>
           }
 
-          {isLoggedIn && 
+          {(isLoggedIn && settingsComplete) &&
             <ul>
               {/* Remove later */}
               <li>
