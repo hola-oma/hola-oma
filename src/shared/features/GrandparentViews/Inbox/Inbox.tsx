@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 
 import {Container, Grid, Card, CardHeader, CardContent, Box} from '@material-ui/core';
@@ -8,9 +9,8 @@ import DraftsIcon from '@material-ui/icons/Drafts';
 import { Post } from 'shared/models/post.model';
 
 import './Inbox.css';
-import GrandparentViewMsg from "./components/GrandparentViewMsg";
+import CurrentMsgModal from "./components/CurrentMsgModal";
 import { markPostRead } from "../../../../services/post";
-import GrandparentReplyOpts from "./components/GrandparentReplyOpts";
 
 const useStyles = makeStyles({
   root: {
@@ -39,26 +39,26 @@ let currentPost:Post;
 const Inbox: React.FC<IInbox> = ({ posts }) => {
 
     const classes = useStyles();
-    const [grandparentViewMsg, setGrandparentViewMsgOpen] = useState<boolean>(false);
-    const [grandparentReplyOptsOpen, setGrandparentReplyOptsOpen] = useState<boolean>(false);
+    let history = useHistory();
+    const [currentMsgModalOpen, setCurrentMsgModalOpen] = useState<boolean>(false);
 
     const pressEnvelope = async function (envelopePost: Post) {
       currentPost = envelopePost;
       let postID = currentPost?.pid;
       await markPostRead(postID)
         .then(() => console.log("updated post read in database"));
-      setGrandparentViewMsgOpen(true);
+      setCurrentMsgModalOpen(true);
     }
 
     const returnToInbox = () => {
       console.log("Message closed");
-      setGrandparentViewMsgOpen(false);
+      setCurrentMsgModalOpen(false);
     }
 
     const replyToMessage = () => {
       console.log("Grandparent wants to reply!");
-      setGrandparentViewMsgOpen(false);
-      setGrandparentReplyOptsOpen(true);
+      setCurrentMsgModalOpen(false);
+      history.push("/newReply");
     }
 
   return (
@@ -83,15 +83,11 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
           }
         </Grid>
 
-        <GrandparentViewMsg
-          isOpen={grandparentViewMsg}
+        <CurrentMsgModal
+          isOpen={currentMsgModalOpen}
           currentPost={currentPost}
           returnToInbox={returnToInbox}
           replyToMessage={replyToMessage}
-        />
-
-        <GrandparentReplyOpts
-          post={currentPost}
         />
 
         <Box className="todo">

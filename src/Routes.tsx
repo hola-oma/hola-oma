@@ -14,7 +14,7 @@ import ProtectedRouteHoc from "ProtectedRouteHoc";
 import { User } from "shared/models/user.model";
 // import PostDetails from "./shared/features/PostDetails/PostDetails";
 import CreatePost from "./shared/features/CreatePost/CreatePost";
-import GrandparentReplyOpts from "./shared/features/GrandparentViews/Inbox/components/GrandparentReplyOpts";
+import GrandparentReplyOpts from "./shared/features/GrandparentViews/GrandparentReplyOpts";
 
 interface IRoutes {
   isLoggedIn: boolean;
