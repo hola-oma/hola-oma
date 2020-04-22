@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 
 import {Container, Grid, Card, CardHeader, CardContent, Box} from '@material-ui/core';
@@ -38,8 +39,8 @@ let currentPost:Post;
 const Inbox: React.FC<IInbox> = ({ posts }) => {
 
     const classes = useStyles();
+    let history = useHistory();
     const [currentMsgModalOpen, setCurrentMsgModalOpen] = useState<boolean>(false);
-    const [redirect, setRedirect] = useState<boolean>(false);
 
     const pressEnvelope = async function (envelopePost: Post) {
       currentPost = envelopePost;
@@ -57,7 +58,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
     const replyToMessage = () => {
       console.log("Grandparent wants to reply!");
       setCurrentMsgModalOpen(false);
-      // todo: https://dev.to/projectescape/programmatic-navigation-in-react-3p1l
+      history.push("/newReply");
     }
 
   return (
