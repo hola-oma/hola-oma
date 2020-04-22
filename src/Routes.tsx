@@ -14,6 +14,7 @@ import ProtectedRouteHoc from "ProtectedRouteHoc";
 import { User } from "shared/models/user.model";
 // import PostDetails from "./shared/features/PostDetails/PostDetails";
 import CreatePost from "./shared/features/CreatePost/CreatePost";
+import GrandparentReplyOpts from "./shared/features/GrandparentViews/GrandparentReplyOpts";
 
 interface IRoutes {
   isLoggedIn: boolean;
@@ -52,6 +53,7 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
           <ProtectedRouteHoc exact setIsLoading={setIsLoading} path="/posts" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostsView} />
           {/*<ProtectedRouteHoc exact path="/postDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostDetails} />*/} {/* use modals instead */}
           <ProtectedRouteHoc exact path="/newPost" isLoggedIn={isLoggedIn} public={false} RouteComponent={CreatePost} />
+          <ProtectedRouteHoc exact path="/newReply" isLoggedIn={isLoggedIn} public={false} RouteComponent={GrandparentReplyOpts} />
           <ProtectedRouteHoc exact setIsLoading={setIsLoading} path="/settings" isLoggedIn={isLoggedIn} public={false} RouteComponent={SettingsView} />
           <ProtectedRouteHoc exact path="/photoReplyPrototype" isLoggedIn={isLoggedIn} public={false} RouteComponent={PhotoReplyPrototype} />
           <ProtectedRouteHoc exact path="/addAccountLink" isLoggedIn={isLoggedIn} public={false} RouteComponent={AddAccountLink} />

@@ -29,7 +29,7 @@ const CreatePost: React.FC = () => {
             <h2>Create Post</h2>
             <>
                 {role === roles.poster && <NewFamilyPost/>}
-                {role === roles.receiver && <GrandparentReplyOptions/>}
+                {/*{role === roles.receiver && <GrandparentReplyOptions/>}*/}
             </>
         </>
     )

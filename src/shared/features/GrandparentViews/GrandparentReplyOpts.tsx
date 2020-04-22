@@ -1,30 +1,22 @@
 import React  from 'react';
 
-// import { roles } from '../../enums/enums';
-// import { getUserSettings, getUserProfile } from "services/user";
-import {Box, Card, CardContent, Button} from '@material-ui/core';
+import {Box, Card, CardContent, Button, SvgIconProps} from '@material-ui/core';
+import {Post} from "../../models/post.model";
 
-// import { Post } from '../../shared/models/currentPost.model';
-// import { Link } from "react-router-dom";
+interface IGrandparentReplyOpts {
+  post: Post;
+}
 
-const GrandparentReplyOpts: React.FC = () => {
-
-    // const [role, setRole] = useState("");
-    // const [currentPost] = useState<Post>();
-    // const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects
-
-    // TODO: Get clicked-on currentPost
-    let mockPost = {id: "xyz456", creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false};
-    // let replyOpt = "";
+const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = (post) => {
 
     return (
         <>
 
-        <h1>Letter from {mockPost["from"]}</h1>
+        <h1>Letter from " "</h1>
 
         <Card variant="outlined">
             <CardContent>
-                {mockPost.message}
+                " "
             </CardContent>
         </Card>
 

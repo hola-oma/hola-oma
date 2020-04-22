@@ -32,6 +32,7 @@ const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , currentPost, re
         buttonActions={[returnToInbox, replyToMessage]}
         buttonIcons={[<MailIcon />, <CreateIcon />]}
       />
+
       </Dialog>
 
   );
