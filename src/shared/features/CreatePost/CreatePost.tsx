@@ -13,7 +13,6 @@ const CreatePost: React.FC = () => {
 
     const [role, setRole] = useState("");
     const CurrentPost = useContext(GlobalPost);
-    console.log("Global post from: " + CurrentPost.post.from);
 
     useEffect(() => {
         getUserSettings()
