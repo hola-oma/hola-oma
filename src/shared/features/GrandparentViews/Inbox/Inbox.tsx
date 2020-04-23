@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -7,6 +7,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import DraftsIcon from '@material-ui/icons/Drafts';
 
 import { Post } from 'shared/models/post.model';
+import {GlobalPost} from "../../../../App";
 
 import './Inbox.css';
 import CurrentMsgModal from "./components/CurrentMsgModal";
@@ -34,7 +35,7 @@ interface IInbox {
   posts: Array<Post>; // array of type "Post"
 }
 
-let currentPost:Post;
+let currentPost: Post;
 
 const Inbox: React.FC<IInbox> = ({ posts }) => {
 
@@ -42,16 +43,19 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
     let history = useHistory();
     const [currentMsgModalOpen, setCurrentMsgModalOpen] = useState<boolean>(false);
 
+    const CurrentPost = useContext(GlobalPost);
+
     const pressEnvelope = async function (envelopePost: Post) {
       currentPost = envelopePost;
       let postID = currentPost?.pid;
       await markPostRead(postID)
         .then(() => console.log("updated post read in database"));
+      CurrentPost.setPost(envelopePost);  // Update global post value
       setCurrentMsgModalOpen(true);
     }
 
     const returnToInbox = () => {
-      console.log("Message closed");
+      console.log("Message from " + CurrentPost.post.from + " closed");
       setCurrentMsgModalOpen(false);
     }
 
