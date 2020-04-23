@@ -62,7 +62,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
     const replyToMessage = () => {
       console.log("Grandparent wants to reply!");
       setCurrentMsgModalOpen(false);
-      history.push("/newReply");
+      history.push("/newPost");
     }
 
   return (

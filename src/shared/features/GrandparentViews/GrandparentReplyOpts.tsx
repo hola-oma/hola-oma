@@ -7,12 +7,12 @@ interface IGrandparentReplyOpts {
   post: Post;
 }
 
-const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = (post) => {
+const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
 
     return (
         <>
 
-        <h1>Letter from " "</h1>
+        <h1>Reply to {post?.from}'s Letter</h1>
 
         <Card variant="outlined">
             <CardContent>
