@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {Box, Card, Modal, CardContent, CardMedia, Typography, Container, Grid} from '@material-ui/core';
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Post } from 'shared/models/post.model';
+import { getUserDataByID } from "services/user";
 
 import './FamilyMsgView.css';
 
@@ -57,7 +58,8 @@ interface IReply {
     creatorId: string,
     date: number,
     read: boolean,
-    responseTo: string
+    responseTo: string,
+    creatorName: string
 }
 
 const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
@@ -79,8 +81,8 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     }
 
     const mockReplies = [
-        {message: "Hello", creatorId: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", date: 1587597619986, read: false, responseTo: "sITkY10bItkczjAHkkUJ"},
-        {message: "Thanks", creatorId: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", date: 1587597619986, read: false, responseTo: "sITkY10bItkczjAHkkUJ"}
+        {message: "Hello", creatorId: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", date: 1587597619986, read: false, responseTo: "sITkY10bItkczjAHkkUJ", creatorName: "Kristin Grandparent Test"},
+        {message: "Thanks", creatorId: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", date: 1587597619986, read: false, responseTo: "sITkY10bItkczjAHkkUJ", creatorName: "Kristin Grandparent Test"}
     ]
 
     return (
@@ -120,8 +122,13 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                     <div onClick={()=>handleClick(reply)}>
                     <Card variant="outlined">
                         <CardContent>
-                            <Typography variant="subtitle2">
+                            <Typography variant="h5">
                                 {reply.message}
+                            </Typography>
+                            <Typography variant="subtitle2">
+                                Sent by {reply.creatorName}
+                                <br/>
+                                {getDateAsString(reply.date)}
                             </Typography>
                         </CardContent>
                     </Card>
