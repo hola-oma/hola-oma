@@ -35,7 +35,6 @@ export const sendPasswordResetEmail = async (emailAddress: string) => {
   const auth = firebase.auth();
 
   try {
-    console.log("Sending 'reset password' email to: ", emailAddress);
     await auth.sendPasswordResetEmail(emailAddress);
     return true;
   } catch(e) {

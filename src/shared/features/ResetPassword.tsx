@@ -29,6 +29,7 @@ interface IResetPassword extends RouteComponentProps<any> {
 const ResetPassword: React.FC<IResetPassword> = () => {
 
   const [emailForReset, setEmailForReset] = useState("");
+  const [resetSent, setResetSent] = useState(false);
 
   const [error, setErrors] = useState("");
 
@@ -38,6 +39,7 @@ const ResetPassword: React.FC<IResetPassword> = () => {
 
     try {
       await sendPasswordResetEmail(emailForReset);
+      setResetSent(true);
     } catch(e) {
       setErrors(e.message);
     }
@@ -55,7 +57,7 @@ const ResetPassword: React.FC<IResetPassword> = () => {
         </Typography>
         <p>Enter your username and we’ll send a link to reset your password.</p>
 
-        <form onSubmit={e => handleForm(e)} className="" noValidate>
+        <form onSubmit={e => handleForm(e)} className="">
 
         <Grid container spacing={2}>
             {/* Display name */}
@@ -88,6 +90,9 @@ const ResetPassword: React.FC<IResetPassword> = () => {
 
         </form>
         <span className="error">{error}</span>
+        {resetSent && 
+          <span>E-mail sent! Check your inbox.</span>
+        }
       </div>
       <Box mt={8}>
         <Copyright />      
