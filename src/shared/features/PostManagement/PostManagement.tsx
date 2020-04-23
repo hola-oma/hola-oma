@@ -65,7 +65,7 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
             </Card>
           </Link>
       </Container>
-      <Grid container justify="space-between" spacing={2}>
+      <Grid container spacing={2}>
         {
           posts.map((post: Post, index: number) => {
             return (

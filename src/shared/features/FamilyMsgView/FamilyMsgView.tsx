@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import {Box, Card, Modal, CardContent, CardMedia, Typography, Container} from '@material-ui/core';
+import {Box, Card, Modal, CardContent, CardMedia, Typography, Container, Grid} from '@material-ui/core';
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Post } from 'shared/models/post.model';
@@ -51,19 +51,37 @@ interface ISubSubProps {
     post: Post
 }
 
+//For testing - update with actual format
+interface IReply {
+    message: string,
+    creatorId: string,
+    date: number,
+    read: boolean,
+    responseTo: string
+}
+
 const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const classes = useStyles();
     const [modalOpen, setModalOpen] = useState(false);
     const post = props.location.state.post;
+    const [modalReply, setModalReply] = useState<IReply>();
 
-    const handleClick = () => {
+    const handleClick = (reply: IReply) => {
         setModalOpen(!modalOpen);
+        if (reply) {
+            setModalReply(reply);
+        }
     }
 
     const getDateAsString = function(postDate: number) {
         let date = new Date(postDate).toString()
         return date.substring(0, 21);
     }
+
+    const mockReplies = [
+        {message: "Hello", creatorId: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", date: 1587597619986, read: false, responseTo: "sITkY10bItkczjAHkkUJ"},
+        {message: "Thanks", creatorId: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", date: 1587597619986, read: false, responseTo: "sITkY10bItkczjAHkkUJ"}
+    ]
 
     return (
         <>
@@ -89,20 +107,41 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             <br/>
         </Typography>
 
-        <div className={"postCard"} onClick={handleClick}>
-            <Card variant="outlined">
-                Placeholder for response
-            </Card>
-        </div>
+        <Typography variant="h3">
+            Replies
+        </Typography>
+
+            <Grid container spacing={2}>
+            {
+            mockReplies.map((reply: IReply, index: number) => {
+                return (
+                <Grid item xs={4} key={index}>
+                    <div>
+                    <div onClick={()=>handleClick(reply)}>
+                    <Card variant="outlined">
+                        <CardContent>
+                            <Typography variant="subtitle2">
+                                {reply.message}
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                    </div>
+                    </div>
+                </Grid>
+                )
+            })
+            }
+        </Grid>
         <Modal open={modalOpen} onClose={handleClick} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-            <div className={classes.paper}>Insert full display of grandparent response here.</div>
+        <div className={classes.paper}>
+            {modalReply && modalReply.message}
+        </div>
         </Modal>
 
          <Box className="todo">
             <h3>To do items:</h3>
             <ul>
                 <li>Display responses</li>
-                <li>Modal on response click</li>
                 <li>Seen by with checkmark icons and receiver list</li>
                 <li>Edit/delete options?</li>
             </ul>
