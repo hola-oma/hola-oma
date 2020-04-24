@@ -213,3 +213,28 @@ export const authenticateFromStore = async () => {
 
   return isAuthenticated;
 }
+
+export const verifyActionCode = async (actionCode: string) => {
+  const auth = firebase.auth();
+  try {
+    let email = await auth.verifyPasswordResetCode(actionCode);
+    return email;
+  } catch(e) {
+    // invalid or expired action code, ask the user to try to reset the password again 
+    throw Error(e.message);
+  }
+}
+
+export const resetPassword = async (actionCode: string, newPassword: string) => {
+  const auth = firebase.auth();
+  try {
+    let response = auth.confirmPasswordReset(actionCode, newPassword)
+    //password has been confirmed and the new password updated
+    console.log(response);
+    // display a link back to the app or sign the user in directly
+    console.log("display a link back");
+  } catch(e) {
+    // code expired or password too weak 
+    throw Error(e.message);
+  }
+}
