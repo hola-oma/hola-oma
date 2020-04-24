@@ -228,11 +228,9 @@ export const verifyActionCode = async (actionCode: string) => {
 export const resetPassword = async (actionCode: string, newPassword: string) => {
   const auth = firebase.auth();
   try {
-    let response = auth.confirmPasswordReset(actionCode, newPassword)
-    //password has been confirmed and the new password updated
-    console.log(response);
-    // display a link back to the app or sign the user in directly
-    console.log("display a link back");
+    await auth.confirmPasswordReset(actionCode, newPassword)
+    // password has been confirmed and the new password updated
+    return true;
   } catch(e) {
     // code expired or password too weak 
     throw Error(e.message);

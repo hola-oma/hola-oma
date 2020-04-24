@@ -19,12 +19,12 @@ import { RouteComponentProps } from 'react-router-dom'; // give us 'history' obj
 import { Avatar } from "@material-ui/core";
 
 import { sendPasswordResetEmail } from 'services/user';
+import Alert from "@material-ui/lab/Alert";
+import BigInput from "shared/components/BigInput/BigInput";
 
 interface IResetPassword extends RouteComponentProps<any> {
+  // empty for now 
 }
-
-/* This page is where we set the display name and account type */
-/* Separated from main Register page to make the Register page less overwhelming */
 
 const ResetPassword: React.FC<IResetPassword> = () => {
 
@@ -33,14 +33,20 @@ const ResetPassword: React.FC<IResetPassword> = () => {
 
   const [error, setErrors] = useState("");
 
-  /* ADD USER ROLE TYPE AND DISPLAY NAME TO USER SETTINGS */
+  const updateEmailForReset = (e: any) => {
+    setEmailForReset(e.target.value);
+  }
+
+  /* REQUEST A PASSWORD RESET EMAIL BE SENT TO THIS EMAIL ADDRESS */
   const handleForm = async (e: any) => {
     e.preventDefault();
 
     try {
       await sendPasswordResetEmail(emailForReset);
+      setErrors("");
       setResetSent(true);
     } catch(e) {
+      // possible errors include email address doesn't exist in db 
       setErrors(e.message);
     }
   }
@@ -60,20 +66,16 @@ const ResetPassword: React.FC<IResetPassword> = () => {
         <form onSubmit={e => handleForm(e)} className="">
 
         <Grid container spacing={2}>
-            {/* Display name */}
             <Grid item xs={12}>
-              <TextField
-                autoComplete="email"
+              <BigInput 
+                labelText="E-Mail Address"
                 name="email"
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Your email address"
-                autoFocus
+                required={true}
                 value={emailForReset}
-                onChange={e => setEmailForReset(e.target.value)}
-              />
+                autoFocus={true}
+                autoComplete="current-email"
+                type="text"
+                onChange={updateEmailForReset}/>
             </Grid>
           </Grid>
 
@@ -89,9 +91,11 @@ const ResetPassword: React.FC<IResetPassword> = () => {
           </Button>
 
         </form>
-        <span className="error">{error}</span>
+        {error &&
+          <Alert className="error" severity="error">{error}</Alert>
+        }
         {resetSent && 
-          <span>E-mail sent! Check your inbox.</span>
+          <Alert severity="success">E-mail sent! Check your inbox.</Alert>
         }
       </div>
       <Box mt={8}>
