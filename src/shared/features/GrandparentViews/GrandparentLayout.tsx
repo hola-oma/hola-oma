@@ -3,8 +3,10 @@ import React, {useContext} from 'react';
 import { Post } from 'shared/models/post.model';
 
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {Grid, Box, Button, SvgIconProps} from '@material-ui/core';
+import {Grid, Box, Button, SvgIconProps, Card, CardHeader, CardContent} from '@material-ui/core';
 import {GrandparentPostContext} from "../../../App";
+import DraftsIcon from "@material-ui/icons/Drafts";
+import MailIcon from "@material-ui/icons/Mail";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -12,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     button: {
-      margin: theme.spacing(1),
+      margin: theme.spacing(5),
     },
     paper: {
       padding: theme.spacing(2),
@@ -60,44 +62,28 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, bo
         </Box>
       </div>
 
-      {/*Grid for bottom buttons*/}
+      {/*Div for bottom buttons*/}
       {buttonIcons.length > 0 &&
-      <div>
-        <Grid
-          container
-          spacing={0}
-          justify={"space-evenly"} >
-
-          {/*Button 1*/}
-          <Grid item xs={4}>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              startIcon={buttonIcons[0]}
-              onClick={buttonActions[0]}
-            >
-              {buttonText[0]}
-            </Button>
+        <div className={classes.button}>
+          <Grid container justify={'space-between'}>
+          {buttonIcons.map((button: React.ReactElement<SvgIconProps>, index: number) => {
+            return (
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                startIcon={buttonIcons[index]}
+                onClick={buttonActions[index]}
+              >
+                {buttonText[index]}
+              </Button>
+            )
+          })}
           </Grid>
-
-          {/*Button 2*/}
-          <Grid item xs={4}>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              startIcon={buttonIcons[1]}
-              onClick={buttonActions[1]}
-            >
-              {buttonText[1]}
-            </Button>
-          </Grid>
-        </Grid>
-      </div> }
-    </>
-)
-}
+        </div>
+      }
+      </>
+)}
 
 
 export default GrandparentLayout;

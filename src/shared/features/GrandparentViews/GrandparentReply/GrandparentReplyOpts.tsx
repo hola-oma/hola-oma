@@ -21,11 +21,15 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
   const FamilyPost = useContext(GrandparentPostContext).post;
   const [EmojiReplyOpen, setEmojiReplyOpen] = useState<boolean>(false);
 
+  const returnToPost = () => {
+    console.log("Reply " + FamilyPost.from + " closed");
+    setEmojiReplyOpen(false);
+  }
+
   const replyWithSmiley = () => {
     console.log("Grandparent wants to send an emoji!");
     setEmojiReplyOpen(true);
   }
-
 
   return (
         <>
@@ -46,11 +50,13 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
                   <ul>Send "Voice Message"</ul>
                   <ul>Send Selfie</ul>
                 <li>"Sent reply" View</li>
+                <li>"Return to Post"</li>
             </ul>
         </Box>
 
         <GrandparentEmojiReply
           isOpen={EmojiReplyOpen}
+          returnToPost={returnToPost}
         />
 
      </>

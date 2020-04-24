@@ -18,9 +18,10 @@ import GrandparentLayout from "../../GrandparentLayout";
 
 interface IEmojiReply {
   isOpen: boolean;
+  returnToPost: () => void;
 }
 
-const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen}) => {
+const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
 
   return (
     <>
@@ -40,7 +41,7 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen}) => {
             <HealingIcon/>]}
         />}
           buttonText={["Go back to message", "Send Smiley(s)"]}
-          buttonActions={[() => console.log("Return to message"), () => console.log("Create reply")]}
+          buttonActions={[returnToPost, () => console.log("Create reply")]}
           buttonIcons={[<MailIcon/>, <SendIcon/>]}
       />
 
