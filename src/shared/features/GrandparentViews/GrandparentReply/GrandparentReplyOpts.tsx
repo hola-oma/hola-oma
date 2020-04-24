@@ -25,9 +25,14 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
 
   let history = useHistory();
 
-  const returnToPost = () => {
+  const returnToInbox = () => {
     console.log("Reply to " + FamilyPost.from + " closed");
     history.push("/posts");
+  }
+
+  const returnToPost = () => {
+    console.log("Reply to " + FamilyPost.from + " closed");
+    setEmojiReplyOpen(false);
   }
 
   const replyWithSmiley = () => {
@@ -44,7 +49,7 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
           headerText={"Reply to Letter from "}
           boxContent={boxContent}
           buttonText={["Return to Messages", "Smiley", "Other Options Pending"]}
-          buttonActions={[returnToPost, replyWithSmiley, replyAnotherWay]}
+          buttonActions={[returnToInbox, replyWithSmiley, replyAnotherWay]}
           buttonIcons={[<MailIcon/>, <InsertEmoticonIcon/>, <ContactSupportIcon/>]}
           />
 

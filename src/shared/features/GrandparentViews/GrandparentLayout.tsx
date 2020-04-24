@@ -29,15 +29,15 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IGrandparentLayout {
-  // post: Post;
   headerText: string;
+  header2Text?:string;
   boxContent: any;
   buttonText: Array<string>;
   buttonActions: { (): void; } []   //  Array of functions
   buttonIcons: React.ReactElement<SvgIconProps>[]
 }
 
-export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, boxContent, buttonText,  buttonActions, buttonIcons}) => {
+export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, header2Text, boxContent, buttonText,  buttonActions, buttonIcons}) => {
 
   const classes = useStyles();
 
@@ -47,6 +47,9 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, bo
     <>
       <div className={classes.title}>
         <h1>{headerText} {FamilyPost?.from}</h1>
+        {header2Text &&
+        <h2>{header2Text}</h2>
+        }
       </div>
 
       {/*Box for message content*/}

@@ -32,6 +32,7 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
               aria-describedby="simple-modal-description">
       <GrandparentLayout
         headerText={"Replying to "}
+        header2Text={"Choose which smileys to send!"}
         boxContent={<GrandparentGrid
           icons={[<InsertEmoticonIcon/>,
             <ThumbUpIcon/>,
