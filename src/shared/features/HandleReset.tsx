@@ -16,7 +16,7 @@ import 'firebase/auth'; // for authentication
 import 'firebase/firestore'; // if database type is firestore, import this 
 import 'firebase/database'; // for additional user properties, like role 
 
-import { RouteComponentProps, useLocation } from 'react-router-dom'; // give us 'history' object
+import { RouteComponentProps, useLocation, Link } from 'react-router-dom'; // give us 'history' object
 import { Avatar } from "@material-ui/core";
 
 import { verifyActionCode, resetPassword } from 'services/user';
@@ -82,49 +82,55 @@ const HandleReset: React.FC<IHandleReset> = () => {
           <HelpIcon />
         </Avatar>
         <Typography component="h1" variant="h4">
-          Reset your password 
+          Enter a new password 
         </Typography>
         <p>for <b>{email}</b></p>
 
-        <p>mode: {mode}</p>
-        <p>action code: {actionCode}</p>
+        {!resetSent && 
+          <>
+          <form onSubmit={e => handleForm(e)} className="">
 
-        <form onSubmit={e => handleForm(e)} className="">
-
-        <Grid container spacing={2}>
-            {/* Display name */}
-            <Grid item xs={12}>
-              <TextField
-                autoComplete="email"
-                name="email"
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="New password"
-                autoFocus
-                value={newPassword}
-                onChange={e => setNewPassword(e.target.value)}
-              />
+          <Grid container spacing={2}>
+              {/* Display name */}
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="email"
+                  name="email"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="email"
+                  label="New password"
+                  autoFocus
+                  value={newPassword}
+                  onChange={e => setNewPassword(e.target.value)}
+                />
+              </Grid>
             </Grid>
-          </Grid>
 
-          <Button 
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            size="large"
-            className="bigButton"
-          >
-            Save
-          </Button>
+            <Button 
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              size="large"
+              className="bigButton"
+            >
+              Save
+            </Button>
 
-        </form>
-        <span className="error">{error}</span>
-        {resetSent && 
-          <span>Password request sent</span>
+          </form>
+          <span className="error">{error}</span>
+          </>
         }
+
+        {resetSent && 
+          <>
+          <p>Password reset! You may log in.</p>
+          <Link to="/login">Click here to log in</Link>
+          </>
+        }
+      
       </div>
       <Box mt={8}>
         <Copyright />      
