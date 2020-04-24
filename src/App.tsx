@@ -64,7 +64,7 @@ const theme = createMuiTheme({
 })
 
 export const AuthContext = React.createContext<IAuthContext | null>(null);
-export const GlobalPost = React.createContext<IPostContext>({ post: dummyPost, setPost: null });
+export const GrandparentPostContext = React.createContext<IPostContext>({ post: dummyPost, setPost: null });
 
 function App() {
 
@@ -113,7 +113,7 @@ function App() {
   return (
     /* https://reactjs.org/docs/context.html */
     <AuthContext.Provider value={{ isLoggedIn, setLoggedIn, userData }}>
-      <GlobalPost.Provider value={{ post, setPost}}>
+      <GrandparentPostContext.Provider value={{ post, setPost}}>
 
       <div className="App">
       
@@ -129,7 +129,7 @@ function App() {
 
       </div>
 
-      </GlobalPost.Provider>
+      </GrandparentPostContext.Provider>
     </AuthContext.Provider>
 
 

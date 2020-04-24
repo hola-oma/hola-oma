@@ -4,15 +4,15 @@ import { roles } from '../../../enums/enums';
 import { getUserSettings } from "services/user";
 
 // import { Post } from '../../shared/models/currentPost.model';
-import GrandparentReplyOptions from "../GrandparentViews/GrandparentReplyOpts";
+import GrandparentReplyOptions from "../GrandparentViews/GrandparentReply/GrandparentReplyOpts";
 
 import NewFamilyPost from ".././NewFamilyPost/NewFamilyPost";
-import {GlobalPost} from "../../../App";
+import {GrandparentPostContext} from "../../../App";
 
 const CreatePost: React.FC = () => {
 
     const [role, setRole] = useState("");
-    const CurrentPost = useContext(GlobalPost);
+    const CurrentPost = useContext(GrandparentPostContext);
 
     useEffect(() => {
         getUserSettings()

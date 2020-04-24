@@ -1,8 +1,10 @@
-import React  from 'react';
+import React, {useContext, useState} from 'react';
 
-import {Box, Card, CardContent, Button, SvgIconProps} from '@material-ui/core';
-import {Post} from "../../models/post.model";
-import GrandparentLayout from "./GrandparentLayout";
+import {Box} from '@material-ui/core';
+import {Post} from "../../../models/post.model";
+import GrandparentEmojiReply from "./components/GrandparentEmojiReply";
+import GrandparentLayout from "../GrandparentLayout";
+import {GrandparentPostContext} from "../../../../App";
 
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
@@ -10,23 +12,27 @@ import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 interface IGrandparentReplyOpts {
   post: Post;
 }
-
-const replyWithSmiley = () => {
-  console.log("Grandparent wants to send an emoji!");
-}
-
 const replyAnotherWay = () => {
   console.log("Grandparent wants to reply another way!");
 }
 
 const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
 
-    return (
+  const FamilyPost = useContext(GrandparentPostContext).post;
+  const [EmojiReplyOpen, setEmojiReplyOpen] = useState<boolean>(false);
+
+  const replyWithSmiley = () => {
+    console.log("Grandparent wants to send an emoji!");
+    setEmojiReplyOpen(true);
+  }
+
+
+  return (
         <>
 
         <GrandparentLayout
-          post={post}
           headerText={"Reply to Letter from "}
+          boxContent={FamilyPost.message}
           buttonText={["Smiley", "Other Options Pending"]}
           buttonActions={[replyWithSmiley, replyAnotherWay]}
           buttonIcons={[<InsertEmoticonIcon/>, <ContactSupportIcon/>]}
@@ -42,6 +48,11 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
                 <li>"Sent reply" View</li>
             </ul>
         </Box>
+
+        <GrandparentEmojiReply
+          isOpen={EmojiReplyOpen}
+        />
+
      </>
     )
 };

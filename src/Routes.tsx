@@ -30,7 +30,7 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
         console.log("user is logged in");
         /* 
         if (userData?.role) {
-          history.push('/posts');
+          history.push('/items');
         } else {
           history.push('/registerDetails');
         } */

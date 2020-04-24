@@ -7,7 +7,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import DraftsIcon from '@material-ui/icons/Drafts';
 
 import { Post } from 'shared/models/post.model';
-import {GlobalPost} from "../../../../App";
+import {GrandparentPostContext} from "../../../../App";
 
 import './Inbox.css';
 import CurrentMsgModal from "./components/CurrentMsgModal";
@@ -43,7 +43,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
     let history = useHistory();
     const [currentMsgModalOpen, setCurrentMsgModalOpen] = useState<boolean>(false);
 
-    const CurrentPost = useContext(GlobalPost);
+    const CurrentPost = useContext(GrandparentPostContext);
 
     const pressEnvelope = async function (envelopePost: Post) {
       currentPost = envelopePost;
@@ -89,7 +89,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
         <CurrentMsgModal
           isOpen={currentMsgModalOpen}
-          currentPost={currentPost}
+          // currentPost={currentPost}
           returnToInbox={returnToInbox}
           replyToMessage={replyToMessage}
         />

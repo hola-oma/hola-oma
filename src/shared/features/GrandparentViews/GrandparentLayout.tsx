@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 
 import { Post } from 'shared/models/post.model';
 
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {Grid, Box, Button, SvgIconProps} from '@material-ui/core';
+import {GrandparentPostContext} from "../../../App";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,21 +27,24 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IGrandparentLayout {
-  post: Post;
+  // post: Post;
   headerText: string;
+  boxContent: any;
   buttonText: Array<string>;
   buttonActions: { (): void; } []   //  Array of functions
   buttonIcons: React.ReactElement<SvgIconProps>[]
 }
 
-export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ post , headerText, buttonText,  buttonActions, buttonIcons}) => {
+export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, boxContent, buttonText,  buttonActions, buttonIcons}) => {
 
   const classes = useStyles();
+
+  const FamilyPost = useContext(GrandparentPostContext).post;
 
   return (
     <>
       <div className={classes.title}>
-        <h1>{headerText} {post?.from}</h1>
+        <h1>{headerText} {FamilyPost?.from}</h1>
       </div>
 
       {/*Box for message content*/}
@@ -52,12 +56,12 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ post , headerT
           height={"75%"}
           mx={"auto"}
           fontSize={24}>
-          {post?.message} <br/> <br/>
-          {post?.photoURL}
+          {boxContent}
         </Box>
       </div>
 
       {/*Grid for bottom buttons*/}
+      {buttonIcons.length > 0 &&
       <div>
         <Grid
           container
@@ -90,7 +94,7 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ post , headerT
             </Button>
           </Grid>
         </Grid>
-      </div>
+      </div> }
     </>
 )
 }
