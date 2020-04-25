@@ -23,11 +23,22 @@ export const updateUserProfile = async (displayName: string, email: string) => {
 
       await user.updateEmail(email);
     }
-
     // todo: password update
     return true;
   } catch(e) {
     console.log(e.message);
+    throw Error(e.message);
+  }
+}
+
+export const sendPasswordResetEmail = async (emailAddress: string) => {
+  const auth = firebase.auth();
+
+  try {
+    await auth.sendPasswordResetEmail(emailAddress);
+    return true;
+  } catch(e) {
+    // no user exists with this email 
     throw Error(e.message);
   }
 }
@@ -201,4 +212,27 @@ export const authenticateFromStore = async () => {
   });
 
   return isAuthenticated;
+}
+
+export const verifyActionCode = async (actionCode: string) => {
+  const auth = firebase.auth();
+  try {
+    let email = await auth.verifyPasswordResetCode(actionCode);
+    return email;
+  } catch(e) {
+    // invalid or expired action code, ask the user to try to reset the password again 
+    throw Error(e.message);
+  }
+}
+
+export const resetPassword = async (actionCode: string, newPassword: string) => {
+  const auth = firebase.auth();
+  try {
+    await auth.confirmPasswordReset(actionCode, newPassword)
+    // password has been confirmed and the new password updated
+    return true;
+  } catch(e) {
+    // code expired or password too weak 
+    throw Error(e.message);
+  }
 }

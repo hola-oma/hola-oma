@@ -17,7 +17,7 @@
     "firebase": "^7.13.1",
     "material-ui-icons": "^1.0.0-beta.36",
     "moment": "^2.24.0",
-    "query-string": "^6.11.1",
+    "query-string": "^6.12.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-moment": "^0.9.7",
