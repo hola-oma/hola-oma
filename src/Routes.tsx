@@ -30,20 +30,21 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
 
     useEffect(() => {
       if (isLoggedIn) {
-        console.log("user is logged in");
-        /* 
-        if (userData?.role) {
+        if (userData === undefined) {
+          history.replace('/registerDetails');
+        } else if (userData) {
           history.push('/posts');
         } else {
-          history.push('/registerDetails');
-        } */
+          console.log("Something went wrong with logging in");
+          console.log(userData);
+        }
       }
-    }, [isLoggedIn, userData, history]);
+    }, [isLoggedIn, userData, history]); 
 
     return (
       <div>
         <div style={isLoading ? {} : {display: 'none'}}>
-          <p>Loading...{isLoading} </p>
+          <p>Loading...</p>
         </div>
         <div style={isLoading ? {display: 'none'} : {}}>
         <Switch>
@@ -52,7 +53,7 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
           <Route exact path="/login" component={Login} />
           <Route exact path="/resetPassword" component={ResetPassword} />
           <Route exact path="/handleReset" component={HandleReset} />
-          <ProtectedRouteHoc exact path="/registerDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={RegisterDetails} />
+          <ProtectedRouteHoc exact setIsLoading={setIsLoading} path="/registerDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={RegisterDetails} />
           <ProtectedRouteHoc exact setIsLoading={setIsLoading} path="/posts" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostsView} />
           {/*<ProtectedRouteHoc exact path="/postDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostDetails} />*/} {/* use modals instead */}
           <ProtectedRouteHoc exact path="/newPost" isLoggedIn={isLoggedIn} public={false} RouteComponent={CreatePost} />

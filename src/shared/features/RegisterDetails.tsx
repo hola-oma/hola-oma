@@ -21,14 +21,13 @@ import { roles } from '../../enums/enums';
 import { getUserProfile, createUserSettings, updateUserProfile } from "services/user";
 
 interface IRegisterDetails extends RouteComponentProps<any> {
-  // empty for now 
-  // got help here: https://stackoverflow.com/questions/49342390/typescript-how-to-add-type-check-for-history-object-in-react 
+    setIsLoading: (loading: boolean) => void
 }
 
 /* This page is where we set the display name and account type */
 /* Separated from main Register page to make the Register page less overwhelming */
 
-const RegisterDetails: React.FC<IRegisterDetails> = ({ history }) => {
+const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) => {
   const [userID, setUserID] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
@@ -41,19 +40,23 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history }) => {
   /* useEffect is a built-in React hook that fires when the page
   loads. When this page loads, it gets the signed in user from the db */
   useEffect(() => {
-    let mounted = true;
+    let isMounted = true;
+    setIsLoading(true);
+
     getUserProfile().then((doc:any) => {
-      if (mounted) {
+      if (isMounted) {
         // Users who signed up using Google already have a display name, so 
         // retrieve and display it if it's there 
         setDisplayName(doc?.displayName ? doc.displayName : ''); 
         setUserID(doc?.uid);
         setEmail(doc?.email ? doc.email : '');
+
+        setIsLoading(false);
       }
     });
 
-    return () => { mounted = false; }
-  }, []); // fires on page load if this is empty [] 
+    return () => { isMounted = false; }
+  }, [setIsLoading]); // fires on page load if this is empty [] 
 
 
   /* ADD USER ROLE TYPE AND DISPLAY NAME TO USER SETTINGS */
@@ -66,6 +69,7 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history }) => {
       
       if (userCreated && profileUpdated) {
         Auth?.setLoggedIn(true); 
+        Auth?.setSettingsComplete(true);
         if (history) history.push('/posts');
       }
     } catch(e) {
@@ -81,7 +85,7 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history }) => {
           Display my name as
         </Typography>
 
-        <form onSubmit={e => handleForm(e)} className="" noValidate>
+        <form onSubmit={e => handleForm(e)} className="">
 
         <Grid container spacing={2}>
             {/* Display name */}
