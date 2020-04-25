@@ -47,9 +47,7 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, he
     <>
       <div className={classes.title}>
         <h1>{headerText} {FamilyPost?.from}</h1>
-        {header2Text &&
-        <h2>{header2Text}</h2>
-        }
+        { header2Text && <h2>{header2Text}</h2> }
       </div>
 
       {/*Box for message content*/}

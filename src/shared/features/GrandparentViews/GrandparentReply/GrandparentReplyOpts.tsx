@@ -7,9 +7,10 @@ import GrandparentEmojiReply from "./components/GrandparentEmojiReply";
 import GrandparentLayout from "../GrandparentLayout";
 import {GrandparentPostContext} from "../../../../App";
 
-import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
-import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import MailIcon from '@material-ui/icons/Mail';
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
+import PermPhoneMsgIcon from '@material-ui/icons/PermPhoneMsg';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 interface IGrandparentReplyOpts {
   post: Post;
@@ -40,6 +41,14 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
     setEmojiReplyOpen(true);
   }
 
+  const replyWithVoiceMsg = () => {
+    console.log("Grandparent wants to send a \"voicemail\"!");
+  }
+
+  const replyWithPicture = () => {
+    console.log("Grandparent wants to send a picture!");
+  }
+
   const boxContent = FamilyPost.message + "\n\n" + FamilyPost.photoURL;
 
   return (
@@ -48,20 +57,21 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
         <GrandparentLayout
           headerText={"Reply to Letter from "}
           boxContent={boxContent}
-          buttonText={["Return to Messages", "Smiley", "Other Options Pending"]}
-          buttonActions={[returnToInbox, replyWithSmiley, replyAnotherWay]}
-          buttonIcons={[<MailIcon/>, <InsertEmoticonIcon/>, <ContactSupportIcon/>]}
+          buttonText={["Return to Messages", "Smiley", "Voice Message", "Your Picture"]}
+          buttonActions={[returnToInbox, replyWithSmiley, replyWithVoiceMsg, replyWithPicture]}
+          buttonIcons={[<MailIcon/>, <InsertEmoticonIcon/>, <PermPhoneMsgIcon/>, <PhotoCameraIcon/>]}
           />
 
          <Box className="todo">
             <h3>To do items:</h3>
             <ul>
-              <li>Figure out why Box isn't same size</li>
-              <li>Create button and component for reply options:</li>
+              <li>Fix Box size</li>
+              <li>Create replies:</li>
+                <ul>Send Emoji</ul>
                 <ul>Send "Voice Message"</ul>
                 <ul>Send Selfie</ul>
               <li>"Sent reply" View</li>
-              <li>"Return to Post"</li>
+              <li>Return to Post (requires return to Inbox + open modal</li>
             </ul>
         </Box>
 
