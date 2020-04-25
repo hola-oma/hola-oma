@@ -1,6 +1,6 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 
-import {Button, Card, CardContent, CardHeader, Dialog, Grid, SvgIconProps} from "@material-ui/core";
+import {Button, Card, CardContent, Dialog, Grid, SvgIconProps} from "@material-ui/core";
 
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
@@ -31,37 +31,31 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
       button: {
         margin: theme.spacing(5),
       },
-      paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-      },
-      title: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
+      highlighted: {
+        backgroundColor: 'gray'
       }
     }),
   );
   const classes = useStyles();
 
-  const [highlighted, setHighlighted] = useState<boolean>(false);
-  const handleHighlight = () => {
-    highlighted ? setHighlighted(false) : setHighlighted(true);
-    console.log("highlighted: " + highlighted);
+  const [highlightedList, setHighlighted] = useState<Array<boolean>>([false, false, false, false, false, false]);
+  const handleHighlight = (index: number) => {
+    // https://stackoverflow.com/questions/29537299/react-how-to-update-state-item1-in-state-using-setstate
+    let copy = [...highlightedList];
+    copy[index] = ( !copy[index] );   // Change to opposite value
+    setHighlighted(copy);
   }
 
   // Function called on click
   let getChoices = (choice: number) => {
-    console.log("choice: " + choice);
-
-    handleHighlight();
+    // Highlight or un-highlight
+    handleHighlight(choice);
 
     // Add or remove clicked icon from array
     let position = choicesList.indexOf(choice);
     (position < 0) ? choicesList.push(choice) : choicesList.splice(position, 1);
 
-    // Log for testing - delete later
-    choicesList.forEach(choice => console.log(choice));
+    choicesList.forEach(choice => console.log(choice));     // For testing - delete later
   }
 
   const replyOptions: Array<React.ReactElement<SvgIconProps>> = [
@@ -90,7 +84,10 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
                   key={index}
                 >
                   <Card>
-                    <CardContent onClick={() => getChoices(index)}>
+                    <CardContent onClick={() => getChoices(index)}
+                                 className={ highlightedList[index] ? classes.highlighted : classes.root }
+                    >
+
                   <Button
                     variant="contained"
                     color="primary"
