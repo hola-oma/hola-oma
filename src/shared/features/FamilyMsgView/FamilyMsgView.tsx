@@ -9,6 +9,8 @@ import { getLinkedAccounts } from "services/accountLink";
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
+import Moment from 'react-moment';
+
 import './FamilyMsgView.css';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -103,11 +105,6 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         }
     }
 
-    const getDateAsString = function(postDate: number) {
-        let date = new Date(postDate).toString()
-        return date.substring(0, 21);
-    }
-
     const mockReplies = [
         {message: "Hello", creatorId: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", date: 1587597619986, read: false, responseTo: "sITkY10bItkczjAHkkUJ", creatorName: "Kristin Grandparent Test"},
         {message: "Thanks", creatorId: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", date: 1587597619986, read: false, responseTo: "sITkY10bItkczjAHkkUJ", creatorName: "Kristin Grandparent Test"}
@@ -133,7 +130,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             </Grid>
             <Grid item xs={3}>
                 <Typography variant="subtitle2">
-                    Sent message {getDateAsString(post.date)}
+                    Sent message <Moment format="MMMM Do YYYY, h:mm a">{post.date}</Moment>
                     <br/>
                     <br/>
                     Seen by:
@@ -176,7 +173,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                             <Typography variant="subtitle2">
                                 Sent by {reply.creatorName}
                                 <br/>
-                                {getDateAsString(reply.date)}
+                                <Moment format="MMMM Do YYYY, h:mm a">{reply.date}</Moment>
                             </Typography>
                         </CardContent>
                     </Card>

@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 
 import { Post } from 'shared/models/post.model';
 
+import Moment from 'react-moment';
+
 import './PostManagement.css';
 
 const useStyles = makeStyles({
@@ -40,11 +42,6 @@ interface IPostManagement {
 const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
 
   const classes = useStyles();
-
-  const getDateAsString = function(postDate: number) {
-    let date = new Date(postDate).toString()
-    return date.substring(0, 15);
-  }
 
   const getMessageSubstring = function(message: string) {
     if (message.length > 100) {
@@ -93,7 +90,7 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
                               <Typography variant="subtitle2">
                                   Sent message
                                   <br/>
-                                  {getDateAsString(post.date)}
+                                  <Moment format="MMMM Do YYYY">{post.date}</Moment>
                               </Typography>
                           </Grid>
                           <Grid item xs={5}>
