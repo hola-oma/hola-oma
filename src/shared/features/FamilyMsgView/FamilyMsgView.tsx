@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import {Box, Card, Modal, CardContent, CardMedia, Typography, Grid} from '@material-ui/core';
+import {Box, Card, Modal, CardContent, Paper, Typography, Grid} from '@material-ui/core';
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Post } from 'shared/models/post.model';
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
         marginBottom: 12,
     },
     media: {
-        height: 750,
+        height: 300,
         maxWidth: "100%"
     }
   })
@@ -115,18 +115,15 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         <Grid container alignItems="center">
             <Grid item xs={3}></Grid>
             <Grid item xs={6}>
-                <Card variant="outlined">
-                    <CardContent>
-                        {post.photoURL && <CardMedia
-                            component="img"
-                            className={classes.media}
-                            image={post.photoURL}
-                        />}
-                        <Typography variant="h5">
-                            {post.message}
-                        </Typography>
-                    </CardContent>
-                </Card>
+                <Paper>
+                    {post.photoURL && <img
+                        src={post.photoURL}
+                        alt="Attached img"
+                    />}
+                    <Typography variant="h5">
+                        {post.message}
+                    </Typography>
+                </Paper>
             </Grid>
             <Grid item xs={3}>
                 <Typography variant="subtitle2">

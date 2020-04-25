@@ -8,6 +8,8 @@ import { getUserProfile } from "services/user";
 import { getLinkedAccounts } from "services/accountLink";
 
 import './NewFamilyPost.css';
+// @ts-ignore
+import Resizer from 'react-image-file-resizer';
 
 interface IReceiver {
     id: string
@@ -16,7 +18,7 @@ interface IReceiver {
 }
 
 const NewFamilyPost: React.FC = () => {
-    const [selectedFile, onSelect] = useState<File | null>();
+    const [selectedFile, setSelectedFile] = useState<Blob | null>();
     const [textValue, updateTextValue] = useState("");
     const [displayName, setDisplayName] = useState("");
     const [userId, setUserId] = useState("");
@@ -65,6 +67,24 @@ const NewFamilyPost: React.FC = () => {
         let newArray = [...receivers];
         newArray[index].checked = event.target.checked;
         setReceivers(newArray);
+    }
+
+    const onSelect = (file: File | null) => {
+        if (file) {
+            Resizer.imageFileResizer(
+                file,
+                600,
+                600,
+                'JPEG',
+                100,
+                0,
+                (blob: Blob) => {
+                    console.log(blob);
+                    setSelectedFile(blob);
+                },
+                'blob'
+            );
+        }
     }
 
     useEffect(() => {
