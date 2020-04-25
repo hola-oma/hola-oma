@@ -8,7 +8,7 @@ interface IGrandparentGrid {
   choicesList?: boolean;
 }
 
-// todo: pass in Inbox posts
+// todo: pass in Inbox posts OR just delete this file at end of project if not in use
 // https://stackoverflow.com/questions/51629491/how-to-properly-type-an-array-map-callback-in-typescript
 
 const GrandparentGrid: React.FC<IGrandparentGrid> = ({ icons, onClick, choicesList}) => {
