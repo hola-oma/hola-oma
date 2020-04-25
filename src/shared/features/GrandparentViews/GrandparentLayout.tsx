@@ -33,7 +33,7 @@ interface IGrandparentLayout {
   header2Text?:string;
   boxContent: any;
   buttonText: Array<string>;
-  buttonActions: { (): void; } []   //  Array of functions
+  buttonActions: { (): void | Array<string> } []   //  Array of functions
   buttonIcons: React.ReactElement<SvgIconProps>[]
 }
 
@@ -75,6 +75,7 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, he
                 className={classes.button}
                 startIcon={buttonIcons[index]}
                 onClick={buttonActions[index]}
+                key={index}
               >
                 {buttonText[index]}
               </Button>

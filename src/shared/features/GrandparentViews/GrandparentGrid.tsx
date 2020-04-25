@@ -1,14 +1,17 @@
 import {Card, CardHeader,CardContent, Grid, SvgIconProps} from "@material-ui/core";
-import React from "react";
+import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 
 interface IGrandparentGrid {
   icons: React.ReactElement<SvgIconProps>[];
+  onClick: () => void;
+  choicesList?: boolean;
 }
 
 // todo: pass in Inbox posts
+// https://stackoverflow.com/questions/51629491/how-to-properly-type-an-array-map-callback-in-typescript
 
-const GrandparentGrid: React.FC<IGrandparentGrid> = ({ icons}) => {
+const GrandparentGrid: React.FC<IGrandparentGrid> = ({ icons, onClick, choicesList}) => {
 
     const useStyles = makeStyles({
       root: {
@@ -29,6 +32,15 @@ const GrandparentGrid: React.FC<IGrandparentGrid> = ({ icons}) => {
     });
     const classes = useStyles();
 
+    let choicesArray = [];
+    if (choicesList) {
+      onClick = () => console.log("gonna select buttons");
+      choicesArray.push("pushed");
+      choicesArray.forEach(choice => console.log(choice));
+    }
+
+    const [chosen, setChosen] = useState();
+
     return (
       <>
 
@@ -36,7 +48,11 @@ const GrandparentGrid: React.FC<IGrandparentGrid> = ({ icons}) => {
           {
             icons.map( (icon: React.ReactElement<SvgIconProps>, index: number) => {
               return (
-                <div className={"inboxCard"} key={index} onClick={() => console.log("clicked")}>
+                <div
+                  className={"inboxCard"}
+                  key={index}
+                  onClick={onClick}
+                >
                   <Card className={classes.root} variant="outlined">
                     <CardHeader
                       title="">

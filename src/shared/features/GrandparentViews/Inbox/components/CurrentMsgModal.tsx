@@ -17,6 +17,9 @@ const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , replyToMessage,
 
   const FamilyPost = useContext(GrandparentPostContext).post;
 
+  //todo: render photo
+  const boxContent = FamilyPost.message + "\n\n" + FamilyPost.photoURL;
+
   // todo: Fix - "Warning: findDOMNode is deprecated in StrictMode.... "
   return (
       <Dialog fullScreen
@@ -27,7 +30,7 @@ const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , replyToMessage,
 
       <GrandparentLayout
         headerText={"Letter from "}
-        boxContent={FamilyPost.message}
+        boxContent={boxContent}
         buttonText={["Go Back to All Messages", "Reply"]}
         buttonActions={[returnToInbox, replyToMessage]}
         buttonIcons={[<MailIcon />, <CreateIcon />]}

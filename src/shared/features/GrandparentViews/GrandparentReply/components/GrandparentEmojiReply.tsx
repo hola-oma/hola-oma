@@ -1,6 +1,4 @@
-import React, {useContext} from 'react';
-
-import {Post} from "../../../../models/post.model";
+import React, {useContext, useState} from 'react';
 
 import { Dialog } from "@material-ui/core";
 
@@ -15,6 +13,7 @@ import SendIcon from '@material-ui/icons/Send';
 
 import GrandparentGrid from "../../GrandparentGrid";
 import GrandparentLayout from "../../GrandparentLayout";
+import {makeStyles} from "@material-ui/core/styles";
 
 interface IEmojiReply {
   isOpen: boolean;
@@ -23,11 +22,19 @@ interface IEmojiReply {
 
 const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
 
+  //Resource: https://codesandbox.io/s/jj43l66r09
+  let choicesList = () => {
+    console.log("call choices list");
+    let choicesList: Array<string> = [];
+    choicesList.push("new click");
+    choicesList.forEach(choice => console.log(choice));
+  }
+
+
   return (
     <>
       <Dialog fullScreen
               open={isOpen}
-              // onClose={ () => console.log("add return to post function")}
               aria-labelledby="simple-modal-title"
               aria-describedby="simple-modal-description">
       <GrandparentLayout
@@ -40,9 +47,11 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
             <FavoriteIcon/>,
             <CakeIcon/>,
             <HealingIcon/>]}
+          onClick={choicesList}
+          choicesList={true}
         />}
           buttonText={["Go back to message", "Send Smiley(s)"]}
-          buttonActions={[returnToPost, () => console.log("Create reply")]}
+          buttonActions={ [returnToPost, () => console.log("send choices") ]}
           buttonIcons={[<MailIcon/>, <SendIcon/>]}
       />
 
