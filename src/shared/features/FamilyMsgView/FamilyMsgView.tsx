@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-import {Box, Card, Modal, CardContent, CardMedia, Typography, Container, Grid} from '@material-ui/core';
+import {Box, Card, Modal, CardContent, CardMedia, Typography, Grid} from '@material-ui/core';
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Post } from 'shared/models/post.model';
-import { getUserDataByID } from "services/user";
+import { getLinkedAccounts } from "services/accountLink";
+
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
 import './FamilyMsgView.css';
 
@@ -62,11 +65,36 @@ interface IReply {
     creatorName: string
 }
 
+interface IReceiver {
+    id: string
+    name: string
+}
+
 const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const classes = useStyles();
     const [modalOpen, setModalOpen] = useState(false);
     const post = props.location.state.post;
     const [modalReply, setModalReply] = useState<IReply>();
+    const [receivers, setReceivers] = useState<IReceiver[]>([]);
+
+    useEffect(() => {
+        //Get connected accounts to populate receiver list
+        getLinkedAccounts()
+        .then((linkedAccounts) => {
+            console.log(linkedAccounts);
+            let rcvrs = [];
+            for (let i = 0; i < linkedAccounts.length; i++) {
+                if (linkedAccounts[i].verified === true) {
+                    let displayName = linkedAccounts[i].displayName ? linkedAccounts[i].displayName : "Unknown Username";
+                    let receiver = {
+                        id: linkedAccounts[i].id,
+                        name: displayName};
+                    rcvrs.push(receiver);
+                }
+            }
+            setReceivers(rcvrs);
+        });
+    }, []); // fires on page load if this is empty [] 
 
     const handleClick = (reply: IReply) => {
         setModalOpen(!modalOpen);
@@ -87,27 +115,47 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
 
     return (
         <>
-        <Container>
-            <Card variant="outlined">
-                <CardContent>
-                    <Typography variant="subtitle2">
-                        Sent Message
-                    </Typography>
-                    {post.photoURL && <CardMedia
-                        component="img"
-                        className={classes.media}
-                        image={post.photoURL}
-                    />}
-                    <Typography variant="h5">
-                        {post.message}
-                    </Typography>
-                </CardContent>
-            </Card>
-        </Container>
-        <Typography variant="subtitle2">
-            Sent message {getDateAsString(post.date)}
-            <br/>
-        </Typography>
+        <Grid container alignItems="center">
+            <Grid item xs={3}></Grid>
+            <Grid item xs={6}>
+                <Card variant="outlined">
+                    <CardContent>
+                        {post.photoURL && <CardMedia
+                            component="img"
+                            className={classes.media}
+                            image={post.photoURL}
+                        />}
+                        <Typography variant="h5">
+                            {post.message}
+                        </Typography>
+                    </CardContent>
+                </Card>
+            </Grid>
+            <Grid item xs={3}>
+                <Typography variant="subtitle2">
+                    Sent message {getDateAsString(post.date)}
+                    <br/>
+                    <br/>
+                    Seen by:
+                </Typography>
+                {
+                    receivers.map((receiver: IReceiver, index: number) => {
+                        return (
+                        <Grid container alignItems="center" justify="center">
+                            <Grid item>
+                                {post.read === true ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="subtitle2">
+                                    {receiver.name}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                        )
+                    })
+                }
+            </Grid>
+        </Grid>
 
         <Typography variant="h3">
             Replies
@@ -148,8 +196,8 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
          <Box className="todo">
             <h3>To do items:</h3>
             <ul>
-                <li>Display responses</li>
-                <li>Seen by with checkmark icons and receiver list</li>
+                <li>Display responses associated with this post.</li>
+                <li>Break out seen by by individual receiver "read" receipts - After post model has been changed to accommodate.</li>
                 <li>Edit/delete options?</li>
             </ul>
         </Box>
