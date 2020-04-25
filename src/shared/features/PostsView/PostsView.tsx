@@ -42,26 +42,31 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
 
   // Get display name
   useEffect(() => {
+    let isMounted = true;
     setIsLoading(true);
 
     getLinkedAccounts()
       .then((links:AccountLink[]) => {
-        const pendingInvitations = links.filter(link => !link.verified);
-        updatePendingInvitations(pendingInvitations);
-        setLinkedAccounts(links);
-        getPosts()
-          .then((docs:Post[]) => {
-            setPosts(docs);
-          }).then(() => {
-            getUserSettings()
-              .then((userSettings:any) => {
-                setDisplayName(userSettings.displayName);
-                setRole(userSettings.role);
-                setIsLoading(false);
-              });
-          })
+        if (isMounted) {
+          const pendingInvitations = links.filter(link => !link.verified);
+          updatePendingInvitations(pendingInvitations);
+          setLinkedAccounts(links);
+          getPosts()
+            .then((docs:Post[]) => {
+              setPosts(docs);
+            }).then(() => {
+              getUserSettings()
+                .then((userSettings:any) => {
+                  setDisplayName(userSettings?.displayName ? userSettings.displayName : '');
+                  setRole(userSettings?.role ? userSettings.role : roles.receiver);
+                  setIsLoading(false);
+                });
+            })
+          }
       });
-  }, []);
+
+      return () => { isMounted = false; }
+  }, [setIsLoading]);
 
   const acceptInvite = () => {
     if (invite) {
