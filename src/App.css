@@ -85,7 +85,7 @@ Use: <Box className="devBox">...stuff here...</Box> */
 }
 
 .MuiGrid-item {
-  margin:10px !important;
+  margin-top:10px !important;
 }
 
 .bigLink {

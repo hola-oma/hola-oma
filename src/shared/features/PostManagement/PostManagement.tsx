@@ -1,11 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Container, Grid, Card, CardHeader, CardContent, Typography } from '@material-ui/core';
+import { Container, Grid, Card, CardHeader, CardContent, CardMedia, Typography } from '@material-ui/core';
 import Alarm from '@material-ui/icons/Alarm';
 import { Link } from 'react-router-dom';
 
 import { Post } from 'shared/models/post.model';
+
+import Moment from 'react-moment';
 
 import './PostManagement.css';
 
@@ -25,6 +27,9 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
+  media: {
+    height: '140px'
+  }
 });
 
 interface IPostManagement {
@@ -38,15 +43,17 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
 
   const classes = useStyles();
 
-  const getDateAsString = function(postDate: number) {
-    let date = new Date(postDate).toString()
-    return date.substring(0, 15);
+  const getMessageSubstring = function(message: string) {
+    if (message.length > 100) {
+      return (message.substring(0, 100) + "...");
+    } else {
+      return message;
+    }
   }
 
   return (
     <Container>
       <Container>
-          {/* Todo: Make CreatePost page */}
           <Link to={"/newPost"}>
             <Card>
                 <CardContent>
@@ -55,39 +62,50 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
             </Card>
           </Link>
       </Container>
-      <Grid container>
+      <Grid container spacing={2}>
         {
           posts.map((post: Post, index: number) => {
             return (
-              <div className={"postCard"} key={index}>
-                <Link to={"/postDetails"}>
-                <Card className={classes.root} variant="outlined">
+              <Grid item xs={4} key={index}>
+                <div>
+                  <Link to={{
+                    pathname: "/postDetails",
+                    state: {post: post}
+                  }}>
+                  <Card variant="outlined">
 
-                  <CardHeader
-                      title={post.message}>
-                  </CardHeader>
+                    {post.photoURL && <CardMedia
+                      component="img"
+                      className={classes.media}
+                      image={post.photoURL}
+                    />}
 
-                  <CardContent>
-                      <Grid container>
-                        <Grid item xs={6}>
-                            <Typography variant="subtitle2">
-                                Sent message
-                                <br/>
-                                {getDateAsString(post.date)}
-                            </Typography>
+                    <CardHeader
+                        title={getMessageSubstring(post.message)}>
+                    </CardHeader>
+
+                    <CardContent>
+                        <Grid container>
+                          <Grid item xs={5}>
+                              <Typography variant="subtitle2">
+                                  Sent message
+                                  <br/>
+                                  <Moment format="MMMM Do YYYY">{post.date}</Moment>
+                              </Typography>
+                          </Grid>
+                          <Grid item xs={5}>
+                              <Alarm className="icon"/>
+                              <Typography variant="subtitle2">
+                                  New replies!
+                              </Typography>
+                          </Grid>
                         </Grid>
-                        <Grid item xs={6}>
-                            <Alarm className="icon"/>
-                            <Typography variant="subtitle2">
-                                New replies!
-                            </Typography>
-                        </Grid>
-                      </Grid>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
 
-              </Link>
-              </div>
+                </Link>
+                </div>
+              </Grid>
             )
           })
         }

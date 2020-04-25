@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Webcam from "react-webcam";
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import { Button } from "@material-ui/core";
@@ -15,10 +15,9 @@ const videoConstraints = {
   facingMode: "user"
 };
 
-const PhotoReplyPrototype: React.FC<IPhotoReplyPrototype> = ({ }) => {
+const PhotoReplyPrototype: React.FC<IPhotoReplyPrototype> = () => {
 
   const [photoPreview, setPhotoPreview] = useState("");
-  const [recentPhotos, setRecentPhotos] = useState([]);
 
   /* Adapted from https://www.npmjs.com/package/react-webcam */
 
@@ -69,7 +68,7 @@ const PhotoReplyPrototype: React.FC<IPhotoReplyPrototype> = ({ }) => {
       {/* Preview exists, user can re-take if they want */}
       {photoPreview &&
         <>
-        <img src={photoPreview}></img>
+        <img src={photoPreview} alt="preview"></img>
         <br/>
         <Button
           className="bigButton"

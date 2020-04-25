@@ -27,6 +27,8 @@ interface IPostContext {
 interface IAuthContext {
   isLoggedIn: boolean;
   setLoggedIn: any;
+  settingsComplete: boolean;
+  setSettingsComplete: any;
   userData: User | undefined;
 }
 
@@ -69,6 +71,7 @@ export const GrandparentPostContext = React.createContext<IPostContext>({ post: 
 function App() {
 
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [settingsComplete, setSettingsComplete] = useState<boolean>(false);
   const [userData, setUserData] = useState<User>();// call db and get stuff, put it in here
   const [post, setPost] = useState<Post>(dummyPost);
 
@@ -103,16 +106,19 @@ function App() {
     // get user from db
     await getUserSettings().then((settings:any) => {
       setUserData(settings);
+      if (settings?.displayName && settings?.role) {
+        setSettingsComplete(true);
+      }
     });
   };
 
   useEffect(() => {
     readSession();
-  }, [isLoggedIn])
+  }, [isLoggedIn, settingsComplete])
 
   return (
     /* https://reactjs.org/docs/context.html */
-    <AuthContext.Provider value={{ isLoggedIn, setLoggedIn, userData }}>
+    <AuthContext.Provider value={{ isLoggedIn, setLoggedIn, userData, settingsComplete, setSettingsComplete }}>
       <GrandparentPostContext.Provider value={{ post, setPost}}>
 
       <div className="App">
@@ -121,7 +127,7 @@ function App() {
 
         <ThemeProvider theme={theme}>
           <CssBaseline>
-            <Header isLoggedIn={isLoggedIn} />
+            <Header isLoggedIn={isLoggedIn} settingsComplete={settingsComplete} />
             <Routes userData={userData} isLoggedIn={isLoggedIn} />
           </CssBaseline>
         </ThemeProvider>

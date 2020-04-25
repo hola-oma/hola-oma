@@ -87,7 +87,7 @@ export const updatePostID = async (postID: string) => {
     });
 }
 
-export const uploadFile = async(selectedFile: File) => {
+export const uploadFile = async(selectedFile: Blob) => {
   // Get a unique name to store the file under
   let fileName = Date.now(); 
   let storageRef = firebase.storage().ref().child('/images/'+ fileName); 

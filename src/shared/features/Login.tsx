@@ -3,7 +3,7 @@ import { AuthContext } from "../../App";
 import 'firebase/auth';
 
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object 
-import { signUserInWithEmailAndPassword, signUserInWithGoogle } from "services/user";
+import { signUserInWithEmailAndPassword, signUserInWithGoogle, getUserSettings } from "services/user";
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -41,8 +41,19 @@ const Login: React.FC<ILogin> = ({ history }) => {
 
     try {
       const createdUser = await signUserInWithEmailAndPassword(email, password);
-      if (createdUser?.user) Auth?.setLoggedIn(true);
-      if (history) history.push('/posts');
+      if (createdUser?.user) {
+        Auth?.setLoggedIn(true);
+
+        if (createdUser.user.uid) {
+          let userSettings = await getUserSettings();
+          if (userSettings && userSettings?.displayName) {
+            if (history) history.push('/posts');
+          } else {
+            if (history) history.push('/registerDetails');
+          }
+        }
+      }
+      // maybe this is where we should check if the user can go to posts or registerDetails
     } catch(e) {
       setErrors(e.message);
     }
@@ -120,7 +131,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
           <Grid container justify="center">
 
             <Grid item xs={6}>
-              <Link href="#" className="bigLink">
+              <Link href="/resetPassword" className="bigLink">
                 Forgot password?
               </Link>
             </Grid>
