@@ -131,7 +131,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
           <Grid container justify="center">
 
             <Grid item xs={6}>
-              <Link href="#" className="bigLink">
+              <Link href="/resetPassword" className="bigLink">
                 Forgot password?
               </Link>
             </Grid>

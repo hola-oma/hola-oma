@@ -20,7 +20,6 @@ interface IHeader {
 
 const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
 
-
   const Auth = useContext(AuthContext);
   let history = useHistory();
 
