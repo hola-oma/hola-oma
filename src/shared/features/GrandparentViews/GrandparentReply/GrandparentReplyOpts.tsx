@@ -15,9 +15,6 @@ import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 interface IGrandparentReplyOpts {
   post: Post;
 }
-const replyAnotherWay = () => {
-  console.log("Grandparent wants to reply another way!");
-}
 
 const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
 

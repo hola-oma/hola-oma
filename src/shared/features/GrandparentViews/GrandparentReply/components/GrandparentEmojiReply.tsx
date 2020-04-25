@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
 import {Button, Card, CardContent, Dialog, Grid, SvgIconProps} from "@material-ui/core";
+import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
@@ -12,7 +13,7 @@ import HealingIcon from '@material-ui/icons/Healing';
 import SendIcon from '@material-ui/icons/Send';
 
 import GrandparentLayout from "../../GrandparentLayout";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+
 
 interface IEmojiReply {
   isOpen: boolean;
@@ -55,7 +56,9 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
     let position = choicesList.indexOf(choice);
     (position < 0) ? choicesList.push(choice) : choicesList.splice(position, 1);
 
-    choicesList.forEach(choice => console.log(choice));     // For testing - delete later
+    // For testing - delete later
+    console.log("current choices array: ");
+    choicesList.forEach(choice => console.log(choice));
   }
 
   const replyOptions: Array<React.ReactElement<SvgIconProps>> = [
@@ -81,20 +84,16 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
               return (
                 <Grid item xs={4}
                   className={"inboxCard"}
-                  key={index}
-                >
+                  key={index}>
                   <Card>
                     <CardContent onClick={() => getChoices(index)}
-                                 className={ highlightedList[index] ? classes.highlighted : classes.root }
-                    >
-
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                  >
-                    {icon}
-                  </Button>
+                                 className={ highlightedList[index] ? classes.highlighted : classes.root }>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}>
+                        {icon}
+                      </Button>
                     </CardContent>
                   </Card>
                 </Grid>

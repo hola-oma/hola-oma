@@ -1,12 +1,8 @@
 import React, {useContext} from 'react';
 
-import { Post } from 'shared/models/post.model';
-
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {Grid, Box, Button, SvgIconProps, Card, CardHeader, CardContent} from '@material-ui/core';
+import {Grid, Box, Button, SvgIconProps} from '@material-ui/core';
 import {GrandparentPostContext} from "../../../App";
-import DraftsIcon from "@material-ui/icons/Drafts";
-import MailIcon from "@material-ui/icons/Mail";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -86,6 +82,5 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, he
       }
       </>
 )}
-
 
 export default GrandparentLayout;
