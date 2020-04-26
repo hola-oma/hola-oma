@@ -48,19 +48,16 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
     const pressEnvelope = async function (envelopePost: Post) {
       currentPost = envelopePost;
       let postID = currentPost?.pid;
-      await markPostRead(postID)
-        .then(() => console.log("updated post read in database"));
+      await markPostRead(postID);
       CurrentPost.setPost(envelopePost);  // Update global post value
       setCurrentMsgModalOpen(true);
     }
 
     const returnToInbox = () => {
-      console.log("Message from " + CurrentPost.post.from + " closed");
       setCurrentMsgModalOpen(false);
     }
 
     const replyToMessage = () => {
-      console.log("Grandparent wants to reply!");
       setCurrentMsgModalOpen(false);
       history.push("/newPost");
     }
@@ -89,7 +86,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
         <CurrentMsgModal
           isOpen={currentMsgModalOpen}
-          // currentPost={currentPost}
           returnToInbox={returnToInbox}
           replyToMessage={replyToMessage}
         />
