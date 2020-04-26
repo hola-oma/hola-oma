@@ -121,3 +121,27 @@ export const markPostRead = async (postID: string) => {
     console.log("Invalid format: no post id");
   }
 }
+
+export const deletePost = (postID: string) => {
+  const db = firebase.firestore();
+  let postRef: firebase.firestore.DocumentReference;
+
+  try {
+    db.collection("posts").doc(postID);   // Catch error for posts that have no pid
+    
+    postRef = db.collection("posts").doc(postID);
+    postRef.get().then(function(doc) {
+      if (doc.exists) {
+        postRef.delete();
+      } else {
+        console.log("Error deleting post: " + postID +
+          "(probably an older post not created with pid)");
+      }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
+  }
+  catch (error) {
+    console.log("Invalid format: no post id");
+  }
+}
