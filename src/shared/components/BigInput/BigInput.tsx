@@ -1,5 +1,8 @@
-import React from 'react';
-import { TextField } from '@material-ui/core';
+import React, { useState } from 'react';
+import { TextField, InputAdornment, IconButton } from '@material-ui/core';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
 import './BigInput.css';
 
 /* Material UI's inputs have very tiny labels, so this is
@@ -27,10 +30,38 @@ interface IBigInput {
 // it is useful for obscuring passwords 
 
 const BigInput: React.FC<IBigInput> = ({ labelText, name, required, value, autoFocus, autoComplete, type, onChange }) => {
-  
-  const inputProps = {
-    type: type,
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
   };
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
+  const passwordVisible = () => {
+    if (showPassword) {
+      return 'text';
+    } else {
+      return 'password';
+    }
+  }
+
+  const passwordAdornment = () => {
+      return (
+        <InputAdornment position="end">
+          <IconButton
+            aria-label="toggle password visibility"
+            onClick={handleClickShowPassword}
+            onMouseDown={handleMouseDownPassword}
+          >
+            {showPassword ? <Visibility /> : <VisibilityOff />}
+          </IconButton>
+        </InputAdornment>
+      );
+  }
 
   return (
     <div className="bigInput">
@@ -44,7 +75,9 @@ const BigInput: React.FC<IBigInput> = ({ labelText, name, required, value, autoF
       autoFocus={autoFocus}
       value={value}
       autoComplete={autoComplete}
-      inputProps={inputProps}
+      InputProps={{
+        type: type === "password" ? passwordVisible() : type, // if type is password, use passwordVisible to determine type, otherwise pass type through
+        endAdornment: type === "password" ? passwordAdornment() : ''}}
       onChange={onChange}
     />
     </div>
