@@ -14,6 +14,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Copyright from "shared/components/Copyright";
 import BigInput from "shared/components/BigInput/BigInput";
+import Alert from "@material-ui/lab/Alert";
 
 interface ILogin extends RouteComponentProps<any> {
   // this was different from the tutorial, got typescript help from: 
@@ -98,7 +99,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
                   value={email}
                   autoFocus={true}
                   autoComplete="current-email"
-                  type="text"
+                  type="email"
                   onChange={updateEmail}/>
             </Grid>
 
@@ -126,6 +127,10 @@ const Login: React.FC<ILogin> = ({ history }) => {
           >
             Log In
           </Button>
+
+          {error &&
+            <Alert severity="error">{error}</Alert>
+          }
 
           {/* Account maintenance options */}
           <Grid container justify="center">
@@ -164,7 +169,6 @@ const Login: React.FC<ILogin> = ({ history }) => {
         </Grid>
       </Grid>
 
-      <span className="error">{error}</span>
     </div>
 
     <Box mt={8}>

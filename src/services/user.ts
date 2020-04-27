@@ -101,8 +101,14 @@ export const signUserInWithEmailAndPassword = async (email: string, password: st
 
     return signIn;
   } catch(e) {
-    console.log(e.message);
-    throw Error(e.message);
+    let errorCode = e.code;
+    if (errorCode === 'auth/user-not-found') {
+      throw Error("There is no user with the provided e-mail address!")
+    } else if (errorCode === 'auth/wrong-password') {
+      throw Error("Incorrect password. Please try again or reset your password.")
+    } else {
+      throw Error(e.message);
+    }
   }
 }
 

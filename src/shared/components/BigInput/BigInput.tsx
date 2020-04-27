@@ -27,6 +27,11 @@ interface IBigInput {
 // it is useful for obscuring passwords 
 
 const BigInput: React.FC<IBigInput> = ({ labelText, name, required, value, autoFocus, autoComplete, type, onChange }) => {
+  
+  const inputProps = {
+    type: type,
+  };
+
   return (
     <div className="bigInput">
     <span className="bigInputLabel">{labelText}</span>
@@ -39,7 +44,7 @@ const BigInput: React.FC<IBigInput> = ({ labelText, name, required, value, autoF
       autoFocus={autoFocus}
       value={value}
       autoComplete={autoComplete}
-      type={type}
+      inputProps={inputProps}
       onChange={onChange}
     />
     </div>
