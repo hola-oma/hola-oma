@@ -19,6 +19,7 @@ import { RouteComponentProps } from 'react-router-dom'; // give us 'history' obj
 
 import { roles } from '../../enums/enums';
 import { getUserProfile, createUserSettings, updateUserProfile } from "services/user";
+import BigInput from "shared/components/BigInput/BigInput";
 
 interface IRegisterDetails extends RouteComponentProps<any> {
     setIsLoading: (loading: boolean) => void
@@ -77,6 +78,10 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
     }
   }
 
+  const updateDisplayName = (e: any) => {
+    setDisplayName(e.target.value)
+  }
+
   return (
     <Grid container>
     <Container component="main" maxWidth="xs">
@@ -90,17 +95,16 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
         <Grid container spacing={2}>
             {/* Display name */}
             <Grid item xs={12}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="Your Name"
-                autoFocus
+              <BigInput 
+                error={false}
+                labelText=""
+                name="displayName"
+                required={true} 
                 value={displayName}
-                onChange={e => setDisplayName(e.target.value)}
+                autoFocus={true}
+                autoComplete="fname"
+                type="text"
+                onChange={updateDisplayName}
               />
             </Grid>
 

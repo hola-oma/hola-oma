@@ -25,6 +25,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setErrors] = useState("");
+  const [invalidInputs, setInvalidInputs] = useState(false);
 
   const Auth = useContext(AuthContext);
 
@@ -56,6 +57,8 @@ const Login: React.FC<ILogin> = ({ history }) => {
       }
       // maybe this is where we should check if the user can go to posts or registerDetails
     } catch(e) {
+      console.log(e);
+      setInvalidInputs(true);
       setErrors(e.message);
     }
   };
@@ -93,6 +96,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
             {/* Email address */}
             <Grid item xs={12}>
               <BigInput 
+                  error={invalidInputs}
                   labelText="E-Mail Address"
                   name="email"
                   required={true} 
@@ -100,12 +104,14 @@ const Login: React.FC<ILogin> = ({ history }) => {
                   autoFocus={true}
                   autoComplete="current-email"
                   type="email"
-                  onChange={updateEmail}/>
+                  onChange={updateEmail}
+                  />
             </Grid>
 
             {/* Password */ }
             <Grid item xs={12}>
               <BigInput 
+                  error={invalidInputs}
                   labelText="Password"
                   name="password"
                   required={true} 
@@ -113,7 +119,8 @@ const Login: React.FC<ILogin> = ({ history }) => {
                   autoFocus={false}
                   autoComplete="current-password"
                   type="password"
-                  onChange={updatePassword}/>
+                  onChange={updatePassword}
+                  />
             </Grid>
           </Grid>
 
@@ -133,7 +140,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
           }
 
           {/* Account maintenance options */}
-          <Grid container justify="center">
+          <Grid container direction="row" justify="flex-start" alignItems="center">
 
             <Grid item xs={6}>
               <Link href="/resetPassword" className="bigLink">
@@ -143,7 +150,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
 
             <Grid item xs={6}>
               <Link href="/register" className="bigLink">
-                Don't have an account? Sign Up
+                No account? Sign up
               </Link>
             </Grid>
           </Grid>

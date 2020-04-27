@@ -9,6 +9,7 @@ import './BigInput.css';
 a "customized" input designed to have a large label */
 
 interface IBigInput {
+  error: boolean,
   labelText: string,
   name: string,
   required: boolean,
@@ -29,7 +30,7 @@ interface IBigInput {
 // "type" tells the browser what kind of data this field holds
 // it is useful for obscuring passwords 
 
-const BigInput: React.FC<IBigInput> = ({ labelText, name, required, value, autoFocus, autoComplete, type, onChange }) => {
+const BigInput: React.FC<IBigInput> = ({ error, labelText, name, required, value, autoFocus, autoComplete, type, onChange }) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -67,6 +68,7 @@ const BigInput: React.FC<IBigInput> = ({ labelText, name, required, value, autoF
     <div className="bigInput">
     <span className="bigInputLabel">{labelText}</span>
     <TextField
+      error={error}
       name="displayName"
       variant="outlined"
       required={required}

@@ -54,6 +54,7 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
           
           <Grid item xs={12}>
             <BigInput 
+                error={false}
                 labelText="Enter someone's e-mail address"
                 name="emailAddress"
                 required={true} 

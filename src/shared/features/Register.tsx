@@ -19,6 +19,7 @@ import { RouteComponentProps } from 'react-router-dom'; // give us 'history' obj
 
 import { createNewUserWithEmailAndPassword, createNewUserWithGoogleCredentials } from "services/user";
 import BigInput from "shared/components/BigInput/BigInput";
+import Alert from "@material-ui/lab/Alert";
 
 interface IRegister extends RouteComponentProps<any> {
   // empty for now 
@@ -30,6 +31,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setErrors] = useState("");
+  const [invalidInputs, setInvalidInputs] = useState(false);
 
   const Auth = useContext(AuthContext);
 
@@ -54,6 +56,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
       }
     } catch(e) {
       setErrors(e.message);
+      setInvalidInputs(true);
     }
   }
 
@@ -91,20 +94,21 @@ const Register: React.FC<IRegister> = ({ history }) => {
             </Grid>
           </Grid>
 
-          <form onSubmit={e => handleForm(e)} noValidate>
+          <form onSubmit={e => handleForm(e)}>
 
           <Grid container spacing={2}>
             
               {/* Email address */}
               <Grid item xs={12}>
-                <BigInput 
+                <BigInput
+                  error={invalidInputs}
                   labelText="E-Mail Address"
                   name="email"
                   required={true} 
                   value={email}
                   autoFocus={true}
                   autoComplete="off"
-                  type="text"
+                  type="email"
                   onChange={updateEmail}/>
 
               </Grid>
@@ -112,6 +116,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
               {/* Password */ }
               <Grid item xs={12}>
               <BigInput 
+                error={invalidInputs}
                 labelText="Password"
                 name="password"
                 required={true} 
@@ -135,6 +140,10 @@ const Register: React.FC<IRegister> = ({ history }) => {
               Sign up
             </Button>
 
+          {error &&
+            <Alert severity="error">{error}</Alert>
+          }
+
           {/* Google sign in */}
           <Grid container>
             <Grid item xs>
@@ -154,7 +163,6 @@ const Register: React.FC<IRegister> = ({ history }) => {
           </Grid>
 
           </form>
-          <span className="error">{error}</span>
         </div>
       </Grid>
 

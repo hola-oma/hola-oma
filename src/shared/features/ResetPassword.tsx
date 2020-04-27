@@ -67,7 +67,8 @@ const ResetPassword: React.FC<IResetPassword> = () => {
 
         <Grid container spacing={2}>
             <Grid item xs={12}>
-              <BigInput 
+              <BigInput
+                error={false} 
                 labelText="E-Mail Address"
                 name="email"
                 required={true}
