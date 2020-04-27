@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 
-import {Box, Card, Modal, CardContent, Paper, Typography, Grid} from '@material-ui/core';
-
+import {Box, Card, Modal, CardContent, Paper, Typography, Grid, Container, Button} from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+
 import { Post } from 'shared/models/post.model';
 import { getLinkedAccounts } from "services/accountLink";
+import { deletePost } from "services/post";
+
 
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 import Moment from 'react-moment';
 
@@ -78,6 +83,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const post = props.location.state.post;
     const [modalReply, setModalReply] = useState<IReply>();
     const [receivers, setReceivers] = useState<IReceiver[]>([]);
+    let history = useHistory();
 
     useEffect(() => {
         //Get connected accounts to populate receiver list
@@ -105,6 +111,12 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         }
     }
 
+    const deleteCurrentPost = () => {
+        // To do: Add confirm modal
+        deletePost(post.pid);
+        history.push('/posts')
+    }
+
     const mockReplies = [
         {message: "Hello", creatorId: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", date: 1587597619986, read: false, responseTo: "sITkY10bItkczjAHkkUJ", creatorName: "Kristin Grandparent Test"},
         {message: "Thanks", creatorId: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", date: 1587597619986, read: false, responseTo: "sITkY10bItkczjAHkkUJ", creatorName: "Kristin Grandparent Test"}
@@ -112,6 +124,11 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
 
     return (
         <>
+        <Container>
+            <Typography variant="h3">
+                Sent Message
+            </Typography>
+        </Container>
         <Grid container alignItems="center">
             <Grid item xs={3}></Grid>
             <Grid item xs={6}>
@@ -127,7 +144,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             </Grid>
             <Grid item xs={3}>
                 <Typography variant="subtitle2">
-                    Sent message <Moment format="MMMM Do YYYY, h:mm a">{post.date}</Moment>
+                    Sent <Moment format="MMMM Do YYYY, h:mm a">{post.date}</Moment>
                     <br/>
                     <br/>
                     Seen by:
@@ -148,6 +165,21 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                         )
                     })
                 }
+                <br/>
+                <br/>
+                <Button
+                    variant="contained"
+                    startIcon={<EditIcon />}
+                    disabled>
+                    Edit Post
+                </Button>
+                <br/>
+                <Button
+                    variant="contained"
+                    startIcon={<DeleteIcon />}
+                    onClick={deleteCurrentPost}>
+                    Delete Post
+                </Button>
             </Grid>
         </Grid>
 
