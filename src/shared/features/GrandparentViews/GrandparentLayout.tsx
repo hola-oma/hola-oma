@@ -29,14 +29,13 @@ interface IGrandparentLayout {
   header2Text?:string;
   boxContent: any;
   buttonText: Array<string>;
-  buttonActions: { (): void | Array<string> } []   //  Array of functions
+  buttonActions: { (): void } []   //  Array of functions
   buttonIcons: React.ReactElement<SvgIconProps>[]
 }
 
 export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, header2Text, boxContent, buttonText,  buttonActions, buttonIcons}) => {
 
   const classes = useStyles();
-
   const FamilyPost = useContext(GrandparentPostContext).post;
 
   return (
