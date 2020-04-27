@@ -79,7 +79,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
     */
 
     <Grid container className="credentialsForm" spacing={2} justify="center">
-      <Grid item xs={6}>
+      <Grid item xs={10} md={8}>
       <div>
         <Avatar className="formAvatar">
           <LockOutlinedIcon />
@@ -91,10 +91,10 @@ const Login: React.FC<ILogin> = ({ history }) => {
         {/* Begin form */}
         <form noValidate onSubmit={e => handleEmailAndPasswordLogin(e)}>
 
-          <Grid container spacing={2}>
+          <Grid container spacing={2} justify="center">
 
             {/* Email address */}
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={8}>
               <BigInput 
                   error={invalidInputs}
                   labelText="E-Mail Address"
@@ -109,7 +109,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
             </Grid>
 
             {/* Password */ }
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={8}>
               <BigInput 
                   error={invalidInputs}
                   labelText="Password"
@@ -122,25 +122,26 @@ const Login: React.FC<ILogin> = ({ history }) => {
                   onChange={updatePassword}
                   />
             </Grid>
-          </Grid>
 
-          {/* Sign in button */}
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className="bigButton"
-          >
-            Log In
-          </Button>
+            <Grid item xs={12} sm={8}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className="bigButton"
+              >
+                Log In
+              </Button>
+            </Grid>
+          </Grid>
 
           {error &&
             <Alert severity="error">{error}</Alert>
           }
 
           {/* Account maintenance options */}
-          <Grid container direction="row" justify="flex-start" alignItems="center">
+          <Grid container className="padBottom" spacing={2} direction="row" justify="flex-start" alignItems="center">
 
             <Grid item xs={6}>
               <Link href="/resetPassword" className="bigLink">
@@ -157,7 +158,6 @@ const Login: React.FC<ILogin> = ({ history }) => {
 
         </form>
 
-        <hr />
         {/* Google sign in */}
         <Grid container>
         <Grid item xs>

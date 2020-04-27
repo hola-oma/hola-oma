@@ -76,7 +76,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
 
   return (
     <Grid container className="credentialsForm" spacing={2} justify="center">
-      <Grid item xs={6}>
+      <Grid item xs={10} md={8}>
         <div>
           <Avatar className="formAvatar">
             <PersonIcon />
@@ -86,7 +86,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
           </Typography>
           {/* Switch to "Sign In" page */ }
 
-          <Grid container justify="center">
+          <Grid container spacing={2} justify="center">
             <Grid item>
               <Link href="/login" className="bigLink">
                 Already have an account? Log in instead
@@ -96,10 +96,10 @@ const Register: React.FC<IRegister> = ({ history }) => {
 
           <form onSubmit={e => handleForm(e)}>
 
-          <Grid container spacing={2}>
-            
+          <Grid container spacing={2} justify="center">
+
               {/* Email address */}
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={8}>
                 <BigInput
                   error={invalidInputs}
                   labelText="E-Mail Address"
@@ -114,7 +114,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
               </Grid>
 
               {/* Password */ }
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={8}>
               <BigInput 
                 error={invalidInputs}
                 labelText="Password"
@@ -126,19 +126,20 @@ const Register: React.FC<IRegister> = ({ history }) => {
                 type="password"
                 onChange={updatePassword}/>
               </Grid>
+
+            <Grid item xs={12} sm={8}>
+              <Button 
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                size="large"
+                className="bigButton"
+              >
+                Sign up
+              </Button>
             </Grid>
-
-
-            <Button 
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              size="large"
-              className="bigButton"
-            >
-              Sign up
-            </Button>
+          </Grid>
 
           {error &&
             <Alert severity="error">{error}</Alert>
