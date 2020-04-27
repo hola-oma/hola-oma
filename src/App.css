@@ -4,7 +4,7 @@
 }
 
 .padBottom {
-  padding-bottom:20px;
+  padding-bottom:20px !important;
 }
 
 h1, h2, h3, h4, h5 {
@@ -31,8 +31,8 @@ input {
 }
 
 .googleBtn {
-  width: 225px;
-  margin: 0 0 50px 0;
+  width: 100%;
+  margin: 0 0 20px 0;
   display: flex;
   justify-content: center;
   font-size: 16px;

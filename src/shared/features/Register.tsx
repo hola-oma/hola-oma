@@ -139,15 +139,13 @@ const Register: React.FC<IRegister> = ({ history }) => {
                 Sign up
               </Button>
             </Grid>
-          </Grid>
 
           {error &&
             <Alert severity="error">{error}</Alert>
           }
 
           {/* Google sign in */}
-          <Grid container>
-            <Grid item xs>
+            <Grid item xs={12} sm={8}>
               <Button 
                 onClick={handleGoogleJoin} 
                 className="googleBtn" 
@@ -161,9 +159,9 @@ const Register: React.FC<IRegister> = ({ history }) => {
                 Join With Google
               </Button> 
             </Grid>
-          </Grid>
-
+            </Grid>
           </form>
+
         </div>
       </Grid>
 

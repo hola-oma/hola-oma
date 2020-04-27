@@ -134,33 +134,29 @@ const Login: React.FC<ILogin> = ({ history }) => {
                 Log In
               </Button>
             </Grid>
-          </Grid>
+
 
           {error &&
             <Alert severity="error">{error}</Alert>
           }
 
           {/* Account maintenance options */}
-          <Grid container className="padBottom" spacing={2} direction="row" justify="flex-start" alignItems="center">
-
-            <Grid item xs={6}>
+          <Grid item container xs={12} sm={8} justify="center" className="padBottom">
+            <Grid item xs={5}>
               <Link href="/resetPassword" className="bigLink">
                 Forgot password?
               </Link>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={5}>
               <Link href="/register" className="bigLink">
                 No account? Sign up
               </Link>
             </Grid>
           </Grid>
 
-        </form>
-
         {/* Google sign in */}
-        <Grid container>
-        <Grid item xs>
+        <Grid item xs={12} sm={8}>
           <Button 
             onClick={handleGoogleLogin} 
             className="googleBtn" 
@@ -174,16 +170,19 @@ const Login: React.FC<ILogin> = ({ history }) => {
             Log in with Google
           </Button> 
         </Grid>
+        </Grid>
+        
+        </form>
+
+        </div>
       </Grid>
-
-    </div>
-
-    <Box mt={8}>
-      <Copyright />      
-    </Box>
-
+      
+      <Grid item xs={12}>
+        <Box mt={6}>
+          <Copyright />      
+        </Box>
+      </Grid>
     </Grid>
-  </Grid>
   );
 };
 
