@@ -38,7 +38,7 @@ export const getPosts = async (): Promise<Post[]> => {
           receiverIDs: data.receiverIDs
         })
       })
-      posts.length = 0;      // Clear array so posts not appended on state change
+      posts.length = 0;      // Clear array so items not appended on state change
       posts.push(...currentPosts);
     })
   } catch (error) {
@@ -103,7 +103,7 @@ export const markPostRead = async (postID: string) => {
   let postRef: firebase.firestore.DocumentReference;
 
   try {
-    db.collection("posts").doc(postID);   // Catch error for posts that have no pid
+    db.collection("posts").doc(postID);   // Catch error for items that have no pid
     
     postRef = db.collection("posts").doc(postID);
     postRef.get().then(function(doc) {

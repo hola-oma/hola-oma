@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
+import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 
 import {Container, Grid, Card, CardHeader, CardContent, Box} from '@material-ui/core';
@@ -6,6 +7,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import DraftsIcon from '@material-ui/icons/Drafts';
 
 import { Post } from 'shared/models/post.model';
+import {GrandparentPostContext} from "../../../../App";
 
 import './Inbox.css';
 import CurrentMsgModal from "./components/CurrentMsgModal";
@@ -33,56 +35,57 @@ interface IInbox {
   posts: Array<Post>; // array of type "Post"
 }
 
-let currentPost:Post;
+let currentPost: Post;
 
 const Inbox: React.FC<IInbox> = ({ posts }) => {
 
     const classes = useStyles();
+    let history = useHistory();
     const [currentMsgModalOpen, setCurrentMsgModalOpen] = useState<boolean>(false);
+
+    const CurrentPost = useContext(GrandparentPostContext);
 
     const pressEnvelope = async function (envelopePost: Post) {
       currentPost = envelopePost;
       let postID = currentPost?.pid;
-      await markPostRead(postID)
-        .then(() => console.log("updated post read in database"));
+      await markPostRead(postID);
+      CurrentPost.setPost(envelopePost);  // Update global post value
       setCurrentMsgModalOpen(true);
     }
 
     const returnToInbox = () => {
-      console.log("Message closed");
       setCurrentMsgModalOpen(false);
     }
 
     const replyToMessage = () => {
-      console.log("Grandparent wants to reply!");
       setCurrentMsgModalOpen(false);
+      history.push("/newPost");
     }
 
   return (
     <>
       <Container>
         <Grid container>
-          {
-            posts.map((post: Post, index: number) => {
-              return (
-                <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)} >
-                  <Card className={classes.root} variant="outlined">
-                    <CardHeader
-                      title={post.from}>
-                    </CardHeader>
-                    <CardContent>
-                      {post.read? <DraftsIcon className="icon"/> : <MailIcon className="icon"/>}
-                    </CardContent>
-                  </Card>
-                </div>
-              )
-            })
+          {posts.map((post: Post, index: number) => {
+            return (
+              <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)} >
+                <Card className={classes.root} variant="outlined">
+                  <CardHeader
+                    title={post.from}>
+                  </CardHeader>
+                  <CardContent>
+                    {post.read? <DraftsIcon className="icon"/> : <MailIcon className="icon"/>}
+                  </CardContent>
+                </Card>
+              </div>
+            )
+          })
+
           }
         </Grid>
 
         <CurrentMsgModal
           isOpen={currentMsgModalOpen}
-          currentPost={currentPost}
           returnToInbox={returnToInbox}
           replyToMessage={replyToMessage}
         />

@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 
 import { roles } from '../../../enums/enums';
 import { getUserSettings } from "services/user";
 
 // import { Post } from '../../shared/models/currentPost.model';
-import GrandparentReplyOptions from "../GrandparentViews/GrandparentReplyOpts";
+import GrandparentReplyOptions from "../GrandparentViews/GrandparentReply/GrandparentReplyOpts";
 
 import NewFamilyPost from ".././NewFamilyPost/NewFamilyPost";
+import {GrandparentPostContext} from "../../../App";
 
 const CreatePost: React.FC = () => {
 
     const [role, setRole] = useState("");
-    // const [currentPost] = useState<Post>();
-    // const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects
+    const CurrentPost = useContext(GrandparentPostContext);
 
     useEffect(() => {
         getUserSettings()
@@ -21,15 +21,13 @@ const CreatePost: React.FC = () => {
             });
     }, []); // fires on page load if this is empty []
 
-    // TODO: Get clicked-on currentPost
-    // let mockPost = {id: "xyz456", creatorID: "123abc", from: "Stephanie", message: "Hello, Grandpa!", photoURL: "", read: false};
-
     return (
         <>
-            <h2>Create Post</h2>
+          {role === roles.poster && <h2>Create Post</h2>}
+
             <>
                 {role === roles.poster && <NewFamilyPost/>}
-                {role === roles.receiver && <GrandparentReplyOptions/>}
+                {role === roles.receiver && <GrandparentReplyOptions post={CurrentPost.post}/>}
             </>
         </>
     )

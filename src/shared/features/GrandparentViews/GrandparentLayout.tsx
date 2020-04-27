@@ -1,9 +1,8 @@
-import React from 'react';
-
-import { Post } from 'shared/models/post.model';
+import React, {useContext} from 'react';
 
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {Grid, Box, Button, SvgIconProps} from '@material-ui/core';
+import {GrandparentPostContext} from "../../../App";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -11,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     button: {
-      margin: theme.spacing(1),
+      margin: theme.spacing(5),
     },
     paper: {
       padding: theme.spacing(2),
@@ -26,21 +25,24 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IGrandparentLayout {
-  post: Post;
   headerText: string;
+  header2Text?:string;
+  boxContent: any;
   buttonText: Array<string>;
-  buttonActions: { (): void; } []   //  Array of functions
+  buttonActions: { (): void } []   //  Array of functions
   buttonIcons: React.ReactElement<SvgIconProps>[]
 }
 
-export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ post , headerText, buttonText,  buttonActions, buttonIcons}) => {
+export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, header2Text, boxContent, buttonText,  buttonActions, buttonIcons}) => {
 
   const classes = useStyles();
+  const FamilyPost = useContext(GrandparentPostContext).post;
 
   return (
     <>
       <div className={classes.title}>
-        <h1>{headerText} {post?.from}</h1>
+        <h1>{headerText} {FamilyPost?.from}</h1>
+        { header2Text && <h2>{header2Text}</h2> }
       </div>
 
       {/*Box for message content*/}
@@ -52,48 +54,32 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ post , headerT
           height={"75%"}
           mx={"auto"}
           fontSize={24}>
-          {post?.message} <br/> <br/>
-          {post?.photoURL}
+          {boxContent}
         </Box>
       </div>
 
-      {/*Grid for bottom buttons*/}
-      <div>
-        <Grid
-          container
-          spacing={0}
-          justify={"space-evenly"} >
-
-          {/*Button 1*/}
-          <Grid item xs={4}>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              startIcon={buttonIcons[0]}
-              onClick={buttonActions[0]}
-            >
-              {buttonText[0]}
-            </Button>
+      {/*Div for bottom buttons*/}
+      {buttonIcons.length > 0 &&
+        <div className={classes.button}>
+          <Grid container justify={'space-between'}>
+          {buttonIcons.map((button: React.ReactElement<SvgIconProps>, index: number) => {
+            return (
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                startIcon={buttonIcons[index]}
+                onClick={buttonActions[index]}
+                key={index}
+              >
+                {buttonText[index]}
+              </Button>
+            )
+          })}
           </Grid>
-
-          {/*Button 2*/}
-          <Grid item xs={4}>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              startIcon={buttonIcons[1]}
-              onClick={buttonActions[1]}
-            >
-              {buttonText[1]}
-            </Button>
-          </Grid>
-        </Grid>
-      </div>
-    </>
-)
-}
-
+        </div>
+      }
+      </>
+)}
 
 export default GrandparentLayout;
