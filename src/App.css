@@ -7,6 +7,14 @@ h1, h2, h3, h4, h5 {
   margin-bottom:20px !important;
 }
 
+.loadingSpinner {
+  height:100vh;
+  align-items:center;
+  display:flex;
+  width:150px;
+  padding-bottom:200px;
+}
+
 input {
   max-width: 500px;
   width: auto;
