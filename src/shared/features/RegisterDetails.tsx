@@ -1,11 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
-// import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
 
 import Copyright from 'shared/components/Copyright';
 
@@ -20,6 +17,10 @@ import { RouteComponentProps } from 'react-router-dom'; // give us 'history' obj
 import { roles } from '../../enums/enums';
 import { getUserProfile, createUserSettings, updateUserProfile } from "services/user";
 import BigInput from "shared/components/BigInput/BigInput";
+import { Avatar } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 interface IRegisterDetails extends RouteComponentProps<any> {
     setIsLoading: (loading: boolean) => void
@@ -83,18 +84,23 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
   }
 
   return (
-    <Grid container>
-    <Container component="main" maxWidth="xs">
-      <div>
+    <Grid container className="credentialsForm" spacing={2} justify="center">
+      <Grid item xs={10} md={8}>
+        <div>
+          <Avatar className="formAvatar">
+            <AccountCircleIcon />
+          </Avatar>
+
         <Typography component="h1" variant="h4">
           Display my name as
         </Typography>
 
         <form onSubmit={e => handleForm(e)} className="">
 
-        <Grid container spacing={2}>
+          <Grid container spacing={2} justify="center">
+            
             {/* Display name */}
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={8}>
               <BigInput 
                 error={false}
                 labelText=""
@@ -108,7 +114,7 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
               />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={8}>
             <label>
               <input
                 type="radio"
@@ -132,28 +138,35 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
                 I want to <b>make</b> posts
               </label>
             </Grid>
-          </Grid>
 
-          <Button 
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            size="large"
-            className="bigButton"
-          >
-            Done
-          </Button>
+            <Grid item xs={12} sm={8}>
+              <Button 
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                size="large"
+                className="bigButton"
+              >
+                Done
+              </Button>
+            </Grid>
 
+            {error &&
+              <Alert className="error" severity="error">{error}</Alert>
+            }
+        </Grid>
 
         </form>
-        <span className="error">{error}</span>
       </div>
-      <Box mt={8}>
+    </Grid>
+
+    <Grid item xs={12}>
+      <Box mt={6}>
         <Copyright />      
       </Box>
-    </Container>
     </Grid>
+  </Grid>
   );
 };
 

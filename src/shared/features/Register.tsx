@@ -81,7 +81,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
           <Avatar className="formAvatar">
             <PersonIcon />
           </Avatar>
-          <Typography component="h1" variant="h3">
+          <Typography component="h1" variant="h4">
             Register a new account
           </Typography>
           {/* Switch to "Sign In" page */ }

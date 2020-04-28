@@ -84,7 +84,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
         <Avatar className="formAvatar">
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h3">
+        <Typography component="h1" variant="h4">
           Log in to existing account
         </Typography>
 
@@ -150,39 +150,40 @@ const Login: React.FC<ILogin> = ({ history }) => {
 
             <Grid item xs={5}>
               <Link href="/register" className="bigLink">
-                No account? Sign up
+                No account? Sign up!
               </Link>
             </Grid>
           </Grid>
 
-        {/* Google sign in */}
-        <Grid item xs={12} sm={8}>
-          <Button 
-            onClick={handleGoogleLogin} 
-            className="googleBtn" 
-            type="button"
-            variant="contained"
-          >
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-              alt="logo"
-            />
-            Log in with Google
-          </Button> 
-        </Grid>
+          {/* Google sign in */}
+          <Grid item xs={12} sm={8}>
+            <Button 
+              onClick={handleGoogleLogin} 
+              className="googleBtn" 
+              type="button"
+              variant="contained"
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                alt="logo"
+              />
+              Log in with Google
+            </Button> 
+          </Grid>
+      
         </Grid>
         
-        </form>
+      </form>
 
-        </div>
-      </Grid>
-      
-      <Grid item xs={12}>
-        <Box mt={6}>
-          <Copyright />      
-        </Box>
-      </Grid>
+      </div>
     </Grid>
+      
+    <Grid item xs={12}>
+      <Box mt={6}>
+        <Copyright />      
+      </Box>
+    </Grid>
+  </Grid>
   );
 };
 
