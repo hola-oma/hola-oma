@@ -3,6 +3,10 @@
   font-size:1em;
 }
 
+.padBottom {
+  padding-bottom:20px !important;
+}
+
 h1, h2, h3, h4, h5 {
   margin-bottom:20px !important;
 }
@@ -27,8 +31,8 @@ input {
 }
 
 .googleBtn {
-  width: 225px;
-  margin: 0 0 50px 0;
+  width: 100%;
+  margin: 0 0 20px 0;
   display: flex;
   justify-content: center;
   font-size: 16px;
@@ -46,7 +50,7 @@ input {
   height:100px;
   font-size:1.8em !important;
   margin-top:30px !important;
-  margin-bottom:50px !important;
+  margin-bottom:30px !important;
 }
 
 .colorYes {

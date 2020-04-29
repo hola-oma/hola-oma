@@ -119,7 +119,8 @@ const HandleReset: React.FC<IHandleReset> = () => {
               <form onSubmit={e => handleForm(e)} className="">
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                    <BigInput 
+                    <BigInput
+                      error={false} 
                       labelText="New password"
                       name="password"
                       required={true}

@@ -52,56 +52,66 @@ const ResetPassword: React.FC<IResetPassword> = () => {
   }
 
   return (
-    <Grid container>
-    <Container component="main" maxWidth="xs">
-      <div>
-        <Avatar className="formAvatar">
-          <HelpIcon />
-        </Avatar>
-        <Typography component="h1" variant="h4">
-          Reset password
-        </Typography>
-        <p>Enter your username and we’ll send a link to reset your password.</p>
+    <Grid container className="credentialsForm" spacing={2} justify="center">
+      <Grid item xs={10} md={8}>
+        <div>
+          <Avatar className="formAvatar">
+            <HelpIcon />
+          </Avatar>
+          <Typography component="h1" variant="h4">
+            Reset password
+          </Typography>
+          <p>Enter your username and we’ll send a link to reset your password.</p>
 
-        <form onSubmit={e => handleForm(e)} className="">
+          <form onSubmit={e => handleForm(e)} className="">
 
-        <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <BigInput 
-                labelText="E-Mail Address"
-                name="email"
-                required={true}
-                value={emailForReset}
-                autoFocus={true}
-                autoComplete="current-email"
-                type="text"
-                onChange={updateEmailForReset}/>
+            <Grid container spacing={2} justify="center">
+
+              {/* Email address */}
+              <Grid item xs={12} sm={8}>
+                <BigInput
+                  error={false} 
+                  labelText="E-Mail Address"
+                  name="email"
+                  required={true}
+                  value={emailForReset}
+                  autoFocus={true}
+                  autoComplete="current-email"
+                  type="text"
+                  onChange={updateEmailForReset}/>
+              </Grid>
+
+              <Grid item xs={12} sm={8}>
+                <Button 
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  className="bigButton"
+                >
+                  Send e-mail
+                </Button>
+              </Grid>
+
+              {error &&
+                <Alert className="error" severity="error">{error}</Alert>
+              }
+              {resetSent && 
+                <Alert severity="success">E-mail sent! Check your inbox.</Alert>
+              }
+
             </Grid>
-          </Grid>
 
-          <Button 
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            size="large"
-            className="bigButton"
-          >
-            Send e-mail
-          </Button>
+            </form>
+          </div>
+      </Grid>
 
-        </form>
-        {error &&
-          <Alert className="error" severity="error">{error}</Alert>
-        }
-        {resetSent && 
-          <Alert severity="success">E-mail sent! Check your inbox.</Alert>
-        }
-      </div>
-      <Box mt={8}>
-        <Copyright />      
-      </Box>
-    </Container>
+      <Grid item xs={12}>
+        <Box mt={6}>
+          <Copyright />      
+        </Box>
+      </Grid>
     </Grid>
   );
 };
