@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
-import { Container, Grid, Button, Box } from '@material-ui/core';
+import { Container, Grid, Button, Box, Typography } from '@material-ui/core';
 
 import { createLinkByEmail } from 'services/accountLink';
 import BigInput from 'shared/components/BigInput/BigInput';
@@ -47,11 +47,18 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
   return (
     <Grid container className="credentialsForm" spacing={2} justify="center">
       <Grid item xs={10} md={8}>
+        <div>
+          <Typography component="h1" variant="h4">
+            Link up with a family member
+          </Typography>
+          <p>Invite a family member or close friend to see your posts. The person you invite must already have an <i>Hola, Oma!</i> account.</p>
+        </div>
 
         <form onSubmit={e => handleEmailForm(e)} noValidate>
         
           <Grid container spacing={2} justify="center">
 
+{/* 
             <Grid item xs={12} sm={8}>
               <Box className="devBox">
                 <p>Passphrase</p>
@@ -59,11 +66,12 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
                 <p>Ask your family member to enter this pass phrase to link your accounts. [Not yet implemented]</p>
               </Box>
             </Grid>
+  */}
             
             <Grid item xs={12} sm={8}>
               <BigInput 
                   error={emailAddressError}
-                  labelText="Enter someone's e-mail address"
+                  labelText="Enter their E-Mail address"
                   name="emailAddress"
                   required={true} 
                   value={emailAddress}
