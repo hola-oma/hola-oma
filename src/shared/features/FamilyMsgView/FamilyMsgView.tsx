@@ -89,7 +89,6 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         //Get connected accounts to populate receiver list
         getLinkedAccounts()
         .then((linkedAccounts) => {
-            console.log(linkedAccounts);
             let rcvrs = [];
             for (let i = 0; i < linkedAccounts.length; i++) {
                 if (linkedAccounts[i].verified === true) {
@@ -152,7 +151,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 {
                     receivers.map((receiver: IReceiver, index: number) => {
                         return (
-                        <Grid container alignItems="center" justify="center">
+                        <Grid container alignItems="center" justify="center" key={index}>
                             <Grid item>
                                 {post.read === true ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
                             </Grid>
