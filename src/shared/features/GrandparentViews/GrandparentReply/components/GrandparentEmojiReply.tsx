@@ -62,19 +62,12 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
     choicesList.forEach(choice => console.log(choice));
   }
 
-  const warningText = () => {
+  const getAlertText = () => {
     return alertOn ? "Must select at least one emoji to reply" : null;
   }
     
   const sendChoices = (choices: Array<number>) => {
-    if (choices.length < 1) {
-      console.log("Must select at least one emoji to reply");
-      setAlert(true);
-    }
-    else {
-      console.log("Send reply");
-      setAlert(false);
-      }
+    choices.length < 1 ? setAlert(true) : setAlert(false);
   }
 
   const replyOptions: Array<React.ReactElement<SvgIconProps>> = [
@@ -94,7 +87,7 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
       <GrandparentLayout
         headerText={"Replying to "}
         header2Text={"Choose which smileys to send!"}
-        alertText={warningText()}
+        alertText={getAlertText()}
         boxContent={<Grid container>
           {
             replyOptions.map( (icon: React.ReactElement<SvgIconProps>, index: number) => {
