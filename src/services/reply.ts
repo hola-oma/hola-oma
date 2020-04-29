@@ -1,6 +1,48 @@
 import * as firebase from "firebase/app";
 import 'firebase/storage';
 
+import { Reply } from 'shared/models/reply.model';
+
+export const createReply = async (reply: Reply) => {
+  const db = firebase.firestore();
+  let replyID = ""
+
+  try {
+    await db.collection("replies").add({
+      creatorID: reply.creatorID,
+      date: reply.date,
+      from: reply.from,
+      read: reply.read,
+      message: reply.message,
+      responseTo: reply.responseTo,
+      receiverID: reply.receiverID
+    })
+      .then(function(docRef) {
+        console.log("New reply document written with ID: ", docRef.id);
+        replyID = docRef.id;
+
+      })
+      .catch(function(error) {
+        console.error("Error adding reply document: ", error);
+      });
+    return replyID;    // changed from bool
+
+  } catch(e) {
+    console.log(e.message);
+    throw Error(e.message);
+  }
+}
+
+export const updateReplyID = async (replyID: string) => {
+  const db = firebase.firestore();
+  await db.collection("posts").doc(replyID).update({
+    "rid": replyID,
+  })
+    .then(function() {
+      console.log("Reply successfully updated with reply ID");
+    });
+}
+
 export const uploadPhoto = async (photoData: string) => {
   console.log(photoData);
 
