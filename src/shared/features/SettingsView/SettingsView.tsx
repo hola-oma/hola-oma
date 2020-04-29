@@ -103,6 +103,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
 
                 <Grid item xs={12}>
                   <BigInput 
+                    error={false}
                     labelText="Display Name"
                     name="displayName"
                     required={true} 
@@ -114,14 +115,15 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <BigInput 
+                  <BigInput
+                    error={false} 
                     labelText="E-mail address"
                     name="email"
                     required={true} 
                     value={email}
                     autoFocus={false}
                     autoComplete="none"
-                    type="text"
+                    type="email"
                     onChange={updateEmail}/>
                 </Grid>
 

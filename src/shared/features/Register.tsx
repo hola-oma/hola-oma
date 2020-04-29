@@ -19,6 +19,7 @@ import { RouteComponentProps } from 'react-router-dom'; // give us 'history' obj
 
 import { createNewUserWithEmailAndPassword, createNewUserWithGoogleCredentials } from "services/user";
 import BigInput from "shared/components/BigInput/BigInput";
+import Alert from "@material-ui/lab/Alert";
 
 interface IRegister extends RouteComponentProps<any> {
   // empty for now 
@@ -30,6 +31,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setErrors] = useState("");
+  const [invalidInputs, setInvalidInputs] = useState(false);
 
   const Auth = useContext(AuthContext);
 
@@ -54,6 +56,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
       }
     } catch(e) {
       setErrors(e.message);
+      setInvalidInputs(true);
     }
   }
 
@@ -73,17 +76,17 @@ const Register: React.FC<IRegister> = ({ history }) => {
 
   return (
     <Grid container className="credentialsForm" spacing={2} justify="center">
-      <Grid item xs={6}>
+      <Grid item xs={10} md={8}>
         <div>
           <Avatar className="formAvatar">
             <PersonIcon />
           </Avatar>
-          <Typography component="h1" variant="h3">
+          <Typography component="h1" variant="h4">
             Register a new account
           </Typography>
           {/* Switch to "Sign In" page */ }
 
-          <Grid container justify="center">
+          <Grid container spacing={2} justify="center">
             <Grid item>
               <Link href="/login" className="bigLink">
                 Already have an account? Log in instead
@@ -91,27 +94,29 @@ const Register: React.FC<IRegister> = ({ history }) => {
             </Grid>
           </Grid>
 
-          <form onSubmit={e => handleForm(e)} noValidate>
+          <form onSubmit={e => handleForm(e)}>
 
-          <Grid container spacing={2}>
-            
+          <Grid container spacing={2} justify="center">
+
               {/* Email address */}
-              <Grid item xs={12}>
-                <BigInput 
+              <Grid item xs={12} sm={8}>
+                <BigInput
+                  error={invalidInputs}
                   labelText="E-Mail Address"
                   name="email"
                   required={true} 
                   value={email}
                   autoFocus={true}
                   autoComplete="off"
-                  type="text"
+                  type="email"
                   onChange={updateEmail}/>
 
               </Grid>
 
               {/* Password */ }
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={8}>
               <BigInput 
+                error={invalidInputs}
                 labelText="Password"
                 name="password"
                 required={true} 
@@ -121,23 +126,26 @@ const Register: React.FC<IRegister> = ({ history }) => {
                 type="password"
                 onChange={updatePassword}/>
               </Grid>
+
+            <Grid item xs={12} sm={8}>
+              <Button 
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                size="large"
+                className="bigButton"
+              >
+                Sign up
+              </Button>
             </Grid>
 
-
-            <Button 
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              size="large"
-              className="bigButton"
-            >
-              Sign up
-            </Button>
+          {error &&
+            <Alert severity="error">{error}</Alert>
+          }
 
           {/* Google sign in */}
-          <Grid container>
-            <Grid item xs>
+            <Grid item xs={12} sm={8}>
               <Button 
                 onClick={handleGoogleJoin} 
                 className="googleBtn" 
@@ -151,10 +159,9 @@ const Register: React.FC<IRegister> = ({ history }) => {
                 Join With Google
               </Button> 
             </Grid>
-          </Grid>
-
+            </Grid>
           </form>
-          <span className="error">{error}</span>
+
         </div>
       </Grid>
 
