@@ -39,6 +39,7 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
   );
   const classes = useStyles();
 
+  const [alertOn, setAlert] =  useState<boolean>(false);
   const [highlightedList, setHighlighted] = useState<Array<boolean>>([false, false, false, false, false, false]);
   const handleHighlight = (index: number) => {
     // https://stackoverflow.com/questions/29537299/react-how-to-update-state-item1-in-state-using-setstate
@@ -48,7 +49,7 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
   }
 
   // Function called on click
-  let getChoices = (choice: number) => {
+  const getChoices = (choice: number) => {
     // Highlight or un-highlight
     handleHighlight(choice);
 
@@ -59,6 +60,21 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
     // For testing - delete later
     console.log("current choices array: ");
     choicesList.forEach(choice => console.log(choice));
+  }
+
+  const warningText = () => {
+    return alertOn ? "Must select at least one emoji to reply" : null;
+  }
+    
+  const sendChoices = (choices: Array<number>) => {
+    if (choices.length < 1) {
+      console.log("Must select at least one emoji to reply");
+      setAlert(true);
+    }
+    else {
+      console.log("Send reply");
+      setAlert(false);
+      }
   }
 
   const replyOptions: Array<React.ReactElement<SvgIconProps>> = [
@@ -78,6 +94,7 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
       <GrandparentLayout
         headerText={"Replying to "}
         header2Text={"Choose which smileys to send!"}
+        alertText={warningText()}
         boxContent={<Grid container>
           {
             replyOptions.map( (icon: React.ReactElement<SvgIconProps>, index: number) => {
@@ -101,8 +118,8 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
             })
           }
         </Grid>}
-          buttonText={["Go back to message", "Send Smiley(s)"]}
-          buttonActions={ [returnToPost, () => console.log("send choices") ]}
+          buttonText={["Go back to Reply Options", "Send Smiley(s)"]}
+          buttonActions={ [returnToPost, () => sendChoices(choicesList) ]}
           buttonIcons={[<MailIcon/>, <SendIcon/>]}
       />
 
