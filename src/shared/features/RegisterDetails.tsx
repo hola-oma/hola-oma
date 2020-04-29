@@ -36,6 +36,7 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
   const [role, setRole] = useState(roles.receiver); 
 
   const [error, setErrors] = useState("");
+  const [invalidName, setInvalidName] = useState(false);
 
   const Auth = useContext(AuthContext);
 
@@ -65,17 +66,22 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
   const handleForm = async (e: any) => {
     e.preventDefault();
 
-    try {
-      const userCreated = await createUserSettings(userID, role, displayName, email);
-      const profileUpdated = await updateUserProfile(displayName, email);
-      
-      if (userCreated && profileUpdated) {
-        Auth?.setLoggedIn(true); 
-        Auth?.setSettingsComplete(true);
-        if (history) history.push('/posts');
+    if (displayName === "") {
+      setErrors("Please enter a name");
+      setInvalidName(true);
+    } else {
+      try {
+        const userCreated = await createUserSettings(userID, role, displayName, email);
+        const profileUpdated = await updateUserProfile(displayName, email);
+        
+        if (userCreated && profileUpdated) {
+          Auth?.setLoggedIn(true); 
+          Auth?.setSettingsComplete(true);
+          if (history) history.push('/posts');
+        }
+      } catch(e) {
+        setErrors(e.message);
       }
-    } catch(e) {
-      setErrors(e.message);
     }
   }
 
@@ -95,14 +101,14 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
           Display my name as
         </Typography>
 
-        <form onSubmit={e => handleForm(e)} className="">
+        <form onSubmit={e => handleForm(e)} className="" noValidate>
 
           <Grid container spacing={2} justify="center">
             
             {/* Display name */}
             <Grid item xs={12} sm={8}>
               <BigInput 
-                error={false}
+                error={invalidName}
                 labelText=""
                 name="displayName"
                 required={true} 
@@ -152,9 +158,11 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
               </Button>
             </Grid>
 
-            {error &&
-              <Alert className="error" severity="error">{error}</Alert>
-            }
+            <Grid item xs={12} sm={8}>
+              {error &&
+                <Alert className="error" severity="error">{error}</Alert>
+              }
+            </Grid>
         </Grid>
 
         </form>
