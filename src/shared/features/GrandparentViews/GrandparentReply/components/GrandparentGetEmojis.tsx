@@ -14,9 +14,7 @@ import HealingIcon from '@material-ui/icons/Healing';
 import SendIcon from '@material-ui/icons/Send';
 
 import GrandparentLayout from "../../GrandparentLayout";
-import NewGrandparentReply from "../NewGrandparentReply";
-import {Reply} from "../../../../models/reply.model";
-import {createReply, updateReplyID} from "../../../../../services/reply";
+import { submitReply } from "../../../../../services/reply";
 
 interface IEmojiReply {
   isOpen: boolean;
@@ -25,7 +23,7 @@ interface IEmojiReply {
 
 let choicesList: Array<number> = [];
 
-const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
+const GrandparentGetEmojis: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
 
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -52,7 +50,7 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
   }
   const history = useHistory();
 
-  // Function called on click
+  // Function called on emoji clicks
   const getChoices = (choice: number) => {
     // Highlight or un-highlight
     handleHighlight(choice);
@@ -75,35 +73,9 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
 
     else {
       setAlert(false);
-      const replyContent: any = {"value": "content"};
-      // history.push("/newReply");
+      const replyContent: any = {"value": "emoji selections here"};
+      history.push({pathname: "/newReply", state: replyContent});
     }
-
-    const submitReply = async (e: any) => {
-      e.preventDefault();
-
-      let reply: Reply = {
-        rid: "abc123",
-        creatorID: userId,
-        date: new Date().getTime(),
-        from: displayName,
-        read: false,
-        message: ["not a real reply", "just testing"],
-        responseTo: "put post id here",
-        receiverID: "put the real one in later"
-      };
-
-      try {
-        console.log("sending reply");
-        const replySent = await createReply(reply);
-        if (replySent) {
-          console.log("success sending reply!");
-          await updateReplyID(replySent);       // Add post id to new post document
-        }
-      } catch(e) {
-        console.error(e.message);
-      }
-    };
   }
 
   const replyOptions: Array<React.ReactElement<SvgIconProps>> = [
@@ -148,7 +120,7 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
           }
         </Grid>}
           buttonText={["Go back to Reply Options", "Send Smiley(s)"]}
-          buttonActions={ [returnToPost, () => createReplyFromChoices(choicesList) ]}
+          buttonActions={ [returnToPost, (e => submitReply(e))] }
           buttonIcons={[<MailIcon/>, <SendIcon/>]}
       />
 
@@ -159,4 +131,4 @@ const GrandparentEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) =>
   )
 };
 
-export default GrandparentEmojiReply;
+export default GrandparentGetEmojis;

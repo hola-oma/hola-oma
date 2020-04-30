@@ -9,7 +9,6 @@ export const createReply = async (reply: Reply) => {
 
   try {
     await db.collection("replies").add({
-      creatorID: reply.creatorID,
       date: reply.date,
       from: reply.from,
       read: reply.read,
@@ -32,6 +31,33 @@ export const createReply = async (reply: Reply) => {
     throw Error(e.message);
   }
 }
+
+ export const submitReply = async (e: any) => {
+   e.preventDefault();
+
+   let reply: Reply = {
+     rid: "abc123",
+     creatorID: "12345",
+     date: new Date().getTime(),
+     from: "Fakerly",
+     read: false,
+     message: ["not a real reply", "just testing"],
+     responseTo: "put post id here",
+     receiverID: "put the real one in later"
+   };
+
+   try {
+     console.log("sending reply");
+     const replySent = await createReply(reply);
+     if (replySent) {
+       console.log("success sending reply!");
+       await updateReplyID(replySent);       // Add post id to new post document
+     }
+   } catch(e) {
+     console.error(e.message);
+   }
+ };
+
 
 export const updateReplyID = async (replyID: string) => {
   const db = firebase.firestore();
@@ -66,7 +92,7 @@ export const uploadPhoto = async (photoData: string) => {
     // create a reply record 
     try {
       await db.collection("replies").add({
-        creatorID: user?.uid,
+        from: user?.uid,
         message: "",
         photoURL: snapshot.metadata.fullPath,
         date: Date.now(),

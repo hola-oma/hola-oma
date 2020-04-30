@@ -31,7 +31,7 @@ interface IGrandparentLayout {
   alertText?: string | null;
   boxContent: any;
   buttonText: Array<string>;
-  buttonActions: { (): void } []   //  Array of functions
+  buttonActions: { (arg0: any): void } [];   //  Array of functions
   buttonIcons: React.ReactElement<SvgIconProps>[]
 }
 
