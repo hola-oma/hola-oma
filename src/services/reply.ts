@@ -32,30 +32,30 @@ export const createReply = async (reply: Reply) => {
   }
 }
 
- export const submitReply = async (e: any) => {
-   e.preventDefault();
+export const submitReply = async (e: any) => {
+  e.preventDefault();
 
-   let reply: Reply = {
-     rid: "abc123",
-     creatorID: "12345",
-     date: new Date().getTime(),
-     from: "Fakerly",
-     read: false,
-     message: ["not a real reply", "just testing"],
-     responseTo: "put post id here",
-     receiverID: "put the real one in later"
-   };
+  let reply: Reply = {
+    rid: "abc123",
+    creatorID: "12345",
+    date: new Date().getTime(),
+    from: "Fakerly",
+    read: false,
+    message: ["not a real reply", "just testing"],
+    responseTo: "put post id here",
+    receiverID: "put the real one in later"
+  };
 
-   try {
-     console.log("sending reply");
-     const replySent = await createReply(reply);
-     if (replySent) {
-       console.log("success sending reply!");
-       await updateReplyID(replySent);       // Add post id to new post document
-     }
-   } catch(e) {
-     console.error(e.message);
-   }
+  try {
+    console.log("sending reply");
+    const replySent = await createReply(reply);
+    if (replySent) {
+      console.log("success sending reply!");
+      await updateReplyID(replySent);       // Add post id to new post document
+    }
+  } catch(e) {
+    console.error(e.message);
+  }
  };
 
 

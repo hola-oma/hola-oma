@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 
 import {Box} from '@material-ui/core';
 import {Post} from "../../../models/post.model";
-import GrandparentGetEmojis from "./components/GrandparentGetEmojis";
+import GetEmojiReply from "./components/GetEmojiReply";
 import GrandparentLayout from "../GrandparentLayout";
 import {GrandparentPostContext} from "../../../../App";
 
@@ -72,7 +72,7 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
             </ul>
         </Box>
 
-        <GrandparentGetEmojis
+        <GetEmojiReply
           isOpen={EmojiReplyOpen}
           returnToPost={returnToPost}
         />

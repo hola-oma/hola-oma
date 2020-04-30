@@ -23,7 +23,7 @@ interface IEmojiReply {
 
 let choicesList: Array<number> = [];
 
-const GrandparentGetEmojis: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
+const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
 
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -66,16 +66,6 @@ const GrandparentGetEmojis: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => 
 
   const getAlertText = () => {
     return alertOn ? "Must select at least one emoji to reply" : null;
-  }
-    
-  const createReplyFromChoices = (choices: Array<number>) => {
-    if (choices.length < 1 ) { setAlert(true); return; }
-
-    else {
-      setAlert(false);
-      const replyContent: any = {"value": "emoji selections here"};
-      history.push({pathname: "/newReply", state: replyContent});
-    }
   }
 
   const replyOptions: Array<React.ReactElement<SvgIconProps>> = [
@@ -131,4 +121,4 @@ const GrandparentGetEmojis: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => 
   )
 };
 
-export default GrandparentGetEmojis;
+export default GetEmojiReply;
