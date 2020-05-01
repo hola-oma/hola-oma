@@ -56,7 +56,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
     } else {
       try {
         const userCreated = await createNewUserWithEmailAndPassword(email, password);
-        
+
         if (userCreated) {
           Auth?.setLoggedIn(true);
           if (history) history.push('/registerDetails');

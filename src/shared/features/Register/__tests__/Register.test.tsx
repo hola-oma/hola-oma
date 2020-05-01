@@ -1,35 +1,34 @@
 import React from 'react';
-import { render, fireEvent, waitFor, wait } from '@testing-library/react';
+import { render, fireEvent, waitFor, cleanup } from '@testing-library/react';
 import * as UserService from 'services/user';
 
 // the component to test 
 import Register from '../Register';
-import { getUserSettings } from 'services/user';
 
 describe('Register Page', () => {
   let createNewUserWithEmailAndPasswordSpy: any;
-  let container: any;
-  let getByText: any;
 
   beforeEach(() => {
     createNewUserWithEmailAndPasswordSpy = jest.spyOn(UserService, 'createNewUserWithEmailAndPassword').mockReturnValue(Promise.resolve(true));
+  });
+
+  afterEach(() => {
+    cleanup();
+    jest.clearAllMocks();
+  })
+
+  it('The registration page is properly formed', async() => {
+    // arrange
 
     // container = array of DOM nodes on the page
     // getByText = built-in utility function for getting elements by the text they contain 
     // getByLabelText = not used below, but another option for getting form fields by label 
-    const { container: wrapper, getByText: getByTextFn } = 
-      render(
-        <Register />
-      );
-
-    container = wrapper;
-    getByText = getByTextFn;
-
-  });
-
-  test('The registration page is properly formed', async() => {
     
-    // arrange
+    const { container, getByText } = 
+    render(
+      <Register />
+    );
+
     const header = getByText('Register a new account');
     const bigInputLabels = container.querySelectorAll('.bigInputLabel'); // should be 2 of them 
     const signUpButton = getByText('Sign up');
@@ -51,9 +50,13 @@ describe('Register Page', () => {
     expect(errorAlert.length).toBe(0); // error shouldn't show by default 
   });
   
-  test('The registration form cannot be submitted empty', async() => {
-    
+  it('The registration form cannot be submitted empty', async() => {
     // arrange
+    const { container, getByText } = 
+    render(
+      <Register />
+    );
+
     const signUpButton = getByText('Sign up');
   
     // act 
@@ -67,9 +70,12 @@ describe('Register Page', () => {
   
   });
   
-  test('The registration form can be submitted with a valid email address and valid password', async() => {
-  
+  it('The registration form can be submitted with a valid email address and valid password', async() => {
     // arrange
+    const { container, getByText } = 
+    render(
+      <Register />
+    );
     const signUpButton = getByText('Sign up');
 
     const bigInputLabels = container.querySelectorAll('.bigInput'); // should be 2 of them 
@@ -96,6 +102,38 @@ describe('Register Page', () => {
     await waitFor(() => {});
   
     expect(createNewUserWithEmailAndPasswordSpy).toHaveBeenCalled();
+  
+  });
+
+  it('The registration form cannot be submitted with a valid email address and invalid password', async() => {
+
+    // arrange
+    const { container, getByText } = 
+    render(
+      <Register />
+    );
+
+    const signUpButton = getByText('Sign up');
+
+    const bigInputLabels = container.querySelectorAll('.bigInput'); // should be 2 of them 
+    const emailInput = bigInputLabels[0].querySelectorAll('input')[0];
+    const passwordInput = bigInputLabels[1].querySelectorAll('input')[0];
+  
+    const mockEmail = "test@unsuccessful.com";
+    const mockInvalidPassword = "";
+    const mockEmailEvent = {target: {value: mockEmail}};
+    const mockPasswordEvent = {target: {value: mockInvalidPassword}};
+  
+    // act
+    fireEvent.change(emailInput, mockEmailEvent);
+    fireEvent.change(passwordInput, mockPasswordEvent);
+  
+    // click the submit button
+    fireEvent.click(signUpButton);
+
+    await waitFor(() => {});
+  
+    expect(createNewUserWithEmailAndPasswordSpy).toHaveBeenCalledTimes(0);
   
   });
 });
