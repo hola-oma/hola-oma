@@ -1,17 +1,50 @@
 import * as firebase from "firebase/app";
 import 'firebase/storage';
 
-import { Reply } from 'shared/models/reply.model';
+import {Reply, REPLY_TYPES} from 'shared/models/reply.model';
 
-export const createReply = async (reply: Reply) => {
+export const setReplyContent = (userID: string, displayName: string, replyType: string,
+                                message: Array<any>, responseTo: string, receiverID: string) => {
+  let replyContent: Reply = {
+    rid: "",
+    creatorID: userID,
+    from: displayName,
+    date: new Date().getTime(),
+    read: false,
+    replyType: replyType,
+    message: message,
+    responseTo: responseTo,
+    receiverID: receiverID
+  }
+  return replyContent;
+}
+
+export const submitReply = async (e: any, currentReply: Reply) => {
+  e.preventDefault();
+
+  try {
+    console.log("sending reply");
+    const replySent = await createReplyDocument(currentReply);
+    if (replySent) {
+      console.log("success sending reply!");
+      await updateReplyID(replySent);       // Add post id to new post document
+    }
+  } catch(e) {
+    console.error(e.message);
+  }
+ };
+
+export const createReplyDocument = async (reply: Reply) => {
   const db = firebase.firestore();
   let replyID = ""
 
   try {
     await db.collection("replies").add({
       date: reply.date,
+      creatorID: reply.creatorID,
       from: reply.from,
       read: reply.read,
+      replyType: reply.replyType,
       message: reply.message,
       responseTo: reply.responseTo,
       receiverID: reply.receiverID
@@ -31,33 +64,6 @@ export const createReply = async (reply: Reply) => {
     throw Error(e.message);
   }
 }
-
-export const submitReply = async (e: any) => {
-  e.preventDefault();
-
-  let reply: Reply = {
-    rid: "abc123",
-    creatorID: "12345",
-    date: new Date().getTime(),
-    from: "Fakerly",
-    read: false,
-    message: ["not a real reply", "just testing"],
-    responseTo: "put post id here",
-    receiverID: "put the real one in later"
-  };
-
-  try {
-    console.log("sending reply");
-    const replySent = await createReply(reply);
-    if (replySent) {
-      console.log("success sending reply!");
-      await updateReplyID(replySent);       // Add post id to new post document
-    }
-  } catch(e) {
-    console.error(e.message);
-  }
- };
-
 
 export const updateReplyID = async (replyID: string) => {
   const db = firebase.firestore();
