@@ -16,7 +16,7 @@ import PermPhoneMsgIcon from '@material-ui/icons/PermPhoneMsg';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 // Returns an array so both grandparent and family sides can map and/or access by index
-export const emojiArray = (): Array<React.ReactElement<SvgIconProps>> => {
+export const replyEmojiArray = (): Array<React.ReactElement<SvgIconProps>> => {
   return [
     <InsertEmoticonIcon/>,
     <ThumbUpIcon/>,

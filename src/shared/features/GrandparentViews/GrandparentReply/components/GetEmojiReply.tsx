@@ -9,7 +9,7 @@ import { setReplyContent, submitReply } from "../../../../../services/reply";
 
 import { Reply, REPLY_TYPES } from "../../../../models/reply.model";
 import { getUserProfile } from "../../../../../services/user";
-import { emojiArray, mailIcons } from "../../../../../Icons";
+import { replyEmojiArray, mailIcons } from "../../../../../Icons";
 import { GrandparentPostContext } from "../../../../../App";
 
 interface IEmojiReply {
@@ -38,7 +38,7 @@ const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
   const classes = useStyles();
   const history = useHistory();
   const FamilyPost = useContext(GrandparentPostContext).post;
-  const emojiIcons = emojiArray();
+  const emojiIcons = replyEmojiArray();
 
   const [displayName, setDisplayName] = useState("");
   const [userId, setUserId] = useState("");
