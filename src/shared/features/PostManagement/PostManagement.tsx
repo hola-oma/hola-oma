@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Container, Grid, Card, CardHeader, CardContent, CardMedia, Typography } from '@material-ui/core';
+import { Container, Grid, Card, CardHeader, CardContent, CardMedia, Typography, Button } from '@material-ui/core';
 import Alarm from '@material-ui/icons/Alarm';
 import { Link } from 'react-router-dom';
 
@@ -29,6 +29,9 @@ const useStyles = makeStyles({
   },
   media: {
     height: '140px'
+  },
+  postStyle: {
+    height: "100%"
   }
 });
 
@@ -53,54 +56,55 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
 
   return (
     <Container>
-      <Container>
-          <Link to={"/newPost"}>
-            <Card>
-                <CardContent>
-                    Make a new post
-                </CardContent>
-            </Card>
-          </Link>
-      </Container>
+      <Typography component="h2" variant="h5">
+        Posts
+      </Typography>
+
       <Grid container spacing={2}>
         {
           posts.map((post: Post, index: number) => {
             return (
-              <Grid item xs={4} key={index}>
-                <div>
+              <Grid item xs={12} sm={4} key={index}>
+                <div className={"postStyle"}>
                   <Link to={{
                     pathname: "/postDetails",
                     state: {post: post}
                   }}>
-                  <Card variant="outlined">
+                  <Card variant="outlined" className={"postStyle"}>
+                    <Grid container direction={"column"} justify={"space-between"} className={"postStyle"}>
+                      
+                      {post.photoURL && <Grid item>
+                        <CardMedia
+                          component="img"
+                          className={classes.media}
+                          image={post.photoURL}
+                        />
+                      </Grid>}
 
-                    {post.photoURL && <CardMedia
-                      component="img"
-                      className={classes.media}
-                      image={post.photoURL}
-                    />}
+                      <Grid item>
+                          <Typography variant="h5">
+                            {getMessageSubstring(post.message)}
+                          </Typography>
+                      </Grid>
 
-                    <CardHeader
-                        title={getMessageSubstring(post.message)}>
-                    </CardHeader>
-
-                    <CardContent>
-                        <Grid container>
-                          <Grid item xs={5}>
-                              <Typography variant="subtitle2">
-                                  Sent message
-                                  <br/>
-                                  <Moment format="MMMM Do YYYY">{post.date}</Moment>
-                              </Typography>
+                      <Grid item>
+                          <Grid container justify={"space-between"}>
+                            <Grid item xs={5}>
+                                <Typography variant="subtitle2">
+                                    Sent message
+                                    <br/>
+                                    <Moment format="MMMM Do YYYY">{post.date}</Moment>
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={5}>
+                                <Alarm className="icon"/>
+                                <Typography variant="subtitle2">
+                                    New replies!
+                                </Typography>
+                            </Grid>
                           </Grid>
-                          <Grid item xs={5}>
-                              <Alarm className="icon"/>
-                              <Typography variant="subtitle2">
-                                  New replies!
-                              </Typography>
-                          </Grid>
-                        </Grid>
-                    </CardContent>
+                      </Grid>
+                    </Grid>
                   </Card>
 
                 </Link>

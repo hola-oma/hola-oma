@@ -6,6 +6,7 @@ import { Box, TextField, Button, Checkbox } from '@material-ui/core';
 import { createPost, updatePostID, uploadFile } from "services/post";
 import { getUserProfile } from "services/user";
 import { getLinkedAccounts } from "services/accountLink";
+import Alert from '@material-ui/lab/Alert';
 
 import './NewFamilyPost.css';
 // @ts-ignore
@@ -23,13 +24,25 @@ const NewFamilyPost: React.FC = () => {
     const [displayName, setDisplayName] = useState("");
     const [userId, setUserId] = useState("");
     const [receivers, setReceivers] = useState<IReceiver[]>([]);
+    const [error, setError] = useState<string | null>();
     const history = useHistory();
 
     const submitPost = async (e: any) => {
         e.preventDefault();
+        setError(null);
+        if (!selectedFile && !textValue) {
+            setError("You must provide a message and/or photo.");
+            return;
+        }
         let receiverIDs = [];
         for (let i = 0; i < receivers.length; i++) {
-            receiverIDs.push(receivers[i].id);
+            if (receivers[i].checked) {
+                receiverIDs.push(receivers[i].id);
+            }
+        }
+        if (receiverIDs.length === 0) {
+            setError("Please select at least one receiver");
+            return;
         }
 
         let post = {
@@ -53,7 +66,6 @@ const NewFamilyPost: React.FC = () => {
         try {
             const postSent = await createPost(post);
             if (postSent) {
-                console.log("success sending post!");
                 await updatePostID(postSent);       // Add post id to new post document
             }
             if (history) history.push('/posts');
@@ -90,14 +102,12 @@ const NewFamilyPost: React.FC = () => {
     useEffect(() => {
         getUserProfile()
         .then((userProfile:any) => {
-            console.log(userProfile);
             setDisplayName(userProfile.displayName);
             setUserId(userProfile?.uid);
         });
         //Get connected accounts to populate receiver list
         getLinkedAccounts()
         .then((linkedAccounts) => {
-            console.log(linkedAccounts);
             let rcvrs = [];
             for (let i = 0; i < linkedAccounts.length; i++) {
                 if (linkedAccounts[i].verified === true) {
@@ -148,6 +158,9 @@ const NewFamilyPost: React.FC = () => {
             variant="contained">
             Send Post
         </Button>
+        {error &&
+            <Alert className="error" severity="error">{error}</Alert>
+        }
         </form>
      </>
     )

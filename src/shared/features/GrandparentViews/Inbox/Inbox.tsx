@@ -79,7 +79,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
               </div>
             )
           })
-
           }
         </Grid>
 

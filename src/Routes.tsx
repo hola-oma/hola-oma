@@ -3,7 +3,7 @@ import {css} from "@emotion/core";
 import ClockLoader from "react-spinners/ClockLoader";
 
 import Login from "./shared/features/Login";
-import Register from "./shared/features/Register";
+import Register from "./shared/features/Register/Register";
 import RegisterDetails from './shared/features/RegisterDetails'
 import PostsView from './shared/features/PostsView/PostsView';
 import SettingsView from './shared/features/SettingsView/SettingsView';
