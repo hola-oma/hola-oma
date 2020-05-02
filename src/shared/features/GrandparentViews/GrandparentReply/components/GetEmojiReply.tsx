@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { useHistory} from 'react-router'
 
-import {Button, Card, CardContent, Dialog, Grid, SvgIconProps} from "@material-ui/core";
+import {Box, Button, Card, CardContent, Dialog, Grid, SvgIconProps} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
 import GrandparentLayout from "../../GrandparentLayout";
@@ -118,6 +118,13 @@ const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
           buttonText={["Go back to Reply Options", "Send Smiley(s)"]}
           buttonActions={ [returnToPost, e => buildReply(e, choicesList) ] }
           buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]} />
+
+        <Box className="todo">
+          <h3>To do items:</h3>
+          <ul>
+            <li>Alert that grandparent must choose at least 1 emoji does not work if have already sent message and return to Inbox</li>
+          </ul>
+        </Box>
       </Dialog>
     </>
   )
