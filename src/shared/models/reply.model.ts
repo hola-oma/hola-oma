@@ -11,7 +11,7 @@ export interface Reply {
   date: number,
   read: boolean,
   replyType: string,
-  message: Array<string>,
+  message: Array<number> | string,
   responseTo: string,
   receiverID: string
 }
