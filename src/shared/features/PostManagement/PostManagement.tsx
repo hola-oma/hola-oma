@@ -65,7 +65,7 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
           posts.map((post: Post, index: number) => {
             return (
               <Grid item xs={12} sm={4} key={index}>
-                <div>
+                <div className={"postStyle"}>
                   <Link to={{
                     pathname: "/postDetails",
                     state: {post: post}
