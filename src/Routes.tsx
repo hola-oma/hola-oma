@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import {css} from "@emotion/core";
+import ClockLoader from "react-spinners/ClockLoader";
 
 import Login from "./shared/features/Login";
-import Register from "./shared/features/Register";
+import Register from "./shared/features/Register/Register";
 import RegisterDetails from './shared/features/RegisterDetails'
 import PostsView from './shared/features/PostsView/PostsView';
 import SettingsView from './shared/features/SettingsView/SettingsView';
@@ -16,6 +18,8 @@ import ProtectedRouteHoc from "ProtectedRouteHoc";
 import { User } from "shared/models/user.model";
 import FamilyMsgView from "./shared/features/FamilyMsgView/FamilyMsgView";
 import CreatePost from "./shared/features/CreatePost/CreatePost";
+import { Grid } from "@material-ui/core";
+
 
 interface IRoutes {
   isLoggedIn: boolean;
@@ -27,6 +31,12 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
     const history = useHistory();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const override = css`
+      display: block;
+      margin: 0 auto;
+      border-color: red;
+    `;
 
     useEffect(() => {
       if (isLoggedIn) {
@@ -43,12 +53,17 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
 
     return (
       <div>
-        <div style={isLoading ? {} : {display: 'none'}}>
-          <p>Loading...</p>
-        </div>
+        <Grid container justify="center" alignItems="center" direction="column">
+          <Grid item xs={12}>
+            <div className="loadingSpinner" style={isLoading ? {} : {display: 'none'}}>
+              <ClockLoader css={override} size={150} color={"#444444"} loading={isLoading} />
+            </div>
+          </Grid>
+        </Grid>
+
         <div style={isLoading ? {display: 'none'} : {}}>
         <Switch>
-          <Route exact path="/" component={Login} /> {/* default route */}
+          <Route exact path="/" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/resetPassword" component={ResetPassword} />
@@ -62,7 +77,7 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
           <ProtectedRouteHoc exact path="/addAccountLink" isLoggedIn={isLoggedIn} public={false} RouteComponent={AddAccountLink} />
         </Switch>
         </div>
-      </div>
+    </div>
     );
   };
 

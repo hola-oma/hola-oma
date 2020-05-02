@@ -29,6 +29,9 @@ const useStyles = makeStyles({
   },
   media: {
     height: '140px'
+  },
+  postStyle: {
+    height: "100%"
   }
 });
 
@@ -67,35 +70,41 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
                     pathname: "/postDetails",
                     state: {post: post}
                   }}>
-                  <Card variant="outlined">
+                  <Card variant="outlined" className={"postStyle"}>
+                    <Grid container direction={"column"} justify={"space-between"} className={"postStyle"}>
+                      
+                      {post.photoURL && <Grid item>
+                        <CardMedia
+                          component="img"
+                          className={classes.media}
+                          image={post.photoURL}
+                        />
+                      </Grid>}
 
-                    {post.photoURL && <CardMedia
-                      component="img"
-                      className={classes.media}
-                      image={post.photoURL}
-                    />}
+                      <Grid item>
+                          <Typography variant="h5">
+                            {getMessageSubstring(post.message)}
+                          </Typography>
+                      </Grid>
 
-                    <CardHeader
-                        title={getMessageSubstring(post.message)}>
-                    </CardHeader>
-
-                    <CardContent>
-                        <Grid container>
-                          <Grid item xs={5}>
-                              <Typography variant="subtitle2">
-                                  Sent message
-                                  <br/>
-                                  <Moment format="MMMM Do YYYY">{post.date}</Moment>
-                              </Typography>
+                      <Grid item>
+                          <Grid container justify={"space-between"}>
+                            <Grid item xs={5}>
+                                <Typography variant="subtitle2">
+                                    Sent message
+                                    <br/>
+                                    <Moment format="MMMM Do YYYY">{post.date}</Moment>
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={5}>
+                                <Alarm className="icon"/>
+                                <Typography variant="subtitle2">
+                                    New replies!
+                                </Typography>
+                            </Grid>
                           </Grid>
-                          <Grid item xs={5}>
-                              <Alarm className="icon"/>
-                              <Typography variant="subtitle2">
-                                  New replies!
-                              </Typography>
-                          </Grid>
-                        </Grid>
-                    </CardContent>
+                      </Grid>
+                    </Grid>
                   </Card>
 
                 </Link>
