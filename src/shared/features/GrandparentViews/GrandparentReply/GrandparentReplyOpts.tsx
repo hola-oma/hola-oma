@@ -14,30 +14,8 @@ interface IGrandparentReplyOpts {
 const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
 
   const [EmojiReplyOpen, setEmojiReplyOpen] = useState<boolean>(false);
-
-  let history = useHistory();
-
-  const returnToInbox = () => {
-    console.log("Reply to " + post.from + " closed");
-    history.push("/posts");
-  }
-
-  const returnToPost = () => {
-    console.log("Reply to " + post.from + " closed");
-    setEmojiReplyOpen(false);
-  }
-
-  const replyWithSmiley = () => { setEmojiReplyOpen(true); }
-
-  const replyWithVoiceMsg = () => {
-    console.log("Grandparent wants to send a \"voicemail\"!");
-  }
-
-  const replyWithPicture = () => {
-    console.log("Grandparent wants to send a picture!");
-  }
-
   const boxContent = post.message + "\n\n" + post.photoURL;
+  let history = useHistory();
 
   return (
         <>
@@ -46,7 +24,12 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
           headerText={"Reply to Letter from "}
           boxContent={boxContent}
           buttonText={["Return to Messages", "Smiley", "Voice Message", "Your Picture"]}
-          buttonActions={[returnToInbox, replyWithSmiley, replyWithVoiceMsg, replyWithPicture]}
+          buttonActions={[
+            () => history.push("/posts"),
+            () => setEmojiReplyOpen(true),
+            () => console.log("Grandparent wants to send a \"voicemail\"!"),
+            () => console.log("Grandparent wants to send a picture!")
+          ]}
           buttonIcons={[replyOptionIcons.closedEnvelope, replyOptionIcons.emoji,
                         replyOptionIcons.voicemail, replyOptionIcons.photo]}
           />
@@ -66,7 +49,7 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
 
         <GetEmojiReply
           isOpen={EmojiReplyOpen}
-          returnToPost={returnToPost}
+          returnToPost={() => setEmojiReplyOpen(false)}
         />
 
      </>
