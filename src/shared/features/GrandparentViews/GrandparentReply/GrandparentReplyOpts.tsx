@@ -1,16 +1,11 @@
-import React, {useContext, useState} from 'react';
+import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 
-import {Box} from '@material-ui/core';
-import {Post} from "../../../models/post.model";
+import { Box } from '@material-ui/core';
+import { Post } from "../../../models/post.model";
+import { replyOptionIcons } from "../../../../Icons";
 import GetEmojiReply from "./components/GetEmojiReply";
 import GrandparentLayout from "../GrandparentLayout";
-import {GrandparentPostContext} from "../../../../App";
-
-import MailIcon from '@material-ui/icons/Mail';
-import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
-import PermPhoneMsgIcon from '@material-ui/icons/PermPhoneMsg';
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 interface IGrandparentReplyOpts {
   post: Post;
@@ -18,18 +13,17 @@ interface IGrandparentReplyOpts {
 
 const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
 
-  const FamilyPost = useContext(GrandparentPostContext).post;
   const [EmojiReplyOpen, setEmojiReplyOpen] = useState<boolean>(false);
 
   let history = useHistory();
 
   const returnToInbox = () => {
-    console.log("Reply to " + FamilyPost.from + " closed");
+    console.log("Reply to " + post.from + " closed");
     history.push("/posts");
   }
 
   const returnToPost = () => {
-    console.log("Reply to " + FamilyPost.from + " closed");
+    console.log("Reply to " + post.from + " closed");
     setEmojiReplyOpen(false);
   }
 
@@ -46,7 +40,7 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
     console.log("Grandparent wants to send a picture!");
   }
 
-  const boxContent = FamilyPost.message + "\n\n" + FamilyPost.photoURL;
+  const boxContent = post.message + "\n\n" + post.photoURL;
 
   return (
         <>
@@ -56,7 +50,8 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
           boxContent={boxContent}
           buttonText={["Return to Messages", "Smiley", "Voice Message", "Your Picture"]}
           buttonActions={[returnToInbox, replyWithSmiley, replyWithVoiceMsg, replyWithPicture]}
-          buttonIcons={[<MailIcon/>, <InsertEmoticonIcon/>, <PermPhoneMsgIcon/>, <PhotoCameraIcon/>]}
+          buttonIcons={[replyOptionIcons.closedEnvelope, replyOptionIcons.emoji,
+                        replyOptionIcons.voicemail, replyOptionIcons.photo]}
           />
 
          <Box className="todo">

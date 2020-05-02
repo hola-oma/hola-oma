@@ -3,9 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from "react-router";
 
 import { getUserProfile } from "services/user";
-import { Reply } from 'shared/models/reply.model';
-import {createReplyDocument, updateReplyID} from "../../../../services/reply";
-import {Box} from "@material-ui/core";
 
 export interface IReplyContent {
   value: string;

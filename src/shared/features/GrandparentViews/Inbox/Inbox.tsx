@@ -3,10 +3,9 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 
 import {Container, Grid, Card, CardHeader, CardContent, Box} from '@material-ui/core';
-import MailIcon from '@material-ui/icons/Mail';
-import DraftsIcon from '@material-ui/icons/Drafts';
 
 import { Post } from 'shared/models/post.model';
+import { mailIcons } from "../../../../Icons";
 import {GrandparentPostContext} from "../../../../App";
 
 import './Inbox.css';
@@ -74,7 +73,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                     title={post.from}>
                   </CardHeader>
                   <CardContent>
-                    {post.read? <DraftsIcon className="icon"/> : <MailIcon className="icon"/>}
+                    {post.read? mailIcons.openEnvelope : mailIcons.closedEnvelope}
                   </CardContent>
                 </Card>
               </div>

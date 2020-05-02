@@ -32,7 +32,7 @@ interface IGrandparentLayout {
   boxContent: any;
   buttonText: Array<string>;
   buttonActions: { (arg0: any): void } [];   //  Array of functions
-  buttonIcons: React.ReactElement<SvgIconProps>[]
+  buttonIcons: React.ReactElement<SvgIconProps>[];
 }
 
 export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, header2Text, alertText, boxContent, buttonText,  buttonActions, buttonIcons}) => {

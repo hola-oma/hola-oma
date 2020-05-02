@@ -4,15 +4,12 @@ import { useHistory} from 'react-router'
 import {Button, Card, CardContent, Dialog, Grid, SvgIconProps} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
-import MailIcon from '@material-ui/icons/Mail';
-import SendIcon from '@material-ui/icons/Send';
-
 import GrandparentLayout from "../../GrandparentLayout";
 import { setReplyContent, submitReply } from "../../../../../services/reply";
 
 import { Reply, REPLY_TYPES } from "../../../../models/reply.model";
 import { getUserProfile } from "../../../../../services/user";
-import { emojiArray } from "../../../../../Icons";
+import { emojiArray, mailIcons } from "../../../../../Icons";
 import { GrandparentPostContext } from "../../../../../App";
 
 interface IEmojiReply {
@@ -86,6 +83,7 @@ const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
       }
     }
 
+  // @ts-ignore
   return (
     <>
       <Dialog fullScreen
@@ -121,7 +119,7 @@ const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
         </Grid>}
           buttonText={["Go back to Reply Options", "Send Smiley(s)"]}
           buttonActions={ [returnToPost, e => buildReply(e, choicesList) ] }
-          buttonIcons={[<MailIcon/>, <SendIcon/>]}
+          buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]}
       />
 
 
