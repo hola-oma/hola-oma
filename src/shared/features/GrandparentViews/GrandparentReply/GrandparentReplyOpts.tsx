@@ -27,10 +27,7 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
     setEmojiReplyOpen(false);
   }
 
-  const replyWithSmiley = () => {
-    console.log("Grandparent wants to send an emoji!");
-    setEmojiReplyOpen(true);
-  }
+  const replyWithSmiley = () => { setEmojiReplyOpen(true); }
 
   const replyWithVoiceMsg = () => {
     console.log("Grandparent wants to send a \"voicemail\"!");

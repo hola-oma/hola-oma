@@ -23,10 +23,8 @@ export const submitReply = async (e: any, currentReply: Reply) => {
   e.preventDefault();
 
   try {
-    console.log("sending reply");
     const replySent = await createReplyDocument(currentReply);
     if (replySent) {
-      console.log("success sending reply!");
       await updateReplyID(replySent);       // Add post id to new post document
     }
   } catch(e) {
