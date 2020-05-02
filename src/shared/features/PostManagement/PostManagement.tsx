@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Container, Grid, Card, CardHeader, CardContent, CardMedia, Typography } from '@material-ui/core';
+import { Container, Grid, Card, CardHeader, CardContent, CardMedia, Typography, Button } from '@material-ui/core';
 import Alarm from '@material-ui/icons/Alarm';
 import { Link } from 'react-router-dom';
 
@@ -53,20 +53,15 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
 
   return (
     <Container>
-      <Container>
-          <Link to={"/newPost"}>
-            <Card>
-                <CardContent>
-                    Make a new post
-                </CardContent>
-            </Card>
-          </Link>
-      </Container>
+      <Typography component="h2" variant="h5">
+        Posts
+      </Typography>
+
       <Grid container spacing={2}>
         {
           posts.map((post: Post, index: number) => {
             return (
-              <Grid item xs={4} key={index}>
+              <Grid item xs={12} sm={4} key={index}>
                 <div>
                   <Link to={{
                     pathname: "/postDetails",

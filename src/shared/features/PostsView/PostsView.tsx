@@ -5,7 +5,7 @@ import {roles} from '../../../enums/enums';
 import {getUserSettings} from "services/user";
 import Inbox from '../GrandparentViews/Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
-import { Link as ButtonLink} from '@material-ui/core';
+import { Link as ButtonLink, Button, Grid, Container, Typography} from '@material-ui/core';
 import {getPosts} from 'services/post';
 
 import {Post} from '../../models/post.model';
@@ -14,16 +14,20 @@ import {acceptLink, getLinkedAccounts} from 'services/accountLink';
 import {Link} from 'react-router-dom';
 import {AccountLink} from 'shared/models/accountLink.model';
 
+import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
+
 import PendingInvitationModal from './components/PendingInvitationModal';
 
 import Alert from '@material-ui/lab/Alert';
 
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import AddCommentIcon from '@material-ui/icons/AddComment';
 
-interface IPostsView {
+interface IPostsView extends RouteComponentProps<any> {
   setIsLoading: (loading: boolean) => void;
 }
 
-const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
+const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
@@ -92,13 +96,63 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
     setInvitationModalOpen(false);
   }
 
-  return (
-    <>
-    <h1>Welcome, {displayName}!</h1>
+  const handleInviteButton = () => {
+    if (history) history.push('/addAccountLink');
+  }
 
-    {role === roles.poster &&
-      <Link to="/addAccountLink">Invite someone</Link>
-    }
+  const goToNewPost = () => {
+    if (history) history.push('/newPost')
+  }
+
+  return (
+    <Container>
+      <Grid container justify="center">
+
+        <Grid item xs>{/* Intentionally empty */}</Grid>
+
+        <Grid item xs={6}>
+          <Typography component="h1" variant="h4">
+            Welcome, {displayName}!
+          </Typography>
+          <p>You have 0 new {role === roles.poster ? 'replies' : 'letters'}.</p>
+        </Grid>
+
+        {role === roles.poster &&
+          <Grid item xs justify="flex-end" alignItems="center" style={{display: 'flex'}}>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="small"
+              onClick={handleInviteButton}
+              startIcon={<PersonAddIcon />}
+            >
+              Invite follower
+            </Button>
+          </Grid>
+        }
+
+        {role === roles.receiver && 
+          <Grid item xs>{/* Intentionally left empty so the user's name centers*/}</Grid>
+        }
+
+        {role === roles.poster &&
+          <>
+            <Grid item xs={12} alignItems="baseline">
+              <Button
+                  variant="contained"
+                  color="secondary"
+                  size="large"
+                  className="bigButton"
+                  onClick={goToNewPost}
+                  startIcon={<AddCommentIcon />}
+                >
+                  Create New Post
+              </Button>
+            </Grid>
+          </>
+        }
+      </Grid>
+      <hr />
 
     {role === roles.poster &&
       <>
@@ -135,8 +189,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading }) => {
 
     {role === roles.poster && <PostManagement posts={posts}/>}
     {role === roles.receiver && <Inbox posts={posts}/>}
-
-    </>
+    </Container>
   )
 }
 
