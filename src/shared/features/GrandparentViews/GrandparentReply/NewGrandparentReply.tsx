@@ -20,7 +20,7 @@ export const NewGrandparentReply: React.FC = () => {
   return (
     <>
       <GrandparentLayout
-        headerText={ currentReply.responseTo + " got your reply!"}
+        headerText={ "Reply sent to " }
         boxContent={
           <Grid container>
             {
@@ -40,8 +40,9 @@ export const NewGrandparentReply: React.FC = () => {
             }
           </Grid>
         }
-        buttonText={["Go back letter", "Close letter"]}
-        buttonActions={[() => console.log("go back to message"), () => history.push("/posts")]}
+        buttonText={["Go back to letter", "Close letter"]}
+        buttonActions={ [() => console.log("todo: return to Inbox with modal opened"),
+                        () => history.push("/posts")] }
         buttonIcons={[mailIcons.openEnvelope, mailIcons.closedEnvelope ]} />
     </>
   )
