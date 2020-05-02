@@ -1,7 +1,7 @@
 import * as firebase from "firebase/app";
 import 'firebase/storage';
 
-import {Reply, REPLY_TYPES} from 'shared/models/reply.model';
+import { Reply } from 'shared/models/reply.model';
 
 export const setReplyContent = (userID: string, displayName: string, replyType: string,
                                 message: Array<any>, responseTo: string, receiverID: string) => {
