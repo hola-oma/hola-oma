@@ -161,8 +161,6 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
         <Box className="todo">
         <h3>To do items:</h3>
         <ul>
-          <li>Make this page look less like the login/register pages</li>
-          <li>Change role should have a confirmation of some sort</li>
           <li>Fade out removed invites/deleted friends</li>
           <li>[Stretch goal] Friend profile pics?</li>
         </ul>
