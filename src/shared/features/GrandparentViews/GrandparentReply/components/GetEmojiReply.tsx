@@ -46,7 +46,6 @@ const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
   const [alertOn, setAlert] =  useState<boolean>(false);
 
   const handleHighlight = (index: number) => {
-    // https://stackoverflow.com/questions/29537299/react-how-to-update-state-item1-in-state-using-setstate
     let copy = [...highlightedList];
     copy[index] = ( !copy[index] );   // Change to opposite value
     setHighlighted(copy);
@@ -76,14 +75,11 @@ const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
       setAlert(false);
       const replyContent: Reply = setReplyContent(userId, displayName, REPLY_TYPES.EMOJI,
                                   choicesIndexes, FamilyPost.from, FamilyPost.creatorID);
-      submitReply(e, replyContent).then( () => {
-            history.push({pathname: "/newReply",  state: replyContent});
-          }
-        );
-      }
+      submitReply(e, replyContent)
+        .then( () => { history.push({pathname: "/newReply",  state: replyContent}); } );
     }
+  }
 
-  // @ts-ignore
   return (
     <>
       <Dialog fullScreen
@@ -94,9 +90,10 @@ const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
         headerText={"Replying to "}
         header2Text={"Choose which smileys to send!"}
         alertText={getAlertText()}
-        boxContent={<Grid container>
+        boxContent={
+          <Grid container>
           {
-            emojiIcons.map( (icon: any, index: number) => {
+            emojiIcons.map( (icon: React.ReactElement<SvgIconProps>, index: number) => {
               return (
                 <Grid item xs={4}
                   className={"inboxCard"}
@@ -116,15 +113,12 @@ const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
               )
             })
           }
-        </Grid>}
+        </Grid>
+        }
           buttonText={["Go back to Reply Options", "Send Smiley(s)"]}
           buttonActions={ [returnToPost, e => buildReply(e, choicesList) ] }
-          buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]}
-      />
-
-
+          buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]} />
       </Dialog>
-
     </>
   )
 };
