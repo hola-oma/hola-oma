@@ -19,6 +19,7 @@ import { User } from "shared/models/user.model";
 import FamilyMsgView from "./shared/features/FamilyMsgView/FamilyMsgView";
 import CreatePost from "./shared/features/CreatePost/CreatePost";
 import { Grid } from "@material-ui/core";
+import NewGrandparentReply from "./shared/features/GrandparentViews/GrandparentReply/NewGrandparentReply";
 
 
 interface IRoutes {
@@ -72,6 +73,7 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
           <ProtectedRouteHoc exact setIsLoading={setIsLoading} path="/posts" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostsView} />
           <ProtectedRouteHoc exact path="/postDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={FamilyMsgView} />
           <ProtectedRouteHoc exact path="/newPost" isLoggedIn={isLoggedIn} public={false} RouteComponent={CreatePost} />
+          <ProtectedRouteHoc exact path="/newReply" isLoggedIn={isLoggedIn} public={false} RouteComponent={NewGrandparentReply} />
           <ProtectedRouteHoc exact setIsLoading={setIsLoading} path="/settings" isLoggedIn={isLoggedIn} public={false} RouteComponent={SettingsView} />
           <ProtectedRouteHoc exact path="/photoReplyPrototype" isLoggedIn={isLoggedIn} public={false} RouteComponent={PhotoReplyPrototype} />
           <ProtectedRouteHoc exact path="/addAccountLink" isLoggedIn={isLoggedIn} public={false} RouteComponent={AddAccountLink} />

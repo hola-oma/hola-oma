@@ -2,11 +2,10 @@ import React, {useContext, useState} from 'react';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 
-import {Container, Grid, Card, CardHeader, CardContent, Box, Typography} from '@material-ui/core';
-import MailIcon from '@material-ui/icons/Mail';
-import DraftsIcon from '@material-ui/icons/Drafts';
+import {Container, Grid, Card, CardHeader, CardContent, Box} from '@material-ui/core';
 
 import { Post } from 'shared/models/post.model';
+import { mailIcons } from "../../../../Icons";
 import {GrandparentPostContext} from "../../../../App";
 
 import './Inbox.css';
@@ -65,27 +64,19 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
   return (
     <>
       <Container>
-        <Grid container direction="row" justify="flex-start">
-            {posts.map((post: Post, index: number) => {
-              return (
-                <Grid item justify="flex-start">
-                  <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)} >
-                    <Card className={classes.root} variant="outlined">
-                      <CardContent>
-                        <Typography className={classes.title} color="textSecondary" gutterBottom>
-                          From
-                        </Typography>
-
-                        <Typography variant="h5" component="h2">
-                          {post.from}
-                        </Typography>
-
-                          {post.read? <DraftsIcon style={{ fontSize: 70 }}/> : <MailIcon style={{ fontSize: 70 }}/>}
-                          {post.read? <p><i>Read</i></p> : <p><b>New!</b></p>}
-                      </CardContent>
-                    </Card>
-                  </div>
-                </Grid>
+        <Grid container>
+          {posts.map((post: Post, index: number) => {
+            return (
+              <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)} >
+                <Card className={classes.root} variant="outlined">
+                  <CardHeader
+                    title={post.from}>
+                  </CardHeader>
+                  <CardContent>
+                    {post.read? mailIcons.openEnvelope : mailIcons.closedEnvelope}
+                  </CardContent>
+                </Card>
+              </div>
             )
           })
           }
