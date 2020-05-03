@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Container, Grid, Card, CardHeader, CardContent, CardMedia, Typography, Button } from '@material-ui/core';
+import { Container, Grid, Card, CardMedia, Typography } from '@material-ui/core';
 import Alarm from '@material-ui/icons/Alarm';
 import { Link } from 'react-router-dom';
 

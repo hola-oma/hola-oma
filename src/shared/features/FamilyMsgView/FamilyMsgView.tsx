@@ -7,6 +7,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Post } from 'shared/models/post.model';
 import { getLinkedAccounts } from "services/accountLink";
 import { deletePost } from "services/post";
+import { getRepliesToPost } from "services/reply";
 
 
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
@@ -100,6 +101,9 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 }
             }
             setReceivers(rcvrs);
+        });
+        getRepliesToPost(post.pid).then((replies) => {
+            console.log(replies);
         });
     }, []); // fires on page load if this is empty [] 
 

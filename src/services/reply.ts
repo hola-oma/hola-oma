@@ -65,7 +65,7 @@ export const createReplyDocument = async (reply: Reply) => {
 
 export const updateReplyID = async (replyID: string) => {
   const db = firebase.firestore();
-  await db.collection("posts").doc(replyID).update({
+  await db.collection("replies").doc(replyID).update({
     "rid": replyID,
   })
     .then(function() {
@@ -116,4 +116,39 @@ export const uploadPhoto = async (photoData: string) => {
       throw Error(e.message);
     }
   });
+}
+
+export const getRepliesToPost = async (postId: string): Promise<Reply[]> => {
+  const db = firebase.firestore();
+  const replies: Array<Reply> = [];
+
+  try {
+    const replyRef = db.collection('replies')
+      .where("responseTo", "==", postId)
+      .orderBy("date", "desc")
+    replyRef.onSnapshot(snapshot => {          // listen for state change
+      const currentReplies: Reply[] = [];
+      snapshot.forEach(doc => {
+        // console.log(doc.id, '->', doc.data());
+        const reply = doc.data();
+        currentReplies.push({
+          date: reply.date,
+          creatorID: reply.creatorID,
+          from: reply.from,
+          read: reply.read,
+          replyType: reply.replyType,
+          message: reply.message,
+          responseTo: reply.responseTo,
+          receiverID: reply.receiverID,
+          rid: reply.rid
+        })
+      })
+      replies.length = 0;      // Clear array so items not appended on state change
+      replies.push(...currentReplies);
+    })
+  } catch (error) {
+    console.error(error);
+  }
+  console.log(replies);
+  return replies;
 }
