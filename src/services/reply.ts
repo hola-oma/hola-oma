@@ -149,6 +149,5 @@ export const getRepliesToPost = async (postId: string): Promise<Reply[]> => {
   } catch (error) {
     console.error(error);
   }
-  console.log(replies);
   return replies;
 }

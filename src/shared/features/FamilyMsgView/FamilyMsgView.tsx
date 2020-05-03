@@ -8,6 +8,8 @@ import { Post } from 'shared/models/post.model';
 import { getLinkedAccounts } from "services/accountLink";
 import { deletePost } from "services/post";
 import { getRepliesToPost } from "services/reply";
+import { Reply } from "../../models/reply.model";
+import { replyEmojiArray } from "../../../Icons";
 
 
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
@@ -63,16 +65,6 @@ interface ISubSubProps {
     post: Post
 }
 
-//For testing - update with actual format
-interface IReply {
-    message: string,
-    creatorId: string,
-    date: number,
-    read: boolean,
-    responseTo: string,
-    creatorName: string
-}
-
 interface IReceiver {
     id: string
     name: string
@@ -82,8 +74,10 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const classes = useStyles();
     const [modalOpen, setModalOpen] = useState(false);
     const post = props.location.state.post;
-    const [modalReply, setModalReply] = useState<IReply>();
+    const [modalReply, setModalReply] = useState<Reply>();
     const [receivers, setReceivers] = useState<IReceiver[]>([]);
+    const [replies, setReplies] = useState<Reply[]>([]);
+    const emojiIcons = replyEmojiArray();
     let history = useHistory();
 
     useEffect(() => {
@@ -103,11 +97,11 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             setReceivers(rcvrs);
         });
         getRepliesToPost(post.pid).then((replies) => {
-            console.log(replies);
+            setReplies(replies);
         });
     }, []); // fires on page load if this is empty [] 
 
-    const handleClick = (reply: IReply) => {
+    const handleClick = (reply: Reply) => {
         setModalOpen(!modalOpen);
         if (reply) {
             setModalReply(reply);
@@ -120,10 +114,13 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         history.push('/posts')
     }
 
-    const mockReplies = [
-        {message: "Hello", creatorId: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", date: 1587597619986, read: false, responseTo: "sITkY10bItkczjAHkkUJ", creatorName: "Kristin Grandparent Test"},
-        {message: "Thanks", creatorId: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", date: 1587597619986, read: false, responseTo: "sITkY10bItkczjAHkkUJ", creatorName: "Kristin Grandparent Test"}
-    ]
+    const messageAsArray = (reply: Reply) => {
+        return reply.message as number[];
+    }
+    
+    const isEmoji = (reply: Reply) => {
+        return (reply.replyType === "emoji" && typeof reply.message !== "string");
+    }
 
     return (
         <>
@@ -192,18 +189,24 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
 
             <Grid container spacing={2}>
             {
-            mockReplies.map((reply: IReply, index: number) => {
+            replies.map((reply: Reply, index: number) => {
                 return (
                 <Grid item xs={4} key={index}>
                     <div>
                     <div onClick={()=>handleClick(reply)}>
                     <Card variant="outlined">
                         <CardContent>
-                            <Typography variant="h5">
-                                {reply.message}
-                            </Typography>
+                            {isEmoji(reply) &&
+                                messageAsArray(reply).map((emojiIndex: number) => {
+                                    return (
+                                        <Typography variant="h5">
+                                            {emojiIcons[emojiIndex]}
+                                        </Typography>
+                                    )
+                                })
+                            }
                             <Typography variant="subtitle2">
-                                Sent by {reply.creatorName}
+                                Sent by {reply.from}
                                 <br/>
                                 <Moment format="MMMM Do YYYY, h:mm a">{reply.date}</Moment>
                             </Typography>
