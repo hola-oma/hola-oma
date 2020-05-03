@@ -10,7 +10,7 @@ import { deletePost } from "services/post";
 import { getRepliesToPost, markReplyRead } from "services/reply";
 import { Reply } from "../../models/reply.model";
 import { replyEmojiArray } from "../../../Icons";
-
+import ModalReply from "./ModalReply";
 
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -224,7 +224,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         </Grid>
         <Modal open={modalOpen} onClose={handleClick} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
         <div className={classes.paper}>
-            {modalReply && modalReply.message}
+            {modalReply && <ModalReply reply={modalReply}/>}
         </div>
         </Modal>
 
