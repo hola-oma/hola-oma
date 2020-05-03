@@ -118,16 +118,15 @@ export const uploadPhoto = async (photoData: string) => {
   });
 }
 
-export const getRepliesToPost = async (postId: string): Promise<Reply[]> => {
+export const getRepliesToPost = async (postId: string) => {
   const db = firebase.firestore();
-  const replies: Array<Reply> = [];
+  const currentReplies: Reply[] = [];
 
   try {
-    const replyRef = db.collection('replies')
+    await db.collection('replies')
       .where("responseTo", "==", postId)
       .orderBy("date", "desc")
-    replyRef.onSnapshot(snapshot => {          // listen for state change
-      const currentReplies: Reply[] = [];
+    .get().then((snapshot) => {
       snapshot.forEach(doc => {
         // console.log(doc.id, '->', doc.data());
         const reply = doc.data();
@@ -143,11 +142,32 @@ export const getRepliesToPost = async (postId: string): Promise<Reply[]> => {
           rid: reply.rid
         })
       })
-      replies.length = 0;      // Clear array so items not appended on state change
-      replies.push(...currentReplies);
     })
   } catch (error) {
     console.error(error);
   }
-  return replies;
+  return currentReplies;
+}
+
+export const markReplyRead = (rid: string) => {
+  const db = firebase.firestore();
+  let replyRef: firebase.firestore.DocumentReference;
+
+  try {
+    db.collection("replies").doc(rid);   // Catch error for items that have no pid
+    
+    replyRef = db.collection("replies").doc(rid);
+    replyRef.get().then(function(doc) {
+      if (doc.exists) {
+        replyRef.update({"read": true})
+      } else {
+        console.log("Error updating post: " + rid);
+      }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
+  }
+  catch (error) {
+    console.log("Invalid format: no reply id");
+  }
 }

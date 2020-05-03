@@ -7,7 +7,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Post } from 'shared/models/post.model';
 import { getLinkedAccounts } from "services/accountLink";
 import { deletePost } from "services/post";
-import { getRepliesToPost } from "services/reply";
+import { getRepliesToPost, markReplyRead } from "services/reply";
 import { Reply } from "../../models/reply.model";
 import { replyEmojiArray } from "../../../Icons";
 
@@ -96,8 +96,11 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             }
             setReceivers(rcvrs);
         });
-        getRepliesToPost(post.pid).then((replies) => {
-            setReplies(replies);
+        getRepliesToPost(post.pid).then((replyArray: any) => {
+            setReplies(replyArray);
+            for (let i = 0; i < replyArray.length; i++) {
+                markReplyRead(replyArray[i].rid);
+            }
         });
     }, []); // fires on page load if this is empty [] 
 
@@ -197,9 +200,9 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                     <Card variant="outlined">
                         <CardContent>
                             {isEmoji(reply) &&
-                                messageAsArray(reply).map((emojiIndex: number) => {
+                                messageAsArray(reply).map((emojiIndex: number, replyIndex: number) => {
                                     return (
-                                        <Typography variant="h5">
+                                        <Typography variant="h5" key={replyIndex}>
                                             {emojiIcons[emojiIndex]}
                                         </Typography>
                                     )
