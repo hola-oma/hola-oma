@@ -142,7 +142,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
               <Button type="submit"
                 fullWidth
                 variant="contained"
-                color="secondary"
+                color="primary"
                 className="bigButton">
                 Save settings
               </Button>

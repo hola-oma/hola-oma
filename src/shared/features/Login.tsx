@@ -5,18 +5,16 @@ import 'firebase/auth';
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object 
 import { signUserInWithEmailAndPassword, signUserInWithGoogle, getUserSettings } from "services/user";
 
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Copyright from "shared/components/Copyright";
 import BigInput from "shared/components/BigInput/BigInput";
 import Alert from "@material-ui/lab/Alert";
-import { Container } from "@material-ui/core";
 import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
 import LoginHelp from "shared/components/LoginHelp";
 import Column from "shared/components/Column/Column";
+import Row from "shared/components/Row/Row";
+import Child from "shared/components/Child/Child";
+import CredentialsWrapper from "shared/components/CredentialsWrapper";
+import FormSubmitButton from "shared/components/FormSubmitButton";
+import FormError from "shared/components/FormError";
 
 interface ILogin extends RouteComponentProps<any> {
   // this was different from the tutorial, got typescript help from: 
@@ -39,7 +37,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
     setPassword(e.target.value);
   }
 
-    /* EMAIL/PASS LOGIN, must exist in database */
+  /* EMAIL/PASS LOGIN, must exist in database */
   const handleEmailAndPasswordLogin = async (e: any) => {
     e.preventDefault();
 
@@ -58,7 +56,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
         }
       }
       // maybe this is where we should check if the user can go to posts or registerDetails
-    } catch(e) {
+    } catch (e) {
       console.log(e);
       setInvalidInputs(true);
       setErrors(e.message);
@@ -70,117 +68,69 @@ const Login: React.FC<ILogin> = ({ history }) => {
       const loggedInUser = await signUserInWithGoogle();
       if (loggedInUser?.user) Auth?.setLoggedIn(true);
       if (history) history.push('/posts');
-    } catch(e) {
+    } catch (e) {
       setErrors(e.message);
     }
   }
 
   return (
-    /* Adapted from Material React UI documentation - sign-in page example 
-    https://github.com/mui-org/material-ui/blob/master/docs/src/pages/getting-started/templates/sign-in/SignIn.js
-    */
+    <CredentialsWrapper>
 
-    /*   
-            Header 
-    ----------------------
-    | Left  |     Right  |    Column child 1 is a row
-    | Left  |     Right  |    Each row child holds a column
-    ----------------------
-    |     Copyright      |    Column child 2 is copyright
-    ----------------------
+      {/* Row contains side-by-side form elements */}
+      <Row justify="space-between">
 
-    */
+        {/* LEFT CHILD: TITLE, HELP */}
+        <Child xs={12} md={4}>
+          <Column justify="space-between" className="credentialsLeft">
+            <CredentialsLeftTitle title="Returning users" subtitle="Have an account? Sign in now." />
+            <LoginHelp />
+          </Column>
+        </Child>
 
-    <Box pl={6} pr={6}>
-      <Column>
+        {/* RIGHT CHILD: LOGIN FORM */}
+        <Child xs={12} md={7}>
+          <Column justify="center" alignItems="center">
+            <form noValidate onSubmit={e => handleEmailAndPasswordLogin(e)}>
 
-        <Grid item xs={12} className="blueBorder">
-          <Grid container direction="row">
-            
-            {/* LEFT SIDE: TITLE, HELP */ }
-            {/* ROW CHILD 1 */}
-            <Grid item xs={12} md={4} className="redBorder">
-              <Column justify="space-between" className="credentialsLeft">
-              
-                {/* <Grid container direction="column" justify="space-between" > */} 
-                    
-                    {/* item 1 */}
-                  <CredentialsLeftTitle
-                    title="Returning users"
-                    subtitle="Have an account? Sign in now."
-                  />
+              {/* Email address */}
+              <Child item xs={12}>
+                <BigInput
+                  error={invalidInputs}
+                  labelText="E-Mail Address"
+                  name="email"
+                  required={true}
+                  value={email}
+                  autoFocus={false}
+                  autoComplete="current-email"
+                  type="email"
+                  onChange={updateEmail}
+                />
+              </Child>
 
-                  {/* item 2 */}
-                  <LoginHelp />
-                  
-              </Column>{/* Closes column */}
-            </Grid>{/* Closes item */}
+              {/* Password */}
+              <Child item xs={12}>
+                <BigInput
+                  error={invalidInputs}
+                  labelText="Password"
+                  name="password"
+                  required={true}
+                  value={password}
+                  autoFocus={false}
+                  autoComplete="current-password"
+                  type="password"
+                  onChange={updatePassword}
+                />
+              </Child>
 
+              <FormSubmitButton buttonText="Sign in"/>
 
-            {/* RIGHT SIDE: LOGIN FORM */ }
-            {/* ROW CHILD 2  */ }
-            <Grid item xs={12} md={8} className="redBorder">
-              <Grid container direction="column" spacing={2} justify="center" alignItems="center">
-                <form noValidate onSubmit={e => handleEmailAndPasswordLogin(e)}>
+              <FormError error={error}/>
 
-                  {/* Email address */}
-                  <Grid item xs={12}>
-                    <BigInput 
-                        error={invalidInputs}
-                        labelText="E-Mail Address"
-                        name="email"
-                        required={true} 
-                        value={email}
-                        autoFocus={false}
-                        autoComplete="current-email"
-                        type="email"
-                        onChange={updateEmail}
-                        />
-                  </Grid>
-
-                  {/* Password */ }
-                  <Grid item xs={12}>
-                    <BigInput 
-                        error={invalidInputs}
-                        labelText="Password"
-                        name="password"
-                        required={true} 
-                        value={password}
-                        autoFocus={false}
-                        autoComplete="current-password"
-                        type="password"
-                        onChange={updatePassword}
-                        />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      className="bigButton"
-                    >
-                      Sign In
-                    </Button>
-                  </Grid>
-
-
-                  {error &&
-                    <Alert severity="error">{error}</Alert>
-                  }
-
-                </form>
-            </Grid>
-          </Grid> {/* Closes right side */ }
-
-
-        </Grid>{/* Closes row that contains left and right sides */}
-
-        <Copyright />      
-      </Grid>
-      </Column>
-  </Box>
+            </form>
+          </Column>
+        </Child>
+      </Row>
+    </CredentialsWrapper>
   );
 };
 

@@ -18,9 +18,9 @@ import { roles } from '../../enums/enums';
 import { getUserProfile, createUserSettings, updateUserProfile } from "services/user";
 import BigInput from "shared/components/BigInput/BigInput";
 import { Avatar } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import FormError from "shared/components/FormError";
 
 interface IRegisterDetails extends RouteComponentProps<any> {
     setIsLoading: (loading: boolean) => void
@@ -158,11 +158,7 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
               </Button>
             </Grid>
 
-            <Grid item xs={12} sm={8}>
-              {error &&
-                <Alert className="error" severity="error">{error}</Alert>
-              }
-            </Grid>
+            <FormError error={error}/>
         </Grid>
 
         </form>

@@ -1,12 +1,11 @@
 import React from 'react';
-import { Typography, Grid, Link } from '@material-ui/core';
+import { Link } from '@material-ui/core';
+import Child from './Child/Child';
 
 const LoginHelp: React.FC = () => {
   return (
-    <Grid item>
-      <Typography component="p" variant="h6">
-        Help
-      </Typography>
+    <Child>
+      <span className="boldText">Help</span>
       <ul className="helpOptions">
         <li>
           <Link href="/resetPassword" className="bigLink">
@@ -19,7 +18,7 @@ const LoginHelp: React.FC = () => {
         </Link>
         </li>
       </ul>
-    </Grid>
+    </Child>
   )
 }
 

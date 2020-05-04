@@ -2,16 +2,17 @@
   font-size:1.2em;
 }
 
+.fullHeight {
+  height: calc(100vh - 100px);
+  display:block;
+}
+
 .padBottom {
   padding-bottom:20px !important;
 }
 
-h1, h2, h3, h4, h5 {
-  margin-bottom:20px !important;
-}
-
 .helpOptions li {
-  margin-bottom:10px !important;
+  margin-bottom:12px !important;
 }
 
 .loadingSpinner {
@@ -57,11 +58,16 @@ input {
   vertical-align: middle;
 }
 
+.boldText {
+  font-weight:bold;
+  font-size:1.2em;
+}
+
 .bigButton {
   height:100px;
   font-size:1.8em !important;
-  margin-top:10px !important;
-  margin-bottom:30px !important;
+  margin-top:40px !important;
+  color:#fff;
   border: 1px solid #2d6898 !important;
   background-image: linear-gradient(bottom, rgb(73,132,180) 0%, rgb(97,155,203) 100%);
   background-image: -o-linear-gradient(bottom, rgb(73,132,180) 0%, rgb(97,155,203) 100%);
@@ -142,7 +148,7 @@ Use: <Box className="devBox">...stuff here...</Box> */
 }
 
 .bigLink {
-  margin-bottom:20px !important;
+  color: #2d6898 !important;
 }
 
 .bigLink:hover {
@@ -179,6 +185,10 @@ Use: <Box className="devBox">...stuff here...</Box> */
 
 .blueBorder {
   border:1px solid blue;
+}
+
+.greenBorder {
+  border:1px solid green;
 }
 
 /* 

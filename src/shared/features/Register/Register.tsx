@@ -1,13 +1,4 @@
 import React, { useState, useContext } from "react";
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import PersonIcon from '@material-ui/icons/Person';
-import Typography from '@material-ui/core/Typography';
-import Copyright from 'shared/components/Copyright';
 
 import { AuthContext } from "../../../App";
 
@@ -18,6 +9,13 @@ import 'firebase/database'; // for additional user properties, like role
 import { createNewUserWithEmailAndPassword, createNewUserWithGoogleCredentials } from "services/user";
 import BigInput from "shared/components/BigInput/BigInput";
 import Alert from "@material-ui/lab/Alert";
+import CredentialsWrapper from "shared/components/CredentialsWrapper";
+import Row from "shared/components/Row/Row";
+import Child from "shared/components/Child/Child";
+import Column from "shared/components/Column/Column";
+import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
+import FormSubmitButton from "shared/components/FormSubmitButton";
+import FormError from "shared/components/FormError";
 
 interface IRegister {
   history?: any;
@@ -84,20 +82,26 @@ const Register: React.FC<IRegister> = ({ history }) => {
   }
 
   return (
-    <Grid container className="credentialsForm" spacing={2} justify="center">
-      <Grid item xs={10} md={8} className="redBorder">
-        <div>
-          <Typography component="h1" variant="h4">
-            Create an account
-          </Typography>
-          <p>Connect with friends and family anywhere.</p>
+    <CredentialsWrapper>
 
-          <form onSubmit={e => handleForm(e)} noValidate>
+      {/* Row contains side-by-side form elements */}
+      <Row justify="space-between">
 
-          <Grid container spacing={2} justify="center">
+        {/* LEFT CHILD: TITLE, HELP */}
+        <Child xs={12} md={4}>
+          <Column justify="space-between" className="credentialsLeft">
+            <CredentialsLeftTitle title="Create an account" subtitle="Connect with friends and family anywhere." />
+          </Column>
+        </Child>
+
+        {/* RIGHT CHILD: REGISTRATION FORM */}
+        <Child xs={12} md={7}>
+          <Column justify="center" alignItems="center">
+
+            <form onSubmit={e => handleForm(e)} noValidate>
 
               {/* Email address */}
-              <Grid item xs={12} sm={8}>
+              <Child xs={12}>
                 <BigInput
                   error={invalidEmail}
                   labelText="E-Mail Address"
@@ -108,11 +112,10 @@ const Register: React.FC<IRegister> = ({ history }) => {
                   autoComplete="off"
                   type="email"
                   onChange={updateEmail}/>
-
-              </Grid>
+              </Child>
 
               {/* Password */ }
-              <Grid item xs={12} sm={8}>
+              <Child xs={12}>
               <BigInput 
                 error={invalidPassword}
                 labelText="Password"
@@ -123,34 +126,18 @@ const Register: React.FC<IRegister> = ({ history }) => {
                 autoComplete="off"
                 type="password"
                 onChange={updatePassword}/>
-              </Grid>
+              </Child>
 
-            <Grid item xs={12} sm={8}>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                size="large"
-                className="bigButton"
-                id="signUpButton"
-              >
-                Join now for free
-              </Button>
-            </Grid>
+              <FormSubmitButton buttonText="Join for free"/>
 
-          {error &&
-            <Alert severity="error" className="errorAlert">{error}</Alert>
-          }
+              <FormError error={error}/>
 
-            </Grid>
-          </form>
+            </form>
 
-        </div>
-      </Grid>
-      <Copyright />      
-
-    </Grid>
+          </Column>  
+        </Child>
+      </Row>
+    </CredentialsWrapper>
   );
 };
 

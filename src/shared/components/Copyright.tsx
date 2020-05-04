@@ -1,9 +1,10 @@
 import React from 'react';
-import { Typography, Link, Grid, Box } from '@material-ui/core';
+import { Typography, Link, Box } from '@material-ui/core';
+import Child from './Child/Child';
 
 const Copyright: React.FC = () => {
   return (
-    <Grid item xs={12} className="redBorder">
+    <Child xs={12} container alignContent="flex-end" justify="center">
       <Box mt={2}>
         <Typography variant="body2" color="textSecondary" align="center">
           {'Copyright © '}
@@ -14,7 +15,7 @@ const Copyright: React.FC = () => {
           {'.'}
         </Typography>
       </Box>
-    </Grid>
+    </Child>
   )
 }
 
