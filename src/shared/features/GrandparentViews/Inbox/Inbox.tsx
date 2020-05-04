@@ -1,7 +1,9 @@
 import React, {useContext, useState} from 'react';
 import { useHistory } from "react-router-dom";
 import { Theme, makeStyles, createStyles } from '@material-ui/core/styles';
-import { iconSvgPaths } from "../../../../Icons";
+
+import ClosedEnvelope from "../../../../icons/mail-closed.png";
+import OpenEnvelope from "../../../../icons/mail-open.png";
 
 import {
   Container,
@@ -55,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: theme.palette.common.white,
+    color: "fff",
   },
   imageSrc: {
     position: 'absolute',
@@ -64,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     top: 0,
     bottom: 0,
     backgroundSize: 'cover',
-    backgroundPosition: 'center 50%',
+    backgroundPosition: 'center 100%',
   },
   imageBackdrop: {
     position: 'absolute',
@@ -72,14 +74,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     right: 0,
     top: 0,
     bottom: 0,
-    backgroundColor: theme.palette.common.black,
-    opacity: 0.4,
+    backgroundColor: "fff",
     transition: theme.transitions.create('opacity'),
   },
   imageTitle: {
     position: 'absolute',
     bottom: '30px'
-    // padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) + 1}px`,
   },
   imageMarked: {
     height: 3,
@@ -128,6 +128,11 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
     <>
       <Container>
         <Grid container>
+          {posts.length === 0 &&
+              <Grid item xs>
+                  <Typography variant="h2">Your mailbox is empty</Typography>
+              </Grid>
+          }
           {posts.map((post: Post, index: number) => {
             return (
               <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)} >
@@ -140,11 +145,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                 >
           <span
             className={classes.imageSrc}
-            style={{
-              // I don't know why but this only works if it's all on one line
-              backgroundColor: "fff",
-              backgroundImage: `url('data:image/svg+xml; utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>')`,
-            }}
+            style={ { backgroundImage: `url(${ClosedEnvelope})` }}
           />
                   <span className={classes.imageBackdrop} />
                   <span className={classes.imageButton}>

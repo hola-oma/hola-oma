@@ -39,10 +39,3 @@ export const replyOptionIcons = {
   voicemail: <PermPhoneMsgIcon />,
   photo: <PhotoCameraIcon />
 }
-
-export const iconSvgPaths = {
-  closedEnvelope: "M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
-}
-
-// Mail: https://github.com/mui-org/material-ui/blob/56c113217d7d05d8bb0712771b727df81984d04b/src/svg-icons/content/mail.js
-// Mail Outline: https://github.com/mui-org/material-ui/blob/56c113217d7d05d8bb0712771b727df81984d04b/src/svg-icons/communication/mail-outline.js
