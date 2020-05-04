@@ -81,12 +81,10 @@ const Login: React.FC<ILogin> = ({ history }) => {
     <Grid container className="credentialsForm" spacing={2} justify="center">
       <Grid item xs={10} md={8}>
       <div>
-        <Avatar className="formAvatar">
-          <LockOutlinedIcon />
-        </Avatar>
         <Typography component="h1" variant="h4">
-          Log in to existing account
+          Registered users
         </Typography>
+        <p>Have an account? Sign in now.</p>
 
         {/* Begin form */}
         <form noValidate onSubmit={e => handleEmailAndPasswordLogin(e)}>
@@ -101,7 +99,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
                   name="email"
                   required={true} 
                   value={email}
-                  autoFocus={true}
+                  autoFocus={false}
                   autoComplete="current-email"
                   type="email"
                   onChange={updateEmail}
@@ -131,7 +129,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
                 color="primary"
                 className="bigButton"
               >
-                Log In
+                Sign In
               </Button>
             </Grid>
 
@@ -141,34 +139,13 @@ const Login: React.FC<ILogin> = ({ history }) => {
           }
 
           {/* Account maintenance options */}
-          <Grid item container xs={12} sm={8} justify="center" className="padBottom">
-            <Grid item xs={5}>
+          <Grid item container xs={12} sm={8} justify="center">
+            <Grid item xs={12}>
               <Link href="/resetPassword" className="bigLink">
                 Forgot password?
               </Link>
             </Grid>
 
-            <Grid item xs={5}>
-              <Link href="/register" className="bigLink">
-                No account? Sign up!
-              </Link>
-            </Grid>
-          </Grid>
-
-          {/* Google sign in */}
-          <Grid item xs={12} sm={8}>
-            <Button 
-              onClick={handleGoogleLogin} 
-              className="googleBtn" 
-              type="button"
-              variant="contained"
-            >
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                alt="logo"
-              />
-              Log in with Google
-            </Button> 
           </Grid>
       
         </Grid>
@@ -178,11 +155,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
       </div>
     </Grid>
       
-    <Grid item xs={12}>
-      <Box mt={6}>
-        <Copyright />      
-      </Box>
-    </Grid>
+    <Copyright />      
   </Grid>
   );
 };

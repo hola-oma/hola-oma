@@ -80,7 +80,7 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
                   onClick={() => goToRegistration()}
                   startIcon={<AccountCircleIcon />}
                 >
-                  Register
+                  Join
                 </Button>
                 </li>
 

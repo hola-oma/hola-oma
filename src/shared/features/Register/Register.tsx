@@ -87,21 +87,10 @@ const Register: React.FC<IRegister> = ({ history }) => {
     <Grid container className="credentialsForm" spacing={2} justify="center">
       <Grid item xs={10} md={8}>
         <div>
-          <Avatar className="formAvatar">
-            <PersonIcon />
-          </Avatar>
           <Typography component="h1" variant="h4">
-            Register a new account
+            Create an account
           </Typography>
-          {/* Switch to "Sign In" page */ }
-
-          <Grid container spacing={2} justify="center">
-            <Grid item>
-              <Link href="/login" className="bigLink">
-                Already have an account? Log in instead
-              </Link>
-            </Grid>
-          </Grid>
+          <p>Connect with friends and family anywhere.</p>
 
           <form onSubmit={e => handleForm(e)} noValidate>
 
@@ -115,7 +104,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
                   name="email"
                   required={true} 
                   value={email}
-                  autoFocus={true}
+                  autoFocus={false}
                   autoComplete="off"
                   type="email"
                   onChange={updateEmail}/>
@@ -146,7 +135,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
                 className="bigButton"
                 id="signUpButton"
               >
-                Sign up
+                Join now for free
               </Button>
             </Grid>
 
@@ -154,32 +143,12 @@ const Register: React.FC<IRegister> = ({ history }) => {
             <Alert severity="error" className="errorAlert">{error}</Alert>
           }
 
-          {/* Google sign in */}
-            <Grid item xs={12} sm={8}>
-              <Button 
-                onClick={handleGoogleJoin} 
-                className="googleBtn" 
-                type="button"
-                variant="contained"
-              >
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                  alt="logo"
-                />
-                Join With Google
-              </Button> 
-            </Grid>
             </Grid>
           </form>
 
         </div>
       </Grid>
-
-      <Grid item xs={12}>
-        <Box mt={6}>
-          <Copyright />      
-        </Box>
-      </Grid>
+      <Copyright />      
 
     </Grid>
   );
