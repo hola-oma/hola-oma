@@ -1,8 +1,20 @@
 import React, {useContext, useState} from 'react';
 import { useHistory } from "react-router-dom";
-import { makeStyles } from '@material-ui/core/styles';
+import { Theme, makeStyles, createStyles } from '@material-ui/core/styles';
+import { iconSvgPaths } from "../../../../Icons";
 
-import {Container, Grid, Card, CardHeader, CardContent, Box} from '@material-ui/core';
+import {
+  Container,
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Box,
+  Typography,
+  CardActionArea,
+  CardMedia, ButtonBase
+} from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 
 import { Post } from 'shared/models/post.model';
 import { mailIcons } from "../../../../Icons";
@@ -12,15 +24,10 @@ import './Inbox.css';
 import CurrentMsgModal from "./components/CurrentMsgModal";
 import { markPostRead } from "../../../../services/post";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     minWidth: 250,
     maxWidth: 250
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
   },
   title: {
     fontSize: 16,
@@ -28,7 +35,63 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
-});
+  media: {
+    height: 140,
+  },
+  image: {
+    position: 'relative',
+    height: 200,
+    [theme.breakpoints.down('xs')]: {
+      width: '100% !important', // Overrides inline-style
+      height: 100,
+    },
+  },
+  imageButton: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: theme.palette.common.white,
+  },
+  imageSrc: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center 50%',
+  },
+  imageBackdrop: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: theme.palette.common.black,
+    opacity: 0.4,
+    transition: theme.transitions.create('opacity'),
+  },
+  imageTitle: {
+    position: 'absolute',
+    bottom: '30px'
+    // padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) + 1}px`,
+  },
+  imageMarked: {
+    height: 3,
+    width: 18,
+    backgroundColor: theme.palette.common.white,
+    position: 'absolute',
+    bottom: -2,
+    left: 'calc(50% - 9px)',
+    transition: theme.transitions.create('opacity'),
+  },
+}),
+);
 
 interface IInbox {
   posts: Array<Post>; // array of type "Post"
@@ -68,14 +131,34 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
           {posts.map((post: Post, index: number) => {
             return (
               <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)} >
-                <Card className={classes.root} variant="outlined">
-                  <CardHeader
-                    title={post.from}>
-                  </CardHeader>
-                  <CardContent>
-                    {post.read? mailIcons.openEnvelope : mailIcons.closedEnvelope}
-                  </CardContent>
-                </Card>
+                <ButtonBase
+                  key={post.from}
+                  className={classes.image}
+                  style={{
+                    width: 250,
+                  }}
+                >
+          <span
+            className={classes.imageSrc}
+            style={{
+              // I don't know why but this only works if it's all on one line
+              backgroundColor: "fff",
+              backgroundImage: `url('data:image/svg+xml; utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>')`,
+            }}
+          />
+                  <span className={classes.imageBackdrop} />
+                  <span className={classes.imageButton}>
+            <Typography
+              component="span"
+              variant="subtitle1"
+              color="inherit"
+              className={classes.imageTitle}
+            >
+              {post.from}
+              <span className={classes.imageMarked} />
+            </Typography>
+          </span>
+                </ButtonBase>
               </div>
             )
           })
