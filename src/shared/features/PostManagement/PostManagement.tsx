@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Container, Grid, Card, CardMedia, Typography } from '@material-ui/core';
@@ -6,6 +6,7 @@ import Alarm from '@material-ui/icons/Alarm';
 import { Link } from 'react-router-dom';
 
 import { Post } from 'shared/models/post.model';
+import { getRepliesToPost } from "services/reply";
 
 import Moment from 'react-moment';
 
@@ -45,6 +46,22 @@ interface IPostManagement {
 const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
 
   const classes = useStyles();
+  const [newReplies, setNewReplies] = useState<boolean[]>([]);
+
+  useEffect(() => {
+    for (let i = 0; i < posts.length; i++) {
+      getRepliesToPost(posts[i].pid).then((replyArray: any) => {
+        let newRep = false;
+        for (let j = 0; j < replyArray.length; j++) {
+          if (replyArray[j].read === false) {
+            newRep = true;
+            break;
+          }
+        }
+        setNewReplies(newReplies => newReplies.concat(newRep));
+      });
+    }
+}, []); // fires on page load if this is empty [] 
 
   const getMessageSubstring = function(message: string) {
     if (message.length > 100) {
@@ -96,12 +113,14 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
                                     <Moment format="MMMM Do YYYY">{post.date}</Moment>
                                 </Typography>
                             </Grid>
-                            <Grid item xs={5}>
+                            {newReplies[index] === true &&
+                              <Grid item xs={5}>
                                 <Alarm className="icon"/>
                                 <Typography variant="subtitle2">
-                                    New replies!
+                                  New replies!
                                 </Typography>
-                            </Grid>
+                              </Grid>
+                            }
                           </Grid>
                       </Grid>
                     </Grid>
