@@ -13,21 +13,6 @@ import Moment from 'react-moment';
 import './PostManagement.css';
 
 const useStyles = makeStyles({
-  root: {
-    minWidth: 250,
-    maxWidth: 250
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 16,
-  },
-  pos: {
-    marginBottom: 12,
-  },
   media: {
     height: '140px'
   },
@@ -40,12 +25,9 @@ const useStyles = makeStyles({
 });
 
 interface IPostManagement {
-  // add posts as Post model here
-  // For now, I made it a number to show how you might loop through a quantity of things passed in
   posts: Array<Post>; // array of type "Post"
 }
 
-// todo: pass "Posts" into this functional component
 const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
 
   const classes = useStyles();

@@ -30,25 +30,6 @@ const useStyles = makeStyles((theme: Theme) =>
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
-    },
-    root: {
-        minWidth: 250,
-        maxWidth: 250
-    },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-    },
-    title: {
-        fontSize: 16,
-    },
-    pos: {
-        marginBottom: 12,
-    },
-    media: {
-        height: 300,
-        maxWidth: "100%"
     }
   })
 );
