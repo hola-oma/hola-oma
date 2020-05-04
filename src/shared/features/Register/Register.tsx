@@ -85,7 +85,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
 
   return (
     <Grid container className="credentialsForm" spacing={2} justify="center">
-      <Grid item xs={10} md={8}>
+      <Grid item xs={10} md={8} className="redBorder">
         <div>
           <Typography component="h1" variant="h4">
             Create an account

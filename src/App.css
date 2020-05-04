@@ -1,6 +1,5 @@
 .App {
-  text-align: center;
-  font-size:1em;
+  font-size:1.2em;
 }
 
 .padBottom {
@@ -9,6 +8,10 @@
 
 h1, h2, h3, h4, h5 {
   margin-bottom:20px !important;
+}
+
+.helpOptions li {
+  margin-bottom:10px !important;
 }
 
 .loadingSpinner {
@@ -139,7 +142,6 @@ Use: <Box className="devBox">...stuff here...</Box> */
 }
 
 .bigLink {
-  font-size:1.2em;
   margin-bottom:20px !important;
 }
 
@@ -165,6 +167,18 @@ Use: <Box className="devBox">...stuff here...</Box> */
   color: #fff !important;
   border-color: green !important;
   background-color: green !important;
+}
+
+.credentialsLeft {
+  height: 50vh;
+}
+
+.redBorder {
+  border:1px solid red;
+}
+
+.blueBorder {
+  border:1px solid blue;
 }
 
 /* 

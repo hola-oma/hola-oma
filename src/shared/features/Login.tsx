@@ -7,14 +7,16 @@ import { signUserInWithEmailAndPassword, signUserInWithGoogle, getUserSettings }
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
 import Copyright from "shared/components/Copyright";
 import BigInput from "shared/components/BigInput/BigInput";
 import Alert from "@material-ui/lab/Alert";
+import { Container } from "@material-ui/core";
+import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
+import LoginHelp from "shared/components/LoginHelp";
+import Column from "shared/components/Column/Column";
 
 interface ILogin extends RouteComponentProps<any> {
   // this was different from the tutorial, got typescript help from: 
@@ -78,85 +80,107 @@ const Login: React.FC<ILogin> = ({ history }) => {
     https://github.com/mui-org/material-ui/blob/master/docs/src/pages/getting-started/templates/sign-in/SignIn.js
     */
 
-    <Grid container className="credentialsForm" spacing={2} justify="center">
-      <Grid item xs={10} md={8}>
-      <div>
-        <Typography component="h1" variant="h4">
-          Registered users
-        </Typography>
-        <p>Have an account? Sign in now.</p>
+    /*   
+            Header 
+    ----------------------
+    | Left  |     Right  |    Column child 1 is a row
+    | Left  |     Right  |    Each row child holds a column
+    ----------------------
+    |     Copyright      |    Column child 2 is copyright
+    ----------------------
 
-        {/* Begin form */}
-        <form noValidate onSubmit={e => handleEmailAndPasswordLogin(e)}>
+    */
 
-          <Grid container spacing={2} justify="center">
+    <Box pl={6} pr={6}>
+      <Column>
 
-            {/* Email address */}
-            <Grid item xs={12} sm={8}>
-              <BigInput 
-                  error={invalidInputs}
-                  labelText="E-Mail Address"
-                  name="email"
-                  required={true} 
-                  value={email}
-                  autoFocus={false}
-                  autoComplete="current-email"
-                  type="email"
-                  onChange={updateEmail}
+        <Grid item xs={12} className="blueBorder">
+          <Grid container direction="row">
+            
+            {/* LEFT SIDE: TITLE, HELP */ }
+            {/* ROW CHILD 1 */}
+            <Grid item xs={12} md={4} className="redBorder">
+              <Column justify="space-between" className="credentialsLeft">
+              
+                {/* <Grid container direction="column" justify="space-between" > */} 
+                    
+                    {/* item 1 */}
+                  <CredentialsLeftTitle
+                    title="Returning users"
+                    subtitle="Have an account? Sign in now."
                   />
+
+                  {/* item 2 */}
+                  <LoginHelp />
+                  
+              </Column>{/* Closes column */}
+            </Grid>{/* Closes item */}
+
+
+            {/* RIGHT SIDE: LOGIN FORM */ }
+            {/* ROW CHILD 2  */ }
+            <Grid item xs={12} md={8} className="redBorder">
+              <Grid container direction="column" spacing={2} justify="center" alignItems="center">
+                <form noValidate onSubmit={e => handleEmailAndPasswordLogin(e)}>
+
+                  {/* Email address */}
+                  <Grid item xs={12}>
+                    <BigInput 
+                        error={invalidInputs}
+                        labelText="E-Mail Address"
+                        name="email"
+                        required={true} 
+                        value={email}
+                        autoFocus={false}
+                        autoComplete="current-email"
+                        type="email"
+                        onChange={updateEmail}
+                        />
+                  </Grid>
+
+                  {/* Password */ }
+                  <Grid item xs={12}>
+                    <BigInput 
+                        error={invalidInputs}
+                        labelText="Password"
+                        name="password"
+                        required={true} 
+                        value={password}
+                        autoFocus={false}
+                        autoComplete="current-password"
+                        type="password"
+                        onChange={updatePassword}
+                        />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      className="bigButton"
+                    >
+                      Sign In
+                    </Button>
+                  </Grid>
+
+
+                  {error &&
+                    <Alert severity="error">{error}</Alert>
+                  }
+
+                </form>
             </Grid>
-
-            {/* Password */ }
-            <Grid item xs={12} sm={8}>
-              <BigInput 
-                  error={invalidInputs}
-                  labelText="Password"
-                  name="password"
-                  required={true} 
-                  value={password}
-                  autoFocus={false}
-                  autoComplete="current-password"
-                  type="password"
-                  onChange={updatePassword}
-                  />
-            </Grid>
-
-            <Grid item xs={12} sm={8}>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className="bigButton"
-              >
-                Sign In
-              </Button>
-            </Grid>
+          </Grid> {/* Closes right side */ }
 
 
-          {error &&
-            <Alert severity="error">{error}</Alert>
-          }
+        </Grid>{/* Closes row that contains left and right sides */}
 
-          {/* Account maintenance options */}
-          <Grid item container xs={12} sm={8} justify="center">
-            <Grid item xs={12}>
-              <Link href="/resetPassword" className="bigLink">
-                Forgot password?
-              </Link>
-            </Grid>
-
-          </Grid>
-      
-        </Grid>
-        
-      </form>
-
-      </div>
-    </Grid>
-      
-    <Copyright />      
-  </Grid>
+        <Copyright />      
+      </Grid>
+      </Column>
+  </Box>
   );
 };
 
