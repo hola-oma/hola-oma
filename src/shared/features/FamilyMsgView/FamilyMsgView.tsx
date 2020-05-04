@@ -128,7 +128,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     return (
         <>
         <Container>
-            <Typography variant="h3">
+            <Typography component="h2" variant="h5">
                 Sent Message
             </Typography>
         </Container>
@@ -185,55 +185,56 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 </Button>
             </Grid>
         </Grid>
+        <Container>
+            <hr />
+            <Typography component="h2" variant="h5">
+                Replies
+            </Typography>
+                <Grid container spacing={2}>
+                {
+                replies.map((reply: Reply, index: number) => {
+                    return (
+                    <Grid item xs={4} key={index}>
+                        <div>
+                        <div onClick={()=>handleClick(reply)}>
+                        <Card variant="outlined">
+                            <CardContent>
+                                {isEmoji(reply) &&
+                                    messageAsArray(reply).map((emojiIndex: number, replyIndex: number) => {
+                                        return (
+                                            <Typography variant="h5" key={replyIndex}>
+                                                {emojiIcons[emojiIndex]}
+                                            </Typography>
+                                        )
+                                    })
+                                }
+                                <Typography variant="subtitle2">
+                                    Sent by {reply.from}
+                                    <br/>
+                                    <Moment format="MMMM Do YYYY, h:mm a">{reply.date}</Moment>
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                        </div>
+                        </div>
+                    </Grid>
+                    )
+                })
+                }
+            </Grid>
+            <Modal open={modalOpen} onClose={handleClick} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <div className={classes.paper}>
+                {modalReply && <ModalReply reply={modalReply}/>}
+            </div>
+            </Modal>
+        </Container>
 
-        <Typography variant="h3">
-            Replies
-        </Typography>
-
-            <Grid container spacing={2}>
-            {
-            replies.map((reply: Reply, index: number) => {
-                return (
-                <Grid item xs={4} key={index}>
-                    <div>
-                    <div onClick={()=>handleClick(reply)}>
-                    <Card variant="outlined">
-                        <CardContent>
-                            {isEmoji(reply) &&
-                                messageAsArray(reply).map((emojiIndex: number, replyIndex: number) => {
-                                    return (
-                                        <Typography variant="h5" key={replyIndex}>
-                                            {emojiIcons[emojiIndex]}
-                                        </Typography>
-                                    )
-                                })
-                            }
-                            <Typography variant="subtitle2">
-                                Sent by {reply.from}
-                                <br/>
-                                <Moment format="MMMM Do YYYY, h:mm a">{reply.date}</Moment>
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                    </div>
-                    </div>
-                </Grid>
-                )
-            })
-            }
-        </Grid>
-        <Modal open={modalOpen} onClose={handleClick} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-        <div className={classes.paper}>
-            {modalReply && <ModalReply reply={modalReply}/>}
-        </div>
-        </Modal>
-
-         <Box className="todo">
+        <Box className="todo">
             <h3>To do items:</h3>
             <ul>
-                <li>Display responses associated with this post.</li>
                 <li>Break out seen by by individual receiver "read" receipts - After post model has been changed to accommodate.</li>
                 <li>Edit/delete options?</li>
+                <li>Send a short video</li>
             </ul>
         </Box>
      </>

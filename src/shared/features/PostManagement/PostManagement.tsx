@@ -33,6 +33,9 @@ const useStyles = makeStyles({
   },
   postStyle: {
     height: "100%"
+  },
+  postBottom: {
+    maxHeight: 90
   }
 });
 
@@ -81,7 +84,7 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
         {
           posts.map((post: Post, index: number) => {
             return (
-              <Grid item xs={12} sm={4} key={index}>
+              <Grid item xs={12} sm={6} md={4} key={index}>
                 <div className={"postStyle"}>
                   <Link to={{
                     pathname: "/postDetails",
@@ -104,7 +107,7 @@ const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
                           </Typography>
                       </Grid>
 
-                      <Grid item>
+                      <Grid item className={classes.postBottom}>
                           <Grid container justify={"space-between"}>
                             <Grid item xs={5}>
                                 <Typography variant="subtitle2">
