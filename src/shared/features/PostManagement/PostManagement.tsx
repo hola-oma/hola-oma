@@ -26,24 +26,28 @@ const useStyles = makeStyles({
 
 interface IPostManagement {
   posts: Array<Post>; // array of type "Post"
+  onNewReplies: any
 }
 
-const PostManagement: React.FC<IPostManagement> = ({ posts }) => {
+const PostManagement: React.FC<IPostManagement> = ({ posts, onNewReplies }) => {
 
   const classes = useStyles();
   const [newReplies, setNewReplies] = useState<boolean[]>([]);
 
   useEffect(() => {
+    let numNewReplies = 0;
     for (let i = 0; i < posts.length; i++) {
+      // eslint-disable-next-line no-loop-func
       getRepliesToPost(posts[i].pid).then((replyArray: any) => {
         let newRep = false;
         for (let j = 0; j < replyArray.length; j++) {
           if (replyArray[j].read === false) {
             newRep = true;
-            break;
+            numNewReplies++;
           }
         }
         setNewReplies(newReplies => newReplies.concat(newRep));
+        onNewReplies(numNewReplies);
       });
     }
 }, []); // fires on page load if this is empty [] 

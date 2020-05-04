@@ -36,6 +36,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   const [pendingInvitations, setPendingInvitations] = useState<AccountLink[]>([]);
   const [invite, setInvite] = useState<AccountLink>();
   const [invitationModalOpen, setInvitationModalOpen] = useState<boolean>(false);
+  const [numNewReplies, setNumNewReplies] = useState(0);
 
   const updatePendingInvitations = (dataArr: AccountLink[]) => {
     if (dataArr.length > 0) {
@@ -104,6 +105,10 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     if (history) history.push('/newPost')
   }
 
+  const updateNewReplies = (num: number) => {
+    setNumNewReplies(num);
+  }
+
   return (
     <Container>
       <Grid container justify="center">
@@ -114,7 +119,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
           <Typography component="h1" variant="h4">
             Welcome, {displayName}!
           </Typography>
-          <p>You have 0 new {role === roles.poster ? 'replies' : 'letters'}.</p>
+          <p>You have {numNewReplies} new {role === roles.poster ? 'replies' : 'letters'}.</p>
         </Grid>
 
         {role === roles.poster &&
@@ -187,7 +192,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
       </>
     }
 
-    {role === roles.poster && <PostManagement posts={posts}/>}
+    {role === roles.poster && <PostManagement posts={posts} onNewReplies={updateNewReplies}/>}
     {role === roles.receiver && <Inbox posts={posts}/>}
     </Container>
   )
