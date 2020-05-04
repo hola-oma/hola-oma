@@ -119,7 +119,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
           <Typography component="h1" variant="h4">
             Welcome, {displayName}!
           </Typography>
-          <p>You have {numNewReplies} new {role === roles.poster ? 'replies' : 'letters'}.</p>
+          <p>You have {numNewReplies} new {role === roles.poster ? (numNewReplies !== 1 ? 'replies' : 'reply') : 'letters'}.</p>
         </Grid>
 
         {role === roles.poster &&
