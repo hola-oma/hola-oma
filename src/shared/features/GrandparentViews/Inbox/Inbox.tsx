@@ -2,11 +2,7 @@ import React, {useContext, useState} from 'react';
 import { useHistory } from "react-router-dom";
 import { Theme, makeStyles, createStyles } from '@material-ui/core/styles';
 
-import ClosedEnvelope from "../../../../icons/mail-closed.png";
-import OpenEnvelope from "../../../../icons/mail-open.png";
-
 import { Container, Grid, Typography, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
-
 
 import { Post } from 'shared/models/post.model';
 import {GrandparentPostContext} from "../../../../App";
