@@ -23,15 +23,13 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
         <GrandparentLayout
           headerText={"Reply to Letter from "}
           boxContent={GrandparentPostView}
-          buttonText={["Return to Messages", "Smiley", "Voice Message", "Your Picture"]}
+          buttonText={["Smiley", "Voice Message", "Your Picture"]}
           buttonActions={[
-            () => history.push("/posts"),
             () => setEmojiReplyOpen(true),
             () => console.log("Grandparent wants to send a \"voicemail\"!"),
             () => console.log("Grandparent wants to send a picture!")
           ]}
-          buttonIcons={[replyOptionIcons.closedEnvelope, replyOptionIcons.emoji,
-                        replyOptionIcons.voicemail, replyOptionIcons.photo]}
+          buttonIcons={[replyOptionIcons.emoji, replyOptionIcons.voicemail, replyOptionIcons.photo]}
           />
 
         <GetEmojiReply
