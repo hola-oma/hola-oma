@@ -71,20 +71,20 @@ const Register: React.FC<IRegister> = ({ history }) => {
     <CredentialsWrapper>
 
       {/* Row contains side-by-side form elements */}
-      <Row justify="space-between">
+      <Row justify="space-around">
 
         {/* LEFT CHILD: TITLE, HELP */}
-        <Child xs={12} md={4}>
+        <Child xs={12} sm={8} md={4}>
           <Column justify="space-between">
             <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Create an account" subtitle="Connect with friends and family anywhere." />
           </Column>
         </Child>
 
         {/* RIGHT CHILD: REGISTRATION FORM */}
-        <Child xs={12} md={7}>
+        <Child xs={12} sm={8} md={5}>
           <Column justify="center" alignItems="center">
 
-            <form onSubmit={e => handleForm(e)} noValidate>
+            <form onSubmit={e => handleForm(e)} className="credentialsForm" noValidate>
 
               {/* Email address */}
               <Child xs={12}>

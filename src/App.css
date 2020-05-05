@@ -11,6 +11,10 @@
   padding-bottom:20px !important;
 }
 
+.credentialsForm {
+  width:100%;
+}
+
 .helpOptions li {
   margin-bottom:12px !important;
 }

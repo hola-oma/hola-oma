@@ -54,10 +54,10 @@ const ResetPassword: React.FC<IResetPassword> = () => {
     <CredentialsWrapper>
 
       {/* Row contains side-by-side form elements */}
-      <Row justify="space-between">
+      <Row justify="space-around">
 
          {/* LEFT CHILD: TITLE, HELP */}
-         <Child xs={12} md={4}>
+         <Child xs={12} sm={8} md={4}>
           <Column justify="space-between">
             <CredentialsLeftTitle icon={<HelpIcon />} title="Reset password" subtitle="Enter the e-mail address you used when you signed up and we’ll send a link to reset your password." />
           </Column>
@@ -65,10 +65,10 @@ const ResetPassword: React.FC<IResetPassword> = () => {
 
 
           {/* RIGHT CHILD: REGISTRATION FORM */}
-          <Child xs={12} md={7}>
+          <Child xs={12} sm={8} md={5}>
             <Column justify="center" alignItems="center">
     
-            <form onSubmit={e => handleForm(e)} className="">
+            <form onSubmit={e => handleForm(e)} className="credentialsForm">
 
               {/* Email address */}
               <Child item xs={12}>

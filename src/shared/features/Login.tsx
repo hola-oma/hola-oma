@@ -68,10 +68,10 @@ const Login: React.FC<ILogin> = ({ history }) => {
     <CredentialsWrapper>
 
       {/* Row contains side-by-side form elements */}
-      <Row justify="space-between">
+      <Row justify="space-around">
 
         {/* LEFT CHILD: TITLE, HELP */}
-        <Child xs={12} md={4}>
+        <Child xs={12} sm={8} md={4}>
           <Column justify="space-between">
             <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Returning users" subtitle="Have an account? Sign in now." />
             <Hidden smDown>
@@ -81,9 +81,9 @@ const Login: React.FC<ILogin> = ({ history }) => {
         </Child>
 
         {/* RIGHT CHILD: LOGIN FORM */}
-        <Child xs={12} md={7}>
+        <Child xs={12} sm={8} md={5}>
           <Column justify="center" alignItems="center">
-            <form noValidate onSubmit={e => handleEmailAndPasswordLogin(e)}>
+            <form noValidate className="credentialsForm" onSubmit={e => handleEmailAndPasswordLogin(e)}>
 
               {/* Email address */}
               <Child item xs={12}>
