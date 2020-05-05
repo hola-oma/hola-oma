@@ -14,7 +14,7 @@ import {
   Box,
   Typography,
   CardActionArea,
-  CardMedia, ButtonBase
+  CardMedia, ButtonBase, GridList
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     top: 0,
     bottom: 0,
     backgroundSize: 'cover',
-    backgroundPosition: 'center 100%',
+    backgroundPosition: 'center 40%',
   },
   imageBackdrop: {
     position: 'absolute',
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   imageTitle: {
     position: 'absolute',
-    bottom: '30px'
+    bottom: '0px'
   },
   imageMarked: {
     height: 3,
@@ -133,22 +133,26 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                   <Typography variant="h2">Your mailbox is empty</Typography>
               </Grid>
           }
-          {posts.map((post: Post, index: number) => {
-            return (
-              <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)} >
-                <ButtonBase
-                  key={post.from}
-                  className={classes.image}
-                  style={{
-                    width: 250,
-                  }}
-                >
-          <span
-            className={classes.imageSrc}
-            style={ { backgroundImage: `url(${ClosedEnvelope})` }}
-          />
-                  <span className={classes.imageBackdrop} />
-                  <span className={classes.imageButton}>
+          {posts.length > 0 &&
+          // <GridList cols={2} spacing={16}> </GridList>
+          posts.map((post: Post, index: number) => {
+              return (
+                <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)} >
+                  <ButtonBase
+                    key={post.from}
+                    className={classes.image}
+                    style={{
+                      width: 250,
+                    }}
+                  >
+                  <span
+                    className={classes.imageSrc}
+                    style={{
+                      backgroundImage: post.read ? `url("${OpenEnvelope}")` : `url(${ClosedEnvelope})`,
+                    }}
+                  />
+                    <span className={classes.imageBackdrop} />
+                    <span className={classes.imageButton}>
             <Typography
               component="span"
               variant="subtitle1"
@@ -159,12 +163,13 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
               <span className={classes.imageMarked} />
             </Typography>
           </span>
-                </ButtonBase>
-              </div>
-            )
-          })
+                  </ButtonBase>
+                </div>
+              )
+            })
           }
         </Grid>
+
 
         <CurrentMsgModal
           isOpen={currentMsgModalOpen}
