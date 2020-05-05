@@ -17,11 +17,13 @@ export const getPosts = async (): Promise<Post[]> => {
   let userRole: string = await getUserRoleByID(user?.uid as string);
   let fieldPath = (userRole === roles.receiver) ? "receiverIDs" : "creatorID";
   let opStr = (userRole === roles.receiver) ? "array-contains" : "==";
+  let limit = (userRole === roles.receiver) ? 6 : 120;
 
   try {
     const postRef = db.collection('posts')
       .where(fieldPath, opStr as "==" | "array-contains", userId)
       .orderBy("date", "desc")
+      .limit(limit)                                 // quick-and-dirty "age off" queue
     postRef.onSnapshot(snapshot => {          // listen for state change
       const currentPosts: Post[] = [];
       snapshot.forEach(doc => {

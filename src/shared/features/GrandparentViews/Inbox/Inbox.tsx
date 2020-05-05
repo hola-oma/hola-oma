@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     transform: 'translateZ(0)',
   },
   titleBar: {
-    width: '300px',
     height: '30px',
     background:
       'radial-gradient(#80cbc4, #FFF), radial-gradient(#80cbc4, #FFF)',
