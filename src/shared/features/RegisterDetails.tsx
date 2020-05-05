@@ -21,6 +21,12 @@ import { Avatar } from "@material-ui/core";
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import FormError from "shared/components/FormError/FormError";
+import CredentialsWrapper from "shared/components/CredentialsWrapper";
+import Child from "shared/components/Child/Child";
+import FormSubmitButton from "shared/components/FormSubmitButton";
+import Column from "shared/components/Column/Column";
+import Row from "shared/components/Row/Row";
+import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
 
 interface IRegisterDetails extends RouteComponentProps<any> {
     setIsLoading: (loading: boolean) => void
@@ -90,37 +96,29 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
   }
 
   return (
-    <Grid container className="credentialsForm" spacing={2} justify="center">
-      <Grid item xs={10} md={8}>
-        <div>
-          <Avatar className="formAvatar">
-            <AccountCircleIcon />
-          </Avatar>
-
-        <Typography component="h1" variant="h4">
-          Display my name as
-        </Typography>
-
+    <CredentialsWrapper>
+      <Row justify="center">
+      <Child xs={6}>
+        <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Display my name as" subtitle="" />
+        
         <form onSubmit={e => handleForm(e)} className="" noValidate>
-
-          <Grid container spacing={2} justify="center">
             
-            {/* Display name */}
-            <Grid item xs={12} sm={8}>
-              <BigInput 
-                error={invalidName}
-                labelText=""
-                name="displayName"
-                required={true} 
-                value={displayName}
-                autoFocus={true}
-                autoComplete="fname"
-                type="text"
-                onChange={updateDisplayName}
-              />
-            </Grid>
+          {/* Display name */}
+          <Child xs={12}>
+            <BigInput 
+              error={invalidName}
+              labelText=""
+              name="displayName"
+              required={true} 
+              value={displayName}
+              autoFocus={true}
+              autoComplete="fname"
+              type="text"
+              onChange={updateDisplayName}
+            />
+          </Child>
 
-            <Grid item xs={12} sm={8}>
+          <Child xs={12}>
             <label>
               <input
                 type="radio"
@@ -130,47 +128,29 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
                 checked={role === roles.receiver}
                 onChange={e => setRole(roles.receiver)}
                 />
-                I want to <b>receive</b> posts
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="radio"
-                  name="accountType"
-                  id="poster"
-                  value="poster"
-                  onChange={e => setRole(roles.poster)}
-                  />
+              I want to <b>receive</b> posts
+            </label>
+
+            <br/>
+            <label>
+              <input
+                type="radio"
+                name="accountType"
+                id="poster"
+                value="poster"
+                onChange={e => setRole(roles.poster)}
+                />
                 I want to <b>make</b> posts
-              </label>
-            </Grid>
+            </label>
+          </Child>
 
-            <Grid item xs={12} sm={8}>
-              <Button 
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                size="large"
-                className="bigButton"
-              >
-                Done
-              </Button>
-            </Grid>
+          <FormSubmitButton buttonText="Done"/>
+          <FormError error={error}/>
 
-            <FormError error={error}/>
-        </Grid>
-
-        </form>
-      </div>
-    </Grid>
-
-    <Grid item xs={12}>
-      <Box mt={6}>
-        <Copyright />      
-      </Box>
-    </Grid>
-  </Grid>
+          </form>
+      </Child>
+      </Row>
+    </CredentialsWrapper>
   );
 };
 
