@@ -1,14 +1,5 @@
 import React, { useState } from "react";
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-
-import Copyright from 'shared/components/Copyright';
-
 import HelpIcon from '@material-ui/icons/Help';
 
 import 'firebase/auth'; // for authentication
@@ -16,11 +7,18 @@ import 'firebase/firestore'; // if database type is firestore, import this
 import 'firebase/database'; // for additional user properties, like role 
 
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
-import { Avatar } from "@material-ui/core";
 
 import { sendPasswordResetEmail } from 'services/user';
 import Alert from "@material-ui/lab/Alert";
 import BigInput from "shared/components/BigInput/BigInput";
+import CredentialsWrapper from "shared/components/CredentialsWrapper";
+import Row from "shared/components/Row/Row";
+import Child from "shared/components/Child/Child";
+import Column from "shared/components/Column/Column";
+import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
+import FormSubmitButton from "shared/components/FormSubmitButton";
+import FormError from "shared/components/FormError/FormError";
+import FormSuccess from "shared/components/FormSuccess/FormSuccess";
 
 interface IResetPassword extends RouteComponentProps<any> {
   // empty for now 
@@ -46,29 +44,34 @@ const ResetPassword: React.FC<IResetPassword> = () => {
       setErrors("");
       setResetSent(true);
     } catch(e) {
+      console.log(e);
       // possible errors include email address doesn't exist in db 
       setErrors(e.message);
     }
   }
 
   return (
-    <Grid container className="credentialsForm" spacing={2} justify="center">
-      <Grid item xs={10} md={8}>
-        <div>
-          <Avatar className="formAvatar">
-            <HelpIcon />
-          </Avatar>
-          <Typography component="h1" variant="h4">
-            Reset password
-          </Typography>
-          <p>Enter your username and we’ll send a link to reset your password.</p>
+    <CredentialsWrapper>
 
-          <form onSubmit={e => handleForm(e)} className="">
+      {/* Row contains side-by-side form elements */}
+      <Row justify="space-between">
 
-            <Grid container spacing={2} justify="center">
+         {/* LEFT CHILD: TITLE, HELP */}
+         <Child xs={12} md={4}>
+          <Column justify="space-between" className="credentialsLeft">
+            <CredentialsLeftTitle icon={<HelpIcon />} title="Reset password" subtitle="Enter the e-mail address you used when you signed up and we’ll send a link to reset your password." />
+          </Column>
+        </Child>
+
+
+          {/* RIGHT CHILD: REGISTRATION FORM */}
+          <Child xs={12} md={7}>
+            <Column justify="center" alignItems="center">
+    
+            <form onSubmit={e => handleForm(e)} className="">
 
               {/* Email address */}
-              <Grid item xs={12} sm={8}>
+              <Child item xs={12}>
                 <BigInput
                   error={false} 
                   labelText="E-Mail Address"
@@ -79,40 +82,21 @@ const ResetPassword: React.FC<IResetPassword> = () => {
                   autoComplete="current-email"
                   type="text"
                   onChange={updateEmailForReset}/>
-              </Grid>
+              </Child>
 
-              <Grid item xs={12} sm={8}>
-                <Button 
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  className="bigButton"
-                >
-                  Send e-mail
-                </Button>
-              </Grid>
+              <FormSubmitButton buttonText="Send e-mail"/>
 
-              {error &&
-                <Alert className="error" severity="error">{error}</Alert>
-              }
-              {resetSent && 
-                <Alert severity="success">E-mail sent! Check your inbox.</Alert>
-              }
+              <FormError error={error}/>
 
-            </Grid>
+              <FormSuccess show={resetSent} message="E-mail sent! Check your inbox."/>
+
 
             </form>
-          </div>
-      </Grid>
+          </Column>
 
-      <Grid item xs={12}>
-        <Box mt={6}>
-          <Copyright />      
-        </Box>
-      </Grid>
-    </Grid>
+        </Child>
+      </Row>
+    </CredentialsWrapper>
   );
 };
 

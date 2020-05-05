@@ -20,7 +20,7 @@ import BigInput from "shared/components/BigInput/BigInput";
 import { Avatar } from "@material-ui/core";
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import FormError from "shared/components/FormError";
+import FormError from "shared/components/FormError/FormError";
 
 interface IRegisterDetails extends RouteComponentProps<any> {
     setIsLoading: (loading: boolean) => void

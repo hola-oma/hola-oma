@@ -3,10 +3,10 @@ import { AuthContext } from "../../App";
 import 'firebase/auth';
 
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object 
-import { signUserInWithEmailAndPassword, signUserInWithGoogle, getUserSettings } from "services/user";
+import { signUserInWithEmailAndPassword, getUserSettings } from "services/user";
 
 import BigInput from "shared/components/BigInput/BigInput";
-import Alert from "@material-ui/lab/Alert";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
 import LoginHelp from "shared/components/LoginHelp";
 import Column from "shared/components/Column/Column";
@@ -14,7 +14,7 @@ import Row from "shared/components/Row/Row";
 import Child from "shared/components/Child/Child";
 import CredentialsWrapper from "shared/components/CredentialsWrapper";
 import FormSubmitButton from "shared/components/FormSubmitButton";
-import FormError from "shared/components/FormError";
+import FormError from "shared/components/FormError/FormError";
 
 interface ILogin extends RouteComponentProps<any> {
   // this was different from the tutorial, got typescript help from: 
@@ -63,16 +63,6 @@ const Login: React.FC<ILogin> = ({ history }) => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      const loggedInUser = await signUserInWithGoogle();
-      if (loggedInUser?.user) Auth?.setLoggedIn(true);
-      if (history) history.push('/posts');
-    } catch (e) {
-      setErrors(e.message);
-    }
-  }
-
   return (
     <CredentialsWrapper>
 
@@ -82,7 +72,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
         {/* LEFT CHILD: TITLE, HELP */}
         <Child xs={12} md={4}>
           <Column justify="space-between" className="credentialsLeft">
-            <CredentialsLeftTitle title="Returning users" subtitle="Have an account? Sign in now." />
+            <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Returning users" subtitle="Have an account? Sign in now." />
             <LoginHelp />
           </Column>
         </Child>

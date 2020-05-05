@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
-import { Container, Grid, Button, Box, Typography } from '@material-ui/core';
+import { Grid, Button, Typography } from '@material-ui/core';
 
 import { createLinkByEmail } from 'services/accountLink';
 import BigInput from 'shared/components/BigInput/BigInput';

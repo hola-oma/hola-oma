@@ -6,16 +6,16 @@ import 'firebase/auth'; // for authentication
 import 'firebase/firestore'; // if database type is firestore, import this 
 import 'firebase/database'; // for additional user properties, like role 
 
-import { createNewUserWithEmailAndPassword, createNewUserWithGoogleCredentials } from "services/user";
+import { createNewUserWithEmailAndPassword } from "services/user";
 import BigInput from "shared/components/BigInput/BigInput";
-import Alert from "@material-ui/lab/Alert";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import CredentialsWrapper from "shared/components/CredentialsWrapper";
 import Row from "shared/components/Row/Row";
 import Child from "shared/components/Child/Child";
 import Column from "shared/components/Column/Column";
 import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
 import FormSubmitButton from "shared/components/FormSubmitButton";
-import FormError from "shared/components/FormError";
+import FormError from "shared/components/FormError/FormError";
 
 interface IRegister {
   history?: any;
@@ -67,20 +67,6 @@ const Register: React.FC<IRegister> = ({ history }) => {
     }
   }
 
-  /* JOIN USING GOOGLE ACCOUNT */
-  const handleGoogleJoin = async () => {
-    try {
-      const userCreated = await createNewUserWithGoogleCredentials();
-      if (userCreated) {
-        console.log("Created user, going to registerDetails: ", userCreated);
-        Auth?.setLoggedIn(true);
-        if (history) history.push('/registerDetails');
-      } 
-    } catch(e) {
-      setErrors(e.message);
-    }
-  }
-
   return (
     <CredentialsWrapper>
 
@@ -90,7 +76,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
         {/* LEFT CHILD: TITLE, HELP */}
         <Child xs={12} md={4}>
           <Column justify="space-between" className="credentialsLeft">
-            <CredentialsLeftTitle title="Create an account" subtitle="Connect with friends and family anywhere." />
+            <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Create an account" subtitle="Connect with friends and family anywhere." />
           </Column>
         </Child>
 

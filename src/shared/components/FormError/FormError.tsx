@@ -1,6 +1,8 @@
 import React from 'react';
 import { Alert } from '@material-ui/lab';
-import Child from './Child/Child';
+import Child from '../Child/Child';
+
+import './FormError.css';
 
 interface IFormError {
   error: String
@@ -19,4 +21,3 @@ const FormError: React.FC<IFormError> = ({ error }) => {
 }
 
 export default FormError;
-

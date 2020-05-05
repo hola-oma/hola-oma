@@ -38,6 +38,11 @@ export const sendPasswordResetEmail = async (emailAddress: string) => {
     await auth.sendPasswordResetEmail(emailAddress);
     return true;
   } catch(e) {
+    let errorCode = e.code;
+    if (errorCode === "auth/user-not-found") {
+      throw Error("E-mail address not found.")
+    }
+    console.log(e);
     // no user exists with this email 
     throw Error(e.message);
   }

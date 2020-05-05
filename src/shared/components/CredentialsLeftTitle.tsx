@@ -1,21 +1,20 @@
 import React from 'react';
-import { Grid, Avatar, Typography } from '@material-ui/core';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { Avatar, Typography } from '@material-ui/core';
 import Child from './Child/Child';
-import Column from './Column/Column';
 import Row from './Row/Row';
 
 interface ICredentialsLeftTitle {
+  icon: any,
   title: String,
   subtitle: String
 }
 
-const CredentialsLeftTitle: React.FC<ICredentialsLeftTitle> = ({ title, subtitle }) => {
+const CredentialsLeftTitle: React.FC<ICredentialsLeftTitle> = ({ icon, title, subtitle }) => {
   return (
     <Row justify="space-between" alignItems="flex-start">
       <Child container xs={12} justify="center">
         <Avatar className="formAvatar">
-          <AccountCircleIcon />
+          {icon}
         </Avatar>
       </Child>
 
