@@ -30,8 +30,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   titleBar: {
     width: '300px',
     height: '30px',
-    background: '#80cbc4',
-},
+    background:
+      'radial-gradient(#80cbc4, #FFF), radial-gradient(#80cbc4, #FFF)',
+  }
   }),
 );
 
