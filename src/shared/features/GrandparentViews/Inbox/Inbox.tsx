@@ -5,21 +5,10 @@ import { Theme, makeStyles, createStyles } from '@material-ui/core/styles';
 import ClosedEnvelope from "../../../../icons/mail-closed.png";
 import OpenEnvelope from "../../../../icons/mail-open.png";
 
-import {
-  Container,
-  Grid,
-  Card,
-  CardHeader,
-  CardContent,
-  Box,
-  Typography,
-  CardActionArea,
-  CardMedia, ButtonBase, GridList
-} from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
+import { Container, Grid, Typography, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
+
 
 import { Post } from 'shared/models/post.model';
-import { mailIcons } from "../../../../Icons";
 import {GrandparentPostContext} from "../../../../App";
 
 import './Inbox.css';
@@ -34,63 +23,18 @@ const useStyles = makeStyles((theme: Theme) => ({
   title: {
     fontSize: 16,
   },
-  pos: {
-    marginBottom: 12,
+  gridList: {
+    height: '500px',
+    flexWrap: 'wrap',
+    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+    transform: 'translateZ(0)',
   },
-  media: {
-    height: 140,
+  titleBar: {
+    height: '30px',
+    background:
+      'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 70%, rgba(0,0,0,0.25) 100%)',
   },
-  image: {
-    position: 'relative',
-    height: 200,
-    [theme.breakpoints.down('xs')]: {
-      width: '100% !important', // Overrides inline-style
-      height: 100,
-    },
-  },
-  imageButton: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: "fff",
-  },
-  imageSrc: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center 40%',
-  },
-  imageBackdrop: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    backgroundColor: "fff",
-    transition: theme.transitions.create('opacity'),
-  },
-  imageTitle: {
-    position: 'absolute',
-    bottom: '0px'
-  },
-  imageMarked: {
-    height: 3,
-    width: 18,
-    backgroundColor: theme.palette.common.white,
-    position: 'absolute',
-    bottom: -2,
-    left: 'calc(50% - 9px)',
-    transition: theme.transitions.create('opacity'),
-  },
-}),
+  }),
 );
 
 interface IInbox {
@@ -133,72 +77,30 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                   <Typography variant="h2">Your mailbox is empty</Typography>
               </Grid>
           }
-          {posts.length > 0 &&
-          // <GridList cols={2} spacing={16}> </GridList>
-          posts.map((post: Post, index: number) => {
-              return (
-                <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)} >
-                  <ButtonBase
-                    key={post.from}
-                    className={classes.image}
-                    style={{
-                      width: 250,
-                    }}
-                  >
-                  <span
-                    className={classes.imageSrc}
-                    style={{
-                      backgroundImage: post.read ? `url("${OpenEnvelope}")` : `url(${ClosedEnvelope})`,
+
+            <GridList className={classes.gridList} cols={3}>
+              {posts.map((post, index: number) => (
+                <GridListTile key={post.from} onClick={() => pressEnvelope(post)}>
+                  <img src={post.read ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
+                       alt={"Letter from" + post.from} />
+                  <GridListTileBar
+                    title={"Letter from " + post.from}
+                    classes={{
+                      root: classes.titleBar,
+                      title: classes.title,
                     }}
                   />
-                    <span className={classes.imageBackdrop} />
-                    <span className={classes.imageButton}>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              className={classes.imageTitle}
-            >
-              {post.from}
-              <span className={classes.imageMarked} />
-            </Typography>
-          </span>
-                  </ButtonBase>
-                </div>
-              )
-            })
-          }
-        </Grid>
+                </GridListTile>
+              ))}
+            </GridList>
 
+        </Grid>
 
         <CurrentMsgModal
           isOpen={currentMsgModalOpen}
           returnToInbox={returnToInbox}
           replyToMessage={replyToMessage}
         />
-
-        <Box className="todo">
-          <h3>To do items:</h3>
-          <ul>
-            <li>UI:
-              <ul>Shrink font or truncate sender's name when sender's names are so long they distort the length of the card</ul>
-              <ul>Possibly limit number of characters of display name</ul>
-            </li>
-            <li>Pagination:
-              <ul>Max of 3 pages</ul>
-              <ul>Max of 6(?) messages per page </ul>
-              <ul>Only show most recent messages</ul>
-            </li>
-            <li>CurrentMsgModal:
-              <ul>Actually render photo from URL</ul>
-              <ul>Better styling</ul>
-              <ul>Fix: "Warning: findDOMNode is deprecated in StrictMode.
-                findDOMNode was passed an instance of Transition which is inside StrictMode.
-                Instead, add a ref directly to the element you want to reference.
-                Learn more about using refs safely here: https://fb.me/react-strict-mode-find-node"</ul>
-            </li>
-          </ul>
-        </Box>
       </Container>
     </>
   )
