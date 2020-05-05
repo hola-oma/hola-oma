@@ -14,22 +14,24 @@ import { markPostRead } from "../../../../services/post";
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     minWidth: 250,
-    maxWidth: 250
+    maxWidth: 250,
   },
   title: {
-    fontSize: 16,
+    fontSize: 24,
+    color: 'black',
   },
   gridList: {
     height: '500px',
     flexWrap: 'wrap',
+    alignItems: 'center',
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)',
   },
   titleBar: {
+    width: '300px',
     height: '30px',
-    background:
-      'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 70%, rgba(0,0,0,0.25) 100%)',
-  },
+    background: '#80cbc4',
+},
   }),
 );
 
@@ -78,7 +80,8 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
               {posts.map((post, index: number) => (
                 <GridListTile key={post.from} onClick={() => pressEnvelope(post)}>
                   <img src={post.read ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
-                       alt={"Letter from" + post.from} />
+                       alt={"Letter from " + post.from}
+                  />
                   <GridListTileBar
                     title={"Letter from " + post.from}
                     classes={{
