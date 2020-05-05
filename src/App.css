@@ -175,10 +175,6 @@ Use: <Box className="devBox">...stuff here...</Box> */
   background-color: green !important;
 }
 
-.credentialsLeft {
-  height: 50vh;
-}
-
 .redBorder {
   border:1px solid red;
 }

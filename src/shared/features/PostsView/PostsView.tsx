@@ -22,6 +22,7 @@ import Alert from '@material-ui/lab/Alert';
 
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AddCommentIcon from '@material-ui/icons/AddComment';
+import CredentialsWrapper from 'shared/components/CredentialsWrapper';
 
 interface IPostsView extends RouteComponentProps<any> {
   setIsLoading: (loading: boolean) => void;
@@ -105,6 +106,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   }
 
   return (
+    <CredentialsWrapper>
     <Container>
       <Grid container justify="center">
 
@@ -190,6 +192,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     {role === roles.poster && <PostManagement posts={posts}/>}
     {role === roles.receiver && <Inbox posts={posts}/>}
     </Container>
+    </CredentialsWrapper>
   )
 }
 

@@ -58,7 +58,7 @@ const ResetPassword: React.FC<IResetPassword> = () => {
 
          {/* LEFT CHILD: TITLE, HELP */}
          <Child xs={12} md={4}>
-          <Column justify="space-between" className="credentialsLeft">
+          <Column justify="space-between">
             <CredentialsLeftTitle icon={<HelpIcon />} title="Reset password" subtitle="Enter the e-mail address you used when you signed up and we’ll send a link to reset your password." />
           </Column>
         </Child>

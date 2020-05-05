@@ -6,7 +6,7 @@ import Row from './Row/Row';
 const CredentialsWrapper: React.FC<GridProps> = ({ children, ...gridProps }) => {
   return (
     <Box pl={6} pr={6}>
-      <Row justify="space-between" className="fullHeight">
+      <Row justify="flex-start" className="fullHeight">
           {children}
         <Copyright />
       </Row>

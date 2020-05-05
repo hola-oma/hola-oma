@@ -75,7 +75,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
 
         {/* LEFT CHILD: TITLE, HELP */}
         <Child xs={12} md={4}>
-          <Column justify="space-between" className="credentialsLeft">
+          <Column justify="space-between">
             <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Create an account" subtitle="Connect with friends and family anywhere." />
           </Column>
         </Child>

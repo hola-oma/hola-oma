@@ -15,6 +15,7 @@ import Child from "shared/components/Child/Child";
 import CredentialsWrapper from "shared/components/CredentialsWrapper";
 import FormSubmitButton from "shared/components/FormSubmitButton";
 import FormError from "shared/components/FormError/FormError";
+import { Hidden } from "@material-ui/core";
 
 interface ILogin extends RouteComponentProps<any> {
   // this was different from the tutorial, got typescript help from: 
@@ -71,9 +72,11 @@ const Login: React.FC<ILogin> = ({ history }) => {
 
         {/* LEFT CHILD: TITLE, HELP */}
         <Child xs={12} md={4}>
-          <Column justify="space-between" className="credentialsLeft">
+          <Column justify="space-between">
             <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Returning users" subtitle="Have an account? Sign in now." />
-            <LoginHelp />
+            <Hidden smDown>
+              <LoginHelp />
+            </Hidden>
           </Column>
         </Child>
 
@@ -115,6 +118,10 @@ const Login: React.FC<ILogin> = ({ history }) => {
               <FormSubmitButton buttonText="Sign in"/>
 
               <FormError error={error}/>
+
+              <Hidden mdUp>
+                <LoginHelp />
+              </Hidden>
 
             </form>
           </Column>
