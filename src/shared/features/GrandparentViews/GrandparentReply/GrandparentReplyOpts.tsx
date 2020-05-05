@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useHistory } from "react-router-dom";
 
 import { GrandparentPostView } from "../GrandparentPostView";
 import { Post } from "../../../models/post.model";
@@ -15,7 +14,6 @@ interface IGrandparentReplyOpts {
 const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
 
   const [EmojiReplyOpen, setEmojiReplyOpen] = useState<boolean>(false);
-  let history = useHistory();
 
   return (
         <>

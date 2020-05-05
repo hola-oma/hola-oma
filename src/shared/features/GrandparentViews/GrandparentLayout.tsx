@@ -57,7 +57,8 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, he
           width={"75%"}
           height={"75%"}
           mx={"auto"}
-          fontSize={24}>
+          fontSize={24}
+          display={"flex"}>
           {boxContent}
         </Box>
       </div>

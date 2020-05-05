@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import { useHistory } from "react-router-dom";
-import { Theme, makeStyles, createStyles } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 
 import { Container, Grid, Typography, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
 

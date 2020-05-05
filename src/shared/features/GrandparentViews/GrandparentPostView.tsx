@@ -23,13 +23,14 @@ export const GrandparentPostView: React.FC = () => {
   const FamilyPost = useContext(GrandparentPostContext).post;
 
   return (
-    <Grid container justify="space-evenly">
+    // <Grid container justify="space-evenly" alignContent='center' >
       <Grid item xs={12}>
         <Card className={classes.root}>
           <CardMedia
             className={classes.media}
             image={FamilyPost.photoURL}
             title={"Post from " + FamilyPost.from}
+            max-width={50}
             onClick={() => console.log("Modal to see photo?")}
           />
           <CardContent>
@@ -38,7 +39,7 @@ export const GrandparentPostView: React.FC = () => {
             </Typography>
           </CardContent>
         </Card>
-      </Grid>
+      {/*</Grid>*/}
     </Grid>
   )
 

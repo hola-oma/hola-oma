@@ -25,7 +25,7 @@ const CurrentMsgModal: React.FC<ICurrentMsgModal> = ( { isOpen , replyToMessage,
 
       <GrandparentLayout
         headerText={"Letter from "}
-        boxContent={ <GrandparentPostView /> }
+        boxContent={ <GrandparentPostView/> }
         buttonText={["Go Back to All Messages", "Reply"]}
         buttonActions={[returnToInbox, replyToMessage]}
         buttonIcons={[<MailIcon/>, <CreateIcon/>]}
