@@ -1,10 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-
-import Copyright from 'shared/components/Copyright';
 
 import { AuthContext } from "../../App";
 
@@ -17,14 +11,12 @@ import { RouteComponentProps } from 'react-router-dom'; // give us 'history' obj
 import { roles } from '../../enums/enums';
 import { getUserProfile, createUserSettings, updateUserProfile } from "services/user";
 import BigInput from "shared/components/BigInput/BigInput";
-import { Avatar } from "@material-ui/core";
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import FormError from "shared/components/FormError/FormError";
 import CredentialsWrapper from "shared/components/CredentialsWrapper";
 import Child from "shared/components/Child/Child";
 import FormSubmitButton from "shared/components/FormSubmitButton";
-import Column from "shared/components/Column/Column";
 import Row from "shared/components/Row/Row";
 import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
 
