@@ -126,7 +126,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
       <Row justify="space-between">
     
         {/* LEFT CHILD: ACCOUNT SETTINGS */}
-        <Child xs={12} sm={8} md={4}>
+        <Child xs={12} sm={8} md={5}>
           <Column justify="space-between">
             
             <Typography component="h1" variant="h4">
@@ -161,7 +161,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
         </Child>
 
         {/* RIGHT CHILD: LINKED ACCOUNTS */}
-        <Child xs={12} sm={8} md={5}>
+        <Child xs={12} sm={8} md={6}>
           <LinkedAccountManagement role={role} />
         </Child>
       </Row>

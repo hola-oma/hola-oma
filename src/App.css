@@ -143,7 +143,7 @@ Use: <Box className="devBox">...stuff here...</Box> */
 .devBox {
   margin: auto auto;
   text-align:left;
-  width:480px;
+  width:100%;
   border:solid 1px gray;
   padding:20px;
 }
