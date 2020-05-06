@@ -33,7 +33,7 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
       name="emailAddress"
       required={true} 
       value={emailAddress}
-      autoFocus={true}
+      autoFocus={false}
       autoComplete="off"
       type="text"
       onChange={updateEmailInput}/>

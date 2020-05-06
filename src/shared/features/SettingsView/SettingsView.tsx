@@ -20,6 +20,7 @@ import Column from 'shared/components/Column/Column';
 import Child from 'shared/components/Child/Child';
 import FormSubmitButton from 'shared/components/FormSubmitButton';
 import FormError from 'shared/components/FormError/FormError';
+import CredentialsForm from 'shared/components/CredentialsForm/CredentialsForm';
 
 interface ISettingsView extends RouteComponentProps<any>{
   setIsLoading: (loading: boolean) => void
@@ -123,45 +124,44 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
   return (
     <CredentialsWrapper>
 
-      <Row justify="space-between">
+      <Row justify="space-around">
     
         {/* LEFT CHILD: ACCOUNT SETTINGS */}
-        <Child xs={12} sm={8} md={5}>
+        <Child xs={12} sm={10} md={5}>
           <Column justify="space-between">
             
             <Typography component="h1" variant="h4">
               Account settings
             </Typography>
 
-            <form onSubmit={e => handleForm(e)}>
+            <CredentialsForm onSubmit={handleForm} submitText="Save settings" error={error}>
 
-                <Child xs={12}>
-                  {displayNameInput()}
-                </Child>
+              <Child xs={12}>
+                {displayNameInput()}
+              </Child>
 
-                <Child item xs={12}>
-                  {emailInput()}
-                </Child>
+              <Child item xs={12}>
+                {emailInput()}
+              </Child>
 
-                <Child item xs={12}>
-                  <Typography>Account type: {role.toString()} 
-                    <Button 
-                      variant="outlined" 
-                      size="small" 
-                      color="primary" 
-                      className="pullRight" 
-                      onClick={() => openRoleModal()}>Change</Button>
-                    </Typography>
-                </Child>
+              <Child item xs={12}>
+                <Typography>Account type: {role.toString()} 
+                  <Button 
+                    variant="outlined" 
+                    size="small" 
+                    color="primary" 
+                    className="pullRight" 
+                    onClick={() => openRoleModal()}>Change</Button>
+                  </Typography>
+              </Child>
 
-                <FormSubmitButton buttonText="Save settings"/>
-                <FormError error={error}/>
-            </form>
-            </Column>
+            </CredentialsForm>
+            <br/>
+          </Column>
         </Child>
 
         {/* RIGHT CHILD: LINKED ACCOUNTS */}
-        <Child xs={12} sm={8} md={6}>
+        <Child xs={12} sm={10} md={6}>
           <LinkedAccountManagement role={role} />
         </Child>
       </Row>
