@@ -39,7 +39,7 @@ export const GrandparentPostView: React.FC = () => {
               src={FamilyPost.photoURL}
               alt={"Message from " + FamilyPost.from}
           />}
-          <Typography variant="h5">
+          <Typography variant="h5" align={'left'}>
             {!FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 650)}
             {FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 350)}
           </Typography>
