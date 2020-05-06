@@ -93,7 +93,7 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
       <Child xs={12} sm={8} md={6} lg={4}>
         <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Display my name as" subtitle="" />
         
-        <form onSubmit={e => handleForm(e)} className="" noValidate>
+        <form onSubmit={e => handleForm(e)} noValidate>
             
           {/* Display name */}
           <Child xs={12}>
@@ -140,7 +140,7 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
           <FormError error={error}/>
 
           </form>
-      </Child>
+        </Child>
       </Row>
     </CredentialsWrapper>
   );

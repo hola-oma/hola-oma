@@ -69,8 +69,9 @@ input {
 
 .bigButton {
   height:100px;
-  font-size:1.8em !important;
+  font-size:1.6em !important;
   margin-top:40px !important;
+  line-height:1.2em !important;
   color:#fff;
   border: 1px solid #2d6898 !important;
   background-image: linear-gradient(to bottom, rgb(73,132,180) 0%, rgb(97,155,203) 100%);
