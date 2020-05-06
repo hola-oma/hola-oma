@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     button: {
-      margin: theme.spacing(5),
+      margin: theme.spacing(3),
     },
     paper: {
       padding: theme.spacing(2),
@@ -42,48 +42,53 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, he
 
   return (
     <>
-      <div className={classes.title}>
-        <h1>{headerText} {FamilyPost?.from}</h1>
-        { header2Text && <h2>{header2Text}</h2> }
-      </div>
+      <Grid>
+        {/*Header*/}
+        <Grid item xs={12} className={classes.title}>
+          <h1>{headerText} {FamilyPost?.from}</h1>
+          { header2Text && <h2>{header2Text}</h2> }
+        </Grid>
 
-      {alertText &&  <Alert className="error" severity="error">{alertText}</Alert>}
+        {/*Alert*/}
+        {alertText &&  <Alert className="error" severity="error">{alertText}</Alert>}
 
-      {/*Box for message content*/}
-      <div className={classes.root}>
-        <Box
-          border={1}
-          borderRadius="borderRadius"
-          width={"75%"}
-          height={"75%"}
-          mx={"auto"}
-          fontSize={24}
-          display={"flex"}>
-          {boxContent}
-        </Box>
-      </div>
+        {/*Content Box*/}
+        <Grid item xs={12} className={classes.root}>
+          <Box
+            border={1}
+            borderRadius="borderRadius"
+            width={"75%"}
+            height={"75%"}
+            mx={"auto"}
+            fontSize={24}
+            display={"flex"}>
+            {boxContent}
+          </Box>
+        </Grid>
 
-      {/*Div for bottom buttons*/}
-      {buttonIcons.length > 0 &&
-        <div className={classes.button}>
-          <Grid container justify={'space-between'}>
-          {buttonIcons.map((button: React.ReactElement<SvgIconProps>, index: number) => {
-            return (
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                startIcon={buttonIcons[index]}
-                onClick={buttonActions[index]}
-                key={index}
-              >
-                {buttonText[index]}
-              </Button>
-            )
-          })}
-          </Grid>
-        </div>
-      }
+        {/*Bottom buttons*/}
+        {buttonIcons.length > 0 &&
+            <Grid container
+                  direction="row"
+                  justify="space-around"
+                  alignItems="center">
+              {buttonIcons.map((button: React.ReactElement<SvgIconProps>, index: number) => {
+                return (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    startIcon={buttonIcons[index]}
+                    onClick={buttonActions[index]}
+                    key={index}
+                  >
+                    {buttonText[index]}
+                  </Button>
+                )
+              })}
+            </Grid>
+        }
+      </Grid>
       </>
 )}
 
