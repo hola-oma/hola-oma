@@ -23,6 +23,9 @@ import Alert from '@material-ui/lab/Alert';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import CredentialsWrapper from 'shared/components/CredentialsWrapper';
+import Row from 'shared/components/Row/Row';
+import Column from 'shared/components/Column/Column';
+import Child from 'shared/components/Child/Child';
 
 interface IPostsView extends RouteComponentProps<any> {
   setIsLoading: (loading: boolean) => void;
@@ -107,17 +110,23 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
   return (
     <CredentialsWrapper>
-    <Container>
       <Grid container justify="center">
 
-        <Grid item xs>{/* Intentionally empty */}</Grid>
+        <Child xs>{/* Intentionally empty */}</Child>
 
-        <Grid item xs={6}>
-          <Typography component="h1" variant="h4">
-            Welcome, {displayName}!
-          </Typography>
-          <p>You have 0 new {role === roles.poster ? 'replies' : 'letters'}.</p>
-        </Grid>
+        <Child xs={6}>
+          <Column justify="center" alignItems="center">
+            <Child xs={12}>
+              <Typography component="h1" variant="h4">
+                Welcome, {displayName}!
+              </Typography>
+            </Child>
+
+            <Child xs={12}>
+            <p>You have 0 new {role === roles.poster ? 'replies' : 'letters'}.</p>
+            </Child>
+          </Column>
+        </Child>
 
         {role === roles.poster &&
           <Grid item xs justify="flex-end" alignItems="center" style={{display: 'flex'}}>
@@ -134,15 +143,15 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
         }
 
         {role === roles.receiver && 
-          <Grid item xs>{/* Intentionally left empty so the user's name centers*/}</Grid>
+          <Child xs>{/* Intentionally left empty so the user's name centers without INVITE FOLLOWER button present*/}</Child>
         }
 
         {role === roles.poster &&
-          <>
-            <Grid item xs={12} alignItems="baseline">
+          <Column alignItems="center">
+            <Child xs={12} alignItems="baseline">
               <Button
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                   size="large"
                   className="bigButton"
                   onClick={goToNewPost}
@@ -150,8 +159,8 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
                 >
                   Create New Post
               </Button>
-            </Grid>
-          </>
+            </Child>
+          </Column>
         }
       </Grid>
       <hr />
@@ -189,9 +198,8 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
       </>
     }
 
-    {role === roles.poster && <PostManagement posts={posts}/>}
-    {role === roles.receiver && <Inbox posts={posts}/>}
-    </Container>
+      {role === roles.poster && <PostManagement posts={posts}/>}
+      {role === roles.receiver && <Inbox posts={posts}/>}
     </CredentialsWrapper>
   )
 }
