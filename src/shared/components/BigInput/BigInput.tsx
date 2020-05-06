@@ -66,7 +66,7 @@ const BigInput: React.FC<IBigInput> = ({ error, labelText, name, required, value
 
   return (
     <div className="bigInput">
-      <span className="boldText">{labelText}</span>
+      <span className="boldText bigInputLabel">{labelText}</span>
       <TextField
         error={error}
         name="displayName"

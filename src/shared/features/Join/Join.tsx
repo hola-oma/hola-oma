@@ -17,14 +17,13 @@ import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
 
 import CredentialsForm from "shared/components/CredentialsForm/CredentialsForm";
 
-interface IRegister {
+interface IJoin {
   history?: any;
   // empty for now 
   // got help here: https://stackoverflow.com/questions/49342390/typescript-how-to-add-type-check-for-history-object-in-react 
 }
 
-const Register: React.FC<IRegister> = ({ history }) => {
-  // const [displayName, setDisplayName] = useState("");
+const Join: React.FC<IJoin> = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setErrors] = useState("");
@@ -128,4 +127,4 @@ const Register: React.FC<IRegister> = ({ history }) => {
   );
 };
 
-export default Register;
+export default Join;

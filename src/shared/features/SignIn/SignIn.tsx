@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { AuthContext } from "../../App";
+import { AuthContext } from "../../../App";
 import 'firebase/auth';
 
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object 
@@ -17,12 +17,13 @@ import CredentialsWrapper from "shared/components/CredentialsWrapper";
 import { Hidden } from "@material-ui/core";
 import CredentialsForm from "shared/components/CredentialsForm/CredentialsForm";
 
-interface ILogin extends RouteComponentProps<any> {
+interface ISignIn {
+  history?: any;
   // this was different from the tutorial, got typescript help from: 
   // https://stackoverflow.com/questions/49342390/typescript-how-to-add-type-check-for-history-object-in-react
 }
 
-const Login: React.FC<ILogin> = ({ history }) => {
+const SignIn: React.FC<ISignIn> = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setErrors] = useState("");
@@ -108,7 +109,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
           </Column>
         </Child>
 
-        {/* RIGHT CHILD: LOGIN FORM */}
+        {/* RIGHT CHILD: SIGN IN FORM */}
         <Child xs={12} sm={8} md={5}>
           <Column justify="center" alignItems="center">
             <CredentialsForm onSubmit={handleEmailAndPasswordLogin} submitText="Sign in" error={error}>
@@ -133,4 +134,4 @@ const Login: React.FC<ILogin> = ({ history }) => {
   );
 };
 
-export default Login;
+export default SignIn;

@@ -15,7 +15,7 @@ const LoginHelp: React.FC = () => {
           </Link>
         </li>
         <li>
-        <Link href="/register" className="bigLink">
+        <Link href="/join" className="bigLink">
           Don't have an account
         </Link>
         </li>

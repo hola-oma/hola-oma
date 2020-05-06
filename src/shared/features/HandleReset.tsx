@@ -102,7 +102,7 @@ const HandleReset: React.FC<IHandleReset> = () => {
       </Child>
 
       <Child container xs={12} justify="center">
-        <Button className="bigButton" variant="contained" color="primary" onClick={() => {goToLogin()}}>Return to login</Button>
+        <Button className="bigButton" variant="contained" color="primary" onClick={() => {goToSignIn()}}>Return to sign in</Button>
       </Child>
     </Row>
   )
@@ -136,9 +136,8 @@ const HandleReset: React.FC<IHandleReset> = () => {
     }
   }
 
-  const goToLogin = () => {
-    console.log("going to login page");
-    history.replace('/login');
+  const goToSignIn = () => {
+    history.replace('/signIn');
   }
 
   return (

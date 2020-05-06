@@ -28,11 +28,11 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
   }
 
   const goToRegistration = () => {
-    history.push('/register')
+    history.push('/join')
   }
 
-  const goToLogin = () => {
-    history.push('/login')
+  const goToSignIn = () => {
+    history.push('/signIn')
   }
 
   const goToInbox = () => {
@@ -89,10 +89,10 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
                   color="secondary"
                   size="large"
                   className=""
-                  onClick={() => goToLogin()}
+                  onClick={() => goToSignIn()}
                   startIcon={<AccountCircleIcon />}
                 >
-                  Login
+                  Sign in
                 </Button></li>
             </ul>
           }

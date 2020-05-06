@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import {css} from "@emotion/core";
 import ClockLoader from "react-spinners/ClockLoader";
 
-import Login from "./shared/features/Login";
-import Register from "./shared/features/Register/Register";
+import SignIn from "./shared/features/SignIn/SignIn";
+import Join from "./shared/features/Join/Join";
 import RegisterDetails from './shared/features/RegisterDetails'
 import PostsView from './shared/features/PostsView/PostsView';
 import SettingsView from './shared/features/SettingsView/SettingsView';
@@ -64,9 +64,9 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
 
         <div style={isLoading ? {display: 'none'} : {}}>
         <Switch>
-          <Route exact path="/" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/login" component={Login} />
+          <Route exact path="/" component={SignIn} />
+          <Route exact path="/join" component={Join} />
+          <Route exact path="/signIn" component={SignIn} />
           <Route exact path="/resetPassword" component={ResetPassword} />
           <Route exact path="/handleReset" component={HandleReset} />
           <ProtectedRouteHoc exact setIsLoading={setIsLoading} path="/registerDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={RegisterDetails} />
