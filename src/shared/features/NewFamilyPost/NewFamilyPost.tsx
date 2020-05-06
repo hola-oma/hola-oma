@@ -7,6 +7,7 @@ import { createPost, updatePostID, uploadFile } from "services/post";
 import { getUserProfile } from "services/user";
 import { getLinkedAccounts } from "services/accountLink";
 import Alert from '@material-ui/lab/Alert';
+import ClearIcon from '@material-ui/icons/Clear';
 
 import './NewFamilyPost.css';
 // @ts-ignore
@@ -81,6 +82,13 @@ const NewFamilyPost: React.FC = () => {
         setReceivers(newArray);
     }
 
+    const clickFileUpload = () => {
+        let element = document.getElementById("file-upload");
+        if (element != null) {
+            element.click();
+        }
+    }
+
     const onSelect = (file: File | null) => {
         if (file) {
             Resizer.imageFileResizer(
@@ -126,11 +134,31 @@ const NewFamilyPost: React.FC = () => {
     return (
         <>
         <form className="newFamilyPostForm" noValidate onSubmit={e => submitPost(e)}>
-        <Box>
-            <input
-                type="file"
-                onChange={(event) => onSelect(event.target.files ? event.target.files[0] : null)} />
-        </Box>
+        {!selectedFile &&
+            <Box>
+                <Button
+                    variant="outlined"
+                    color="secondary"
+                    size="small"
+                    onClick={clickFileUpload}>
+                    Select a photo
+                </Button>
+                <input
+                    type="file"
+                    id="file-upload"
+                    style={{display:'none'}}
+                    onChange={(event) => onSelect(event.target.files ? event.target.files[0] : null)} />
+            </Box>
+        }
+        {selectedFile && 
+            <Button
+                variant="outlined"
+                color="primary"
+                size="small"
+                onClick={() => setSelectedFile(null)}>
+                <ClearIcon/>Remove file
+            </Button>
+        }
         <TextField
             multiline
             fullWidth
