@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: 250,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     color: 'black',
   },
   gridList: {
@@ -28,9 +28,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     transform: 'translateZ(0)',
   },
   titleBar: {
-    height: '30px',
-    background:
-      'radial-gradient(#80cbc4, #FFF), radial-gradient(#80cbc4, #FFF)',
+    height: '40px',
+    background: '#faf9f9',
   }
   }),
 );
@@ -78,12 +77,12 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
             <GridList className={classes.gridList} cols={3}>
               {posts.map((post, index: number) => (
-                <GridListTile key={post.from} onClick={() => pressEnvelope(post)}>
+                <GridListTile key={post.from} onClick={() => pressEnvelope(post)} rows={1.25}>
                   <img src={post.read ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
                        alt={"Letter from " + post.from}
                   />
                   <GridListTileBar
-                    title={"Letter from " + post.from}
+                    title={"From: " + post.from}
                     classes={{
                       root: classes.titleBar,
                       title: classes.title,
