@@ -5,7 +5,7 @@ import {roles} from '../../../enums/enums';
 import {getUserSettings} from "services/user";
 import Inbox from '../GrandparentViews/Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
-import { Link as ButtonLink, Button, Grid, Container, Typography} from '@material-ui/core';
+import { Link as ButtonLink, Button, Grid, Typography} from '@material-ui/core';
 import {getPosts} from 'services/post';
 
 import {Post} from '../../models/post.model';
@@ -23,7 +23,6 @@ import Alert from '@material-ui/lab/Alert';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import CredentialsWrapper from 'shared/components/CredentialsWrapper';
-import Row from 'shared/components/Row/Row';
 import Column from 'shared/components/Column/Column';
 import Child from 'shared/components/Child/Child';
 
@@ -114,12 +113,12 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
         <Child xs>{/* Intentionally empty */}</Child>
 
-        <Child xs={6}>
+        <Child xs={10}>
           <Column justify="center" alignItems="center">
             <Child xs={12}>
-              <Typography component="h1" variant="h4">
+              <span className="boldText">
                 Welcome, {displayName}!
-              </Typography>
+              </span>
             </Child>
 
             <Child xs={12}>
