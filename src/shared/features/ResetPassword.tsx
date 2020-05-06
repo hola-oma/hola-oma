@@ -9,16 +9,13 @@ import 'firebase/database'; // for additional user properties, like role
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
 import { sendPasswordResetEmail } from 'services/user';
-import Alert from "@material-ui/lab/Alert";
 import BigInput from "shared/components/BigInput/BigInput";
 import CredentialsWrapper from "shared/components/CredentialsWrapper";
 import Row from "shared/components/Row/Row";
 import Child from "shared/components/Child/Child";
 import Column from "shared/components/Column/Column";
 import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
-import FormSubmitButton from "shared/components/FormSubmitButton";
-import FormError from "shared/components/FormError/FormError";
-import FormSuccess from "shared/components/FormSuccess/FormSuccess";
+import CredentialsForm from "shared/components/CredentialsForm/CredentialsForm";
 
 interface IResetPassword extends RouteComponentProps<any> {
   // empty for now 
@@ -34,6 +31,19 @@ const ResetPassword: React.FC<IResetPassword> = () => {
   const updateEmailForReset = (e: any) => {
     setEmailForReset(e.target.value);
   }
+
+  const emailAddressInput = () => (
+    <BigInput
+      error={false} 
+      labelText="E-Mail Address"
+      name="email"
+      required={true}
+      value={emailForReset}
+      autoFocus={true}
+      autoComplete="current-email"
+      type="text"
+      onChange={updateEmailForReset}/>
+  )
 
   /* REQUEST A PASSWORD RESET EMAIL BE SENT TO THIS EMAIL ADDRESS */
   const handleForm = async (e: any) => {
@@ -63,37 +73,19 @@ const ResetPassword: React.FC<IResetPassword> = () => {
           </Column>
         </Child>
 
+        {/* RIGHT CHILD: REGISTRATION FORM */}
+        <Child xs={12} sm={8} md={5}>
+          <Column justify="center" alignItems="center">
+  
+          <CredentialsForm onSubmit={handleForm} submitText="Send e-mail" showSuccess={resetSent} error={error}>
 
-          {/* RIGHT CHILD: REGISTRATION FORM */}
-          <Child xs={12} sm={8} md={5}>
-            <Column justify="center" alignItems="center">
-    
-            <form onSubmit={e => handleForm(e)} className="credentialsForm">
+            <Child item xs={12}>
+              {emailAddressInput()}
+            </Child>
 
-              {/* Email address */}
-              <Child item xs={12}>
-                <BigInput
-                  error={false} 
-                  labelText="E-Mail Address"
-                  name="email"
-                  required={true}
-                  value={emailForReset}
-                  autoFocus={true}
-                  autoComplete="current-email"
-                  type="text"
-                  onChange={updateEmailForReset}/>
-              </Child>
+          </CredentialsForm>
 
-              <FormSubmitButton buttonText="Send e-mail"/>
-
-              <FormError error={error}/>
-
-              <FormSuccess show={resetSent} message="E-mail sent! Check your inbox."/>
-
-
-            </form>
           </Column>
-
         </Child>
       </Row>
     </CredentialsWrapper>

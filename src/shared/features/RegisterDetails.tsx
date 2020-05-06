@@ -13,12 +13,11 @@ import { getUserProfile, createUserSettings, updateUserProfile } from "services/
 import BigInput from "shared/components/BigInput/BigInput";
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import FormError from "shared/components/FormError/FormError";
 import CredentialsWrapper from "shared/components/CredentialsWrapper";
 import Child from "shared/components/Child/Child";
-import FormSubmitButton from "shared/components/FormSubmitButton";
 import Row from "shared/components/Row/Row";
 import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
+import CredentialsForm from "shared/components/CredentialsForm/CredentialsForm";
 
 interface IRegisterDetails extends RouteComponentProps<any> {
     setIsLoading: (loading: boolean) => void
@@ -59,6 +58,51 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
     return () => { isMounted = false; }
   }, [setIsLoading]); // fires on page load if this is empty [] 
 
+  const updateDisplayName = (e: any) => {
+    setDisplayName(e.target.value)
+  }
+
+  const updateDisplayNameInput = () => (
+    <BigInput 
+      error={invalidName}
+      labelText=""
+      name="displayName"
+      required={true} 
+      value={displayName}
+      autoFocus={true}
+      autoComplete="fname"
+      type="text"
+      onChange={updateDisplayName}
+    />
+  )
+
+  const roleRadioInputs = () => (
+    <>
+      <label>
+        <input
+          type="radio"
+          name="accountType"
+          id="receiver"
+          value="receiver"
+          checked={role === roles.receiver}
+          onChange={e => setRole(roles.receiver)}
+          />
+        I want to <b>receive</b> posts
+      </label>
+
+      <br/>
+      <label>
+        <input
+          type="radio"
+          name="accountType"
+          id="poster"
+          value="poster"
+          onChange={e => setRole(roles.poster)}
+          />
+          I want to <b>make</b> posts
+      </label>
+    </>
+  )
 
   /* ADD USER ROLE TYPE AND DISPLAY NAME TO USER SETTINGS */
   const handleForm = async (e: any) => {
@@ -83,63 +127,23 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
     }
   }
 
-  const updateDisplayName = (e: any) => {
-    setDisplayName(e.target.value)
-  }
-
   return (
     <CredentialsWrapper>
       <Row justify="center">
       <Child xs={12} sm={8} md={6} lg={4}>
         <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Display my name as" subtitle="" />
         
-        <form onSubmit={e => handleForm(e)} noValidate>
+          <CredentialsForm onSubmit={handleForm} submitText="Done" error={error}>
             
-          {/* Display name */}
-          <Child xs={12}>
-            <BigInput 
-              error={invalidName}
-              labelText=""
-              name="displayName"
-              required={true} 
-              value={displayName}
-              autoFocus={true}
-              autoComplete="fname"
-              type="text"
-              onChange={updateDisplayName}
-            />
-          </Child>
+            <Child xs={12}>
+              {updateDisplayNameInput()}
+            </Child>
 
-          <Child xs={12}>
-            <label>
-              <input
-                type="radio"
-                name="accountType"
-                id="receiver"
-                value="receiver"
-                checked={role === roles.receiver}
-                onChange={e => setRole(roles.receiver)}
-                />
-              I want to <b>receive</b> posts
-            </label>
+            <Child xs={12}>
+              {roleRadioInputs()}
+            </Child>
 
-            <br/>
-            <label>
-              <input
-                type="radio"
-                name="accountType"
-                id="poster"
-                value="poster"
-                onChange={e => setRole(roles.poster)}
-                />
-                I want to <b>make</b> posts
-            </label>
-          </Child>
-
-          <FormSubmitButton buttonText="Done"/>
-          <FormError error={error}/>
-
-          </form>
+          </CredentialsForm>
         </Child>
       </Row>
     </CredentialsWrapper>

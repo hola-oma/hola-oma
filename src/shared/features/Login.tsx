@@ -13,9 +13,9 @@ import Column from "shared/components/Column/Column";
 import Row from "shared/components/Row/Row";
 import Child from "shared/components/Child/Child";
 import CredentialsWrapper from "shared/components/CredentialsWrapper";
-import FormSubmitButton from "shared/components/FormSubmitButton";
-import FormError from "shared/components/FormError/FormError";
+
 import { Hidden } from "@material-ui/core";
+import CredentialsForm from "shared/components/CredentialsForm/CredentialsForm";
 
 interface ILogin extends RouteComponentProps<any> {
   // this was different from the tutorial, got typescript help from: 
@@ -37,6 +37,34 @@ const Login: React.FC<ILogin> = ({ history }) => {
   const updatePassword = (e: any) => {
     setPassword(e.target.value);
   }
+
+  const emailAddressInput = () => (
+    <BigInput
+      error={invalidInputs}
+      labelText="E-Mail Address"
+      name="email"
+      required={true}
+      value={email}
+      autoFocus={false}
+      autoComplete="current-email"
+      type="email"
+      onChange={updateEmail}
+    />
+  )
+
+  const passwordInput = () => (
+    <BigInput
+      error={invalidInputs}
+      labelText="Password"
+      name="password"
+      required={true}
+      value={password}
+      autoFocus={false}
+      autoComplete="current-password"
+      type="password"
+      onChange={updatePassword}
+    />
+  )
 
   /* EMAIL/PASS LOGIN, must exist in database */
   const handleEmailAndPasswordLogin = async (e: any) => {
@@ -83,47 +111,21 @@ const Login: React.FC<ILogin> = ({ history }) => {
         {/* RIGHT CHILD: LOGIN FORM */}
         <Child xs={12} sm={8} md={5}>
           <Column justify="center" alignItems="center">
-            <form noValidate className="credentialsForm" onSubmit={e => handleEmailAndPasswordLogin(e)}>
+            <CredentialsForm onSubmit={handleEmailAndPasswordLogin} submitText="Sign in" error={error}>
 
-              {/* Email address */}
               <Child item xs={12}>
-                <BigInput
-                  error={invalidInputs}
-                  labelText="E-Mail Address"
-                  name="email"
-                  required={true}
-                  value={email}
-                  autoFocus={false}
-                  autoComplete="current-email"
-                  type="email"
-                  onChange={updateEmail}
-                />
+                {emailAddressInput()}
               </Child>
 
-              {/* Password */}
               <Child item xs={12}>
-                <BigInput
-                  error={invalidInputs}
-                  labelText="Password"
-                  name="password"
-                  required={true}
-                  value={password}
-                  autoFocus={false}
-                  autoComplete="current-password"
-                  type="password"
-                  onChange={updatePassword}
-                />
+                {passwordInput()}
               </Child>
 
-              <FormSubmitButton buttonText="Sign in"/>
-
-              <FormError error={error}/>
-
-              <Hidden mdUp>
-                <LoginHelp />
-              </Hidden>
-
-            </form>
+            </CredentialsForm>
+            
+            <Hidden mdUp>
+              <LoginHelp />
+            </Hidden>
           </Column>
         </Child>
       </Row>

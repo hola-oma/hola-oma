@@ -14,8 +14,8 @@ import Row from "shared/components/Row/Row";
 import Child from "shared/components/Child/Child";
 import Column from "shared/components/Column/Column";
 import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
-import FormSubmitButton from "shared/components/FormSubmitButton";
-import FormError from "shared/components/FormError/FormError";
+
+import CredentialsForm from "shared/components/CredentialsForm/CredentialsForm";
 
 interface IRegister {
   history?: any;
@@ -40,6 +40,32 @@ const Register: React.FC<IRegister> = ({ history }) => {
   const updatePassword = (e: any) => {
     setPassword(e.target.value);
   }
+
+  const emailAddressInput = () => (
+    <BigInput
+      error={invalidEmail}
+      labelText="E-Mail Address"
+      name="email"
+      required={true} 
+      value={email}
+      autoFocus={false}
+      autoComplete="off"
+      type="email"
+      onChange={updateEmail}/>
+  )
+
+  const passwordInput = () => (
+    <BigInput 
+      error={invalidPassword}
+      labelText="Password"
+      name="password"
+      required={true} 
+      value={password}
+      autoFocus={false}
+      autoComplete="off"
+      type="password"
+      onChange={updatePassword}/>
+  )
 
   /* EMAIL & PASSWORD ACCOUNT CREATION */
   const handleForm = async (e: any) => {
@@ -84,41 +110,16 @@ const Register: React.FC<IRegister> = ({ history }) => {
         <Child xs={12} sm={8} md={5}>
           <Column justify="center" alignItems="center">
 
-            <form onSubmit={e => handleForm(e)} className="credentialsForm" noValidate>
-
-              {/* Email address */}
+            <CredentialsForm onSubmit={handleForm} submitText="Join now for free" error={error}>
               <Child xs={12}>
-                <BigInput
-                  error={invalidEmail}
-                  labelText="E-Mail Address"
-                  name="email"
-                  required={true} 
-                  value={email}
-                  autoFocus={false}
-                  autoComplete="off"
-                  type="email"
-                  onChange={updateEmail}/>
+                {emailAddressInput()}
               </Child>
 
-              {/* Password */ }
               <Child xs={12}>
-              <BigInput 
-                error={invalidPassword}
-                labelText="Password"
-                name="password"
-                required={true} 
-                value={password}
-                autoFocus={false}
-                autoComplete="off"
-                type="password"
-                onChange={updatePassword}/>
+                {passwordInput()}
               </Child>
 
-              <FormSubmitButton buttonText="Join for free"/>
-
-              <FormError error={error}/>
-
-            </form>
+            </CredentialsForm>
 
           </Column>  
         </Child>
