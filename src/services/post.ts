@@ -147,3 +147,11 @@ export const deletePost = (postID: string) => {
     console.log("Invalid format: no post id");
   }
 }
+
+export const getMessageSubstring = function(message: string, charLimit: number) {
+  if (message.length > charLimit) {
+    return (message.substring(0, charLimit) + "...");
+  } else {
+    return message;
+  }
+}

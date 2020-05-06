@@ -1,9 +1,12 @@
 import React, {useContext} from 'react';
 
-import {Card, CardContent, CardMedia, Grid, Typography} from '@material-ui/core';
+import {Container, Grid, Typography} from '@material-ui/core';
 
 import { GrandparentPostContext } from "../../../App";
 import {makeStyles} from "@material-ui/core/styles";
+
+import { getMessageSubstring } from "../../../services/post";
+
 
 const useStyles = makeStyles({
   root: {
@@ -11,10 +14,15 @@ const useStyles = makeStyles({
     maxHeight: '100%'
   },
   media: {
-    paddingTop: 100,
-    paddingBottom: 200,
-    height: 200
+    width: '100%',
+    height: 350,
+    objectFit: 'contain',
   },
+  both: {
+    width: '100%',
+    height: 200,
+    objectFit: 'contain',
+  }
 });
 
 export const GrandparentPostView: React.FC = () => {
@@ -23,23 +31,20 @@ export const GrandparentPostView: React.FC = () => {
   const FamilyPost = useContext(GrandparentPostContext).post;
 
   return (
-    // <Grid container justify="space-evenly" alignContent='center' >
+    <Grid container alignItems="flex-start">
       <Grid item xs={12}>
-        <Card className={classes.root}>
-          <CardMedia
-            className={classes.media}
-            image={FamilyPost.photoURL}
-            title={"Post from " + FamilyPost.from}
-            max-width={50}
-            onClick={() => console.log("Modal to see photo?")}
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {FamilyPost.message}
-            </Typography>
-          </CardContent>
-        </Card>
-      {/*</Grid>*/}
+        <Container>
+          {FamilyPost.photoURL && <img
+              className={FamilyPost.message ? classes.both : classes.media}
+              src={FamilyPost.photoURL}
+              alt={"Message from " + FamilyPost.from}
+          />}
+          <Typography variant="h5">
+            {!FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 475)}
+            {FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 205)}
+          </Typography>
+        </Container>
+      </Grid>
     </Grid>
   )
 
