@@ -40,8 +40,8 @@ export const GrandparentPostView: React.FC = () => {
               alt={"Message from " + FamilyPost.from}
           />}
           <Typography variant="h5">
-            {!FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 475)}
-            {FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 205)}
+            {!FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 650)}
+            {FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 350)}
           </Typography>
         </Container>
       </Grid>

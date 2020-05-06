@@ -57,11 +57,13 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, he
           <Box
             border={1}
             borderRadius="borderRadius"
-            width={"75%"}
-            height={"75%"}
             mx={"auto"}
             fontSize={24}
-            display={"flex"}>
+            display={"flex"}
+            height={460}      // Other heights methods incl. min-height did not work
+            width={850}
+          >
+
             {boxContent}
           </Box>
         </Grid>

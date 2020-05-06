@@ -20,7 +20,7 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
 
         <GrandparentLayout
           headerText={"Reply to Letter from "}
-          boxContent={GrandparentPostView}
+          boxContent={<GrandparentPostView/>}
           buttonText={["Smiley", "Voice Message", "Your Picture"]}
           buttonActions={[
             () => setEmojiReplyOpen(true),
