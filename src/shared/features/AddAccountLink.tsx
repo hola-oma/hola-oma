@@ -32,7 +32,6 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
         let linkCreated = await createLinkByEmail(emailAddress);
 
         if (linkCreated) {
-          console.log("invite successfully sent to: ", emailAddress);
           if (history) history.push('/posts');
         } else {
           console.log("No invite was sent");

@@ -10,7 +10,7 @@ import {getPosts} from 'services/post';
 
 import {Post} from '../../models/post.model';
 
-import {acceptLink, getLinkedAccounts} from 'services/accountLink';
+import {acceptLink, getLinkedAccounts, removeLink} from 'services/accountLink';
 import {Link} from 'react-router-dom';
 import {AccountLink} from 'shared/models/accountLink.model';
 
@@ -76,9 +76,10 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     if (invite) {
       const accepted = acceptLink(invite?.id);
       if (accepted) {
-        let temp = pendingInvitations;
-        temp.pop();
-        updatePendingInvitations(pendingInvitations);
+        if (pendingInvitations.length > 0) {
+          pendingInvitations.pop();
+          updatePendingInvitations(pendingInvitations);
+        }
       }
     } else {
       console.log("Problem accepting invitation");
@@ -87,9 +88,24 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     setInvitationModalOpen(false);
   }
 
-  const declineInvite = () => {
-    console.log("rejected invite");
-    setInvitationModalOpen(false);
+  const removeInviteFromDOM = (inviteID: String) => {
+    if (inviteID) {
+      if (pendingInvitations.length > 0) {
+        pendingInvitations.pop();
+        updatePendingInvitations(pendingInvitations);
+      }
+    }
+  }
+
+  const declineInvite = (pendingInvite: AccountLink) => {
+    const deleted = removeLink(pendingInvite?.id);
+    if (deleted) {
+      setInvitationModalOpen(false);
+      removeInviteFromDOM(pendingInvite?.id);
+      // remove it from the collection of pending invites that make the alert show
+    } else {
+      console.log("Problem declining invitation");
+    }
   }
 
   const handleInvitationModalClose = () => {
