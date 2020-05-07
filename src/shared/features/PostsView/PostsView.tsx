@@ -5,7 +5,7 @@ import {roles} from '../../../enums/enums';
 import {getUserSettings} from "services/user";
 import Inbox from '../GrandparentViews/Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
-import { Link as ButtonLink, Button, Grid, Typography} from '@material-ui/core';
+import { Link as ButtonLink, Button, Grid } from '@material-ui/core';
 import {getPosts} from 'services/post';
 
 import {Post} from '../../models/post.model';
@@ -39,6 +39,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   const [pendingInvitations, setPendingInvitations] = useState<AccountLink[]>([]);
   const [invite, setInvite] = useState<AccountLink>();
   const [invitationModalOpen, setInvitationModalOpen] = useState<boolean>(false);
+  const [numNewReplies, setNumNewReplies] = useState(0);
 
   const updatePendingInvitations = (dataArr: AccountLink[]) => {
     if (dataArr.length > 0) {
@@ -107,6 +108,10 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     if (history) history.push('/newPost')
   }
 
+  const updateNewReplies = (num: number) => {
+    setNumNewReplies(num);
+  }
+
   return (
     <CredentialsWrapper>
       <Grid container justify="center">
@@ -122,7 +127,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
             </Child>
 
             <Child xs={12}>
-            <p>You have 0 new {role === roles.poster ? 'replies' : 'letters'}.</p>
+              <p>You have {numNewReplies} new {role === roles.poster ? (numNewReplies !== 1 ? 'replies' : 'reply') : 'letters'}.</p>
             </Child>
           </Column>
         </Child>
@@ -197,8 +202,8 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
       </>
     }
 
-      {role === roles.poster && <PostManagement posts={posts}/>}
-      {role === roles.receiver && <Inbox posts={posts}/>}
+    {role === roles.poster && <PostManagement posts={posts} onNewReplies={updateNewReplies}/>}
+    {role === roles.receiver && <Inbox posts={posts}/>}
     </CredentialsWrapper>
   )
 }

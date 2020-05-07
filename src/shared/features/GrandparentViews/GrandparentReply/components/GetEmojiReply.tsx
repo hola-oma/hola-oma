@@ -74,7 +74,7 @@ const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
     else {
       setAlert(false);
       const replyContent: Reply = setReplyContent(userId, displayName, REPLY_TYPES.EMOJI,
-                                  choicesIndexes, FamilyPost.from, FamilyPost.creatorID);
+                                  choicesIndexes, FamilyPost.pid, FamilyPost.creatorID);
       submitReply(e, replyContent)
         .then( () => { history.push({pathname: "/newReply",  state: replyContent}); } );
     }

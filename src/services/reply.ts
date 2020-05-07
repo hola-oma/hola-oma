@@ -65,7 +65,7 @@ export const createReplyDocument = async (reply: Reply) => {
 
 export const updateReplyID = async (replyID: string) => {
   const db = firebase.firestore();
-  await db.collection("posts").doc(replyID).update({
+  await db.collection("replies").doc(replyID).update({
     "rid": replyID,
   })
     .then(function() {
@@ -116,4 +116,58 @@ export const uploadPhoto = async (photoData: string) => {
       throw Error(e.message);
     }
   });
+}
+
+export const getRepliesToPost = async (postId: string) => {
+  const db = firebase.firestore();
+  const currentReplies: Reply[] = [];
+
+  try {
+    await db.collection('replies')
+      .where("responseTo", "==", postId)
+      .orderBy("date", "desc")
+    .get().then((snapshot) => {
+      snapshot.forEach(doc => {
+        // console.log(doc.id, '->', doc.data());
+        const reply = doc.data();
+        currentReplies.push({
+          date: reply.date,
+          creatorID: reply.creatorID,
+          from: reply.from,
+          read: reply.read,
+          replyType: reply.replyType,
+          message: reply.message,
+          responseTo: reply.responseTo,
+          receiverID: reply.receiverID,
+          rid: reply.rid
+        })
+      })
+    })
+  } catch (error) {
+    console.error(error);
+  }
+  return currentReplies;
+}
+
+export const markReplyRead = (rid: string) => {
+  const db = firebase.firestore();
+  let replyRef: firebase.firestore.DocumentReference;
+
+  try {
+    db.collection("replies").doc(rid);   // Catch error for items that have no pid
+    
+    replyRef = db.collection("replies").doc(rid);
+    replyRef.get().then(function(doc) {
+      if (doc.exists) {
+        replyRef.update({"read": true})
+      } else {
+        console.log("Error updating post: " + rid);
+      }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
+  }
+  catch (error) {
+    console.log("Invalid format: no reply id");
+  }
 }
