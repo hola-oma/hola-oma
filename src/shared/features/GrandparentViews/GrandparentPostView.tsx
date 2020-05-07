@@ -59,6 +59,10 @@ export const GrandparentPostView: React.FC = () => {
     })
   }, [FamilyPost.photoURL]);
 
+  const enlargeImage = () => {
+    console.log("Open enlarge image modal");
+  }
+
   return (
     <Grid container alignItems="flex-start">
       <Grid item xs={12}>
@@ -70,7 +74,7 @@ export const GrandparentPostView: React.FC = () => {
                 className={FamilyPost.message ? classes.both : classes.media}
                 style={{ width: postImage.width }}
             >
-              <span className={classes.imageSrc}
+              <span className={classes.imageSrc} onClick={enlargeImage}
                   style={{
                     backgroundImage: `url(${FamilyPost.photoURL})`,
                     display: loaded ? "" : "none",
@@ -80,7 +84,7 @@ export const GrandparentPostView: React.FC = () => {
                   className={classes.imageButton}
                   color="primary"
                   aria-label="enlarge photo"
-                  onClick={() => console.log("Open enlarge photo modal")}
+                  onClick={enlargeImage}
               >
                 {magnifyIcon.magnify}
               </IconButton>
