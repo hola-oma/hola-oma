@@ -62,7 +62,7 @@ const PostManagement: React.FC<IPostManagement> = ({ posts, onNewReplies }) => {
 
   return (
     <Container>
-      <Typography component="h2" variant="h5">
+      <Typography component="h2" variant="h5" align="center">
         Posts
       </Typography>
 
