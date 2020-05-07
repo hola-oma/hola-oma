@@ -1,11 +1,11 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import {Grid, Typography, IconButton, ButtonBase} from '@material-ui/core';
 
 import { GrandparentPostContext } from "../../../App";
 import { makeStyles } from "@material-ui/core/styles";
 
-import {getMessageSubstring, getPosts} from "../../../services/post";
+import {  getMessageSubstring } from "../../../services/post";
 import { magnifyIcon } from "../../../Icons";
 
 const useStyles = makeStyles({
@@ -48,9 +48,16 @@ export const GrandparentPostView: React.FC = () => {
 
   const classes = useStyles();
   const FamilyPost = useContext(GrandparentPostContext).post;
+  const [loaded, setLoaded] = useState(false);
 
   const postImage = new Image();
   postImage.src = FamilyPost.photoURL;
+
+  useEffect(() => {
+    postImage.addEventListener('load', () => {
+      setLoaded(true);
+    })
+  }, [FamilyPost.photoURL]);
 
   return (
     <Grid container alignItems="flex-start">
@@ -66,6 +73,7 @@ export const GrandparentPostView: React.FC = () => {
               <span className={classes.imageSrc}
                   style={{
                     backgroundImage: `url(${FamilyPost.photoURL})`,
+                    display: loaded ? "" : "none",
                   }}
               />
               <IconButton
