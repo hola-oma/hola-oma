@@ -1,34 +1,38 @@
 import React, {useContext, useState} from 'react';
 import { useHistory } from "react-router-dom";
-import { makeStyles } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 
-import {Container, Grid, Card, CardHeader, CardContent, Box} from '@material-ui/core';
+import { Container, Grid, Typography, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
 
 import { Post } from 'shared/models/post.model';
-import { mailIcons } from "../../../../Icons";
 import {GrandparentPostContext} from "../../../../App";
 
 import './Inbox.css';
 import CurrentMsgModal from "./components/CurrentMsgModal";
 import { markPostRead } from "../../../../services/post";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     minWidth: 250,
-    maxWidth: 250
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+    maxWidth: 250,
   },
   title: {
-    fontSize: 16,
+    fontSize: 22,
+    color: 'black',
   },
-  pos: {
-    marginBottom: 12,
+  gridList: {
+    height: '500px',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+    transform: 'translateZ(0)',
   },
-});
+  titleBar: {
+    height: '40px',
+    background: '#faf9f9',
+  }
+  }),
+);
 
 interface IInbox {
   posts: Array<Post>; // array of type "Post"
@@ -65,21 +69,29 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
     <>
       <Container>
         <Grid container>
-          {posts.map((post: Post, index: number) => {
-            return (
-              <div className={"inboxCard"} key={index} onClick={() => pressEnvelope(post)} >
-                <Card className={classes.root} variant="outlined">
-                  <CardHeader
-                    title={post.from}>
-                  </CardHeader>
-                  <CardContent>
-                    {post.read? mailIcons.openEnvelope : mailIcons.closedEnvelope}
-                  </CardContent>
-                </Card>
-              </div>
-            )
-          })
+          {posts.length === 0 &&
+              <Grid item xs>
+                  <Typography variant="h2">Your mailbox is empty</Typography>
+              </Grid>
           }
+
+            <GridList className={classes.gridList} cols={3}>
+              {posts.map((post, index: number) => (
+                <GridListTile key={post.from} onClick={() => pressEnvelope(post)} rows={1.25}>
+                  <img src={post.read ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
+                       alt={"Letter from " + post.from}
+                  />
+                  <GridListTileBar
+                    title={"From: " + post.from}
+                    classes={{
+                      root: classes.titleBar,
+                      title: classes.title,
+                    }}
+                  />
+                </GridListTile>
+              ))}
+            </GridList>
+
         </Grid>
 
         <CurrentMsgModal
@@ -87,29 +99,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
           returnToInbox={returnToInbox}
           replyToMessage={replyToMessage}
         />
-
-        <Box className="todo">
-          <h3>To do items:</h3>
-          <ul>
-            <li>UI:
-              <ul>Shrink font or truncate sender's name when sender's names are so long they distort the length of the card</ul>
-              <ul>Possibly limit number of characters of display name</ul>
-            </li>
-            <li>Pagination:
-              <ul>Max of 3 pages</ul>
-              <ul>Max of 6(?) messages per page </ul>
-              <ul>Only show most recent messages</ul>
-            </li>
-            <li>CurrentMsgModal:
-              <ul>Actually render photo from URL</ul>
-              <ul>Better styling</ul>
-              <ul>Fix: "Warning: findDOMNode is deprecated in StrictMode.
-                findDOMNode was passed an instance of Transition which is inside StrictMode.
-                Instead, add a ref directly to the element you want to reference.
-                Learn more about using refs safely here: https://fb.me/react-strict-mode-find-node"</ul>
-            </li>
-          </ul>
-        </Box>
       </Container>
     </>
   )
