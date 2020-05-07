@@ -25,6 +25,7 @@ import AddCommentIcon from '@material-ui/icons/AddComment';
 import CredentialsWrapper from 'shared/components/CredentialsWrapper';
 import Column from 'shared/components/Column/Column';
 import Child from 'shared/components/Child/Child';
+import Row from 'shared/components/Row/Row';
 
 interface IPostsView extends RouteComponentProps<any> {
   setIsLoading: (loading: boolean) => void;
@@ -112,98 +113,134 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     setNumNewReplies(num);
   }
 
+  const welcomeName = () => (
+    <span className="boldText">
+      Welcome, {displayName}!
+    </span>
+  )
+
+  const inviteButton = () => (
+    <Button
+      variant="outlined"
+      color="primary"
+      size="small"
+      onClick={handleInviteButton}
+      startIcon={<PersonAddIcon />}
+    >
+      Invite follower
+    </Button>
+  )
+
+  const createNewPostButton = () => (
+    <Button
+      variant="contained"
+      color="primary"
+      size="large"
+      className="bigButton"
+      onClick={goToNewPost}
+      startIcon={<AddCommentIcon />}
+      >
+      Create New Post
+    </Button>
+  )
+
+  const pendingInviteAlert = () => (
+    <Alert variant="filled" severity="warning">
+      <span>
+        You have a pending invitation from {invite?.displayName}.&nbsp;   
+      <ButtonLink 
+        component="button" 
+        variant="body2" 
+        onClick={() => {setInvitationModalOpen(true)}}
+        >View invitation
+      </ButtonLink>
+
+      <PendingInvitationModal 
+        isOpen={invitationModalOpen} 
+        invite={invite} 
+        acceptInvite={acceptInvite}
+        declineInvite={declineInvite}
+        onClose={handleInvitationModalClose} />
+      </span>
+    </Alert>
+  )
+
   return (
     <CredentialsWrapper>
-      <Grid container justify="center">
+      <Column justify="center" alignItems="flex-start">
+        {/* COLUMN CHILD 1: Welcome, X read letters, invitations alert */ }
+        <Child xs={12}>
+          
+          <Row justify="center">
+            {/* ROW CHILD 1 - empty spacer to balance 'invite' button on right */}
+            <Child xs>{/* Intentionally empty */}</Child>
 
-        <Child xs>{/* Intentionally empty */}</Child>
+            {/* ROW CHILD 2 - welcome message and replies message */}
+            <Child xs={8}>
+              <Column justify="center" alignItems="center">
+                <Child xs={12}>
+                  {welcomeName()}
+                </Child>
 
-        <Child xs={10}>
-          <Column justify="center" alignItems="center">
-            <Child xs={12}>
-              <span className="boldText">
-                Welcome, {displayName}!
-              </span>
+                <Child xs={12}>
+                  <p>You have {numNewReplies} new {role === roles.poster ? (numNewReplies !== 1 ? 'replies' : 'reply') : 'letters'}.</p>
+                </Child>
+              </Column>
             </Child>
 
+            {/* ROW CHILD 3 * - invite button OR empty spacer */ }
+            {role === roles.poster &&
+              <Child xs justify="flex-end" alignItems="center" style={{display: 'flex'}}>
+                {inviteButton()}
+              </Child>
+            }
+
+            {role === roles.receiver && 
+              <Child xs>
+                {/* Intentionally empty so the user's name centers without INVITE FOLLOWER button present*/}
+              </Child>
+            }
+          </Row>
+
+          {/* COLUMN CHILD 2 - CREATE NEW POST */ }
+          {role === roles.poster &&
+            <Row justify="center">
+              <Child>
+                <Child xs={12}>
+                  {createNewPostButton()}
+                </Child>
+              </Child>
+            </Row>
+          }
+
+          <Row>
             <Child xs={12}>
-              <p>You have {numNewReplies} new {role === roles.poster ? (numNewReplies !== 1 ? 'replies' : 'reply') : 'letters'}.</p>
+              {role === roles.poster &&
+                <>
+                {linkedAccounts.length === 0 && 
+                  <Alert variant="filled" severity="warning">
+                    You are not linked with any accounts yet! <Link to="/addAccountLink">Invite someone</Link>
+                  </Alert>
+                }
+                </>
+              }
+
+              {role === roles.receiver && pendingInvitations.length > 0 &&
+                <>
+                  {pendingInviteAlert()}
+                </>
+              }
+
+              <hr/>
+
+              {role === roles.poster && <PostManagement posts={posts} onNewReplies={updateNewReplies}/>}
+              {role === roles.receiver && <Inbox posts={posts}/>}
             </Child>
-          </Column>
+
+          </Row>
+
         </Child>
-
-        {role === roles.poster &&
-          <Grid item xs justify="flex-end" alignItems="center" style={{display: 'flex'}}>
-            <Button
-              variant="outlined"
-              color="primary"
-              size="small"
-              onClick={handleInviteButton}
-              startIcon={<PersonAddIcon />}
-            >
-              Invite follower
-            </Button>
-          </Grid>
-        }
-
-        {role === roles.receiver && 
-          <Child xs>{/* Intentionally left empty so the user's name centers without INVITE FOLLOWER button present*/}</Child>
-        }
-
-        {role === roles.poster &&
-          <Column alignItems="center">
-            <Child xs={12} alignItems="baseline">
-              <Button
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  className="bigButton"
-                  onClick={goToNewPost}
-                  startIcon={<AddCommentIcon />}
-                >
-                  Create New Post
-              </Button>
-            </Child>
-          </Column>
-        }
-      </Grid>
-      <hr />
-
-    {role === roles.poster &&
-      <>
-      {linkedAccounts.length === 0 && 
-        <Alert variant="filled" severity="warning">
-          You are not linked with any accounts yet! <Link to="/addAccountLink">Invite someone</Link>
-        </Alert>
-      }
-      </>
-    }
-
-    {role === roles.receiver && pendingInvitations.length > 0 &&
-      <>
-        <Alert variant="filled" severity="warning">
-          <span>
-            You have a pending invitation from {invite?.displayName}.&nbsp;   
-          <ButtonLink 
-            component="button" 
-            variant="body2" 
-            onClick={() => {setInvitationModalOpen(true)}}
-            >View invitation
-          </ButtonLink>
-
-          <PendingInvitationModal 
-            isOpen={invitationModalOpen} 
-            invite={invite} 
-            acceptInvite={acceptInvite}
-            declineInvite={declineInvite}
-            onClose={handleInvitationModalClose} />
-          </span>
-        </Alert>
-      </>
-    }
-
-    {role === roles.poster && <PostManagement posts={posts} onNewReplies={updateNewReplies}/>}
-    {role === roles.receiver && <Inbox posts={posts}/>}
+      </Column>
     </CredentialsWrapper>
   )
 }
