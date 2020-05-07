@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
-import {Grid, Typography, createStyles, IconButton, ButtonBase} from '@material-ui/core';
+import {Grid, Typography, IconButton, ButtonBase} from '@material-ui/core';
 
 import { GrandparentPostContext } from "../../../App";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { getMessageSubstring } from "../../../services/post";
+import {getMessageSubstring, getPosts} from "../../../services/post";
 import { magnifyIcon } from "../../../Icons";
 
 const useStyles = makeStyles({
@@ -15,7 +15,8 @@ const useStyles = makeStyles({
   },
   media: {
     width: '100%',
-    height: 350,
+    height: 425,
+    objectFit: 'contain',
   },
   both: {
     width: '100%',
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
   },
   imageSrc: {
     position: 'absolute',
-    left: '60%',
+    left: '33%',
     right: 0,
     top: 0,
     bottom: 0,
@@ -34,7 +35,7 @@ const useStyles = makeStyles({
   imageButton: {
     position: 'absolute',
     bottom: '7%',
-    right: '1%',
+    right: '3%',
     backgroundColor: '#dbdbdb !important',    // disable hover with !important
   },
 });
@@ -43,6 +44,9 @@ export const GrandparentPostView: React.FC = () => {
 
   const classes = useStyles();
   const FamilyPost = useContext(GrandparentPostContext).post;
+
+  const postImage = new Image();
+  postImage.src = FamilyPost.photoURL;
 
   return (
     <Grid container alignItems="flex-start">
@@ -53,7 +57,7 @@ export const GrandparentPostView: React.FC = () => {
             <ButtonBase
                 key={FamilyPost.from}
                 className={FamilyPost.message ? classes.both : classes.media}
-                style={{ width: 500 }}
+                style={{ width: postImage.width }}
             >
               <span className={classes.imageSrc}
                   style={{
