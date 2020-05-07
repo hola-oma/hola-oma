@@ -21,6 +21,10 @@ const useStyles = makeStyles({
   both: {
     width: '100%',
     height: 200,
+    objectFit: 'contain',
+  },
+  textSpace: {
+    marginTop: '10%',
   },
   imageSrc: {
     position: 'absolute',
@@ -34,8 +38,8 @@ const useStyles = makeStyles({
   },
   imageButton: {
     position: 'absolute',
-    bottom: '7%',
-    right: '3%',
+    bottom: '1%',
+    right: '1%',
     backgroundColor: '#dbdbdb !important',    // disable hover with !important
   },
 });
@@ -75,7 +79,10 @@ export const GrandparentPostView: React.FC = () => {
             </ButtonBase>
           }
 
-          <Typography variant="h5" align={'left'}>
+          <Typography variant="h5"
+                      className={FamilyPost.message.length < 50 ? classes.textSpace : ""}
+                      align={FamilyPost.message.length < 50 ? "center" : "left"}
+          >
             {!FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 650)}
             {FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 350)}
           </Typography>
