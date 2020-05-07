@@ -136,7 +136,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
       variant="contained"
       color="primary"
       size="large"
-      className="bigButton"
+      className="bigButton noMargin"
       onClick={goToNewPost}
       startIcon={<AddCommentIcon />}
       >
@@ -167,11 +167,11 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
   return (
     <CredentialsWrapper>
-      <Column justify="center" alignItems="flex-start">
-        {/* COLUMN CHILD 1: Welcome, X read letters, invitations alert */ }
-        <Child xs={12}>
-          
-          <Row justify="center">
+
+      <Column justify="center" alignItems="center" id="postViewColumn">
+
+          {/* COLUMN CHILD 1: Welcome, X read letters, invitations alert */ }
+          <Row justify="center" id="postsViewRow">
             {/* ROW CHILD 1 - empty spacer to balance 'invite' button on right */}
             <Child xs>{/* Intentionally empty */}</Child>
 
@@ -190,7 +190,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
             {/* ROW CHILD 3 * - invite button OR empty spacer */ }
             {role === roles.poster &&
-              <Child xs justify="flex-end" alignItems="center" style={{display: 'flex'}}>
+              <Child xs justify="flex-end" alignItems="flex-end" style={{display: 'flex'}}>
                 {inviteButton()}
               </Child>
             }
@@ -202,39 +202,41 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
             }
           </Row>
 
-          {/* COLUMN CHILD 2 - CREATE NEW POST */ }
-          {role === roles.poster &&
-            <Row justify="center">
-              <Child>
-                <Child xs={12}>
-                  {createNewPostButton()}
+          {/* COLUMN CHILD 2 - CREATE NEW POST and VIEW OLD POSTS */ }
+          <Child xs>
+          
+            {role === roles.poster &&
+              <Row justify="center">
+                <Child>
+                  <Child xs={12}>
+                    {createNewPostButton()}
+                  </Child>
                 </Child>
-              </Child>
-            </Row>
-          }
+              </Row>
+            }
 
-          <Row>
-            <Child xs={12}>
-              {role === roles.poster &&
-                <>
-                {linkedAccounts.length === 0 && 
-                  <Alert variant="filled" severity="warning">
-                    You are not linked with any accounts yet! <Link to="/addAccountLink">Invite someone</Link>
-                  </Alert>
+            <Row>
+              <Child xs={12}>
+                {role === roles.poster &&
+                  <>
+                  {linkedAccounts.length === 0 && 
+                    <Alert variant="filled" severity="warning">
+                      You are not linked with any accounts yet! <Link to="/addAccountLink">Invite someone</Link>
+                    </Alert>
+                  }
+                  </>
                 }
-                </>
-              }
 
-              {role === roles.receiver && pendingInvitations.length > 0 &&
-                <>
-                  {pendingInviteAlert()}
-                </>
-              }
+                {role === roles.receiver && pendingInvitations.length > 0 &&
+                  <>
+                    {pendingInviteAlert()}
+                  </>
+                }
 
-              <hr/>
+                <hr/>
 
-              {role === roles.poster && <PostManagement posts={posts} onNewReplies={updateNewReplies}/>}
-              {role === roles.receiver && <Inbox posts={posts}/>}
+                {role === roles.poster && <PostManagement displayName={displayName} posts={posts} onNewReplies={updateNewReplies}/>}
+                {role === roles.receiver && <Inbox posts={posts}/>}
             </Child>
 
           </Row>
