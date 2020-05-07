@@ -130,9 +130,20 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
         <Child xs={12} sm={10} md={5}>
           <Column justify="space-between">
             
-            <Typography component="h1" variant="h4">
+            <span className="boldText">
               Account settings
-            </Typography>
+            </span>
+
+            <Child item xs={12}>
+              <Typography>Account type: {role.toString()} 
+                <Button 
+                  variant="outlined" 
+                  size="small" 
+                  color="primary" 
+                  className="pullRight" 
+                  onClick={() => openRoleModal()}>Change</Button>
+                </Typography>
+            </Child>
 
             <CredentialsForm onSubmit={handleForm} submitText="Save settings" error={error}>
 
@@ -142,17 +153,6 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
 
               <Child item xs={12}>
                 {emailInput()}
-              </Child>
-
-              <Child item xs={12}>
-                <Typography>Account type: {role.toString()} 
-                  <Button 
-                    variant="outlined" 
-                    size="small" 
-                    color="primary" 
-                    className="pullRight" 
-                    onClick={() => openRoleModal()}>Change</Button>
-                  </Typography>
               </Child>
 
             </CredentialsForm>
