@@ -83,8 +83,8 @@ export const GrandparentPostView: React.FC = () => {
                       className={FamilyPost.message.length < 50 ? classes.textSpace : ""}
                       align={FamilyPost.message.length < 50 ? "center" : "left"}
           >
-            {!FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 650)}
-            {FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 350)}
+            {!FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 625)}
+            {FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 325)}
           </Typography>
 
         </div>
