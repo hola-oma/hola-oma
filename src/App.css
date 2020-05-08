@@ -1,5 +1,6 @@
 .App {
   font-size:1.2em;
+  min-width:450px;
 }
 
 .fullHeight {

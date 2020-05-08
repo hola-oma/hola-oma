@@ -176,7 +176,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
             <Child xs>{/* Intentionally empty */}</Child>
 
             {/* ROW CHILD 2 - welcome message and replies message */}
-            <Child xs={8}>
+            <Child xs={12} sm={8}>
               <Column justify="center" alignItems="center">
                 <Child xs={12}>
                   {welcomeName()}
@@ -190,7 +190,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
             {/* ROW CHILD 3 * - invite button OR empty spacer */ }
             {role === roles.poster &&
-              <Child xs justify="flex-end" alignItems="flex-end" style={{display: 'flex'}}>
+              <Child xs justify="center" alignItems="center" style={{display: 'flex'}}>
                 {inviteButton()}
               </Child>
             }
