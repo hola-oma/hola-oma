@@ -23,8 +23,6 @@ const CreatePost: React.FC = () => {
 
     return (
         <>
-          {role === roles.poster && <h2>Create Post</h2>}
-
             <>
                 {role === roles.poster && <NewFamilyPost/>}
                 {role === roles.receiver && <GrandparentReplyOptions post={CurrentPost.post}/>}
