@@ -59,8 +59,8 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
         </Grid>
         <Switch>
             <Route exact path="/" component={SignIn} />
-            <Route exact path="/register" component={Join} />
-            <Route exact path="/login" component={SignIn} />
+            <Route exact path="/join" component={Join} />
+            <Route exact path="/signIn" component={SignIn} />
             <Route exact path="/resetPassword" component={ResetPassword} />
             <Route exact path="/handleReset" component={HandleReset} />
         {
