@@ -128,7 +128,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline>
             <Header isLoggedIn={isLoggedIn} settingsComplete={settingsComplete} />
-            <Routes userData={userData} isLoggedIn={isLoggedIn} />
+            <Routes settingsComplete={settingsComplete} userData={userData} isLoggedIn={isLoggedIn} />
           </CssBaseline>
         </ThemeProvider>
       </Router>

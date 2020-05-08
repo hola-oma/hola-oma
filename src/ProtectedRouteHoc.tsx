@@ -8,13 +8,13 @@ import firebase from 'firebase/app';
 */
 
 interface IProtectedRouteHoc {
-  isLoggedIn: boolean;
+  isLoggedIn: boolean | null;
   public: boolean;
   RouteComponent: any;
   path: string;
   component?: any;
 	exact: any;
-	setIsLoading?: (loading: boolean) => void
+	setIsLoading?: (loading: boolean) => void;
 }
 
 const ProtectedRouteHoc: React.FC<IProtectedRouteHoc & RouteComponentProps> = ({ RouteComponent, isLoggedIn, component, setIsLoading, ...rest }: IProtectedRouteHoc) => {

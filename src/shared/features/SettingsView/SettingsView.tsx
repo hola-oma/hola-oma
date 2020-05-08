@@ -16,7 +16,7 @@ import './SettingsView.css';
 import ChangeAccountTypeAlert from './components/ChangeAccountTypeAlert';
 
 interface ISettingsView extends RouteComponentProps<any>{
-  setIsLoading: (loading: boolean) => void
+  setIsLoading: (loading: boolean) => void;
 }
 
 const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
