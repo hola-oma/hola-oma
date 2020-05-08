@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogContentText, DialogActions, Button, Grid, Typography, Container } from '@material-ui/core';
+import { Dialog, DialogContent, DialogContentText, Button, Container } from '@material-ui/core';
 import { AccountLink } from 'shared/models/accountLink.model';
 import Row from 'shared/components/Row/Row';
 import Child from 'shared/components/Child/Child';
