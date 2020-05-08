@@ -57,7 +57,7 @@ export const GrandparentPostView: React.FC = () => {
     postImage.addEventListener('load', () => {
       setLoaded(true);
     })
-  }, [FamilyPost.photoURL]);
+  });
 
   const enlargeImage = () => {
     console.log("Open enlarge image modal");
