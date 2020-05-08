@@ -194,6 +194,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
         friend={selectedFriend} 
         unfriendFriend={() => deleteAccountLink(selectedFriend)}
         onClose={handleManageAccountLinkAlertClose} 
+        role={role}
       />
     }
     </>

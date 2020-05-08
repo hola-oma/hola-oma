@@ -1,15 +1,28 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Grid } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Grid, Typography, Container } from '@material-ui/core';
 import { AccountLink } from 'shared/models/accountLink.model';
+import Row from 'shared/components/Row/Row';
+import Child from 'shared/components/Child/Child';
+import WarningIcon from '@material-ui/icons/Warning';
+import { roles } from 'enums/enums';
 
 interface IManageAccountLinkAlert {
   isOpen: boolean;
   onClose: () => void;
   friend: AccountLink;
   unfriendFriend: (friend: AccountLink) => void;
+  role: String;
 }
 
-const ManageAccountLinkAlert: React.FC<IManageAccountLinkAlert> = ({ isOpen, onClose, friend, unfriendFriend }) => { 
+const ManageAccountLinkAlert: React.FC<IManageAccountLinkAlert> = ({ isOpen, onClose, friend, unfriendFriend, role }) => { 
+
+  const getRemovalString = () => {
+    if (role === roles.poster) {
+      return `You will no longer be able to share updates with ${friend.displayName}.`;
+    } else if (role === roles.receiver) {
+      return `You will no longer receive updates from ${friend.displayName}.`;
+    }
+  }
 
   return (
     <Dialog
@@ -18,31 +31,44 @@ const ManageAccountLinkAlert: React.FC<IManageAccountLinkAlert> = ({ isOpen, onC
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-    <DialogTitle id="alert-dialog-title">No more updates from {friend.displayName}</DialogTitle>
-    <DialogContent>
-      <DialogContentText id="alert-dialog-description">
-        Warning! You will not get any more updates from {friend.displayName}. Do you want to continue? 
-      </DialogContentText>
-    </DialogContent>
-    <DialogActions>
+      <Container className="padDialog">
+        <Row justify="center" alignItems="center">
+          <Child>
+            <WarningIcon color="error"/>&nbsp;
+          </Child>
 
-      {/* Delete account link */}
-      <Grid container>
-        <Grid item sm={4}>
-        <Button onClick={() => unfriendFriend(friend)} variant="outlined" size="small" className="buttonDanger" autoFocus>
-            Remove them
-          </Button>
-      </Grid>
+          <Child>
+            <span className="boldText">Remove your link with {friend.displayName}</span>
+          </Child>
+        </Row>
+        <hr/>
 
-      {/* Cancel */}
-        <Grid item sm={6}>
-          <Button onClick={onClose} size="small" className="buttonSafe pullRight">
-            Stay connected
-          </Button>
-        </Grid>
-      </Grid>
-      
-    </DialogActions>
+
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+            <span><b>Warning! </b>{getRemovalString()}</span>
+          <br/><br/>
+          <span>Please confirm your choice.</span>
+        </DialogContentText>
+
+        <Row alignItems="center" justify="space-around">
+          {/* Delete account link */}
+          <Child xs={12} sm={4}>
+            <Button onClick={() => unfriendFriend(friend)} variant="outlined" className="buttonDanger">
+              Remove them
+            </Button>
+          </Child>
+
+          {/* Cancel */}
+          <Child xs={12} sm={4}>
+            <Button onClick={onClose} className="buttonSafe">
+              Stay connected
+            </Button>
+          </Child>
+        </Row>
+
+      </DialogContent>
+    </Container>
   </Dialog>
   );
 }
