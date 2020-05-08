@@ -109,7 +109,12 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
     e.preventDefault();
 
     if (displayName === "") {
-      setErrors("Please enter a name");
+      setErrors("Please enter a name.");
+      setInvalidName(true);
+    } else if (displayName.length > 34) {
+      // 34 character test name with spaces: Priscilla Jacqueline Flarblesworth
+      // 34 character word with no spaces: Supercalifragilisticexpialidocious
+      setErrors("Please enter a shorter name.");
       setInvalidName(true);
     } else {
       try {

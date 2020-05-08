@@ -1,0 +1,7 @@
+.breakLongName {
+  word-wrap:break-word;
+}
+
+.noRight {
+  right:0px !important;
+}
