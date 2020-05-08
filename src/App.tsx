@@ -73,6 +73,7 @@ function App() {
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
   const [settingsComplete, setSettingsComplete] = useState<boolean>(false);
   const [userData, setUserData] = useState<User>();// call db and get stuff, put it in here
+  const [sessionRead, setSessionRead] = useState<boolean>(false);
   const [post, setPost] = useState<Post>(dummyPost);
 
   const readSession = async () => {
@@ -91,6 +92,8 @@ function App() {
           const [targetResult] = event.target.result;
           if (targetResult?.value?.uid) {
             setLoggedIn(true);
+          } else {
+            setSessionRead(true);
           }
         }
       } catch(e) {
@@ -103,18 +106,22 @@ function App() {
       db.createObjectStore('firebaseLocalStorage', {keyPath: 'fbase_key'});
     };
 
-    // get user from db
-    await getUserSettings().then((settings:any) => {
+    try {
+      // get user from db
+      const settings: any = await getUserSettings();
       setUserData(settings);
       if (settings?.displayName && settings?.role) {
         setSettingsComplete(true);
       }
-    });
+    } catch (e) {
+      console.log(e);
+    }
+
   };
 
   useEffect(() => {
     readSession();
-  }, [isLoggedIn, settingsComplete])
+  }, [isLoggedIn])
 
   return (
     /* https://reactjs.org/docs/context.html */
@@ -128,7 +135,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline>
             <Header isLoggedIn={isLoggedIn} settingsComplete={settingsComplete} />
-            <Routes settingsComplete={settingsComplete} userData={userData} isLoggedIn={isLoggedIn} />
+            <Routes sessionRead={sessionRead} settingsComplete={settingsComplete} userData={userData} isLoggedIn={isLoggedIn} />
           </CssBaseline>
         </ThemeProvider>
       </Router>

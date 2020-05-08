@@ -19,7 +19,7 @@ interface IProtectedRouteHoc {
 
 const ProtectedRouteHoc: React.FC<IProtectedRouteHoc & RouteComponentProps> = ({ RouteComponent, isLoggedIn, component, setIsLoading, ...rest }: IProtectedRouteHoc) => {
 	if (isLoggedIn || rest.public) {
-    const user = firebase.auth().currentUser;
+		const user = firebase.auth().currentUser;
 		return (
 			<Route
 				{...rest}

@@ -202,13 +202,13 @@ export const authenticateFromStore = async () => {
   const user = firebase.auth().currentUser;
   let resolveAuthPromise = () => {};
 
-  const isAuthenticated = new Promise(resolve => {
+  const isAuthenticated = new Promise((resolve)=> {
     resolveAuthPromise = resolve;
   });
 
   if (user) {
     resolveAuthPromise();
-  }
+  } 
   
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
