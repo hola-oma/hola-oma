@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme: Theme) =>
   imageButton: {
     position: 'absolute',
     bottom: '0%',
-    right:  '5%',
     backgroundColor: '#d8e0e440 !important'
   },
   imageBackdrop: {
@@ -49,7 +48,6 @@ const useStyles = makeStyles((theme: Theme) =>
     right: 0,
     top: 0,
     bottom: 0,
-    // backgroundColor: theme.palette.common.black,
     opacity: 0.4,
     transition: theme.transitions.create('opacity'),
   },
