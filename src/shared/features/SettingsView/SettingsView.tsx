@@ -23,7 +23,7 @@ import FormError from 'shared/components/FormError/FormError';
 import CredentialsForm from 'shared/components/CredentialsForm/CredentialsForm';
 
 interface ISettingsView extends RouteComponentProps<any>{
-  setIsLoading: (loading: boolean) => void
+  setIsLoading: (loading: boolean) => void;
 }
 
 const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
