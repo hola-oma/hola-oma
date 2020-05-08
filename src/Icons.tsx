@@ -43,5 +43,5 @@ export const replyOptionIcons = {
 }
 
 export const magnifyIcon = {
-  magnify: <ZoomInIcon/>
+  magnify: <ZoomInIcon fontSize={"large"}/>
 }
