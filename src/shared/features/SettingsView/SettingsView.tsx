@@ -5,9 +5,7 @@ import { RouteComponentProps } from 'react-router-dom'; // give us 'history' obj
 import { getUserSettings, updateUserSettings, getUserProfile, updateUserProfile } from '../../../services/user';
 
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { Box } from '@material-ui/core';
 
 import BigInput from 'shared/components/BigInput/BigInput';
 import LinkedAccountManagement from './components/LinkedAccountManagement';
@@ -18,8 +16,6 @@ import CredentialsWrapper from 'shared/components/CredentialsWrapper';
 import Row from 'shared/components/Row/Row';
 import Column from 'shared/components/Column/Column';
 import Child from 'shared/components/Child/Child';
-import FormSubmitButton from 'shared/components/FormSubmitButton';
-import FormError from 'shared/components/FormError/FormError';
 import CredentialsForm from 'shared/components/CredentialsForm/CredentialsForm';
 
 interface ISettingsView extends RouteComponentProps<any>{

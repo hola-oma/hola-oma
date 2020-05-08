@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Container, Card, CardMedia, CardContent, Typography, CardHeader, Avatar, CardActions, IconButton, Button } from '@material-ui/core';
+import { Container, Card, CardMedia, CardContent, Typography, CardHeader, Avatar, CardActions, IconButton } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 import { Post } from 'shared/models/post.model';
@@ -66,7 +66,7 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
   }
 
   const renderPostTitle = (post: Post) => {
-    if (post.receiverIDs.length == 1) {
+    if (post.receiverIDs.length === 1) {
       return <span>You shared this with {post.receiverIDs.length} recipients.</span>
     } else if (post.receiverIDs.length > 1) {
       return <span>You shared this with one recipient.</span>
