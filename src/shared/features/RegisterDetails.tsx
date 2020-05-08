@@ -1,10 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-
-import Copyright from 'shared/components/Copyright';
 
 import { AuthContext } from "../../App";
 
@@ -17,10 +11,13 @@ import { RouteComponentProps } from 'react-router-dom'; // give us 'history' obj
 import { roles } from '../../enums/enums';
 import { getUserProfile, createUserSettings, updateUserProfile } from "services/user";
 import BigInput from "shared/components/BigInput/BigInput";
-import { Avatar } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import CredentialsWrapper from "shared/components/CredentialsWrapper";
+import Child from "shared/components/Child/Child";
+import Row from "shared/components/Row/Row";
+import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
+import CredentialsForm from "shared/components/CredentialsForm/CredentialsForm";
 
 interface IRegisterDetails extends RouteComponentProps<any> {
     setIsLoading: (loading: boolean) => void
@@ -61,6 +58,51 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
     return () => { isMounted = false; }
   }, [setIsLoading]); // fires on page load if this is empty [] 
 
+  const updateDisplayName = (e: any) => {
+    setDisplayName(e.target.value)
+  }
+
+  const updateDisplayNameInput = () => (
+    <BigInput 
+      error={invalidName}
+      labelText=""
+      name="displayName"
+      required={true} 
+      value={displayName}
+      autoFocus={true}
+      autoComplete="fname"
+      type="text"
+      onChange={updateDisplayName}
+    />
+  )
+
+  const roleRadioInputs = () => (
+    <>
+      <label>
+        <input
+          type="radio"
+          name="accountType"
+          id="receiver"
+          value="receiver"
+          checked={role === roles.receiver}
+          onChange={e => setRole(roles.receiver)}
+          />
+        I want to <b>receive</b> posts
+      </label>
+
+      <br/>
+      <label>
+        <input
+          type="radio"
+          name="accountType"
+          id="poster"
+          value="poster"
+          onChange={e => setRole(roles.poster)}
+          />
+          I want to <b>make</b> posts
+      </label>
+    </>
+  )
 
   /* ADD USER ROLE TYPE AND DISPLAY NAME TO USER SETTINGS */
   const handleForm = async (e: any) => {
@@ -85,96 +127,26 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
     }
   }
 
-  const updateDisplayName = (e: any) => {
-    setDisplayName(e.target.value)
-  }
-
   return (
-    <Grid container className="credentialsForm" spacing={2} justify="center">
-      <Grid item xs={10} md={8}>
-        <div>
-          <Avatar className="formAvatar">
-            <AccountCircleIcon />
-          </Avatar>
-
-        <Typography component="h1" variant="h4">
-          Display my name as
-        </Typography>
-
-        <form onSubmit={e => handleForm(e)} className="" noValidate>
-
-          <Grid container spacing={2} justify="center">
+    <CredentialsWrapper>
+      <Row justify="center">
+      <Child xs={12} sm={8} md={6} lg={4}>
+        <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Display my name as" subtitle="" />
+        
+          <CredentialsForm onSubmit={handleForm} submitText="Done" error={error}>
             
-            {/* Display name */}
-            <Grid item xs={12} sm={8}>
-              <BigInput 
-                error={invalidName}
-                labelText=""
-                name="displayName"
-                required={true} 
-                value={displayName}
-                autoFocus={true}
-                autoComplete="fname"
-                type="text"
-                onChange={updateDisplayName}
-              />
-            </Grid>
+            <Child xs={12}>
+              {updateDisplayNameInput()}
+            </Child>
 
-            <Grid item xs={12} sm={8}>
-            <label>
-              <input
-                type="radio"
-                name="accountType"
-                id="receiver"
-                value="receiver"
-                checked={role === roles.receiver}
-                onChange={e => setRole(roles.receiver)}
-                />
-                I want to <b>receive</b> posts
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="radio"
-                  name="accountType"
-                  id="poster"
-                  value="poster"
-                  onChange={e => setRole(roles.poster)}
-                  />
-                I want to <b>make</b> posts
-              </label>
-            </Grid>
+            <Child xs={12}>
+              {roleRadioInputs()}
+            </Child>
 
-            <Grid item xs={12} sm={8}>
-              <Button 
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                size="large"
-                className="bigButton"
-              >
-                Done
-              </Button>
-            </Grid>
-
-            <Grid item xs={12} sm={8}>
-              {error &&
-                <Alert className="error" severity="error">{error}</Alert>
-              }
-            </Grid>
-        </Grid>
-
-        </form>
-      </div>
-    </Grid>
-
-    <Grid item xs={12}>
-      <Box mt={6}>
-        <Copyright />      
-      </Box>
-    </Grid>
-  </Grid>
+          </CredentialsForm>
+        </Child>
+      </Row>
+    </CredentialsWrapper>
   );
 };
 

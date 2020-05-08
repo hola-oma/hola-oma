@@ -2,12 +2,9 @@ import React, { useState, useEffect } from "react";
 import * as QueryString from "query-string"
 
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
 
-import Copyright from 'shared/components/Copyright';
+import FormError from 'shared/components/FormError/FormError';
 
 import HelpIcon from '@material-ui/icons/Help';
 
@@ -22,6 +19,12 @@ import { Avatar } from "@material-ui/core";
 import { verifyActionCode, resetPassword } from 'services/user';
 import Alert from "@material-ui/lab/Alert";
 import BigInput from "shared/components/BigInput/BigInput";
+import CredentialsWrapper from "shared/components/CredentialsWrapper";
+import Child from "shared/components/Child/Child";
+import CredentialsForm from "shared/components/CredentialsForm/CredentialsForm";
+import Row from "shared/components/Row/Row";
+import Column from "shared/components/Column/Column";
+import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
 
 interface MatchParams {
   mode: string;
@@ -52,6 +55,58 @@ const HandleReset: React.FC<IHandleReset> = () => {
     setNewPassword(e.target.value);
   }
 
+  const emailInvalid = () => (
+    <Column justify="center" alignItems="center">
+      <Child xs={12}>
+        <FormError error={error} />
+      </Child>
+      <Child xs={12}>
+        <Link to="/resetPassword">Try again</Link>
+      </Child>
+    </Column>
+  )
+
+  const passwordInput = () => (
+    <BigInput
+      error={false} 
+      labelText="New password"
+      name="password"
+      required={true}
+      value={newPassword}
+      autoFocus={true}
+      autoComplete="off"
+      type="password"
+      onChange={updatePassword}/>
+  )
+
+  const passwordForm = () => (
+    <>
+      <CredentialsLeftTitle icon={<HelpIcon />} title="Enter a new password" subtitle={"for " + email}/>
+      <br/>
+      <CredentialsForm onSubmit={handleForm} submitText="Save" error={error}>
+        {passwordInput()}
+      </CredentialsForm>
+    </>
+  )
+
+  const successMessage = () => (
+    <Row justify="center" alignItems="flex-start">
+      <Child container xs={12} justify="center">
+        <Typography component="h1" variant="h4">
+          Success!
+        </Typography>
+      </Child>
+
+      <Child container xs={12} justify="center">
+        <Typography align="center">Password for <b>{email}</b> has been reset.</Typography>
+      </Child>
+
+      <Child container xs={12} justify="center">
+        <Button className="bigButton" variant="contained" color="primary" onClick={() => {goToSignIn()}}>Return to sign in</Button>
+      </Child>
+    </Row>
+  )
+
   useEffect(() => {
     verifyActionCode(params?.oobCode as string)
       .then((email: string) => {
@@ -81,94 +136,39 @@ const HandleReset: React.FC<IHandleReset> = () => {
     }
   }
 
-  const goToLogin = () => {
-    console.log("going to login page");
-    history.replace('/login');
+  const goToSignIn = () => {
+    history.replace('/signIn');
   }
 
   return (
-    <Grid container>
-      <Container component="main" maxWidth="xs">
-        <br/>
-        {/* If the user arrives on this page with an invalid oobCode, don't show the form, just show the error message */}
-        {!email && 
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-            {error &&
-              <Alert className="error" severity="error">{error}</Alert>
-            }
-            <br/>
-            <Link to="/resetPassword">Try again</Link>
-            </Grid>
-          </Grid>
-        }
+    <CredentialsWrapper>
+      <Row justify="center">
+        <Child xs={12} sm={8} md={6} lg={4}>
+          {/* Invalid oobCode, don't show form. Show error message */}
+          {!email && 
+            <>
+            {emailInvalid()}
+            </>
+          }
 
-        {email && 
-          <>
-          <div>
-            {!resetSent && 
-              <>
-                <Avatar className="formAvatar">
-                  <HelpIcon />
-                </Avatar>
-                <Typography component="h1" variant="h4">
-                  Enter a new password 
-                </Typography>
-                <p>for <b>{email}</b></p>
+          {email && 
+            <>
+              {!resetSent && 
+                <>
+                {passwordForm()}
+                </>
+              }
 
-              <form onSubmit={e => handleForm(e)} className="">
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                    <BigInput
-                      error={false} 
-                      labelText="New password"
-                      name="password"
-                      required={true}
-                      value={newPassword}
-                      autoFocus={true}
-                      autoComplete="off"
-                      type="password"
-                      onChange={updatePassword}/>
-                    </Grid>
-                  </Grid>
-
-                  <Button 
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    className="bigButton"
-                  >
-                    Save
-                  </Button>
-                </form>
-              </>
-            }
-
-            {error &&
-              <Alert className="error" severity="error">{error}</Alert>
-            }
-
-            {resetSent && 
-              <>
-              <Typography component="h1" variant="h4">
-                  Success!
-                </Typography>
-              <p>Password for <b>{email}</b> has been reset.</p>
-              <Button className="bigButton" variant="contained" color="primary" onClick={() => {goToLogin()}}>Return to login</Button>
-              </>
-            }
-        
-        </div>
-        <Box mt={8}>
-          <Copyright />      
-        </Box>
-        </>
-      } {/* if email exists */ }
-
-      </Container>
-    </Grid>
+              {resetSent && 
+                <>
+                {successMessage()}
+                </>
+              }
+            </>
+          }
+        </Child>
+      </Row>
+    </CredentialsWrapper>
   );
 };
 

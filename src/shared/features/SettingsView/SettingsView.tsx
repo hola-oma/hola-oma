@@ -14,6 +14,13 @@ import LinkedAccountManagement from './components/LinkedAccountManagement';
 
 import './SettingsView.css';
 import ChangeAccountTypeAlert from './components/ChangeAccountTypeAlert';
+import CredentialsWrapper from 'shared/components/CredentialsWrapper';
+import Row from 'shared/components/Row/Row';
+import Column from 'shared/components/Column/Column';
+import Child from 'shared/components/Child/Child';
+import FormSubmitButton from 'shared/components/FormSubmitButton';
+import FormError from 'shared/components/FormError/FormError';
+import CredentialsForm from 'shared/components/CredentialsForm/CredentialsForm';
 
 interface ISettingsView extends RouteComponentProps<any>{
   setIsLoading: (loading: boolean) => void;
@@ -48,6 +55,32 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
     setRole(newRole);
     setChangeAccountTypeAlertOpen(false);
   }
+
+  const displayNameInput = () => (
+    <BigInput 
+      error={false}
+      labelText="Display Name"
+      name="displayName"
+      required={true} 
+      value={displayName}
+      autoFocus={false}
+      autoComplete="none"
+      type="text"
+      onChange={updateDisplayName}/>
+  )
+
+  const emailInput = () => (
+    <BigInput
+      error={false} 
+      labelText="E-mail address"
+      name="email"
+      required={true} 
+      value={email}
+      autoFocus={false}
+      autoComplete="none"
+      type="email"
+      onChange={updateEmail}/>
+  )
 
   /* UPDATE ACCOUNT SETTINGS */
   const handleForm = async (e: any) => {
@@ -84,92 +117,56 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
             setIsLoading(false);
           });
       }
-
     });
-
     return () => { isMounted = false; }
   }, [setIsLoading]); // fires on page load if this is empty [] 
 
   return (
-    <>
-    <Grid container className="settingsForm" spacing={2} alignItems="flex-start">
-        <Grid item xs={12} sm={5}>
-          <div>
-            <Typography component="h1" variant="h4">
+    <CredentialsWrapper>
+
+      <Row justify="space-around">
+    
+        {/* LEFT CHILD: ACCOUNT SETTINGS */}
+        <Child xs={12} sm={10} md={5}>
+          <Column justify="space-between">
+            
+            <span className="boldText">
               Account settings
-            </Typography>
+            </span>
 
-            <form onSubmit={e => handleForm(e)}>
+            <Child item xs={12}>
+              <Typography>Account type: {role.toString()} 
+                <Button 
+                  variant="outlined" 
+                  size="small" 
+                  color="primary" 
+                  className="pullRight" 
+                  onClick={() => openRoleModal()}>Change</Button>
+                </Typography>
+            </Child>
 
-                <Grid item xs={12}>
-                  <BigInput 
-                    error={false}
-                    labelText="Display Name"
-                    name="displayName"
-                    required={true} 
-                    value={displayName}
-                    autoFocus={false}
-                    autoComplete="none"
-                    type="text"
-                    onChange={updateDisplayName}/>
-                </Grid>
+            <CredentialsForm onSubmit={handleForm} submitText="Save settings" error={error}>
 
-                <Grid item xs={12}>
-                  <BigInput
-                    error={false} 
-                    labelText="E-mail address"
-                    name="email"
-                    required={true} 
-                    value={email}
-                    autoFocus={false}
-                    autoComplete="none"
-                    type="email"
-                    onChange={updateEmail}/>
-                </Grid>
+              <Child xs={12}>
+                {displayNameInput()}
+              </Child>
 
-                <Grid item xs={12}>
-                  <Typography>Account type: {role.toString()} 
-                    <Button 
-                      variant="outlined" 
-                      size="small" 
-                      color="primary" 
-                      className="pullRight" 
-                      onClick={() => openRoleModal()}>Change</Button>
-                    </Typography>
-                </Grid>
+              <Child item xs={12}>
+                {emailInput()}
+              </Child>
 
-                
-              <Button type="submit"
-                fullWidth
-                variant="contained"
-                color="secondary"
-                className="bigButton">
-                Save settings
-              </Button>
-          
-            </form>
-          <span className="error">{error}</span>
-        </div>
+            </CredentialsForm>
+            <br/>
+          </Column>
+        </Child>
 
-      </Grid>
+        {/* RIGHT CHILD: LINKED ACCOUNTS */}
+        <Child xs={12} sm={10} md={6}>
+          <LinkedAccountManagement role={role} />
+        </Child>
+      </Row>
 
-      <Grid item xs={12} sm={6}>
-        <LinkedAccountManagement role={role} />
-      </Grid>
-
-      <Grid item xs={12}>
-        <Box className="todo">
-        <h3>To do items:</h3>
-        <ul>
-          <li>Fade out removed invites/deleted friends</li>
-          <li>[Stretch goal] Friend profile pics?</li>
-        </ul>
-        <b>Debug</b>
-        <p>User ID: {userID}</p>
-
-      </Box>
-    </Grid>
-    </Grid>
+      <p>User ID: {userID}</p>
 
     <ChangeAccountTypeAlert 
       isOpen={changeAccountTypeAlertOpen} 
@@ -178,7 +175,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
       onClose={handleChangeAccountTypeAlertClose} 
     />
 
-  </>
+  </CredentialsWrapper>
   )
 }
 

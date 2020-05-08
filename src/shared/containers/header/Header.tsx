@@ -28,11 +28,11 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
   }
 
   const goToRegistration = () => {
-    history.push('/register')
+    history.push('/join')
   }
 
-  const goToLogin = () => {
-    history.push('/login')
+  const goToSignIn = () => {
+    history.push('/signIn')
   }
 
   const goToInbox = () => {
@@ -80,7 +80,7 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
                   onClick={() => goToRegistration()}
                   startIcon={<AccountCircleIcon />}
                 >
-                  Register
+                  Join
                 </Button>
                 </li>
 
@@ -89,10 +89,10 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
                   color="secondary"
                   size="large"
                   className=""
-                  onClick={() => goToLogin()}
+                  onClick={() => goToSignIn()}
                   startIcon={<AccountCircleIcon />}
                 >
-                  Login
+                  Sign in
                 </Button></li>
             </ul>
           }
@@ -104,11 +104,11 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
                 <Button
                   variant="outlined"
                   color="secondary"
-                  size="small"
+                  size="medium"
                   className=""
                   onClick={() => goToPhotoPrototype()}
                   startIcon={<AccountCircleIcon />}
-                >Photo prototype
+                >Photo
                 </Button>
               </li>
 
@@ -116,7 +116,7 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
                 <Button
                   variant="contained"
                   color="secondary"
-                  size="large"
+                  size="medium"
                   className=""
                   onClick={() => goToInbox()}
                   startIcon={<MailIcon />}
@@ -129,7 +129,7 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
                 <Button
                   variant="contained"
                   color="secondary"
-                  size="large"
+                  size="medium"
                   className=""
                   onClick={() => goToSettings()}
                   startIcon={<SettingsIcon />}
