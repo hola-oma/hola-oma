@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import {Grid, Typography, IconButton, ButtonBase} from '@material-ui/core';
+import { Theme, Grid, Typography, IconButton, ButtonBase } from '@material-ui/core';
 
 import { GrandparentPostContext } from "../../../App";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles,  createStyles } from "@material-ui/core/styles";
 
 import {  getMessageSubstring } from "../../../services/post";
 import { magnifyIcon } from "../../../Icons";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
   root: {
     maxWidth: '100%',
     maxHeight: '100%'
@@ -42,7 +43,18 @@ const useStyles = makeStyles({
     right: '1%',
     backgroundColor: '#dbdbdb !important',    // disable hover with !important
   },
-});
+  imageBackdrop: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: theme.palette.common.black,
+    opacity: 0.4,
+    transition: theme.transitions.create('opacity'),
+  },
+  }),
+);
 
 export const GrandparentPostView: React.FC = () => {
 
@@ -69,26 +81,30 @@ export const GrandparentPostView: React.FC = () => {
         <div className={classes.root}>
 
           {FamilyPost.photoURL &&
+          <div className={classes.root}>
             <ButtonBase
                 key={FamilyPost.from}
                 className={FamilyPost.message ? classes.both : classes.media}
-                style={{ width: postImage.width }}
-            >
-              <span className={classes.imageSrc} onClick={enlargeImage}
-                  style={{
-                    backgroundImage: `url(${FamilyPost.photoURL})`,
-                    display: loaded ? "" : "none",
-                  }}
-              />
-              <IconButton
-                  className={classes.imageButton}
-                  color="primary"
-                  aria-label="enlarge photo"
+                style={{ width: postImage.width }} >
+              <span className=
+                  {classes.imageSrc}
                   onClick={enlargeImage}
-              >
-                {magnifyIcon.magnify}
-              </IconButton>
+                  style={{
+                      backgroundImage: `url(${FamilyPost.photoURL})`,
+                      display: loaded ? "" : "none",
+                    }}  />
+                {/*<span className={classes.imageBackdrop} />*/}
+                <span className={classes.imageButton} />
             </ButtonBase>
+
+            <IconButton
+               className={classes.imageButton}
+               color="primary"
+               aria-label="enlarge photo"
+               onClick={enlargeImage} >
+                  {magnifyIcon.magnify}
+               </IconButton>
+          </div>
           }
 
           <Typography variant="h5"
