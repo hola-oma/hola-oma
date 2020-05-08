@@ -77,7 +77,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
             <GridList className={classes.gridList} cols={3}>
               {posts.map((post, index: number) => (
-                <GridListTile key={post.from} onClick={() => pressEnvelope(post)} rows={1.25}>
+                <GridListTile key={index} onClick={() => pressEnvelope(post)} rows={1.25}>
                   <img src={post.read ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
                        alt={"Letter from " + post.from}
                   />
