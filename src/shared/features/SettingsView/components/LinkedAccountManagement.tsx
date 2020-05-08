@@ -169,7 +169,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
   return (
     <>
     <Box className="devBox">
-      <h3>{role === roles.poster ? 'Sharing posts with:' : 'Getting updates from:'}</h3>
+      <span className="boldText">{role === roles.poster ? 'Sharing posts with' : 'Getting updates from'}</span>
       <div>
         <List>
           {linkedAccounts.length ? generateLinkedAccountsList(role, linkedAccounts) : 'You are not following anyone. Ask a family member to send you an invitation so you can view their photos.'}
@@ -179,7 +179,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
     <br/>
 
     <Box className="devBox">
-      <h3>{role === roles.poster ? 'Sent invitations:' : 'Pending invitations:'}</h3>
+      <span className="boldText">{role === roles.poster ? 'Sent invitations' : 'Pending invitations'}</span>
       <div>
         <List>
           {pendingAccounts.length ? generateLinkedAccountsList(role, pendingAccounts) : 'No pending invitations'}
