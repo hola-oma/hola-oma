@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
-import { Grid, Button, Typography } from '@material-ui/core';
-
 import { createLinkByEmail } from 'services/accountLink';
+
 import BigInput from 'shared/components/BigInput/BigInput';
-import Alert from '@material-ui/lab/Alert';
+import CredentialsWrapper from 'shared/components/CredentialsWrapper';
+import Row from 'shared/components/Row/Row';
+import Child from 'shared/components/Child/Child';
+import CredentialsLeftTitle from 'shared/components/CredentialsLeftTitle';
+
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import CredentialsForm from 'shared/components/CredentialsForm/CredentialsForm';
 
 interface IAddAccountLink extends RouteComponentProps {
   // empty for now, just need this for the "extends RouteComponentProps" part 
@@ -21,6 +26,19 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
     setEmailAddress(e.target.value);
   }
 
+  const emailInput = () => (
+    <BigInput 
+      error={emailAddressError}
+      labelText="Enter their E-Mail address"
+      name="emailAddress"
+      required={true} 
+      value={emailAddress}
+      autoFocus={false}
+      autoComplete="off"
+      type="text"
+      onChange={updateEmailInput}/>
+  )
+
   const handleEmailForm = async (e: any) => {
     e.preventDefault();
 
@@ -32,7 +50,6 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
         let linkCreated = await createLinkByEmail(emailAddress);
 
         if (linkCreated) {
-          console.log("invite successfully sent to: ", emailAddress);
           if (history) history.push('/posts');
         } else {
           console.log("No invite was sent");
@@ -45,64 +62,21 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
   }
 
   return (
-    <Grid container className="credentialsForm" spacing={2} justify="center">
-      <Grid item xs={10} md={8}>
-        <div>
-          <Typography component="h1" variant="h4">
-            Link up with a family member
-          </Typography>
-          <p>Invite a family member or close friend to see your posts. The person you invite must already have an <i>Hola, Oma!</i> account.</p>
-        </div>
+    <CredentialsWrapper>
+      <Row justify="center">
+        <Child xs={12} sm={8} md={6} lg={4}>
+          <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Link up with a family member" subtitle="Invite a family member or close friend to see your posts. The person you invite must already have an Hola, Oma! account." />
 
-        <form onSubmit={e => handleEmailForm(e)} noValidate>
-        
-          <Grid container spacing={2} justify="center">
-
-{/* 
-            <Grid item xs={12} sm={8}>
-              <Box className="devBox">
-                <p>Passphrase</p>
-                <h1>AB4P</h1>
-                <p>Ask your family member to enter this pass phrase to link your accounts. [Not yet implemented]</p>
-              </Box>
-            </Grid>
-  */}
+          <CredentialsForm onSubmit={handleEmailForm} submitText="Send Invitation" error={error}>
             
-            <Grid item xs={12} sm={8}>
-              <BigInput 
-                  error={emailAddressError}
-                  labelText="Enter their E-Mail address"
-                  name="emailAddress"
-                  required={true} 
-                  value={emailAddress}
-                  autoFocus={true}
-                  autoComplete="off"
-                  type="text"
-                  onChange={updateEmailInput}/>
-            </Grid>
+            <Child xs={12}>
+              {emailInput()}
+            </Child>
 
-
-            <Grid item xs={12} sm={8}>
-              <Button 
-                type="submit"
-                className="bigButton"
-                fullWidth
-                variant="contained"
-                color="primary"
-                size="large"
-              >
-                Send Invitation
-              </Button>
-              </Grid>
-
-              {error &&
-                <Alert className="error" severity="error">{error}</Alert>
-              }
-
-            </Grid>
-        </form>
-      </Grid>
-      </Grid>
+          </CredentialsForm>
+        </Child>
+      </Row>
+    </CredentialsWrapper>
   );
 }
 

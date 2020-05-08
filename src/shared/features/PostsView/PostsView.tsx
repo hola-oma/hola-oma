@@ -5,12 +5,12 @@ import {roles} from '../../../enums/enums';
 import {getUserSettings} from "services/user";
 import Inbox from '../GrandparentViews/Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
-import { Link as ButtonLink, Button, Grid, Container, Typography} from '@material-ui/core';
+import { Link as ButtonLink, Button, Grid } from '@material-ui/core';
 import {getPosts} from 'services/post';
 
 import {Post} from '../../models/post.model';
 
-import {acceptLink, getLinkedAccounts} from 'services/accountLink';
+import {acceptLink, getLinkedAccounts, removeLink} from 'services/accountLink';
 import {Link} from 'react-router-dom';
 import {AccountLink} from 'shared/models/accountLink.model';
 
@@ -22,6 +22,10 @@ import Alert from '@material-ui/lab/Alert';
 
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AddCommentIcon from '@material-ui/icons/AddComment';
+import CredentialsWrapper from 'shared/components/CredentialsWrapper';
+import Column from 'shared/components/Column/Column';
+import Child from 'shared/components/Child/Child';
+import Row from 'shared/components/Row/Row';
 
 interface IPostsView extends RouteComponentProps<any> {
   setIsLoading: (loading: boolean) => void;
@@ -77,9 +81,10 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     if (invite) {
       const accepted = acceptLink(invite?.id);
       if (accepted) {
-        let temp = pendingInvitations;
-        temp.pop();
-        updatePendingInvitations(pendingInvitations);
+        if (pendingInvitations.length > 0) {
+          pendingInvitations.pop();
+          updatePendingInvitations(pendingInvitations);
+        }
       }
     } else {
       console.log("Problem accepting invitation");
@@ -88,9 +93,24 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     setInvitationModalOpen(false);
   }
 
-  const declineInvite = () => {
-    console.log("rejected invite");
-    setInvitationModalOpen(false);
+  const removeInviteFromDOM = (inviteID: String) => {
+    if (inviteID) {
+      if (pendingInvitations.length > 0) {
+        pendingInvitations.pop();
+        updatePendingInvitations(pendingInvitations);
+      }
+    }
+  }
+
+  const declineInvite = (pendingInvite: AccountLink) => {
+    const deleted = removeLink(pendingInvite?.id);
+    if (deleted) {
+      setInvitationModalOpen(false);
+      removeInviteFromDOM(pendingInvite?.id);
+      // remove it from the collection of pending invites that make the alert show
+    } else {
+      console.log("Problem declining invitation");
+    }
   }
 
   const handleInvitationModalClose = () => {
@@ -109,92 +129,137 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     setNumNewReplies(num);
   }
 
+  const welcomeName = () => (
+    <span className="boldText">
+      Welcome, {displayName}!
+    </span>
+  )
+
+  const inviteButton = () => (
+    <Button
+      variant="outlined"
+      color="primary"
+      size="small"
+      onClick={handleInviteButton}
+      startIcon={<PersonAddIcon />}
+    >
+      Invite follower
+    </Button>
+  )
+
+  const createNewPostButton = () => (
+    <Button
+      variant="contained"
+      color="primary"
+      size="large"
+      className="bigButton noMargin"
+      onClick={goToNewPost}
+      startIcon={<AddCommentIcon />}
+      >
+      Create New Post
+    </Button>
+  )
+
+  const pendingInviteAlert = () => (
+    <Alert variant="filled" severity="warning">
+      <span>
+        You have a pending invitation from {invite?.displayName}.&nbsp;   
+      <ButtonLink 
+        component="button" 
+        variant="body2" 
+        onClick={() => {setInvitationModalOpen(true)}}
+        >View invitation
+      </ButtonLink>
+
+      <PendingInvitationModal 
+        isOpen={invitationModalOpen} 
+        invite={invite} 
+        acceptInvite={acceptInvite}
+        declineInvite={declineInvite}
+        onClose={handleInvitationModalClose} />
+      </span>
+    </Alert>
+  )
+
   return (
-    <Container>
-      <Grid container justify="center">
+    <CredentialsWrapper>
 
-        <Grid item xs>{/* Intentionally empty */}</Grid>
+      <Column justify="center" alignItems="center" id="postViewColumn">
 
-        <Grid item xs={6}>
-          <Typography component="h1" variant="h4">
-            Welcome, {displayName}!
-          </Typography>
-          <p>You have {numNewReplies} new {role === roles.poster ? (numNewReplies !== 1 ? 'replies' : 'reply') : 'letters'}.</p>
-        </Grid>
+          {/* COLUMN CHILD 1: Welcome, X read letters, invitations alert */ }
+          <Row justify="center" id="postsViewRow">
+            {/* ROW CHILD 1 - empty spacer to balance 'invite' button on right */}
+            <Child xs>{/* Intentionally empty */}</Child>
 
-        {role === roles.poster &&
-          <Grid item xs justify="flex-end" alignItems="center" style={{display: 'flex'}}>
-            <Button
-              variant="outlined"
-              color="primary"
-              size="small"
-              onClick={handleInviteButton}
-              startIcon={<PersonAddIcon />}
-            >
-              Invite follower
-            </Button>
-          </Grid>
-        }
+            {/* ROW CHILD 2 - welcome message and replies message */}
+            <Child xs={12} sm={8}>
+              <Column justify="center" alignItems="center">
+                <Child xs={12}>
+                  {welcomeName()}
+                </Child>
 
-        {role === roles.receiver && 
-          <Grid item xs>{/* Intentionally left empty so the user's name centers*/}</Grid>
-        }
+                <Child xs={12}>
+                  <p>You have {numNewReplies} new {role === roles.poster ? (numNewReplies !== 1 ? 'replies' : 'reply') : 'letters'}.</p>
+                </Child>
+              </Column>
+            </Child>
 
-        {role === roles.poster &&
-          <>
-            <Grid item xs={12} alignItems="baseline">
-              <Button
-                  variant="contained"
-                  color="secondary"
-                  size="large"
-                  className="bigButton"
-                  onClick={goToNewPost}
-                  startIcon={<AddCommentIcon />}
-                >
-                  Create New Post
-              </Button>
-            </Grid>
-          </>
-        }
-      </Grid>
-      <hr />
+            {/* ROW CHILD 3 * - invite button OR empty spacer */ }
+            {role === roles.poster &&
+              <Child xs justify="center" alignItems="center" style={{display: 'flex'}}>
+                {inviteButton()}
+              </Child>
+            }
 
-    {role === roles.poster &&
-      <>
-      {linkedAccounts.length === 0 && 
-        <Alert variant="filled" severity="warning">
-          You are not linked with any accounts yet! <Link to="/addAccountLink">Invite someone</Link>
-        </Alert>
-      }
-      </>
-    }
+            {role === roles.receiver && 
+              <Child xs>
+                {/* Intentionally empty so the user's name centers without INVITE FOLLOWER button present*/}
+              </Child>
+            }
+          </Row>
 
-    {role === roles.receiver && pendingInvitations.length > 0 &&
-      <>
-        <Alert variant="filled" severity="warning">
-          <span>
-            You have a pending invitation from {invite?.displayName}.&nbsp;   
-          <ButtonLink 
-            component="button" 
-            variant="body2" 
-            onClick={() => {setInvitationModalOpen(true)}}
-            >View invitation
-          </ButtonLink>
+          {/* COLUMN CHILD 2 - CREATE NEW POST and VIEW OLD POSTS */ }
+          <Child xs>
+          
+            {role === roles.poster &&
+              <Row justify="center">
+                <Child>
+                  <Child xs={12}>
+                    {createNewPostButton()}
+                  </Child>
+                </Child>
+              </Row>
+            }
 
-          <PendingInvitationModal 
-            isOpen={invitationModalOpen} 
-            invite={invite} 
-            acceptInvite={acceptInvite}
-            declineInvite={declineInvite}
-            onClose={handleInvitationModalClose} />
-          </span>
-        </Alert>
-      </>
-    }
+            <Row>
+              <Child xs={12}>
+                {role === roles.poster &&
+                  <>
+                  {linkedAccounts.length === 0 && 
+                    <Alert variant="filled" severity="warning">
+                      You are not linked with any accounts yet! <Link to="/addAccountLink">Invite someone</Link>
+                    </Alert>
+                  }
+                  </>
+                }
 
-    {role === roles.poster && <PostManagement posts={posts} onNewReplies={updateNewReplies}/>}
-    {role === roles.receiver && <Inbox posts={posts}/>}
-    </Container>
+                {role === roles.receiver && pendingInvitations.length > 0 &&
+                  <>
+                    {pendingInviteAlert()}
+                  </>
+                }
+
+                <hr/>
+
+                {role === roles.poster && <PostManagement displayName={displayName} posts={posts} onNewReplies={updateNewReplies}/>}
+                {role === roles.receiver && <Inbox posts={posts}/>}
+            </Child>
+
+          </Row>
+
+        </Child>
+      </Column>
+    </CredentialsWrapper>
   )
 }
 

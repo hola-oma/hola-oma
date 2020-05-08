@@ -5,13 +5,14 @@ import { Modal, Button, Grid } from '@material-ui/core';
 
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
+import { AccountLink } from 'shared/models/accountLink.model';
 
 interface IPendingInvitationModal {
   invite: any;
   isOpen: boolean;
   onClose: () => void;
   acceptInvite: () => void;
-  declineInvite: () => void;
+  declineInvite: (invite: AccountLink) => void;
 }
 
 // todo: pass "Posts" into this functional component
@@ -65,7 +66,7 @@ const PendingInvitationModal: React.FC<IPendingInvitationModal> = ({ invite, isO
                 size="large"
                 fullWidth
                 startIcon={<CancelIcon />}
-                onClick={declineInvite}>No, I don't know this person
+                onClick={() => declineInvite(invite)}>No, I don't know this person
               </Button>
             </Grid>
 
