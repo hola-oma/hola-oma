@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { GrandparentPostView } from "../GrandparentPostView";
+import { GrandparentPostLayout } from "../GrandparentPostLayout";
 import { Post } from "../../../models/post.model";
 import { replyOptionIcons } from "../../../../Icons";
 import GetEmojiReply from "./components/GetEmojiReply";
@@ -20,7 +20,7 @@ const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
 
         <GrandparentLayout
           headerText={"Reply to Letter from "}
-          boxContent={<GrandparentPostView/>}
+          boxContent={<GrandparentPostLayout/>}
           buttonText={["Smiley", "Voice Message", "Your Picture"]}
           buttonActions={[
             () => setEmojiReplyOpen(true),

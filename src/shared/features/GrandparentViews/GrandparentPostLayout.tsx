@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { Theme, Grid, Typography, IconButton, ButtonBase } from '@material-ui/core';
+import { Theme, Grid, Typography, ButtonBase } from '@material-ui/core';
 
 import { GrandparentPostContext } from "../../../App";
 import { makeStyles,  createStyles } from "@material-ui/core/styles";
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export const GrandparentPostView: React.FC = () => {
+export const GrandparentPostLayout: React.FC = () => {
 
   const classes = useStyles();
   const FamilyPost = useContext(GrandparentPostContext).post;
@@ -121,4 +121,4 @@ export const GrandparentPostView: React.FC = () => {
 
 }
 
-export default GrandparentPostView;
+export default GrandparentPostLayout;

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from "react-router-dom";
 import { Theme, makeStyles } from '@material-ui/core/styles';
 
@@ -8,7 +8,6 @@ import { Post } from 'shared/models/post.model';
 import {GrandparentPostContext} from "../../../../App";
 
 import './Inbox.css';
-import CurrentMsgModal from "./components/CurrentMsgModal";
 import { markPostRead } from "../../../../services/post";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -44,7 +43,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
     const classes = useStyles();
     let history = useHistory();
-    const [currentMsgModalOpen, setCurrentMsgModalOpen] = useState<boolean>(false);
 
     const CurrentPost = useContext(GrandparentPostContext);
 
@@ -53,18 +51,9 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
       let postID = currentPost?.pid;
       await markPostRead(postID);
       CurrentPost.setPost(envelopePost);  // Update global post value
-      setCurrentMsgModalOpen(true);
+      // setCurrentMsgModalOpen(true);
+      history.push({pathname: '/currentPost', state: {envelopePost} } );
     }
-
-    const returnToInbox = () => {
-      setCurrentMsgModalOpen(false);
-    }
-
-    const replyToMessage = () => {
-      setCurrentMsgModalOpen(false);
-      history.push("/newPost");
-    }
-
   return (
     <>
       <Container>
@@ -94,11 +83,11 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
         </Grid>
 
-        <CurrentMsgModal
-          isOpen={currentMsgModalOpen}
-          returnToInbox={returnToInbox}
-          replyToMessage={replyToMessage}
-        />
+        {/*<GrandparentCurrentPost*/}
+        {/*  // isOpen={currentMsgModalOpen}*/}
+        {/*  returnToInbox={returnToInbox}*/}
+        {/*  replyToMessage={replyToMessage}*/}
+        {/*/>*/}
       </Container>
     </>
   )
