@@ -31,28 +31,32 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const goToPhotoPrototype = () => {
+    setDrawerOpen(false);
     history.push('/photoReplyPrototype');
   }
 
   const goToRegistration = () => {
+    setDrawerOpen(false);
     history.push('/join');
   }
 
   const goToSignIn = () => {
+    setDrawerOpen(false);
     history.push('/signIn');
   }
 
   const goToInbox = () => {
+    setDrawerOpen(false);
     history.push('/posts');
   }
 
   const goToSettings = () => {
+    setDrawerOpen(false);
     history.push('/settings');
   }
 
   const toggleDrawer = (open: boolean) =>  (e: React.KeyboardEvent | React.MouseEvent,
     ) => {
-      console.log("Toggling the drawer");
 
       if (e.type === 'keydown' &&
         ((e as React.KeyboardEvent).key === 'Tab' ||
@@ -110,6 +114,7 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
       onClick={() => goToPhotoPrototype()}
       startIcon={<CameraAltIcon />}
       >
+      Proto
     </Button>
   )
 
@@ -162,11 +167,27 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
 
   const drawerContents = () => (
     <List>
-      <ListItem button>
-        <ListItemIcon><MailIcon /></ListItemIcon>
-        <ListItemText primary={"Inbox"} />
-      </ListItem>
       <Divider />
+
+      <ListItem>
+        {photoButton()}
+      </ListItem>
+
+      <ListItem>
+        {inboxButton()}
+      </ListItem>
+
+      <ListItem>
+        {settingsButton()}
+      </ListItem>
+
+      <Divider />
+
+      <ListItem>
+        {signOutButton()}
+      </ListItem>
+
+
     </List>
   )
   
