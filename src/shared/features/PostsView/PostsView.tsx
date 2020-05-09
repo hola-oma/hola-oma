@@ -27,6 +27,8 @@ import Column from 'shared/components/Column/Column';
 import Child from 'shared/components/Child/Child';
 import Row from 'shared/components/Row/Row';
 
+import './PostsView.css';
+
 interface IPostsView extends RouteComponentProps<any> {
   setIsLoading: (loading: boolean) => void;
 }
@@ -130,9 +132,11 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   }
 
   const welcomeName = () => (
-    <span className="boldText">
-      Welcome, {displayName}!
-    </span>
+    <div className="welcomeName">
+      <span className="boldText">
+        Welcome, {displayName}!
+      </span>
+    </div>
   )
 
   const inviteButton = () => (
