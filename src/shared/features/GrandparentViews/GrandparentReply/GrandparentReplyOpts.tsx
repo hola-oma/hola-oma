@@ -17,7 +17,13 @@ const GrandparentReplyOpts: React.FC = () => {
         <GrandparentLayout
           from={currentPost.from}
           headerText={"Reply to Letter from "}
-          boxContent={<GrandparentPostLayout/>}
+          boxContent={
+            <GrandparentPostLayout
+              from={currentPost.from}
+              imageURL={currentPost.photoURL}
+              message={currentPost.message}
+            />
+          }
           buttonText={["Smiley", "Voice Message", "Your Picture"]}
           buttonActions={[
             () => history.push({pathname: '/emoji', state: currentPost } ),

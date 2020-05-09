@@ -17,7 +17,13 @@ const GrandparentCurrentPost: React.FC = () => {
       <GrandparentLayout
         from={currentPost.from}
         headerText={"Letter from "}
-        boxContent={ <GrandparentPostLayout/> }
+        boxContent={
+          <GrandparentPostLayout
+            from={currentPost.from}
+            imageURL={currentPost.photoURL}
+            message={currentPost.message}
+          />
+        }
         buttonText={["Go Back to Mailbox", "Reply"]}
         buttonActions={[
           () => history.goBack(),

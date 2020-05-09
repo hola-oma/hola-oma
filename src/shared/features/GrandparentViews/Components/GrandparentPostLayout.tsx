@@ -54,14 +54,19 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export const GrandparentPostLayout: React.FC = () => {
+interface IPostLayout {
+  from: string,
+  imageURL: string,
+  message: string
+}
+
+export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, message}) => {
 
   const classes = useStyles();
-  const FamilyPost = useContext(GrandparentPostContext).post;
   const [loaded, setLoaded] = useState(false);
 
   const postImage = new Image();
-  postImage.src = FamilyPost.photoURL;
+  postImage.src = imageURL;
 
   useEffect(() => {
     postImage.addEventListener('load', () => {
@@ -78,17 +83,17 @@ export const GrandparentPostLayout: React.FC = () => {
       <Grid item xs={12}>
         <div className={classes.root}>
 
-          {FamilyPost.photoURL &&
+          {imageURL &&
           <div className={classes.root}>
             <ButtonBase
-                key={FamilyPost.from}
-                className={FamilyPost.message ? classes.both : classes.media}
+                key={from}
+                className={message ? classes.both : classes.media}
                 style={{ width: postImage.width }} >
               <span className=
                   {classes.imageSrc}
                   onClick={enlargeImage}
                   style={{
-                      backgroundImage: `url(${FamilyPost.photoURL})`,
+                      backgroundImage: `url(${imageURL})`,
                       display: loaded ? "" : "none",
                     }}  />
                 <span className={classes.imageBackdrop} />
@@ -107,11 +112,11 @@ export const GrandparentPostLayout: React.FC = () => {
           }
 
           <Typography variant="h5"
-                      className={FamilyPost.message.length < 50 ? classes.textSpace : ""}
-                      align={FamilyPost.message.length < 50 ? "center" : "left"}
+                      className={message.length < 50 ? classes.textSpace : ""}
+                      align={message.length < 50 ? "center" : "left"}
           >
-            {!FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 625)}
-            {FamilyPost.photoURL && getMessageSubstring(FamilyPost.message, 325)}
+            {!imageURL && getMessageSubstring(message, 625)}
+            {imageURL && getMessageSubstring(message, 325)}
           </Typography>
 
         </div>

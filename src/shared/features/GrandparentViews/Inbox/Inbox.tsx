@@ -58,7 +58,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                   <Typography variant="h2">Your mailbox is empty</Typography>
               </Grid>
           }
-
             <GridList className={classes.gridList} cols={3}>
               {posts.map((post, index: number) => (
                 <GridListTile key={index} onClick={() => pressEnvelope(post)} rows={1.25}>
@@ -77,12 +76,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
             </GridList>
 
         </Grid>
-
-        {/*<GrandparentCurrentPost*/}
-        {/*  // isOpen={currentMsgModalOpen}*/}
-        {/*  returnToInbox={returnToInbox}*/}
-        {/*  replyToMessage={replyToMessage}*/}
-        {/*/>*/}
       </Container>
     </>
   )
