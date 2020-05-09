@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Container, Card, CardMedia, CardContent, Typography, CardHeader, Avatar, CardActions, IconButton, Button } from '@material-ui/core';
+import { Container, Card, CardMedia, CardContent, Typography, CardHeader, Avatar, CardActions, IconButton } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 import { Post } from 'shared/models/post.model';

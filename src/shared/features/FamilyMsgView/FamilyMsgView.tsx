@@ -128,7 +128,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                     <Column justify="center" alignItems="center">
                         {post.photoURL && <img
                             src={post.photoURL}
-                            style={{margin:10}}
+                            className="photo"
                             alt="Attached img"
                         />}
                         <br/>
