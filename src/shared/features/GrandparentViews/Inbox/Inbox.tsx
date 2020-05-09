@@ -42,7 +42,7 @@ let currentPost: Post;
 const Inbox: React.FC<IInbox> = ({ posts }) => {
 
     const classes = useStyles();
-    let history = useHistory();
+    const history = useHistory();
 
     const CurrentPost = useContext(GrandparentPostContext);
 
@@ -52,7 +52,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
       await markPostRead(postID);
       CurrentPost.setPost(envelopePost);  // Update global post value
       // setCurrentMsgModalOpen(true);
-      history.push({pathname: '/currentPost', state: {envelopePost} } );
+      history.push({pathname: '/currentPost', state: envelopePost } );
     }
   return (
     <>

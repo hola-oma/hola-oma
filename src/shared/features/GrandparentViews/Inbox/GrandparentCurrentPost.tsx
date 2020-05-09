@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 import CreateIcon from '@material-ui/icons/Create';
 import MailIcon from '@material-ui/icons/Mail';
@@ -9,14 +9,17 @@ import {GrandparentPostLayout} from "../GrandparentPostLayout";
 
 const GrandparentCurrentPost: React.FC = () => {
 
-  let history = useHistory();
+  const history = useHistory();
+  const location = useLocation();
+
+  const currentReply: any = location.state;
 
   const returnToInbox = () => {
     history.goBack();
   }
 
   const replyToMessage = () => {
-    history.push("/newPost");
+    history.push({pathname: "/newPost", state: currentReply});
   }
 
   return (
