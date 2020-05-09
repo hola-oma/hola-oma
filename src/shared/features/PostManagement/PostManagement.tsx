@@ -73,13 +73,12 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
   }
 
   const renderPostTitle = (post: Post) => {
-    if (post.receiverIDs.length !== 1) {
-      return <span>You shared this with {post.receiverIDs.length} recipients.</span>
+    if (post.receiverIDs.length === 0 || !post.receiverIDs) {
+      return <span>You are not sharing your posts with anyone yet!<Link to="/addAccountLink">Invite followers</Link></span>;
     } else if (post.receiverIDs.length === 1) {
       return <span>You shared this with one recipient.</span>
-    } else {
-      // todo: [stretch] add a link to "Invite Follower" page
-      return <span>You are not sharing your posts with anyone yet!<Link to="/addAccountLink">Invite followers</Link></span>;
+    } else if (post.receiverIDs.length > 1) {
+      return <span>You shared this with {post.receiverIDs.length} recipients.</span>
     }
   }
 
