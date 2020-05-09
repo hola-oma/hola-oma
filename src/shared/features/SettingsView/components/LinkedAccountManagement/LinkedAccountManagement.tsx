@@ -4,8 +4,11 @@ import { Box, List, ListItem, ListItemAvatar, Avatar, ListItemText, ListItemSeco
 import { roles } from 'enums/enums';
 
 import PersonIcon from '@material-ui/icons/Person';
-import ManageAccountLinkAlert from './ManageAccountLinkAlert';
+import ManageAccountLinkAlert from '../ManageAccountLinkAlert';
 import { acceptLink, removeLink, getLinkedAccounts } from 'services/accountLink';
+
+import './LinkedAccountManagement.css';
+import Child from 'shared/components/Child/Child';
 
 interface ILinkedAccountManagement {
   role: string;
@@ -153,14 +156,18 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
             </ListItemAvatar>
 
             {/* Text */}
-            <ListItemText
-              primary={showPrimaryText(friend)}
-              secondary={showSecondaryText(friend)}
-            />
+            <Child xs={7} className="breakLongName">
+              <ListItemText
+                primary={showPrimaryText(friend)}
+                secondary={showSecondaryText(friend)}
+              />
+            </Child>
             {/* Button to the right */}
-            <ListItemSecondaryAction>
-              {friend.verified ? <>{manageButton(friend)}</> : role === roles.poster ? <>{cancelButton(friend)}</> : <>{declineButton(friend)} {acceptButton(friend)}</>}
-            </ListItemSecondaryAction>
+            <Child xs={4}>
+              <ListItemSecondaryAction className="noRight">
+                {friend.verified ? <>{manageButton(friend)}</> : role === roles.poster ? <>{cancelButton(friend)}</> : <>{declineButton(friend)} {acceptButton(friend)}</>}
+              </ListItemSecondaryAction>
+            </Child>
           </ListItem>
       );
     })
@@ -194,6 +201,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
         friend={selectedFriend} 
         unfriendFriend={() => deleteAccountLink(selectedFriend)}
         onClose={handleManageAccountLinkAlertClose} 
+        role={role}
       />
     }
     </>

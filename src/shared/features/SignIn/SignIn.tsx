@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../../../App";
 import 'firebase/auth';
 
-import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object 
 import { signUserInWithEmailAndPassword, getUserSettings } from "services/user";
 
 import BigInput from "shared/components/BigInput/BigInput";

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Typography, Container } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 
 import { Reply } from "../../models/reply.model";
 import { replyEmojiArray } from "../../../Icons";
