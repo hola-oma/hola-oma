@@ -13,20 +13,14 @@ const GrandparentCurrentPost: React.FC = () => {
   const location = useLocation();
   const currentReply: any = location.state;
 
-  const returnToInbox = () => {
-    history.goBack();
-  }
-
-  const replyToMessage = () => {
-    history.push({pathname: "/newPost", state: currentReply});
-  }
-
   return (
       <GrandparentLayout
         headerText={"Letter from "}
         boxContent={ <GrandparentPostLayout/> }
         buttonText={["Go Back to Mailbox", "Reply"]}
-        buttonActions={[returnToInbox, replyToMessage]}
+        buttonActions={[
+          () => history.goBack(),
+          () => history.push({pathname: "/newPost", state: currentReply})]}
         buttonIcons={[<MailIcon/>, <CreateIcon/>]}
       />
   );

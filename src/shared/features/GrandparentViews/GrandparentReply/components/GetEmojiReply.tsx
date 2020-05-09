@@ -107,7 +107,9 @@ const GetEmojiReply: React.FC = () => {
         </Grid>
         }
           buttonText={["Go back to Reply Options", "Send Smiley(s)"]}
-          buttonActions={ [() => history.goBack(), e => buildReply(e, choicesList) ] }
+          buttonActions={[
+            () => history.goBack(),
+            e => buildReply(e, choicesList) ] }
           buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]} />
 
         <Box className="todo">
