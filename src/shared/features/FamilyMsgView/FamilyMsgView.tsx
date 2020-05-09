@@ -132,7 +132,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                             alt="Attached img"
                         />}
                         <br/>
-                        <Typography variant="h5">
+                        <Typography variant="h5" style={{margin:10}}>
                             {post.message}
                         </Typography>
                     </Column>
