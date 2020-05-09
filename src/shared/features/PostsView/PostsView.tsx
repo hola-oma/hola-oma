@@ -5,7 +5,7 @@ import {roles} from '../../../enums/enums';
 import {getUserSettings} from "services/user";
 import Inbox from '../GrandparentViews/Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
-import { Link as ButtonLink, Button, Grid } from '@material-ui/core';
+import { Link as ButtonLink, Button } from '@material-ui/core';
 import {getPosts} from 'services/post';
 
 import {Post} from '../../models/post.model';
