@@ -6,7 +6,7 @@ import './Header.css';
 
 import { useHistory } from "react-router-dom";
 import { signUserOut } from "services/user";
-import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, Button, Hidden } from "@material-ui/core";
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
@@ -117,6 +117,14 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
       Settings
     </Button>
   )
+
+  const signOutButton = () => (
+    <button 
+      onClick={handleSignOut}
+      >
+      Sign out
+    </button>
+  )
   
   return (
     <AppBar position="static" className="headerBar">
@@ -146,6 +154,7 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
           }
 
           {(isLoggedIn && settingsComplete) &&
+            <Hidden smDown>
             <ul>
               <li>
                 {photoButton()}
@@ -159,8 +168,11 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
                 {settingsButton()}
               </li>
               
-              <li><button onClick={handleSignOut}>Sign out</button></li>
+              <li>
+                {signOutButton()}
+              </li>
             </ul>
+            </Hidden>
           }
 
         </div>
