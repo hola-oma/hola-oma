@@ -71,7 +71,13 @@ const GetEmojiReply: React.FC = () => {
       const replyContent: Reply = setReplyContent(userId, displayName, REPLY_TYPES.EMOJI,
                                   choicesIndexes, currentPost.pid, currentPost.creatorID);
       submitReply(e, replyContent)
-        .then( () => { history.push({pathname: "/newReply",  state: replyContent}); } );
+        .then( () => { history.push({
+          pathname: "/newReply",
+          state: {
+            replyContent: replyContent,
+            currentPost: currentPost  }
+        });
+        });
     }
   }
 

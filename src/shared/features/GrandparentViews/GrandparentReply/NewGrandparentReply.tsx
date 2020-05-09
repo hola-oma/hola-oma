@@ -5,17 +5,19 @@ import { useLocation, useHistory } from "react-router";
 import { mailIcons, replyEmojiArray } from "../../../../Icons";
 import GrandparentLayout from "../Components/GrandparentLayout";
 import {Card, CardContent, Grid, SvgIconProps} from "@material-ui/core";
+import {Post} from "../../../models/post.model";
 
 export const NewGrandparentReply: React.FC = () => {
   const history = useHistory();
   const location = useLocation();
-  const currentPost: any = location.state;
+  const state: any = location.state;
 
-  console.log("current from in new grandparent reply: " + currentPost.from);
+  const replyContent = state.replyContent;
+  const currentPost: Post = state.currentPost;
 
   const sentEmojis: Array<React.ReactElement<SvgIconProps>> = [];
   const allEmojis: Array<React.ReactElement<SvgIconProps>> = replyEmojiArray();
-  currentPost.message.forEach(function(index: number) {
+  (replyContent.message).forEach(function(index: number) {
     sentEmojis.push(allEmojis[index]);
   })
 
