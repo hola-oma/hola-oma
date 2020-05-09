@@ -16,7 +16,8 @@ const GrandparentReplyOpts: React.FC = () => {
 
         <GrandparentLayout
           from={currentPost.from}
-          headerText={"Reply to Letter from "}
+          headerText={"Letter from "}
+          header2Text={"Choose how to reply below!"}
           boxContent={
             <GrandparentPostLayout
               from={currentPost.from}

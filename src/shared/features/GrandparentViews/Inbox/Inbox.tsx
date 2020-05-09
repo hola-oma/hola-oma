@@ -47,7 +47,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
       currentPost = envelopePost;
       let postID = currentPost?.pid;
       await markPostRead(postID);
-      history.push({pathname: '/currentPost', state: envelopePost } );
+      history.push({pathname: '/startReply', state: envelopePost } );
     }
   return (
     <>
