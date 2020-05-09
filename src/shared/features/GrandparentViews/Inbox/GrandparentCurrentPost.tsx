@@ -25,7 +25,7 @@ const GrandparentCurrentPost: React.FC = () => {
         }
         buttonText={["Go Back to Mailbox", "Reply"]}
         buttonActions={[
-          () => history.goBack(),
+          () => history.push("/posts"),
           () => history.push({pathname: "/newPost", state: currentPost })
         ]}
         buttonIcons={[<MailIcon/>, <CreateIcon/>]}
