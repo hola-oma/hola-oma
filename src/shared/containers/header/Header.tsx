@@ -11,6 +11,10 @@ import { AppBar, Toolbar, Typography, Button, Hidden } from "@material-ui/core";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import SettingsIcon from '@material-ui/icons/Settings';
+import Child from "shared/components/Child/Child";
+import Column from "shared/components/Column/Column";
+
+import MenuIcon from '@material-ui/icons/Menu';
 
 
 interface IHeader {
@@ -24,23 +28,27 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
   let history = useHistory();
 
   const goToPhotoPrototype = () => {
-    history.push('/photoReplyPrototype')
+    history.push('/photoReplyPrototype');
   }
 
   const goToRegistration = () => {
-    history.push('/join')
+    history.push('/join');
   }
 
   const goToSignIn = () => {
-    history.push('/signIn')
+    history.push('/signIn');
   }
 
   const goToInbox = () => {
-    history.push('/posts')
+    history.push('/posts');
   }
 
   const goToSettings = () => {
-    history.push('/settings')
+    history.push('/settings');
+  }
+
+  const openDrawer = () => {
+    console.log("Opening the drawer");
   }
 
   const handleSignOut = () => {
@@ -125,6 +133,19 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
       Sign out
     </button>
   )
+
+  const menuButton = () => (
+    <Button
+      variant="contained"
+      color="secondary"
+      size="medium"
+      className=""
+      onClick={() => openDrawer()}
+      startIcon={<MenuIcon />}
+    >
+      Menu
+    </Button>
+  )
   
   return (
     <AppBar position="static" className="headerBar">
@@ -154,25 +175,37 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
           }
 
           {(isLoggedIn && settingsComplete) &&
-            <Hidden smDown>
-            <ul>
-              <li>
-                {photoButton()}
-              </li>
+            <>
+              {/* big buttons for desktop and wide tablets */}
+              <Hidden smDown>
+              <ul>
+                <li>
+                  {photoButton()}
+                </li>
 
-              <li>
-                {inboxButton()}
-              </li>
+                <li>
+                  {inboxButton()}
+                </li>
 
-              <li>
-                {settingsButton()}
-              </li>
-              
-              <li>
-                {signOutButton()}
-              </li>
-            </ul>
-            </Hidden>
+                <li>
+                  {settingsButton()}
+                </li>
+                
+                <li>
+                  {signOutButton()}
+                </li>
+              </ul>
+              </Hidden>
+
+              {/* menu drawer for phones */}
+              <Hidden smUp>
+                <Column alignItems="flex-end">
+                  <Child>
+                    {menuButton()}
+                  </Child>
+                </Column>
+              </Hidden>
+            </>
           }
 
         </div>
