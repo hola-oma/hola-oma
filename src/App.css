@@ -12,6 +12,10 @@
   padding-bottom:20px !important;
 }
 
+.padDialog {
+  padding:20px !important;
+}
+
 .credentialsForm {
   width:100%;
 }

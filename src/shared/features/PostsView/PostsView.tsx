@@ -5,7 +5,7 @@ import {roles} from '../../../enums/enums';
 import {getUserSettings} from "services/user";
 import Inbox from '../GrandparentViews/Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
-import { Link as ButtonLink, Button, Grid } from '@material-ui/core';
+import { Link as ButtonLink, Button } from '@material-ui/core';
 import {getPosts} from 'services/post';
 
 import {Post} from '../../models/post.model';
@@ -26,6 +26,8 @@ import CredentialsWrapper from 'shared/components/CredentialsWrapper';
 import Column from 'shared/components/Column/Column';
 import Child from 'shared/components/Child/Child';
 import Row from 'shared/components/Row/Row';
+
+import './PostsView.css';
 
 interface IPostsView extends RouteComponentProps<any> {
   setIsLoading: (loading: boolean) => void;
@@ -130,9 +132,11 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   }
 
   const welcomeName = () => (
-    <span className="boldText">
-      Welcome, {displayName}!
-    </span>
+    <div className="welcomeName">
+      <span className="boldText">
+        Welcome, {displayName}!
+      </span>
+    </div>
   )
 
   const inviteButton = () => (
