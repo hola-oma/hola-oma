@@ -5,12 +5,10 @@ import { RouteComponentProps } from 'react-router-dom'; // give us 'history' obj
 import { getUserSettings, updateUserSettings, getUserProfile, updateUserProfile } from '../../../services/user';
 
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { Box } from '@material-ui/core';
 
 import BigInput from 'shared/components/BigInput/BigInput';
-import LinkedAccountManagement from './components/LinkedAccountManagement';
+import LinkedAccountManagement from './components/LinkedAccountManagement/LinkedAccountManagement';
 
 import './SettingsView.css';
 import ChangeAccountTypeAlert from './components/ChangeAccountTypeAlert';
@@ -18,8 +16,6 @@ import CredentialsWrapper from 'shared/components/CredentialsWrapper';
 import Row from 'shared/components/Row/Row';
 import Column from 'shared/components/Column/Column';
 import Child from 'shared/components/Child/Child';
-import FormSubmitButton from 'shared/components/FormSubmitButton';
-import FormError from 'shared/components/FormError/FormError';
 import CredentialsForm from 'shared/components/CredentialsForm/CredentialsForm';
 
 interface ISettingsView extends RouteComponentProps<any>{
@@ -34,6 +30,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
   const [changeAccountTypeAlertOpen, setChangeAccountTypeAlertOpen] = useState<boolean>(false);
 
   const [error, setErrors] = useState("");
+  const [invalidName, setInvalidName] = useState(false);
 
   const updateDisplayName = (e: any) => {
     setDisplayName(e.target.value);
@@ -58,7 +55,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
 
   const displayNameInput = () => (
     <BigInput 
-      error={false}
+      error={invalidName}
       labelText="Display Name"
       name="displayName"
       required={true} 
@@ -86,15 +83,24 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
   const handleForm = async (e: any) => {
     e.preventDefault();
 
-    try {
-      let updateProfileDone = await updateUserProfile(displayName, email);
-      let updateSettingsDone = await updateUserSettings({role, displayName, email});
+    if (displayName === "") {
+      setErrors("Please enter a name.");
+      setInvalidName(true);
+    } else if (displayName.length > 34) {
+      // 34 character test name with spaces: Priscilla Jacqueline Flarblesworth
+      setErrors("Please enter a shorter name.");
+      setInvalidName(true);
+    } else {
+      try {
+        let updateProfileDone = await updateUserProfile(displayName, email);
+        let updateSettingsDone = await updateUserSettings({role, displayName, email});
 
-      if (updateProfileDone && updateSettingsDone) {
-        if (history) history.push('/posts');
+        if (updateProfileDone && updateSettingsDone) {
+          if (history) history.push('/posts');
+        }
+      } catch(e) {
+        setErrors(e.message);
       }
-    } catch(e) {
-      setErrors(e.message);
     }
   }
 
