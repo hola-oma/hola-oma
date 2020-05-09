@@ -197,10 +197,10 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
   )
 
   useEffect(() => {
-    if (location?.pathname === "/signIn") {
+    if (location?.pathname === "/signIn" || location?.pathname === "/") {
       setOnSignIn(true);
       setOnJoin(false);
-    } else if (location?.pathname === "/join") {
+    } else if (location?.pathname === "/join" || location?.pathname === "/resetPassword") {
       setOnJoin(true);
       setOnSignIn(false);
     } else {
