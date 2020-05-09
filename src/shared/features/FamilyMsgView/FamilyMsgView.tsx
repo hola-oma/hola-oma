@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 
-import {Box, Card, Modal, CardContent, Paper, Typography, Grid, Container, Button} from '@material-ui/core';
+import {Box, Card, Modal, CardContent, CardActions, Paper, Typography, Grid, Container, Button} from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 import { Post } from 'shared/models/post.model';
@@ -17,6 +17,8 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
+import Column from 'shared/components/Column/Column';
+
 import Moment from 'react-moment';
 
 import './FamilyMsgView.css';
@@ -30,6 +32,9 @@ const useStyles = makeStyles((theme: Theme) =>
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+    },
+    postStyle: {
+      height: "100%"
     }
   })
 );
@@ -109,7 +114,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     return (
         <>
         <Container>
-            <Typography component="h2" variant="h5">
+            <Typography component="h2" variant="h5" align="center">
                 Sent Message
             </Typography>
         </Container>
@@ -117,58 +122,62 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             <Grid item xs={3}></Grid>
             <Grid item xs={6}>
                 <Paper>
-                    {post.photoURL && <img
-                        src={post.photoURL}
-                        alt="Attached img"
-                    />}
-                    <Typography variant="h5">
-                        {post.message}
-                    </Typography>
+                    <Column justify="center" alignItems="center">
+                        {post.photoURL && <img
+                            src={post.photoURL}
+                            alt="Attached img"
+                        />}
+                        <Typography variant="h5">
+                            {post.message}
+                        </Typography>
+                    </Column>
                 </Paper>
             </Grid>
             <Grid item xs={3}>
-                <Typography variant="subtitle2">
-                    Sent <Moment format="MMMM Do YYYY, h:mm a">{post.date}</Moment>
+                <Column justify="center" alignItems="center">
+                    <Typography variant="subtitle2">
+                        Sent <Moment format="MMMM Do YYYY, h:mm a">{post.date}</Moment>
+                        <br/>
+                        <br/>
+                        Seen by:
+                    </Typography>
+                    {
+                        receivers.map((receiver: IReceiver, index: number) => {
+                            return (
+                            <Grid container alignItems="center" justify="center" key={index}>
+                                <Grid item>
+                                    {post.read === true ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="subtitle2">
+                                        {receiver.name}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                            )
+                        })
+                    }
                     <br/>
                     <br/>
-                    Seen by:
-                </Typography>
-                {
-                    receivers.map((receiver: IReceiver, index: number) => {
-                        return (
-                        <Grid container alignItems="center" justify="center" key={index}>
-                            <Grid item>
-                                {post.read === true ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="subtitle2">
-                                    {receiver.name}
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                        )
-                    })
-                }
-                <br/>
-                <br/>
-                <Button
-                    variant="contained"
-                    startIcon={<EditIcon />}
-                    disabled>
-                    Edit Post
-                </Button>
-                <br/>
-                <Button
-                    variant="contained"
-                    startIcon={<DeleteIcon />}
-                    onClick={deleteCurrentPost}>
-                    Delete Post
-                </Button>
+                    <Button
+                        variant="contained"
+                        startIcon={<EditIcon />}
+                        disabled>
+                        Edit Post
+                    </Button>
+                    <br/>
+                    <Button
+                        variant="contained"
+                        startIcon={<DeleteIcon />}
+                        onClick={deleteCurrentPost}>
+                        Delete Post
+                    </Button>
+                </Column>
             </Grid>
         </Grid>
         <Container>
             <hr />
-            <Typography component="h2" variant="h5">
+            <Typography component="h2" variant="h5" align="center">
                 Replies
             </Typography>
                 <Grid container spacing={2}>
@@ -176,27 +185,27 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 replies.map((reply: Reply, index: number) => {
                     return (
                     <Grid item xs={4} key={index}>
-                        <div>
-                        <div onClick={()=>handleClick(reply)}>
-                        <Card variant="outlined">
-                            <CardContent>
-                                {isEmoji(reply) &&
-                                    messageAsArray(reply).map((emojiIndex: number, replyIndex: number) => {
-                                        return (
-                                            <Typography variant="h5" key={replyIndex}>
-                                                {emojiIcons[emojiIndex]}
-                                            </Typography>
-                                        )
-                                    })
-                                }
-                                <Typography variant="subtitle2">
-                                    Sent by {reply.from}
-                                    <br/>
-                                    <Moment format="MMMM Do YYYY, h:mm a">{reply.date}</Moment>
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                        </div>
+                        <div className={"postStyle"} onClick={()=>handleClick(reply)}>
+                            <Card variant="outlined" className={"postStyle"}>
+                                <CardContent>
+                                    {isEmoji(reply) &&
+                                        messageAsArray(reply).map((emojiIndex: number, replyIndex: number) => {
+                                            return (
+                                                <Typography variant="h5" key={replyIndex}>
+                                                    {emojiIcons[emojiIndex]}
+                                                </Typography>
+                                            )
+                                        })
+                                    }
+                                </CardContent>
+                                <CardActions>
+                                    <Typography variant="caption">
+                                        Sent by {reply.from}
+                                        <br/>
+                                        <Moment format="MMMM Do YYYY, h:mm a">{reply.date}</Moment>
+                                    </Typography>
+                                </CardActions>
+                            </Card>
                         </div>
                     </Grid>
                     )
