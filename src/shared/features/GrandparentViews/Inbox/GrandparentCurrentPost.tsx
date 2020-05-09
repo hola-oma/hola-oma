@@ -13,6 +13,8 @@ const GrandparentCurrentPost: React.FC = () => {
   const location = useLocation();
   const currentPost: any = location.state;
 
+  console.log("current post image: " + currentPost.photoURL);
+
   return (
       <GrandparentLayout
         from={currentPost.from}
@@ -27,7 +29,8 @@ const GrandparentCurrentPost: React.FC = () => {
         buttonText={["Go Back to Mailbox", "Reply"]}
         buttonActions={[
           () => history.goBack(),
-          () => history.push({pathname: "/newPost", state: currentPost})]}
+          () => history.push({pathname: "/newPost", state: location.state})
+        ]}
         buttonIcons={[<MailIcon/>, <CreateIcon/>]}
       />
   );

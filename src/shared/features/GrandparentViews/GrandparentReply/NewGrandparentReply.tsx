@@ -11,6 +11,8 @@ export const NewGrandparentReply: React.FC = () => {
   const location = useLocation();
   const currentPost: any = location.state;
 
+  console.log("current from in new grandparent reply: " + currentPost.from);
+
   const sentEmojis: Array<React.ReactElement<SvgIconProps>> = [];
   const allEmojis: Array<React.ReactElement<SvgIconProps>> = replyEmojiArray();
   currentPost.message.forEach(function(index: number) {
@@ -42,8 +44,10 @@ export const NewGrandparentReply: React.FC = () => {
           </Grid>
         }
         buttonText={["Go back to letter", "Close letter"]}
-        buttonActions={ [() => console.log("todo: return to Inbox with modal opened"),
-                        () => history.push("/posts")] }
+        buttonActions={[
+          () => history.push({pathname: '/currentPost', state: currentPost }),
+          () => history.push("/posts")
+        ]}
         buttonIcons={[mailIcons.openEnvelope, mailIcons.closedEnvelope ]} />
     </>
   )
