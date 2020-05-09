@@ -25,13 +25,16 @@ import './FamilyMsgView.css';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    paper: {
+    modal: {
       position: 'absolute',
       width: 400,
       backgroundColor: theme.palette.background.paper,
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
+      padding: theme.spacing(2, 4, 3)
+    },
+    paper: {
+        minHeight: 300
     },
     postStyle: {
       height: "100%"
@@ -119,23 +122,25 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             </Typography>
         </Container>
         <Grid container alignItems="center">
-            <Grid item xs={3}></Grid>
-            <Grid item xs={6}>
-                <Paper>
+            <Grid item sm={3}></Grid>
+            <Grid item sm={6} xs={12}>
+                <Paper className={classes.paper}>
                     <Column justify="center" alignItems="center">
                         {post.photoURL && <img
                             src={post.photoURL}
+                            style={{margin:10}}
                             alt="Attached img"
                         />}
+                        <br/>
                         <Typography variant="h5">
                             {post.message}
                         </Typography>
                     </Column>
                 </Paper>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item sm={3} xs={12}>
                 <Column justify="center" alignItems="center">
-                    <Typography variant="subtitle2">
+                    <Typography variant="caption" align="center">
                         Sent <Moment format="MMMM Do YYYY, h:mm a">{post.date}</Moment>
                         <br/>
                         <br/>
@@ -145,14 +150,10 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                         receivers.map((receiver: IReceiver, index: number) => {
                             return (
                             <Grid container alignItems="center" justify="center" key={index}>
-                                <Grid item>
-                                    {post.read === true ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant="subtitle2">
-                                        {receiver.name}
-                                    </Typography>
-                                </Grid>
+                                {post.read === true ? <CheckBoxIcon fontSize="small"/> : <CheckBoxOutlineBlankIcon fontSize="small"/>}
+                                <Typography variant="caption" align="center">
+                                    {receiver.name}
+                                </Typography>
                             </Grid>
                             )
                         })
@@ -161,13 +162,15 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                     <br/>
                     <Button
                         variant="contained"
+                        size="small"
                         startIcon={<EditIcon />}
                         disabled>
                         Edit Post
                     </Button>
-                    <br/>
                     <Button
-                        variant="contained"
+                        variant="outlined"
+                        color="primary"
+                        size="small"
                         startIcon={<DeleteIcon />}
                         onClick={deleteCurrentPost}>
                         Delete Post
@@ -213,7 +216,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 }
             </Grid>
             <Modal open={modalOpen} onClose={handleClick} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-            <div className={classes.paper}>
+            <div className={classes.modal}>
                 {modalReply && <ModalReply reply={modalReply}/>}
             </div>
             </Modal>
