@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useLocation, useHistory } from "react-router-dom";
 
 import { GrandparentPostLayout } from "../GrandparentPostLayout";
-import { Post } from "../../../models/post.model";
 import { replyOptionIcons } from "../../../../Icons";
-import GetEmojiReply from "./components/GetEmojiReply";
 import GrandparentLayout from "../GrandparentLayout";
 
 const GrandparentReplyOpts: React.FC = () => {
 
-  const [EmojiReplyOpen, setEmojiReplyOpen] = useState<boolean>(false);
+  const history = useHistory();
+  const location = useLocation();
+  const currentPost: any = location.state;
 
   return (
         <>
@@ -18,17 +19,12 @@ const GrandparentReplyOpts: React.FC = () => {
           boxContent={<GrandparentPostLayout/>}
           buttonText={["Smiley", "Voice Message", "Your Picture"]}
           buttonActions={[
-            () => setEmojiReplyOpen(true),
+            () => history.push({pathname: '/emoji', state: currentPost } ),
             () => console.log("Grandparent wants to send a \"voicemail\"!"),
             () => console.log("Grandparent wants to send a picture!")
           ]}
           buttonIcons={[replyOptionIcons.emoji, replyOptionIcons.voicemail, replyOptionIcons.photo]}
           />
-
-        <GetEmojiReply
-          isOpen={EmojiReplyOpen}
-          returnToPost={() => setEmojiReplyOpen(false)}
-        />
 
      </>
     )

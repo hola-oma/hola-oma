@@ -11,7 +11,6 @@ const GrandparentCurrentPost: React.FC = () => {
 
   const history = useHistory();
   const location = useLocation();
-
   const currentReply: any = location.state;
 
   const returnToInbox = () => {
