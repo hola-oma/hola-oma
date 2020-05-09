@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../App";
 
@@ -6,7 +6,7 @@ import './Header.css';
 
 import { useHistory } from "react-router-dom";
 import { signUserOut } from "services/user";
-import { AppBar, Toolbar, Typography, Button, Hidden } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, Button, Hidden, Drawer, List, ListItemIcon, ListItem, Divider, ListItemText } from "@material-ui/core";
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
@@ -28,6 +28,8 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
   const Auth = useContext(AuthContext);
   let history = useHistory();
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   const goToPhotoPrototype = () => {
     history.push('/photoReplyPrototype');
   }
@@ -48,9 +50,19 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
     history.push('/settings');
   }
 
-  const openDrawer = () => {
-    console.log("Opening the drawer");
-  }
+  const toggleDrawer = (open: boolean) =>  (e: React.KeyboardEvent | React.MouseEvent,
+    ) => {
+      console.log("Toggling the drawer");
+
+      if (e.type === 'keydown' &&
+        ((e as React.KeyboardEvent).key === 'Tab' ||
+          (e as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return;
+      }
+
+    setDrawerOpen(open);
+  };
 
   const handleSignOut = () => {
     signUserOut().then(function() {
@@ -141,11 +153,21 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
       color="secondary"
       size="medium"
       className=""
-      onClick={() => openDrawer()}
+      onClick={toggleDrawer(true)}
       startIcon={<MenuIcon />}
     >
       Menu
     </Button>
+  )
+
+  const drawerContents = () => (
+    <List>
+      <ListItem button>
+        <ListItemIcon><MailIcon /></ListItemIcon>
+        <ListItemText primary={"Inbox"} />
+      </ListItem>
+      <Divider />
+    </List>
   )
   
   return (
@@ -209,6 +231,9 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
             </>
           }
 
+        <Drawer anchor={"right"} open={drawerOpen} onClose={toggleDrawer(false)}>
+            {drawerContents()}
+        </Drawer>
         </div>
 
       </Toolbar>
