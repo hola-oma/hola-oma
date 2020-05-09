@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useHistory } from "react-router-dom";
 
 import { roles } from '../../../enums/enums';
 import { getUserSettings } from "services/user";
-
-import GrandparentReplyOptions from "../GrandparentViews/GrandparentReply/GrandparentReplyOpts";
 
 import NewFamilyPost from ".././NewFamilyPost/NewFamilyPost";
 
@@ -29,7 +27,7 @@ const CreatePost: React.FC = () => {
 
             <>
                 {role === roles.poster && <NewFamilyPost/>}
-                {role === roles.receiver && <GrandparentReplyOptions/>}
+                {role === roles.receiver && history.push({pathname: '/startReply', state: currentPost }) }
             </>
         </>
     )
