@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     postStyle: {
       height: "100%"
+    },
+    spacing: {
+        margin: '5px'
     }
   })
 );
@@ -163,6 +166,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                     <Button
                         variant="contained"
                         size="small"
+                        className={classes.spacing}
                         startIcon={<EditIcon />}
                         disabled>
                         Edit Post
@@ -171,6 +175,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                         variant="outlined"
                         color="primary"
                         size="small"
+                        className={classes.spacing}
                         startIcon={<DeleteIcon />}
                         onClick={deleteCurrentPost}>
                         Delete Post
