@@ -5,7 +5,7 @@ import {roles} from '../../../enums/enums';
 import {getUserSettings} from "services/user";
 import Inbox from '../GrandparentViews/Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
-import { Link as ButtonLink, Button, Grid } from '@material-ui/core';
+import { Link as ButtonLink, Button, Tooltip } from '@material-ui/core';
 import {getPosts} from 'services/post';
 
 import {Post} from '../../models/post.model';
@@ -160,6 +160,22 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     </Button>
   )
 
+  const disabledCreateNewPostButton = () => (
+    <Tooltip title="Create posts after you have linked to another account">
+      <span>
+        <Button
+          variant="contained"
+          color="primary"
+          disabled
+          size="large"
+          startIcon={<AddCommentIcon />}
+          >
+          Create New Post
+        </Button>
+      </span>
+    </Tooltip>
+  )
+
   const pendingInviteAlert = () => (
     <Alert variant="filled" severity="warning">
       <span>
@@ -220,25 +236,33 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
           {/* COLUMN CHILD 2 - CREATE NEW POST and VIEW OLD POSTS */ }
           <Child xs>
-          
-            {role === roles.poster &&
-              <Row justify="center">
-                <Child>
-                  <Child xs={12}>
-                    {createNewPostButton()}
-                  </Child>
-                </Child>
-              </Row>
-            }
 
             <Row>
               <Child xs={12}>
                 {role === roles.poster &&
                   <>
                   {linkedAccounts.length === 0 && 
-                    <Alert variant="filled" severity="warning">
-                      You are not linked with any accounts yet! <Link to="/addAccountLink">Invite someone</Link>
-                    </Alert>
+                    <>
+                      <Alert variant="filled" severity="warning">
+                        You are not linked with any accounts yet! <Link to="/addAccountLink">Invite someone</Link>
+                      </Alert>
+                      <Row justify="center">
+                        <Child>
+                          <Child xs={12}>
+                          {disabledCreateNewPostButton()}
+                          </Child>
+                        </Child>
+                      </Row>
+                    </>
+                  }
+                  {linkedAccounts.length > 0 &&
+                    <Row justify="center">
+                      <Child>
+                        <Child xs={12}>
+                          {createNewPostButton()}
+                        </Child>
+                      </Child>
+                    </Row>
                   }
                   </>
                 }
@@ -253,9 +277,8 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
                 {role === roles.poster && <PostManagement displayName={displayName} posts={posts} onNewReplies={updateNewReplies}/>}
                 {role === roles.receiver && <Inbox posts={posts}/>}
-            </Child>
-
-          </Row>
+              </Child>
+            </Row>
 
         </Child>
       </Column>
