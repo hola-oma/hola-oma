@@ -1,10 +1,8 @@
-import React, {useContext} from 'react';
+import React from 'react';
 
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {Grid, Box, Button, SvgIconProps} from '@material-ui/core';
-import {GrandparentPostContext} from "../../../../App";
 import {Alert} from "@material-ui/lab";
-import {Post} from "../../../models/post.model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

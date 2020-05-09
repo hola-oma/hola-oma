@@ -1,8 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Theme, Grid, Typography, ButtonBase } from '@material-ui/core';
-
-import { GrandparentPostContext } from "../../../../App";
 import { makeStyles,  createStyles } from "@material-ui/core/styles";
 
 import {  getMessageSubstring } from "../../../../services/post";
