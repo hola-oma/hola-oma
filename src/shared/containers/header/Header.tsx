@@ -14,6 +14,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import Child from "shared/components/Child/Child";
 import Column from "shared/components/Column/Column";
 
+import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import MenuIcon from '@material-ui/icons/Menu';
 
 
@@ -95,8 +96,8 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
       size="medium"
       className=""
       onClick={() => goToPhotoPrototype()}
-      startIcon={<AccountCircleIcon />}
-      >Photo
+      startIcon={<CameraAltIcon />}
+      >
     </Button>
   )
 
@@ -177,7 +178,7 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
           {(isLoggedIn && settingsComplete) &&
             <>
               {/* big buttons for desktop and wide tablets */}
-              <Hidden smDown>
+              <Hidden xsDown>
               <ul>
                 <li>
                   {photoButton()}
