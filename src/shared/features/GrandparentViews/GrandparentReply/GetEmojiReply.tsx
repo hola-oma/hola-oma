@@ -4,12 +4,12 @@ import { useHistory, useLocation } from 'react-router'
 import {Box, Button, Card, CardContent, Dialog, Grid, SvgIconProps} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
-import GrandparentLayout from "../../GrandparentLayout";
-import { setReplyContent, submitReply } from "../../../../../services/reply";
+import GrandparentLayout from "../Components/GrandparentLayout";
+import { setReplyContent, submitReply } from "../../../../services/reply";
 
-import { Reply, REPLY_TYPES } from "../../../../models/reply.model";
-import { getUserProfile } from "../../../../../services/user";
-import { replyEmojiArray, mailIcons } from "../../../../../Icons";
+import { Reply, REPLY_TYPES } from "../../../models/reply.model";
+import { getUserProfile } from "../../../../services/user";
+import { replyEmojiArray, mailIcons } from "../../../../Icons";
 
 let choicesList: Array<number> = [];
 
@@ -78,6 +78,7 @@ const GetEmojiReply: React.FC = () => {
   return (
     <>
       <GrandparentLayout
+        from={currentPost.from}
         headerText={"Replying to "}
         header2Text={"Choose which smileys to send!"}
         alertText={getAlertText()}

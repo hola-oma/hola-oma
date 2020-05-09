@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { Theme, Grid, Typography, ButtonBase } from '@material-ui/core';
 
-import { GrandparentPostContext } from "../../../App";
+import { GrandparentPostContext } from "../../../../App";
 import { makeStyles,  createStyles } from "@material-ui/core/styles";
 
-import {  getMessageSubstring } from "../../../services/post";
-import { magnifyIcon } from "../../../Icons";
+import {  getMessageSubstring } from "../../../../services/post";
+import { magnifyIcon } from "../../../../Icons";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

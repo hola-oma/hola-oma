@@ -1,9 +1,9 @@
 import React from 'react';
 import { useLocation, useHistory } from "react-router-dom";
 
-import { GrandparentPostLayout } from "../GrandparentPostLayout";
+import { GrandparentPostLayout } from "../Components/GrandparentPostLayout";
 import { replyOptionIcons } from "../../../../Icons";
-import GrandparentLayout from "../GrandparentLayout";
+import GrandparentLayout from "../Components/GrandparentLayout";
 
 const GrandparentReplyOpts: React.FC = () => {
 
@@ -15,6 +15,7 @@ const GrandparentReplyOpts: React.FC = () => {
         <>
 
         <GrandparentLayout
+          from={currentPost.from}
           headerText={"Reply to Letter from "}
           boxContent={<GrandparentPostLayout/>}
           buttonText={["Smiley", "Voice Message", "Your Picture"]}

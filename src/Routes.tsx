@@ -22,7 +22,7 @@ import { Grid } from "@material-ui/core";
 import NewGrandparentReply from "./shared/features/GrandparentViews/GrandparentReply/NewGrandparentReply";
 import GrandparentCurrentPost from "./shared/features/GrandparentViews/Inbox/GrandparentCurrentPost";
 import GrandparentReplyOpts from "./shared/features/GrandparentViews/GrandparentReply/GrandparentReplyOpts";
-import GetEmojiReply from "./shared/features/GrandparentViews/GrandparentReply/components/GetEmojiReply";
+import GetEmojiReply from "./shared/features/GrandparentViews/GrandparentReply/GetEmojiReply";
 
 interface IRoutes {
   isLoggedIn: boolean;

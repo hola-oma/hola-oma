@@ -3,23 +3,24 @@ import React from 'react';
 import { useLocation, useHistory } from "react-router";
 
 import { mailIcons, replyEmojiArray } from "../../../../Icons";
-import GrandparentLayout from "../GrandparentLayout";
+import GrandparentLayout from "../Components/GrandparentLayout";
 import {Card, CardContent, Grid, SvgIconProps} from "@material-ui/core";
 
 export const NewGrandparentReply: React.FC = () => {
   const history = useHistory();
   const location = useLocation();
-  const currentReply: any = location.state;
+  const currentPost: any = location.state;
 
   const sentEmojis: Array<React.ReactElement<SvgIconProps>> = [];
   const allEmojis: Array<React.ReactElement<SvgIconProps>> = replyEmojiArray();
-  currentReply.message.forEach(function(index: number) {
+  currentPost.message.forEach(function(index: number) {
     sentEmojis.push(allEmojis[index]);
   })
 
   return (
     <>
       <GrandparentLayout
+        from={currentPost.from}
         headerText={ "Reply sent to " }
         boxContent={
           <Grid container>

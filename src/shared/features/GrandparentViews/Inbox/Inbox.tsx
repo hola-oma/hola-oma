@@ -1,14 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useHistory } from "react-router-dom";
 import { Theme, makeStyles } from '@material-ui/core/styles';
 
 import { Container, Grid, Typography, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
 
 import { Post } from 'shared/models/post.model';
-import {GrandparentPostContext} from "../../../../App";
+import { markPostRead } from "../../../../services/post";
 
 import './Inbox.css';
-import { markPostRead } from "../../../../services/post";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -44,14 +43,10 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
     const classes = useStyles();
     const history = useHistory();
 
-    const CurrentPost = useContext(GrandparentPostContext);
-
     const pressEnvelope = async function (envelopePost: Post) {
       currentPost = envelopePost;
       let postID = currentPost?.pid;
       await markPostRead(postID);
-      CurrentPost.setPost(envelopePost);  // Update global post value
-      // setCurrentMsgModalOpen(true);
       history.push({pathname: '/currentPost', state: envelopePost } );
     }
   return (
