@@ -47,7 +47,7 @@ export const NewGrandparentReply: React.FC = () => {
         }
         buttonText={["Go back to letter", "Close letter"]}
         buttonActions={[
-          () => history.push({pathname: '/currentPost', state: currentPost }),
+          () => history.push({pathname: '/startReply', state: currentPost }),
           () => history.push("/posts")
         ]}
         buttonIcons={[mailIcons.openEnvelope, mailIcons.closedEnvelope ]} />
