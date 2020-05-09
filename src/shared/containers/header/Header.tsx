@@ -1,12 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../App";
 
 import './Header.css';
 
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { signUserOut } from "services/user";
-import { AppBar, Toolbar, Typography, Button, Hidden, Drawer, List, ListItemIcon, ListItem, Divider, ListItemText } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, Button, Hidden, Drawer, List, ListItem, Divider, ListItemText } from "@material-ui/core";
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
@@ -17,7 +17,6 @@ import Column from "shared/components/Column/Column";
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import MenuIcon from '@material-ui/icons/Menu';
 
-
 interface IHeader {
   isLoggedIn: boolean;
   settingsComplete: boolean;
@@ -27,8 +26,11 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
 
   const Auth = useContext(AuthContext);
   let history = useHistory();
+  let location = useLocation();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [onSignIn, setOnSignIn] = useState(false);
+  const [onJoin, setOnJoin] = useState(false);
 
   const goToPhotoPrototype = () => {
     setDrawerOpen(false);
@@ -69,6 +71,9 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
   };
 
   const handleSignOut = () => {
+
+    setDrawerOpen(false);
+
     signUserOut().then(function() {
       
       Auth?.setLoggedIn(false);
@@ -190,6 +195,19 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
 
     </List>
   )
+
+  useEffect(() => {
+    if (location?.pathname === "/signIn") {
+      setOnSignIn(true);
+      setOnJoin(false);
+    } else if (location?.pathname === "/join") {
+      setOnJoin(true);
+      setOnSignIn(false);
+    } else {
+      setOnJoin(false);
+      setOnSignIn(false);
+    }
+  }, [location]); 
   
   return (
     <AppBar position="static" className="headerBar">
@@ -208,13 +226,17 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
         <div className="nav">
           {!isLoggedIn && 
             <ul>
-              <li>
-                {joinButton()}
+              {onSignIn && 
+                <li>
+                {joinButton()} 
                 </li>
+              }
 
-              <li>
-                {signInButton()}
-              </li>
+              {onJoin && 
+                <li>
+                  {signInButton()}
+                </li>
+              }
             </ul>
           }
 
