@@ -82,14 +82,14 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
         <div className={classes.root}>
 
           {imageURL &&
-          <div className={classes.root}>
+          <div className={classes.root} onClick={enlargeImage}>
             <ButtonBase
                 key={from}
                 className={message ? classes.both : classes.media}
-                style={{ width: postImage.width }} >
+                style={{ width: postImage.width }}
+                 >
               <span className=
                   {classes.imageSrc}
-                  onClick={enlargeImage}
                   style={{
                       backgroundImage: `url(${imageURL})`,
                       display: loaded ? "" : "none",
