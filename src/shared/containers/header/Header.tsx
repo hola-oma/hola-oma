@@ -53,6 +53,70 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
       console.log(error);
     });
   }
+
+  const joinButton = () => (
+    <Button
+      variant="contained"
+      color="secondary"
+      size="large"
+      className=""
+      onClick={() => goToRegistration()}
+      startIcon={<AccountCircleIcon />}
+    >
+      Join
+    </Button>
+  )
+
+  const signInButton = () => (
+    <Button
+      variant="contained"
+      color="secondary"
+      size="large"
+      className=""
+      onClick={() => goToSignIn()}
+      startIcon={<AccountCircleIcon />}
+      >
+      Sign in
+    </Button>
+  )
+
+  const photoButton = () => (
+    <Button
+      variant="outlined"
+      color="secondary"
+      size="medium"
+      className=""
+      onClick={() => goToPhotoPrototype()}
+      startIcon={<AccountCircleIcon />}
+      >Photo
+    </Button>
+  )
+
+  const inboxButton = () => (
+    <Button
+      variant="contained"
+      color="secondary"
+      size="medium"
+      className=""
+      onClick={() => goToInbox()}
+      startIcon={<MailIcon />}
+    >
+      Inbox
+    </Button>
+  )
+
+  const settingsButton = () => (
+    <Button
+      variant="contained"
+      color="secondary"
+      size="medium"
+      className=""
+      onClick={() => goToSettings()}
+      startIcon={<SettingsIcon />}
+    >
+      Settings
+    </Button>
+  )
   
   return (
     <AppBar position="static" className="headerBar">
@@ -72,70 +136,27 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
           {!isLoggedIn && 
             <ul>
               <li>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="large"
-                  className=""
-                  onClick={() => goToRegistration()}
-                  startIcon={<AccountCircleIcon />}
-                >
-                  Join
-                </Button>
+                {joinButton()}
                 </li>
 
-              <li><Button
-                  variant="contained"
-                  color="secondary"
-                  size="large"
-                  className=""
-                  onClick={() => goToSignIn()}
-                  startIcon={<AccountCircleIcon />}
-                >
-                  Sign in
-                </Button></li>
+              <li>
+                {signInButton()}
+              </li>
             </ul>
           }
 
           {(isLoggedIn && settingsComplete) &&
             <ul>
-              {/* Remove later */}
               <li>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  size="medium"
-                  className=""
-                  onClick={() => goToPhotoPrototype()}
-                  startIcon={<AccountCircleIcon />}
-                >Photo
-                </Button>
+                {photoButton()}
               </li>
 
               <li>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="medium"
-                  className=""
-                  onClick={() => goToInbox()}
-                  startIcon={<MailIcon />}
-                >
-                  Inbox
-                </Button>
+                {inboxButton()}
               </li>
 
               <li>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="medium"
-                  className=""
-                  onClick={() => goToSettings()}
-                  startIcon={<SettingsIcon />}
-                >
-                  Settings
-                </Button>
+                {settingsButton()}
               </li>
               
               <li><button onClick={handleSignOut}>Sign out</button></li>
