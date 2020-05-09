@@ -19,11 +19,6 @@ import {Post} from "./shared/models/post.model";
 
 firebase.initializeApp(firebaseConfig);
 
-interface IPostContext {
-  post: Post;
-  setPost: any;
-}
-
 interface IAuthContext {
   isLoggedIn: boolean;
   setLoggedIn: any;
@@ -66,7 +61,6 @@ const theme = createMuiTheme({
 })
 
 export const AuthContext = React.createContext<IAuthContext | null>(null);
-export const GrandparentPostContext = React.createContext<IPostContext>({ post: dummyPost, setPost: null });
 
 function App() {
 
@@ -126,7 +120,6 @@ function App() {
   return (
     /* https://reactjs.org/docs/context.html */
     <AuthContext.Provider value={{ isLoggedIn, setLoggedIn, userData, settingsComplete, setSettingsComplete }}>
-      <GrandparentPostContext.Provider value={{ post, setPost}}>
 
       <div className="App">
       
@@ -141,8 +134,7 @@ function App() {
       </Router>
 
       </div>
-
-      </GrandparentPostContext.Provider>
+      
     </AuthContext.Provider>
 
 
