@@ -4,7 +4,7 @@ import { useLocation, useHistory } from "react-router-dom";
 import CreateIcon from '@material-ui/icons/Create';
 import MailIcon from '@material-ui/icons/Mail';
 import GrandparentLayout from "../GrandparentLayout";
-import {GrandparentPostLayout} from "../GrandparentPostLayout";
+import { GrandparentPostLayout } from "../GrandparentPostLayout";
 
 
 const GrandparentCurrentPost: React.FC = () => {
@@ -26,7 +26,7 @@ const GrandparentCurrentPost: React.FC = () => {
       <GrandparentLayout
         headerText={"Letter from "}
         boxContent={ <GrandparentPostLayout/> }
-        buttonText={["Go Back to All Messages", "Reply"]}
+        buttonText={["Go Back to Mailbox", "Reply"]}
         buttonActions={[returnToInbox, replyToMessage]}
         buttonIcons={[<MailIcon/>, <CreateIcon/>]}
       />

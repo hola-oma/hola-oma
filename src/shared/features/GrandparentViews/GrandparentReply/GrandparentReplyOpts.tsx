@@ -6,12 +6,7 @@ import { replyOptionIcons } from "../../../../Icons";
 import GetEmojiReply from "./components/GetEmojiReply";
 import GrandparentLayout from "../GrandparentLayout";
 
-
-interface IGrandparentReplyOpts {
-  post: Post;
-}
-
-const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
+const GrandparentReplyOpts: React.FC = () => {
 
   const [EmojiReplyOpen, setEmojiReplyOpen] = useState<boolean>(false);
 
