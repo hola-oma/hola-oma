@@ -12,7 +12,6 @@ import CommentIcon from '@material-ui/icons/Comment';
 
 import Moment from 'react-moment';
 
-import './PostManagement.css';
 import Child from 'shared/components/Child/Child';
 import Column from 'shared/components/Column/Column';
 
@@ -108,12 +107,12 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
           posts.map((post: Post, index: number) => {
             return (
               <Child xs={12} key={index}>
-                <div className="postStyle">
+                <div className={classes.postStyle}>
                   <Link to={{
                     pathname: "/postDetails",
                     state: {post: post}
                   }}>
-                  <Card variant="outlined" className="postStyle">
+                  <Card variant="outlined" className={classes.postStyle}>
                     <CardHeader 
                         avatar={<Avatar>{firstLetterOfName()}</Avatar>}
                         title={renderPostTitle(post)}
