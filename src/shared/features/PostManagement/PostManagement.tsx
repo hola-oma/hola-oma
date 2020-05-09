@@ -100,6 +100,10 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
             Posts
           </Typography>
 
+          {posts.length === 0 && <Typography>
+            Your sent posts will appear here. Create a post to see!
+          </Typography>}
+
         {
           posts.map((post: Post, index: number) => {
             return (
