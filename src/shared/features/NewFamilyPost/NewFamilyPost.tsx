@@ -6,7 +6,7 @@ import { TextField, Button, Checkbox, Typography } from '@material-ui/core';
 import { createPost, updatePostID, uploadFile } from "services/post";
 import { getUserProfile } from "services/user";
 import { getLinkedAccounts } from "services/accountLink";
-import Alert from '@material-ui/lab/Alert';
+import FormError from 'shared/components/FormError/FormError';
 import ClearIcon from '@material-ui/icons/Clear';
 import Column from 'shared/components/Column/Column';
 import Row from 'shared/components/Row/Row';
@@ -201,7 +201,7 @@ const NewFamilyPost: React.FC = () => {
             </Button>
             </Row>
             {error &&
-                <Alert className="error" severity="error">{error}</Alert>
+                <FormError error={error}/>
             }
             </form>
         </Column>
