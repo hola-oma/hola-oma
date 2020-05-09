@@ -14,10 +14,8 @@ import 'firebase/database'; // for additional user properties, like role
 
 import { useHistory, Link } from "react-router-dom";
 import { RouteComponentProps, useLocation } from 'react-router-dom'; // give us 'history' object
-import { Avatar } from "@material-ui/core";
 
 import { verifyActionCode, resetPassword } from 'services/user';
-import Alert from "@material-ui/lab/Alert";
 import BigInput from "shared/components/BigInput/BigInput";
 import CredentialsWrapper from "shared/components/CredentialsWrapper";
 import Child from "shared/components/Child/Child";
