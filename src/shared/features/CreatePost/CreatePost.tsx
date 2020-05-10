@@ -1,31 +1,31 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useHistory } from "react-router-dom";
 
 import { roles } from '../../../enums/enums';
 import { getUserSettings } from "services/user";
 
-// import { Post } from '../../shared/models/currentPost.model';
-import GrandparentReplyOptions from "../GrandparentViews/GrandparentReply/GrandparentReplyOpts";
-
 import NewFamilyPost from ".././NewFamilyPost/NewFamilyPost";
-import {GrandparentPostContext} from "../../../App";
 
 const CreatePost: React.FC = () => {
 
     const [role, setRole] = useState("");
-    const CurrentPost = useContext(GrandparentPostContext);
+
+    const history = useHistory();
+    const location = useLocation();
+    const currentPost: any = location.state;  // post was passed in as state
 
     useEffect(() => {
         getUserSettings()
             .then((doc:any) => {
                 setRole(doc?.role);
             });
-    }, []); // fires on page load if this is empty []
+    }, []);
 
     return (
         <>
             <>
                 {role === roles.poster && <NewFamilyPost/>}
-                {role === roles.receiver && <GrandparentReplyOptions post={CurrentPost.post}/>}
+                {role === roles.receiver && history.push({pathname: '/startReply', state: currentPost }) }
             </>
         </>
     )

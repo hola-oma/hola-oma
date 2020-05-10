@@ -1,39 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useLocation, useHistory } from "react-router-dom";
 
-import { GrandparentPostView } from "../GrandparentPostView";
-import { Post } from "../../../models/post.model";
+import { GrandparentPostLayout } from "../Components/GrandparentPostLayout";
 import { replyOptionIcons } from "../../../../Icons";
-import GetEmojiReply from "./components/GetEmojiReply";
-import GrandparentLayout from "../GrandparentLayout";
+import GrandparentLayout from "../Components/GrandparentLayout";
 
+const GrandparentReplyOpts: React.FC = () => {
 
-interface IGrandparentReplyOpts {
-  post: Post;
-}
-
-const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
-
-  const [EmojiReplyOpen, setEmojiReplyOpen] = useState<boolean>(false);
+  const history = useHistory();
+  const location = useLocation();
+  const currentPost: any = location.state;
 
   return (
         <>
 
         <GrandparentLayout
-          headerText={"Reply to Letter from "}
-          boxContent={<GrandparentPostView/>}
+          from={currentPost.from}
+          headerText={"Letter from "}
+          header2Text={"Choose how to reply below!"}
+          boxContent={
+            <GrandparentPostLayout
+              from={currentPost.from}
+              imageURL={currentPost.photoURL}
+              message={currentPost.message}
+            />
+          }
           buttonText={["Smiley", "Voice Message", "Your Picture"]}
           buttonActions={[
-            () => setEmojiReplyOpen(true),
+            () => history.push({pathname: '/emoji', state: currentPost } ),
             () => console.log("Grandparent wants to send a \"voicemail\"!"),
             () => console.log("Grandparent wants to send a picture!")
           ]}
           buttonIcons={[replyOptionIcons.emoji, replyOptionIcons.voicemail, replyOptionIcons.photo]}
           />
-
-        <GetEmojiReply
-          isOpen={EmojiReplyOpen}
-          returnToPost={() => setEmojiReplyOpen(false)}
-        />
 
      </>
     )

@@ -3,23 +3,28 @@ import React from 'react';
 import { useLocation, useHistory } from "react-router";
 
 import { mailIcons, replyEmojiArray } from "../../../../Icons";
-import GrandparentLayout from "../GrandparentLayout";
+import GrandparentLayout from "../Components/GrandparentLayout";
 import {Card, CardContent, Grid, SvgIconProps} from "@material-ui/core";
+import {Post} from "../../../models/post.model";
 
 export const NewGrandparentReply: React.FC = () => {
   const history = useHistory();
   const location = useLocation();
-  const currentReply: any = location.state;
+  const state: any = location.state;
+
+  const replyContent = state.replyContent;
+  const currentPost: Post = state.currentPost;
 
   const sentEmojis: Array<React.ReactElement<SvgIconProps>> = [];
   const allEmojis: Array<React.ReactElement<SvgIconProps>> = replyEmojiArray();
-  currentReply.message.forEach(function(index: number) {
+  (replyContent.message).forEach(function(index: number) {
     sentEmojis.push(allEmojis[index]);
   })
 
   return (
     <>
       <GrandparentLayout
+        from={currentPost.from}
         headerText={ "Reply sent to " }
         boxContent={
           <Grid container>
@@ -41,8 +46,10 @@ export const NewGrandparentReply: React.FC = () => {
           </Grid>
         }
         buttonText={["Go back to letter", "Close letter"]}
-        buttonActions={ [() => console.log("todo: return to Inbox with modal opened"),
-                        () => history.push("/posts")] }
+        buttonActions={[
+          () => history.push({pathname: '/startReply', state: currentPost }),
+          () => history.push("/posts")
+        ]}
         buttonIcons={[mailIcons.openEnvelope, mailIcons.closedEnvelope ]} />
     </>
   )
