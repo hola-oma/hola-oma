@@ -1,8 +1,7 @@
-import React, {useContext} from 'react';
+import React from 'react';
 
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {Grid, Box, Button, SvgIconProps} from '@material-ui/core';
-import {GrandparentPostContext} from "../../../App";
 import {Alert} from "@material-ui/lab";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,6 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IGrandparentLayout {
+  from: string,
   headerText: string;
   header2Text?:string;
   alertText?: string | null;
@@ -35,17 +35,16 @@ interface IGrandparentLayout {
   buttonIcons: React.ReactElement<SvgIconProps>[];
 }
 
-export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ headerText, header2Text, alertText, boxContent, buttonText,  buttonActions, buttonIcons}) => {
+export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerText, header2Text, alertText, boxContent, buttonText,  buttonActions, buttonIcons}) => {
 
   const classes = useStyles();
-  const FamilyPost = useContext(GrandparentPostContext).post;
 
   return (
     <>
       <Grid>
         {/*Header*/}
         <Grid item xs={12} className={classes.title}>
-          <h1>{headerText} {FamilyPost?.from}</h1>
+          <h1>{headerText} {from}</h1>
           { header2Text && <h2>{header2Text}</h2> }
         </Grid>
 

@@ -15,14 +15,8 @@ import { User } from 'shared/models/user.model';
 import { getUserSettings } from 'services/user';
 import { CssBaseline } from '@material-ui/core';
 import { blueGrey, teal } from '@material-ui/core/colors';
-import {Post} from "./shared/models/post.model";
 
 firebase.initializeApp(firebaseConfig);
-
-interface IPostContext {
-  post: Post;
-  setPost: any;
-}
 
 interface IAuthContext {
   isLoggedIn: boolean;
@@ -30,17 +24,6 @@ interface IAuthContext {
   settingsComplete: boolean;
   setSettingsComplete: any;
   userData: User | undefined;
-}
-
-const dummyPost = {
-  pid: "",
-  creatorID: "",
-  from: "",
-  read: false,
-  message: "Empty post",
-  photoURL: "",
-  date: 1,
-  receiverIDs: []
 }
 
 /* https://material-ui.com/customization/default-theme/?expand-path=$.typography */
@@ -66,7 +49,6 @@ const theme = createMuiTheme({
 })
 
 export const AuthContext = React.createContext<IAuthContext | null>(null);
-export const GrandparentPostContext = React.createContext<IPostContext>({ post: dummyPost, setPost: null });
 
 function App() {
 
@@ -74,7 +56,6 @@ function App() {
   const [settingsComplete, setSettingsComplete] = useState<boolean>(false);
   const [userData, setUserData] = useState<User>();// call db and get stuff, put it in here
   const [sessionRead, setSessionRead] = useState<boolean>(false);
-  const [post, setPost] = useState<Post>(dummyPost);
 
   const readSession = async () => {
     let db;
@@ -126,7 +107,6 @@ function App() {
   return (
     /* https://reactjs.org/docs/context.html */
     <AuthContext.Provider value={{ isLoggedIn, setLoggedIn, userData, settingsComplete, setSettingsComplete }}>
-      <GrandparentPostContext.Provider value={{ post, setPost}}>
 
       <div className="App">
       
@@ -142,7 +122,6 @@ function App() {
 
       </div>
 
-      </GrandparentPostContext.Provider>
     </AuthContext.Provider>
 
 

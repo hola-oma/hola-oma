@@ -12,7 +12,6 @@ import CommentIcon from '@material-ui/icons/Comment';
 
 import Moment from 'react-moment';
 
-import './PostManagement.css';
 import Child from 'shared/components/Child/Child';
 import Column from 'shared/components/Column/Column';
 
@@ -38,6 +37,7 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
 
   const classes = useStyles();
   const [newReplies, setNewReplies] = useState<boolean[]>([]);
+  const [numReplies, setNumReplies] = useState<number[]>([]);
 
   useEffect(() => {
     let numNewReplies = 0;
@@ -45,6 +45,7 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
       // eslint-disable-next-line no-loop-func
       getRepliesToPost(posts[i].pid).then((replyArray: any) => {
         let newRep = false;
+        setNumReplies(numReplies => numReplies.concat(replyArray.length));
         for (let j = 0; j < replyArray.length; j++) {
           if (replyArray[j].read === false) {
             newRep = true;
@@ -58,21 +59,26 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
 }, []); // fires on page load if this is empty [] 
 
   const getMessageSubstring = function(message: string) {
-    if (message.length > 100) {
-      return (message.substring(0, 100) + "...");
-    } else {
-      return message;
+    let returnValue = "";
+    if (message.trim().length !== 0) {
+      returnValue += '"';
+      if (message.length > 100) {
+        returnValue += (message.substring(0, 100) + "...");
+      } else {
+        returnValue += message;
+      }
+      returnValue += '"';
     }
+    return returnValue;
   }
 
   const renderPostTitle = (post: Post) => {
-    if (post.receiverIDs.length === 1) {
-      return <span>You shared this with {post.receiverIDs.length} recipients.</span>
-    } else if (post.receiverIDs.length > 1) {
-      return <span>You shared this with one recipient.</span>
-    } else {
-      // todo: [stretch] add a link to "Invite Follower" page
+    if (post.receiverIDs.length === 0 || !post.receiverIDs) {
       return <span>You are not sharing your posts with anyone yet!<Link to="/addAccountLink">Invite followers</Link></span>;
+    } else if (post.receiverIDs.length === 1) {
+      return <span>You shared this with one recipient.</span>
+    } else if (post.receiverIDs.length > 1) {
+      return <span>You shared this with {post.receiverIDs.length} recipients.</span>
     }
   }
 
@@ -92,16 +98,20 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
             Posts
           </Typography>
 
+          {posts.length === 0 && <Typography>
+            Your sent posts will appear here. Create a post to see!
+          </Typography>}
+
         {
           posts.map((post: Post, index: number) => {
             return (
               <Child xs={12} key={index}>
-                <div className="postStyle">
+                <div className={classes.postStyle}>
                   <Link to={{
                     pathname: "/postDetails",
                     state: {post: post}
                   }}>
-                  <Card variant="outlined" className="postStyle">
+                  <Card variant="outlined" className={classes.postStyle}>
                     <CardHeader 
                         avatar={<Avatar>{firstLetterOfName()}</Avatar>}
                         title={renderPostTitle(post)}
@@ -116,18 +126,17 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
                     }
                     <CardContent>
                       <Typography variant="body2" color="textSecondary" component="p">
-                        {'\"' + getMessageSubstring(post.message) + '\"'}
+                        {getMessageSubstring(post.message)}
                       </Typography>
                     </CardContent>
 
                     <CardActions>
-                      {/* todo: if ANY replies exist, show this icon with a number */}
-                      {/* I don't think the quantity of replies is on a post yet, and 
-                      if it never will be then let's just remove this */}
                       <IconButton>
                         <CommentIcon color="secondary"/>
                       </IconButton>
-                      <Typography variant="caption" color="textSecondary">N replies</Typography>
+                      <Typography variant="caption" color="textSecondary">
+                        {numReplies[index] === 1 ? (numReplies[index] + ' reply') : (numReplies[index] + ' replies')}
+                      </Typography>
 
                       {/* if there are NEW REPLIES, show this messaging */}
                       {newReplies[index] && 
