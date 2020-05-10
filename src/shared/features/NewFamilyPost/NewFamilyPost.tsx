@@ -21,6 +21,10 @@ interface IReceiver {
     checked: boolean
 }
 
+interface IReadObj {
+    [key: string]: boolean
+}
+
 const NewFamilyPost: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<Blob | null>();
     const [textValue, updateTextValue] = useState("");
@@ -54,7 +58,7 @@ const NewFamilyPost: React.FC = () => {
             from: displayName,
             message: textValue,
             photoURL: "",
-            read: false,
+            read: setRead(receiverIDs),
             date: new Date().getTime(),
             receiverIDs: receiverIDs
         };
@@ -76,6 +80,15 @@ const NewFamilyPost: React.FC = () => {
             console.error(e.message);
           }
       };
+
+    const setRead = (receiverIDs: Array<string>) => {
+        let readObj: IReadObj;
+        readObj = {};
+        for (let i = 0; i < receiverIDs.length; i++) {
+            readObj[receiverIDs[i]] = false;
+        }
+        return readObj;
+    }
 
     const handleCheckboxes = (event: any, index: number) => {
         event.persist();
@@ -183,8 +196,8 @@ const NewFamilyPost: React.FC = () => {
             {
                 receivers.map((receiver: IReceiver, index: number) => {
                     return (
-                        <Row justify="center">
-                            <label key={receiver.id}>
+                        <Row justify="center" key={receiver.id}>
+                            <label>
                                 {receiver.name}
                                 <Checkbox name={receiver.id} checked={receiver.checked} onChange={e => handleCheckboxes(e, index)} />
                             </label>

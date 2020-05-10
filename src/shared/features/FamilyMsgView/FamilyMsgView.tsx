@@ -153,7 +153,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                         receivers.map((receiver: IReceiver, index: number) => {
                             return (
                             <Grid container alignItems="center" justify="center" key={index}>
-                                {post.read === true ? <CheckBoxIcon fontSize="small"/> : <CheckBoxOutlineBlankIcon fontSize="small"/>}
+                                {post.read[receiver.id] === true ? <CheckBoxIcon fontSize="small"/> : <CheckBoxOutlineBlankIcon fontSize="small"/>}
                                 <Typography variant="caption" align="center">
                                     {receiver.name}
                                 </Typography>
