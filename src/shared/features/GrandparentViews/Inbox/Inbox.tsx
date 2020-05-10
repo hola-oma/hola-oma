@@ -1,15 +1,13 @@
-import React, {useContext, useState} from 'react';
+import React from 'react';
 import { useHistory } from "react-router-dom";
 import { Theme, makeStyles } from '@material-ui/core/styles';
 
 import { Container, Grid, Typography, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
 
 import { Post } from 'shared/models/post.model';
-import {GrandparentPostContext} from "../../../../App";
+import { markPostRead } from "../../../../services/post";
 
 import './Inbox.css';
-import CurrentMsgModal from "./components/CurrentMsgModal";
-import { markPostRead } from "../../../../services/post";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -43,28 +41,14 @@ let currentPost: Post;
 const Inbox: React.FC<IInbox> = ({ posts }) => {
 
     const classes = useStyles();
-    let history = useHistory();
-    const [currentMsgModalOpen, setCurrentMsgModalOpen] = useState<boolean>(false);
-
-    const CurrentPost = useContext(GrandparentPostContext);
+    const history = useHistory();
 
     const pressEnvelope = async function (envelopePost: Post) {
       currentPost = envelopePost;
       let postID = currentPost?.pid;
       await markPostRead(postID);
-      CurrentPost.setPost(envelopePost);  // Update global post value
-      setCurrentMsgModalOpen(true);
+      history.push({pathname: '/startReply', state: envelopePost } );
     }
-
-    const returnToInbox = () => {
-      setCurrentMsgModalOpen(false);
-    }
-
-    const replyToMessage = () => {
-      setCurrentMsgModalOpen(false);
-      history.push("/newPost");
-    }
-
   return (
     <>
       <Container>
@@ -74,7 +58,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                   <Typography variant="h2">Your mailbox is empty</Typography>
               </Grid>
           }
-
             <GridList className={classes.gridList} cols={3}>
               {posts.map((post, index: number) => (
                 <GridListTile key={post.pid} onClick={() => pressEnvelope(post)} rows={1.25}>
@@ -93,12 +76,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
             </GridList>
 
         </Grid>
-
-        <CurrentMsgModal
-          isOpen={currentMsgModalOpen}
-          returnToInbox={returnToInbox}
-          replyToMessage={replyToMessage}
-        />
       </Container>
     </>
   )
