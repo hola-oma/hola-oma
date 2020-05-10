@@ -226,15 +226,6 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             </div>
             </Modal>
         </Container>
-
-        <Box className="todo">
-            <h3>To do items:</h3>
-            <ul>
-                <li>Break out seen by by individual receiver "read" receipts - After post model has been changed to accommodate.</li>
-                <li>Edit options?</li>
-                <li>Send a short video</li>
-            </ul>
-        </Box>
      </>
     )
 };
