@@ -11,6 +11,7 @@ import { getRepliesToPost, markReplyRead } from "services/reply";
 import { Reply } from "../../models/reply.model";
 import { replyEmojiArray } from "../../../Icons";
 import ModalReply from "./ModalReply";
+import ManageConfirmDelete from "./ManageConfirmDelete";
 
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -69,6 +70,8 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const [modalReply, setModalReply] = useState<Reply>();
     const [receivers, setReceivers] = useState<IReceiver[]>([]);
     const [replies, setReplies] = useState<Reply[]>([]);
+    const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState<boolean>(false);
+
     const emojiIcons = replyEmojiArray();
     let history = useHistory();
 
@@ -103,8 +106,16 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         }
     }
 
+    const handleConfirmDeleteModalClose = () => {
+        setConfirmDeleteModalOpen(false);
+    }
+
+    const onClickDelete = () => {
+        setConfirmDeleteModalOpen(true);
+    }
+
     const deleteCurrentPost = () => {
-        // To do: Add confirm modal
+        setConfirmDeleteModalOpen(false);
         deletePost(post.pid);
         history.push('/posts')
     }
@@ -177,7 +188,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                         size="small"
                         className={classes.spacing}
                         startIcon={<DeleteIcon />}
-                        onClick={deleteCurrentPost}>
+                        onClick={onClickDelete}>
                         Delete Post
                     </Button>
                 </Column>
@@ -226,6 +237,12 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             </div>
             </Modal>
         </Container>
+
+        <ManageConfirmDelete 
+            isOpen={confirmDeleteModalOpen} 
+            deleteConfirmed={() => deleteCurrentPost()}
+            onClose={handleConfirmDeleteModalClose} 
+        />
 
         <Box className="todo">
             <h3>To do items:</h3>
