@@ -73,16 +73,14 @@ const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
   //   let replyID = uploadPhoto(photoRef);
   //   console.log("Photo attached to reply with ID: ", replyID);
   // }
-  // className={ highlightedList[index] ? classes.highlighted : classes.root }
+
 
   return (
     <div>
-      {/* No photo exists, prompt user to take one */}
-      {/*{!photoPreview &&*/}
       <>
         <GrandparentLayout
             from={currentPost.from}
-            headerText={ !photoPreview ? "Take a photo to send to " : "Sending photo to"}
+            headerText={ !photoPreview ? "Take a photo to send to " : "Sending photo to "}
             boxContent={ !photoPreview ?
               <Webcam className={"photo"}
                 audio={false}
@@ -92,9 +90,16 @@ const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
               /> :
               <img src={photoPreview} alt="preview"></img>
             }
-            buttonText={!photoPreview ? ["Take Photo"] : ["Retake Photo", "Send Photo"]}
-            buttonActions={!photoPreview ? [capture] : [capture, () => console.log("send photo")]}
-            buttonIcons={!photoPreview ? [cameraIcons.camera] : [cameraIcons.camera, cameraIcons.paperAirplane]} />
+            buttonText={!photoPreview ?
+              ["Back to message", "Take Photo"] :
+              ["Back to message", "Retake Photo", "Send Photo"]}
+            buttonActions={!photoPreview ?
+              [() => console.log("Go back to message"), capture] :
+              [() => console.log("Go back to message"), capture, () => console.log("send photo")]}
+            buttonIcons={!photoPreview ?
+              [cameraIcons.openEnvelope, cameraIcons.camera] :
+              [cameraIcons.openEnvelope, cameraIcons.camera, cameraIcons.paperAirplane]}
+        />
       </>
     </div>
   );
