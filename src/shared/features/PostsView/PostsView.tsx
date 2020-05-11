@@ -43,6 +43,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   const [invite, setInvite] = useState<AccountLink>();
   const [invitationModalOpen, setInvitationModalOpen] = useState<boolean>(false);
   const [numNewReplies, setNumNewReplies] = useState(0);
+  const [verifiedReceivers, setVerifiedReceivers] = useState<boolean>(false);
 
   const updatePendingInvitations = (dataArr: AccountLink[]) => {
     if (dataArr.length > 0) {
@@ -61,6 +62,10 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
         if (isMounted) {
           const pendingInvitations = links.filter(link => !link.verified);
           updatePendingInvitations(pendingInvitations);
+          const verified = links.filter(link => link.verified);
+          if (verified.length > 0) {
+            setVerifiedReceivers(true);
+          }
           setLinkedAccounts(links);
           getPosts()
             .then((docs:Post[]) => {
@@ -245,21 +250,25 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
               <Child xs={12}>
                 {role === roles.poster &&
                   <>
-                  {linkedAccounts.length === 0 && 
+                  {!verifiedReceivers &&
                     <>
-                      <Alert variant="filled" severity="warning">
-                        You are not linked with any accounts yet! <Link to="/addAccountLink">Invite someone</Link>
-                      </Alert>
-                      <Row justify="center">
-                        <Child>
-                          <Child xs={12}>
-                          {disabledCreateNewPostButton()}
-                          </Child>
+                      {linkedAccounts.length === 0 && 
+                      <>
+                        <Alert variant="filled" severity="warning">
+                          You are not linked with any accounts yet! <Link to="/addAccountLink">Invite someone</Link>
+                        </Alert>
+                      </>
+                    }
+                    <Row justify="center">
+                      <Child>
+                        <Child xs={12}>
+                        {disabledCreateNewPostButton()}
                         </Child>
-                      </Row>
+                      </Child>
+                    </Row>
                     </>
                   }
-                  {linkedAccounts.length > 0 &&
+                  {verifiedReceivers &&
                     <Row justify="center">
                       <Child>
                         <Child xs={12}>
