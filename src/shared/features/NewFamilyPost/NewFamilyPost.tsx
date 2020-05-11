@@ -109,6 +109,12 @@ const NewFamilyPost: React.FC = () => {
         }
     }
 
+    const getImageAsUrl = () => {
+        let urlCreator = window.URL || window.webkitURL;
+        let imageUrl: string = urlCreator.createObjectURL(selectedFile);
+        return imageUrl;
+    }
+
     useEffect(() => {
         getUserProfile()
         .then((userProfile:any) => {
@@ -157,16 +163,23 @@ const NewFamilyPost: React.FC = () => {
                         onChange={(event) => onSelect(event.target.files ? event.target.files[0] : null)} />
                 </Row>
             }
-            {selectedFile && 
-                <Row justify="center">
-                    <Button
-                        variant="outlined"
-                        color="primary"
-                        size="small"
-                        onClick={() => setSelectedFile(null)}>
-                        <ClearIcon/>Remove file
-                    </Button>
-                </Row>
+            {selectedFile &&
+                <>
+                    <Row justify="center">
+                        <img src={getImageAsUrl()}
+                            className="photo"
+                            alt="Attached img"/>
+                    </Row>
+                    <Row justify="center">
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            onClick={() => setSelectedFile(null)}>
+                            <ClearIcon/>Remove file
+                        </Button>
+                    </Row>
+                </>
             }
             <TextField
                 multiline
