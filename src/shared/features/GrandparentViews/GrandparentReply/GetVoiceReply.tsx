@@ -55,6 +55,7 @@ const GetVoiceReply: React.FC = () => {
 
   const handleDictationDone = (results: any) => {
     const { confidence, transcript } = results.result;
+    console.log(results);
     if (results) {
       // todo: if confidence is too low, we could ask them to record again 
       // for now it just uses whatever you recorded
