@@ -5,9 +5,9 @@ import { Theme, makeStyles } from '@material-ui/core/styles';
 import { Container, Grid, Typography, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
 
 import { Post } from 'shared/models/post.model';
-import { markPostRead } from "../../../../services/post";
 
 import './Inbox.css';
+import { markPostRead, getPostReadByCurrentUser } from "../../../../services/post";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -61,7 +61,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
             <GridList className={classes.gridList} cols={3}>
               {posts.map((post, index: number) => (
                 <GridListTile key={post.pid} onClick={() => pressEnvelope(post)} rows={1.25}>
-                  <img src={post.read ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
+                  <img src={getPostReadByCurrentUser(post) ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
                        alt={"Letter from " + post.from}
                   />
                   <GridListTileBar

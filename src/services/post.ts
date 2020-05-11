@@ -100,9 +100,16 @@ export const uploadFile = async(selectedFile: Blob) => {
   return downloadURL;
 }
 
+// Reference for updating nested object with dynamic key:
+// https://stackoverflow.com/questions/49150917/update-fields-in-nested-objects-in-firestore-documents
 export const markPostRead = async (postID: string) => {
   const db = firebase.firestore();
   let postRef: firebase.firestore.DocumentReference;
+  var user = firebase.auth().currentUser;
+  var userId = "";
+  if (user?.uid) {
+    userId = user?.uid;
+  }
 
   try {
     db.collection("posts").doc(postID);   // Catch error for items that have no pid
@@ -110,7 +117,7 @@ export const markPostRead = async (postID: string) => {
     postRef = db.collection("posts").doc(postID);
     postRef.get().then(function(doc) {
       if (doc.exists) {
-        postRef.update({"read": true})
+        postRef.update({[`read.${userId}`]: true})
       } else {
         console.log("Error updating post: " + postID +
           "(probably an older post not created with pid)");
@@ -122,6 +129,15 @@ export const markPostRead = async (postID: string) => {
   catch (error) {
     console.log("Invalid format: no post id");
   }
+}
+
+export const getPostReadByCurrentUser = (post: Post) => {
+  var user = firebase.auth().currentUser;
+  var userId = "";
+  if (user?.uid) {
+    userId = user?.uid;
+  }
+  return post.read[userId];
 }
 
 export const deletePost = (postID: string) => {

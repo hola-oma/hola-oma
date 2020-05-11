@@ -11,6 +11,7 @@ import { getRepliesToPost, markReplyRead } from "services/reply";
 import { Reply } from "../../models/reply.model";
 import { replyEmojiArray } from "../../../Icons";
 import ModalReply from "./ModalReply";
+import ManageConfirmDelete from "./ManageConfirmDelete";
 
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -69,6 +70,8 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const [modalReply, setModalReply] = useState<Reply>();
     const [receivers, setReceivers] = useState<IReceiver[]>([]);
     const [replies, setReplies] = useState<Reply[]>([]);
+    const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState<boolean>(false);
+
     const emojiIcons = replyEmojiArray();
     let history = useHistory();
 
@@ -103,8 +106,16 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         }
     }
 
+    const handleConfirmDeleteModalClose = () => {
+        setConfirmDeleteModalOpen(false);
+    }
+
+    const onClickDelete = () => {
+        setConfirmDeleteModalOpen(true);
+    }
+
     const deleteCurrentPost = () => {
-        // To do: Add confirm modal
+        setConfirmDeleteModalOpen(false);
         deletePost(post.pid);
         history.push('/posts')
     }
@@ -153,7 +164,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                         receivers.map((receiver: IReceiver, index: number) => {
                             return (
                             <Grid container alignItems="center" justify="center" key={index}>
-                                {post.read === true ? <CheckBoxIcon fontSize="small"/> : <CheckBoxOutlineBlankIcon fontSize="small"/>}
+                                {post.read[receiver.id] === true ? <CheckBoxIcon fontSize="small"/> : <CheckBoxOutlineBlankIcon fontSize="small"/>}
                                 <Typography variant="caption" align="center">
                                     {receiver.name}
                                 </Typography>
@@ -177,7 +188,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                         size="small"
                         className={classes.spacing}
                         startIcon={<DeleteIcon />}
-                        onClick={deleteCurrentPost}>
+                        onClick={onClickDelete}>
                         Delete Post
                     </Button>
                 </Column>
@@ -227,14 +238,11 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             </Modal>
         </Container>
 
-        <Box className="todo">
-            <h3>To do items:</h3>
-            <ul>
-                <li>Break out seen by by individual receiver "read" receipts - After post model has been changed to accommodate.</li>
-                <li>Edit options?</li>
-                <li>Send a short video</li>
-            </ul>
-        </Box>
+        <ManageConfirmDelete 
+            isOpen={confirmDeleteModalOpen} 
+            deleteConfirmed={() => deleteCurrentPost()}
+            onClose={handleConfirmDeleteModalClose} 
+        />
      </>
     )
 };
