@@ -4,7 +4,7 @@ import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import { Button } from "@material-ui/core";
 
 import {setReplyContent, submitReply, uploadPhoto} from 'services/reply';
-import { cameraIcon } from "../../../../Icons";
+import { cameraIcons } from "../../../../Icons";
 import GrandparentLayout from "../Components/GrandparentLayout";
 import {useHistory, useLocation} from "react-router";
 import {getUserProfile} from "../../../../services/user";
@@ -73,60 +73,29 @@ const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
   //   let replyID = uploadPhoto(photoRef);
   //   console.log("Photo attached to reply with ID: ", replyID);
   // }
+  // className={ highlightedList[index] ? classes.highlighted : classes.root }
 
   return (
     <div>
       {/* No photo exists, prompt user to take one */}
-      {!photoPreview &&
+      {/*{!photoPreview &&*/}
       <>
         <GrandparentLayout
             from={currentPost.from}
-            headerText={"Take a picture to send to "}
-            boxContent={
+            headerText={ !photoPreview ? "Take a photo to send to " : "Sending photo to"}
+            boxContent={ !photoPreview ?
               <Webcam className={"photo"}
                 audio={false}
                 ref={webcamRef}
                 screenshotFormat="image/jpeg"
                 videoConstraints={videoConstraints}
-              />
+              /> :
+              <img src={photoPreview} alt="preview"></img>
             }
-            buttonText={["Take Photo"]}
-            buttonActions={[capture]}
-            buttonIcons={[cameraIcon.camera]} />
-
+            buttonText={!photoPreview ? ["Take Photo"] : ["Retake Photo", "Send Photo"]}
+            buttonActions={!photoPreview ? [capture] : [capture, () => console.log("send photo")]}
+            buttonIcons={!photoPreview ? [cameraIcons.camera] : [cameraIcons.camera, cameraIcons.paperAirplane]} />
       </>
-      }
-
-      {/* Preview exists, user can re-take if they want */}
-      {photoPreview &&
-      <>
-          <img src={photoPreview} alt="preview"></img>
-          <br/>
-          <Button
-              className="bigButton"
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={capture}
-              startIcon={<CameraAltIcon />}
-          >
-              Retake photo
-          </Button>
-          &nbsp;
-          <Button
-              className="bigButton"
-              variant="contained"
-              color="secondary"
-              size="large"
-              // onClick={() => sendPhoto(photoPreview)}
-              onClick={() => console.log("Send photo")}
-          >
-              Send photo!
-          </Button>
-      </>
-      }
-
-
     </div>
   );
 };
