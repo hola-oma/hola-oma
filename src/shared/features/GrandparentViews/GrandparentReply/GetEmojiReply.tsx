@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router'
 
-import {Box, Button, Card, CardContent, Dialog, Grid, SvgIconProps} from "@material-ui/core";
+import {Box, Button, Card, CardContent, Grid, SvgIconProps} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
 import GrandparentLayout from "../Components/GrandparentLayout";
