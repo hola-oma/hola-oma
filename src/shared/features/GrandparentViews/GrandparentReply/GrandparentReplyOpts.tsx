@@ -28,7 +28,7 @@ const GrandparentReplyOpts: React.FC = () => {
           buttonText={["Smiley", "Voice Message", "Your Picture"]}
           buttonActions={[
             () => history.push({pathname: '/emoji', state: currentPost } ),
-            () => console.log("Grandparent wants to send a \"voicemail\"!"),
+            () => history.push({pathname: '/voice', state: currentPost } ),
             () => console.log("Grandparent wants to send a picture!")
           ]}
           buttonIcons={[replyOptionIcons.emoji, replyOptionIcons.voicemail, replyOptionIcons.photo]}
