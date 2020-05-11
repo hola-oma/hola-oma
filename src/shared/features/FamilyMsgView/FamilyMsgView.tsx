@@ -153,7 +153,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                         receivers.map((receiver: IReceiver, index: number) => {
                             return (
                             <Grid container alignItems="center" justify="center" key={index}>
-                                {post.read === true ? <CheckBoxIcon fontSize="small"/> : <CheckBoxOutlineBlankIcon fontSize="small"/>}
+                                {post.read[receiver.id] === true ? <CheckBoxIcon fontSize="small"/> : <CheckBoxOutlineBlankIcon fontSize="small"/>}
                                 <Typography variant="caption" align="center">
                                     {receiver.name}
                                 </Typography>
@@ -226,15 +226,6 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             </div>
             </Modal>
         </Container>
-
-        <Box className="todo">
-            <h3>To do items:</h3>
-            <ul>
-                <li>Break out seen by by individual receiver "read" receipts - After post model has been changed to accommodate.</li>
-                <li>Edit options?</li>
-                <li>Send a short video</li>
-            </ul>
-        </Box>
      </>
     )
 };
