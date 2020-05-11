@@ -35,6 +35,7 @@ export const getPosts = async (): Promise<Post[]> => {
           from: data.from,
           message: data.message,
           photoURL: data.photoURL,
+          videoURL: data.videoURL,
           read: data.read,
           date: data.date,
           receiverIDs: data.receiverIDs
@@ -59,6 +60,7 @@ export const createPost = async (post: Post) => {
       from: post.from,
       message: post.message,
       photoURL: post.photoURL,
+      videoURL: post.videoURL,
       read: post.read,
       date: post.date,
       receiverIDs: post.receiverIDs
@@ -89,7 +91,7 @@ export const updatePostID = async (postID: string) => {
     });
 }
 
-export const uploadFile = async(selectedFile: Blob) => {
+export const uploadFile = async(selectedFile: Blob | File) => {
   // Get a unique name to store the file under
   let fileName = Date.now(); 
   let storageRef = firebase.storage().ref().child('/images/'+ fileName); 

@@ -26,7 +26,8 @@ interface IReadObj {
 }
 
 const NewFamilyPost: React.FC = () => {
-    const [selectedFile, setSelectedFile] = useState<Blob | null>();
+    const [selectedFile, setSelectedFile] = useState<Blob | File | null>();
+    const [fileType, setFileType] = useState("");
     const [textValue, updateTextValue] = useState("");
     const [displayName, setDisplayName] = useState("");
     const [userId, setUserId] = useState("");
@@ -58,6 +59,7 @@ const NewFamilyPost: React.FC = () => {
             from: displayName,
             message: textValue,
             photoURL: "",
+            videoURL: "",
             read: setRead(receiverIDs),
             date: new Date().getTime(),
             receiverIDs: receiverIDs
@@ -65,8 +67,11 @@ const NewFamilyPost: React.FC = () => {
 
         if (selectedFile) {
             const fileURL = await uploadFile(selectedFile);
-            if (fileURL) {
+            if (fileURL && fileType === 'image') {
                 post.photoURL = fileURL;
+            }
+            else if (fileURL && fileType === 'video') {
+                post.videoURL = fileURL;
             }
         }
     
@@ -105,7 +110,8 @@ const NewFamilyPost: React.FC = () => {
     }
 
     const onSelect = (file: File | null) => {
-        if (file) {
+        if (file && file.type.indexOf('image') !== -1) {
+            setFileType('image');
             Resizer.imageFileResizer(
                 file,
                 600,
@@ -119,6 +125,9 @@ const NewFamilyPost: React.FC = () => {
                 },
                 'blob'
             );
+        } else if (file && file.type.indexOf('video') !== -1) {
+            setSelectedFile(file);
+            setFileType('video');
         }
     }
 
@@ -178,11 +187,13 @@ const NewFamilyPost: React.FC = () => {
             }
             {selectedFile &&
                 <>
-                    <Row justify="center">
-                        <img src={getImageAsUrl()}
-                            className="photo"
-                            alt="Attached img"/>
-                    </Row>
+                    {fileType === 'image' &&
+                        <Row justify="center">
+                            <img src={getImageAsUrl()}
+                                className="photo"
+                                alt="Attached img"/>
+                        </Row>
+                    }
                     <Row justify="center">
                         <Button
                             variant="outlined"

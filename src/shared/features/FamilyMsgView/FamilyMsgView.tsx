@@ -145,6 +145,12 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                             className="photo"
                             alt="Attached img"
                         />}
+                        {post.videoURL && <video
+                            src={post.videoURL}
+                            preload="auto"
+                            controls
+                            className="photo"
+                        />}
                         <br/>
                         <Typography variant="h5" style={{margin:10}}>
                             {post.message}
