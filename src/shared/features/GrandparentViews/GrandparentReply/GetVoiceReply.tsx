@@ -11,8 +11,6 @@ import { Reply, REPLY_TYPES } from "../../../models/reply.model";
 import { getUserProfile } from "../../../../services/user";
 import { mailIcons } from "../../../../Icons";
 
-import RecordButton from '../Components/RecordButton';
-
 let choicesList: Array<number> = [];
 
 const GetVoiceReply: React.FC = () => {
@@ -59,10 +57,13 @@ const GetVoiceReply: React.FC = () => {
       });
   }, []);
 
-  const getChoices = (choice: number) => {
-    handleHighlight(choice);
-    let position = choicesList.indexOf(choice);   // Find clicked icon's array position
-    (position < 0) ? choicesList.push(choice) : choicesList.splice(position, 1); // Adjust array
+  const handleDictationDone = (results: any) => {
+    const { confidence, transcript } = results.result;
+    console.log("Dictation is complete, here is the result:");
+    if (results) {
+      console.log(transcript + " " + confidence);
+      // todo: set a react variable with the results 
+    }
   }
 
   const buildReply = (e: any, choicesIndexes: Array<number>) => {
@@ -88,12 +89,13 @@ const GetVoiceReply: React.FC = () => {
         from={currentPost.from}
         headerText={"Replying to "}
         header2Text={"Press [record] and talk"}
+        recordButton={true}
+        handleDictationDone={handleDictationDone}
         alertText={getAlertText()}
         boxContent={
           <Grid container>
-            <RecordButton />
-            <TextField />
-        </Grid>
+            <TextField value="test"/>
+          </Grid>
         }
           buttonText={["Go back to Reply Options", "Send reply"]}
           buttonActions={[

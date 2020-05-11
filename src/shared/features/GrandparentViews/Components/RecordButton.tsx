@@ -1,23 +1,19 @@
 import React from 'react';
 import DictateButton from 'react-dictate-button';
 
-const RecordButton: React.FC = () => {
-  const handleDictate = () => {
-    console.log("Dictation is being handled");
-  }
+interface IRecordButton {
+  handleDictationDone: (result:any) => void;
+}
 
-  const handleProgress = () => {
-    console.log("Progress is being made");
-  }
-
+const RecordButton: React.FC<IRecordButton> = ({ handleDictationDone }) => {
+  
   return (
     <DictateButton
-      className="my-dictate-button"
+      className="my-dictate-button bigButton noMargin"
       grammar="#JSGF V1.0; grammar districts; public <district> = Tuen Mun | Yuen Long;"
-      onDictate={ handleDictate }
-      onProgress={ handleProgress }
+      onDictate={ handleDictationDone }
     >
-    Start/stop
+    START RECORDING
   </DictateButton>
   )
 }
