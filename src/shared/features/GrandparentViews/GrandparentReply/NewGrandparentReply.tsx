@@ -33,7 +33,7 @@ export const NewGrandparentReply: React.FC = () => {
                 return (
                   <Grid item xs={6}
                         className={"inboxCard"}
-                        key={index}>
+                        key={currentPost.pid}>
                     <Card>
                       <CardContent>
                           {icon}

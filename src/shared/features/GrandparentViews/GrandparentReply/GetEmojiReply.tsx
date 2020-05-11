@@ -77,7 +77,7 @@ const GetEmojiReply: React.FC = () => {
             replyContent: replyContent,
             currentPost: currentPost  }
         });
-        });
+      });
     }
   }
 

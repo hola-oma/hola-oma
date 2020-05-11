@@ -1,36 +1,75 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Webcam from "react-webcam";
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import { Button } from "@material-ui/core";
 
-import { uploadPhoto } from 'services/reply';
+import {setReplyContent, submitReply, uploadPhoto} from 'services/reply';
 import { cameraIcon } from "../../../../Icons";
 import GrandparentLayout from "../Components/GrandparentLayout";
+import {useHistory, useLocation} from "react-router";
+import {getUserProfile} from "../../../../services/user";
+import {Reply, REPLY_TYPES} from "../../../models/reply.model";
+import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
 interface IPhotoReplyPrototype {
   // empty for now
 }
 
 const videoConstraints = {
-  width: 640,
-  height: 360,
+  // width: 640,
+  // height: 360,
+  width: 1024,
+  height: 576,
   facingMode: "user"
 };
 
-const GetVoiceReply: React.FC<IPhotoReplyPrototype> = () => {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    photo: {
+      margin: theme.spacing(7),
+    },
+  }),
+);
 
+const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
+
+  const history = useHistory();
+  const location = useLocation();
+  const currentPost: any = location.state;
+
+  const [displayName, setDisplayName] = useState("");
+  const [userId, setUserId] = useState("");
   const [photoPreview, setPhotoPreview] = useState("");
 
+  useEffect(() => {
+    getUserProfile()
+      .then((userProfile:any) => {
+        setDisplayName(userProfile.displayName);
+        setUserId(userProfile?.uid);
+      });
+  }, []);
+
   /* Adapted from https://www.npmjs.com/package/react-webcam */
-
   const webcamRef = React.useRef<any>(null);
-
   const capture = React.useCallback(() => {
       const imageSrc = webcamRef?.current?.getScreenshot();
       setPhotoPreview(imageSrc);
     },
     [webcamRef]
   );
+
+  const buildReply = (e: any, choicesIndexes: Array<number>) => {
+      const replyContent: Reply = setReplyContent(userId, displayName, REPLY_TYPES.EMOJI,
+        choicesIndexes, currentPost.pid, currentPost.creatorID);
+      submitReply(e, replyContent)
+        .then( () => { history.push({
+          pathname: "/newReply",
+          state: {
+            replyContent: replyContent,
+            currentPost: currentPost  }
+        });
+        });
+    }
 
   // const sendPhoto = (photoRef: string) => {
   //   let replyID = uploadPhoto(photoRef);
@@ -39,29 +78,25 @@ const GetVoiceReply: React.FC<IPhotoReplyPrototype> = () => {
 
   return (
     <div>
-      {/*<h1>Take a photo!</h1>*/}
-
       {/* No photo exists, prompt user to take one */}
       {!photoPreview &&
       <>
         <GrandparentLayout
-            from={"Samantha"}
-            headerText={"Replying to Kristin"}
+            from={currentPost.from}
+            headerText={"Take a picture to send to "}
             boxContent={
-              <Webcam
+              <Webcam className={"photo"}
                 audio={false}
                 ref={webcamRef}
                 screenshotFormat="image/jpeg"
-                height={360}
-                width={640}
+                // height={360}
+                // width={640}
                 videoConstraints={videoConstraints}
               />
             }
             buttonText={["Take Picture"]}
-            buttonActions={[() => console.log("Take photo")]}
+            buttonActions={[capture]}
             buttonIcons={[cameraIcon.camera]} />
-
-
 
           <br/>
           <Button
@@ -106,8 +141,9 @@ const GetVoiceReply: React.FC<IPhotoReplyPrototype> = () => {
       </>
       }
 
+
     </div>
   );
 };
 
-export default GetVoiceReply;
+export default GetPhotoReply;
