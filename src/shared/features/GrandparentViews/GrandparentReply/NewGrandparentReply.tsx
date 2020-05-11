@@ -45,6 +45,10 @@ export const NewGrandparentReply: React.FC = () => {
     </Grid>
   }
 
+  if (replyContent.replyType === REPLY_TYPES.PHOTO) {
+    boxContent = <img src={replyContent.message} alt="sent photo"></img>;
+  }
+
 
   return (
     <>
