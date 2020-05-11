@@ -117,6 +117,11 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         return (reply.replyType === "emoji" && typeof reply.message !== "string");
     }
 
+    const isMessage = (reply: Reply) => {
+        // mandi note: reply.message is in an array as per setReplyContent in reply.ts, but it's just a string at index 0
+        return (reply.replyType === "voice" && typeof reply.message[0] === "string"); 
+    }
+
     return (
         <>
         <Container>
@@ -204,6 +209,10 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                                                 </Typography>
                                             )
                                         })
+                                    }
+
+                                    {isMessage(reply) && 
+                                        <p>{reply.message[0]}</p>
                                     }
                                 </CardContent>
                                 <CardActions>
