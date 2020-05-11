@@ -78,7 +78,7 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
                   <Button
                     variant="contained"
                     color="primary"
-                    className={classes.button}
+                    className={`${classes.button} bigButton`}
                     startIcon={buttonIcons[index]}
                     onClick={buttonActions[index]}
                     key={index}
@@ -92,5 +92,13 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
       </Grid>
       </>
 )}
+//
+// <Button
+//   className="bigButton"
+//   variant="contained"
+//   color="secondary"
+//   size="large"
+//   onClick={() => sendPhoto(photoPreview)}
+// >
 
 export default GrandparentLayout;
