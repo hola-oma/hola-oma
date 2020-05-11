@@ -16,8 +16,6 @@ interface IPhotoReplyPrototype {
 }
 
 const videoConstraints = {
-  // width: 640,
-  // height: 360,
   width: 1024,
   height: 576,
   facingMode: "user"
@@ -89,26 +87,13 @@ const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
                 audio={false}
                 ref={webcamRef}
                 screenshotFormat="image/jpeg"
-                // height={360}
-                // width={640}
                 videoConstraints={videoConstraints}
               />
             }
-            buttonText={["Take Picture"]}
+            buttonText={["Take Photo"]}
             buttonActions={[capture]}
             buttonIcons={[cameraIcon.camera]} />
 
-          <br/>
-          <Button
-              className="bigButton"
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={capture}
-              startIcon={<CameraAltIcon />}
-          >
-              Take Photo
-          </Button>
       </>
       }
 
