@@ -99,19 +99,6 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
 
           {(isLoggedIn && settingsComplete) &&
             <ul>
-              {/* Remove later */}
-              <li>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  size="medium"
-                  className=""
-                  onClick={() => goToPhotoPrototype()}
-                  startIcon={<AccountCircleIcon />}
-                >Photo
-                </Button>
-              </li>
-
               <li>
                 <Button
                   variant="contained"

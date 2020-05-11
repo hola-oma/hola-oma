@@ -8,7 +8,6 @@ import RegisterDetails from './shared/features/RegisterDetails'
 import PostsView from './shared/features/PostsView/PostsView';
 import SettingsView from './shared/features/SettingsView/SettingsView';
 import AddAccountLink from './shared/features/AddAccountLink';
-import PhotoReplyPrototype from './shared/features/PhotoReplyPrototype';
 import ResetPassword from './shared/features/ResetPassword';
 import HandleReset from './shared/features/HandleReset';
 
@@ -78,7 +77,6 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
               <ProtectedRouteHoc exact path="/emoji" isLoggedIn={isLoggedIn} public={false} RouteComponent={GetEmojiReply} />
               <ProtectedRouteHoc exact path="/photo" isLoggedIn={isLoggedIn} public={false} RouteComponent={GetPhotoReply} />
               <ProtectedRouteHoc exact setIsLoading={setIsLoading} path="/settings" isLoggedIn={isLoggedIn} public={false} RouteComponent={SettingsView} />
-              <ProtectedRouteHoc exact path="/photoReplyPrototype" isLoggedIn={isLoggedIn} public={false} RouteComponent={PhotoReplyPrototype} />
               <ProtectedRouteHoc exact path="/addAccountLink" isLoggedIn={isLoggedIn} public={false} RouteComponent={AddAccountLink} />
             </>
           )

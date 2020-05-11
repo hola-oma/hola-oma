@@ -69,12 +69,6 @@ const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
       });
     }
 
-  // const sendPhoto = (photoRef: string) => {
-  //   let replyID = uploadPhoto(photoRef);
-  //   console.log("Photo attached to reply with ID: ", replyID);
-  // }
-
-
   return (
     <div>
       <>

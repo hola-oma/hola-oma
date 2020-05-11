@@ -6,6 +6,7 @@ import { mailIcons, replyEmojiArray } from "../../../../Icons";
 import GrandparentLayout from "../Components/GrandparentLayout";
 import {Card, CardContent, Grid, SvgIconProps} from "@material-ui/core";
 import {Post} from "../../../models/post.model";
+import { REPLY_TYPES } from "../../../models/reply.model";
 
 export const NewGrandparentReply: React.FC = () => {
   const history = useHistory();
@@ -15,36 +16,42 @@ export const NewGrandparentReply: React.FC = () => {
   const replyContent = state.replyContent;
   const currentPost: Post = state.currentPost;
 
-  const sentEmojis: Array<React.ReactElement<SvgIconProps>> = [];
-  const allEmojis: Array<React.ReactElement<SvgIconProps>> = replyEmojiArray();
-  (replyContent.message).forEach(function(index: number) {
-    sentEmojis.push(allEmojis[index]);
-  })
+  let boxContent: any = {}
+
+  if (replyContent.replyType === REPLY_TYPES.EMOJI) {
+    const sentEmojis: Array<React.ReactElement<SvgIconProps>> = [];
+    const allEmojis: Array<React.ReactElement<SvgIconProps>> = replyEmojiArray();
+    (replyContent.message).forEach(function(index: number) {
+      sentEmojis.push(allEmojis[index]);
+    })
+
+    boxContent =
+      <Grid container>
+      {
+        sentEmojis.map( (icon: React.ReactElement<SvgIconProps>, index: number) => {
+          return (
+            <Grid item xs={6}
+                  className={"inboxCard"}
+                  key={currentPost.pid}>
+              <Card>
+                <CardContent>
+                  {icon}
+                </CardContent>
+              </Card>
+            </Grid>
+          )
+        })
+      }
+    </Grid>
+  }
+
 
   return (
     <>
       <GrandparentLayout
         from={currentPost.from}
         headerText={ "Reply sent to " }
-        boxContent={
-          <Grid container>
-            {
-              sentEmojis.map( (icon: React.ReactElement<SvgIconProps>, index: number) => {
-                return (
-                  <Grid item xs={6}
-                        className={"inboxCard"}
-                        key={currentPost.pid}>
-                    <Card>
-                      <CardContent>
-                          {icon}
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                )
-              })
-            }
-          </Grid>
-        }
+        boxContent={boxContent}
         buttonText={["Go back to letter", "Close letter"]}
         buttonActions={[
           () => history.push({pathname: '/startReply', state: currentPost }),
