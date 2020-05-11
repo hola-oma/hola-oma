@@ -56,9 +56,9 @@ const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
     [webcamRef]
   );
 
-  const buildReply = (e: any, choicesIndexes: Array<number>) => {
-      const replyContent: Reply = setReplyContent(userId, displayName, REPLY_TYPES.EMOJI,
-        choicesIndexes, currentPost.pid, currentPost.creatorID);
+  const buildReply = (e: any) => {
+      const replyContent: Reply = setReplyContent(userId, displayName, REPLY_TYPES.PHOTO,
+                                  photoPreview, currentPost.pid, currentPost.creatorID);
       submitReply(e, replyContent)
         .then( () => { history.push({
           pathname: "/newReply",
@@ -66,7 +66,7 @@ const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
             replyContent: replyContent,
             currentPost: currentPost  }
         });
-        });
+      });
     }
 
   // const sendPhoto = (photoRef: string) => {
@@ -95,7 +95,7 @@ const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
               ["Back to message", "Retake Photo", "Send Photo"]}
             buttonActions={!photoPreview ?
               [() => console.log("Go back to message"), capture] :
-              [() => console.log("Go back to message"), capture, () => console.log("send photo")]}
+              [() => console.log("Go back to message"), capture, e => buildReply(e) ]}
             buttonIcons={!photoPreview ?
               [cameraIcons.openEnvelope, cameraIcons.camera] :
               [cameraIcons.openEnvelope, cameraIcons.camera, cameraIcons.paperAirplane]}

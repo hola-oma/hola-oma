@@ -4,7 +4,7 @@ import 'firebase/storage';
 import { Reply } from 'shared/models/reply.model';
 
 export const setReplyContent = (userID: string, displayName: string, replyType: string,
-                                message: Array<any>, responseTo: string, receiverID: string) => {
+                                message: Array<number> | string, responseTo: string, receiverID: string) => {
   let replyContent: Reply = {
     rid: "",
     creatorID: userID,
