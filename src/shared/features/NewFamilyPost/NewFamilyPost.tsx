@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useHistory } from "react-router";
 
-import { TextField, Button, Checkbox, Typography } from '@material-ui/core';
+import { TextField, Button, Checkbox, Typography, Tooltip } from '@material-ui/core';
 import { createPost, updatePostID, uploadFile } from "services/post";
 import { getUserProfile } from "services/user";
 import { getLinkedAccounts } from "services/accountLink";
@@ -171,13 +171,15 @@ const NewFamilyPost: React.FC = () => {
             <form className="newFamilyPostForm" noValidate onSubmit={e => submitPost(e)}>
             {!selectedFile &&
                 <Row justify="center">
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        size="small"
-                        onClick={clickFileUpload}>
-                        Select a photo
-                    </Button>
+                    <Tooltip title="Supported video formats: mp4, webm, ogv, mkv">
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            size="small"
+                            onClick={clickFileUpload}>
+                            Select a photo or video
+                        </Button>
+                    </Tooltip>
                     <input
                         type="file"
                         id="file-upload"
@@ -200,6 +202,7 @@ const NewFamilyPost: React.FC = () => {
                                 className="photo"
                                 preload="auto"
                                 controls
+                                style={{height: '95%', width: '95%'}}
                             />
                         </Row>
                     }
