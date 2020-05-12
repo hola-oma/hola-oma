@@ -1,15 +1,13 @@
 import React, {useEffect, useState} from "react";
 import Webcam from "react-webcam";
-import CameraAltIcon from '@material-ui/icons/CameraAlt';
-import { Button } from "@material-ui/core";
 
-import {setReplyContent, submitReply, uploadPhoto} from 'services/reply';
+import { setReplyContent, submitReply } from 'services/reply';
 import { cameraIcons } from "../../../../Icons";
 import GrandparentLayout from "../Components/GrandparentLayout";
-import {useHistory, useLocation} from "react-router";
-import {getUserProfile} from "../../../../services/user";
-import {Reply, REPLY_TYPES} from "../../../models/reply.model";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import { useHistory, useLocation } from "react-router";
+import { getUserProfile } from "../../../../services/user";
+import { Reply, REPLY_TYPES } from "../../../models/reply.model";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 interface IPhotoReplyPrototype {
   // empty for now
@@ -31,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
 
+  const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
   const currentPost: any = location.state;
@@ -76,13 +75,13 @@ const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
             from={currentPost.from}
             headerText={ !photoPreview ? "Take a photo to send to " : "Sending photo to "}
             boxContent={ !photoPreview ?
-              <Webcam className={"photo"}
+              <Webcam className={classes.photo}
                 audio={false}
                 ref={webcamRef}
                 screenshotFormat="image/jpeg"
                 videoConstraints={videoConstraints}
               /> :
-              <img src={photoPreview} alt="preview"></img>
+              <img src={photoPreview} alt="current selfie"></img>
             }
             buttonText={!photoPreview ?
               ["Back to message", "Take Photo"] :

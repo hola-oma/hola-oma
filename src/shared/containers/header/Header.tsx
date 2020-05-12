@@ -6,7 +6,7 @@ import './Header.css';
 
 import { useHistory, useLocation } from "react-router-dom";
 import { signUserOut } from "services/user";
-import { AppBar, Toolbar, Typography, Button, Hidden, Drawer, List, ListItem, Divider, ListItemText } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, Button, Hidden, Drawer, List, ListItem, Divider } from "@material-ui/core";
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
@@ -14,7 +14,6 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import Child from "shared/components/Child/Child";
 import Column from "shared/components/Column/Column";
 
-import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import MenuIcon from '@material-ui/icons/Menu';
 
 interface IHeader {
@@ -31,11 +30,6 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [onSignIn, setOnSignIn] = useState(false);
   const [onJoin, setOnJoin] = useState(false);
-
-  const goToPhotoPrototype = () => {
-    setDrawerOpen(false);
-    history.push('/photoReplyPrototype');
-  }
 
   const goToRegistration = () => {
     setDrawerOpen(false);
