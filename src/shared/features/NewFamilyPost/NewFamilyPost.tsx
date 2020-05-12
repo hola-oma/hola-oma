@@ -33,6 +33,7 @@ const NewFamilyPost: React.FC = () => {
     const [userId, setUserId] = useState("");
     const [receivers, setReceivers] = useState<IReceiver[]>([]);
     const [error, setError] = useState<string | null>();
+    const [fileTypeError, setFileTypeError] = useState<string | null>();
     const history = useHistory();
 
     const submitPost = async (e: any) => {
@@ -110,6 +111,7 @@ const NewFamilyPost: React.FC = () => {
     }
 
     const onSelect = (file: File | null) => {
+        setFileTypeError(null);
         if (file && file.type.indexOf('image') !== -1) {
             setFileType('image');
             Resizer.imageFileResizer(
@@ -126,8 +128,13 @@ const NewFamilyPost: React.FC = () => {
                 'blob'
             );
         } else if (file && file.type.indexOf('video') !== -1) {
-            setSelectedFile(file);
-            setFileType('video');
+            if (file.type === 'video/mp4' || file.type === 'video/ogg' || file.type === 'video/webm') {
+                setSelectedFile(file);
+                setFileType('video');
+            }
+            else {
+                setFileTypeError("This file type is not supported.");
+            }
         }
     }
 
@@ -171,7 +178,7 @@ const NewFamilyPost: React.FC = () => {
             <form className="newFamilyPostForm" noValidate onSubmit={e => submitPost(e)}>
             {!selectedFile &&
                 <Row justify="center">
-                    <Tooltip title="Supported video formats: mp4, webm, ogv, mkv">
+                    <Tooltip title="Supported video formats: mp4, webm, ogv">
                         <Button
                             variant="contained"
                             color="secondary"
@@ -185,6 +192,9 @@ const NewFamilyPost: React.FC = () => {
                         id="file-upload"
                         style={{display:'none'}}
                         onChange={(event) => onSelect(event.target.files ? event.target.files[0] : null)} />
+                    {fileTypeError &&
+                        <FormError error={fileTypeError}/>
+                    }
                 </Row>
             }
             {selectedFile &&
