@@ -7,29 +7,15 @@ import GrandparentLayout from "../Components/GrandparentLayout";
 import { useHistory, useLocation } from "react-router";
 import { getUserProfile } from "../../../../services/user";
 import { Reply, REPLY_TYPES } from "../../../models/reply.model";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-
-interface IPhotoReplyPrototype {
-  // empty for now
-}
 
 const videoConstraints = {
-  width: 1024,
-  height: 576,
+  width: 864,
+  height: 486,
   facingMode: "user"
 };
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    photo: {
-      margin: theme.spacing(7),
-    },
-  }),
-);
+const GetPhotoReply: React.FC = () => {
 
-const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
-
-  const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
   const currentPost: any = location.state;
@@ -75,9 +61,10 @@ const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
             from={currentPost.from}
             headerText={ !photoPreview ? "Take a photo to send to " : "Sending photo to "}
             boxContent={ !photoPreview ?
-              <Webcam className={classes.photo}
+              <Webcam
                 audio={false}
                 ref={webcamRef}
+                height={486}
                 screenshotFormat="image/jpeg"
                 videoConstraints={videoConstraints}
               /> :
