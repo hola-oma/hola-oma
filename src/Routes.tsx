@@ -8,7 +8,6 @@ import RegisterDetails from './shared/features/RegisterDetails'
 import PostsView from './shared/features/PostsView/PostsView';
 import SettingsView from './shared/features/SettingsView/SettingsView';
 import AddAccountLink from './shared/features/AddAccountLink';
-import PhotoReplyPrototype from './shared/features/PhotoReplyPrototype';
 import ResetPassword from './shared/features/ResetPassword';
 import HandleReset from './shared/features/HandleReset';
 
@@ -19,9 +18,10 @@ import { User } from "shared/models/user.model";
 import FamilyMsgView from "./shared/features/FamilyMsgView/FamilyMsgView";
 import CreatePost from "./shared/features/CreatePost/CreatePost";
 import { Grid } from "@material-ui/core";
-import NewGrandparentReply from "./shared/features/GrandparentViews/GrandparentReply/NewGrandparentReply";
+import SentGrandparentReply from "./shared/features/GrandparentViews/GrandparentReply/SentGrandparentReply";
 import GrandparentReplyOpts from "./shared/features/GrandparentViews/GrandparentReply/GrandparentReplyOpts";
 import GetEmojiReply from "./shared/features/GrandparentViews/GrandparentReply/GetEmojiReply";
+import GetPhotoReply from "./shared/features/GrandparentViews/GrandparentReply/GetPhotoReply";
 
 interface IRoutes {
   isLoggedIn: boolean;
@@ -73,10 +73,10 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
               <ProtectedRouteHoc exact path="/postDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={FamilyMsgView} />
               <ProtectedRouteHoc exact path="/newPost" isLoggedIn={isLoggedIn} public={false} RouteComponent={CreatePost} />
               <ProtectedRouteHoc exact path="/startReply" isLoggedIn={isLoggedIn} public={false} RouteComponent={GrandparentReplyOpts} />
-              <ProtectedRouteHoc exact path="/newReply" isLoggedIn={isLoggedIn} public={false} RouteComponent={NewGrandparentReply} />
+              <ProtectedRouteHoc exact path="/newReply" isLoggedIn={isLoggedIn} public={false} RouteComponent={SentGrandparentReply} />
               <ProtectedRouteHoc exact path="/emoji" isLoggedIn={isLoggedIn} public={false} RouteComponent={GetEmojiReply} />
+              <ProtectedRouteHoc exact path="/photo" isLoggedIn={isLoggedIn} public={false} RouteComponent={GetPhotoReply} />
               <ProtectedRouteHoc exact setIsLoading={setIsLoading} path="/settings" isLoggedIn={isLoggedIn} public={false} RouteComponent={SettingsView} />
-              <ProtectedRouteHoc exact path="/photoReplyPrototype" isLoggedIn={isLoggedIn} public={false} RouteComponent={PhotoReplyPrototype} />
               <ProtectedRouteHoc exact path="/addAccountLink" isLoggedIn={isLoggedIn} public={false} RouteComponent={AddAccountLink} />
             </>
           )
