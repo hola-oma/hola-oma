@@ -81,7 +81,7 @@ const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
                 screenshotFormat="image/jpeg"
                 videoConstraints={videoConstraints}
               /> :
-              <img src={photoPreview} alt="current selfie"></img>
+              <img src={photoPreview} alt="Current selfie"></img>
             }
             buttonText={!photoPreview ?
               ["Back to message", "Take Photo"] :
