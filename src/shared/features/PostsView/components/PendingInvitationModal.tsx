@@ -1,78 +1,73 @@
 import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Modal, Button, Grid } from '@material-ui/core';
+import { Button, Container, Dialog, DialogContentText, DialogContent } from '@material-ui/core';
 
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
+import { AccountLink } from 'shared/models/accountLink.model';
+import Row from 'shared/components/Row/Row';
+import Child from 'shared/components/Child/Child';
 
 interface IPendingInvitationModal {
   invite: any;
   isOpen: boolean;
   onClose: () => void;
   acceptInvite: () => void;
-  declineInvite: () => void;
+  declineInvite: (invite: AccountLink) => void;
 }
 
 // todo: pass "Posts" into this functional component
 const PendingInvitationModal: React.FC<IPendingInvitationModal> = ({ invite, isOpen, acceptInvite, declineInvite, onClose }) => {
 
-  const useStyles = makeStyles((theme) => ({
-    paper: {
-        position: 'absolute',
-        width: 500,
-        height: 380,
-        backgroundColor: "white",
-        border: '2px solid gray',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2,4,3),
-        top: '50%',
-        left: '50%',
-        transform: `translate(-50%, -50%)`,
-      },
-    })
-  );
-
-  const classes = useStyles();
-
   return (
-      <Modal
+      <Dialog
         open={isOpen}
         onClose={onClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <div className={classes.paper}>
-          <Grid container direction="column" spacing={4}>
-            
-            <h2>Accept invite from {invite?.displayName}?</h2>
+        <Container className="padDialog">
+          <Row justify="center" alignItems="center">
+            <Child>
+              <span className="boldText">Accept invitation from {invite?.displayName}?</span>
+            </Child>
+          </Row>
+          <hr/>
 
-            <Grid item xs={12}>
-              <Button 
-                className="colorYes"
-                variant="contained"
-                size="large"
-                fullWidth
-                startIcon={<CheckCircleIcon />}
-                onClick={acceptInvite}>Accept invitation
-              </Button>
-            </Grid>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              <span>Only accept invitations from people you know and recognize.</span>
+            </DialogContentText>
 
-            <Grid item xs={12}>
-              <Button
-                className="colorNo"
-                variant="contained"
-                size="large"
-                fullWidth
-                startIcon={<CancelIcon />}
-                onClick={declineInvite}>No, I don't know this person
-              </Button>
-            </Grid>
+            <Row alignItems="center" justify="space-around">
+              {/* Delete account link */}
 
-          </Grid>
+                {/* Cancel */}
+                <Child xs={12} sm={4}>
+                  <Button 
+                    startIcon={<CancelIcon />}
+                    onClick={() => declineInvite(invite)} 
+                    variant="outlined"
+                    className="buttonDanger">
+                    Decline
+                  </Button>
+                </Child>
 
-        </div>
-      </Modal>
+                <Child xs={12} sm={4}>
+                  <Button
+                    startIcon={<CheckCircleIcon />} 
+                    onClick={acceptInvite} 
+                    variant="contained"
+                    className="buttonSafe"
+                    >
+                    Accept
+                  </Button>
+                </Child>
+            </Row>
+
+          </DialogContent>
+        </Container>
+      </Dialog>
   );
 }
 

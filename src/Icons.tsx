@@ -15,6 +15,8 @@ import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import PermPhoneMsgIcon from '@material-ui/icons/PermPhoneMsg';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
+import ZoomInIcon from '@material-ui/icons/ZoomIn';
+
 // Returns an array so both grandparent and family sides can map and/or access by index
 export const replyEmojiArray = (): Array<React.ReactElement<SvgIconProps>> => {
   return [
@@ -28,9 +30,9 @@ export const replyEmojiArray = (): Array<React.ReactElement<SvgIconProps>> => {
 }
 
 export const mailIcons = {
-  closedEnvelope: <MailIcon />,
-  openEnvelope: <DraftsIcon />,
-  paperAirplane: <SendIcon />
+  closedEnvelope: <MailIcon fontSize={"large"}/>,
+  openEnvelope: <DraftsIcon fontSize={"large"}/>,
+  paperAirplane: <SendIcon fontSize={"large"}/>
 }
 
 export const replyOptionIcons = {
@@ -38,4 +40,14 @@ export const replyOptionIcons = {
   emoji: <InsertEmoticonIcon />,
   voicemail: <PermPhoneMsgIcon />,
   photo: <PhotoCameraIcon />
+}
+
+export const cameraIcons = {
+  openEnvelope: <DraftsIcon fontSize={"large"}/>,
+  camera: <PhotoCameraIcon fontSize={"large"}/>,
+  paperAirplane: <SendIcon fontSize={"large"}/>
+}
+
+export const magnifyIcon = {
+  magnify: <ZoomInIcon fontSize={"large"}/>
 }

@@ -1,25 +1,19 @@
-import React, {useContext, useEffect, useState} from 'react';
-import { useHistory} from 'react-router'
+import React, { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router'
 
-import {Box, Button, Card, CardContent, Dialog, Grid, SvgIconProps} from "@material-ui/core";
+import {Box, Button, Card, CardContent, Grid, SvgIconProps} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
-import GrandparentLayout from "../../GrandparentLayout";
-import { setReplyContent, submitReply } from "../../../../../services/reply";
+import GrandparentLayout from "../Components/GrandparentLayout";
+import { setReplyContent, submitReply } from "../../../../services/reply";
 
-import { Reply, REPLY_TYPES } from "../../../../models/reply.model";
-import { getUserProfile } from "../../../../../services/user";
-import { replyEmojiArray, mailIcons } from "../../../../../Icons";
-import { GrandparentPostContext } from "../../../../../App";
-
-interface IEmojiReply {
-  isOpen: boolean;
-  returnToPost: () => void;
-}
+import { Reply, REPLY_TYPES } from "../../../models/reply.model";
+import { getUserProfile } from "../../../../services/user";
+import { replyEmojiArray, mailIcons } from "../../../../Icons";
 
 let choicesList: Array<number> = [];
 
-const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
+const GetEmojiReply: React.FC = () => {
 
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -37,8 +31,9 @@ const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
 
   const classes = useStyles();
   const history = useHistory();
-  const FamilyPost = useContext(GrandparentPostContext).post;
+  const location = useLocation();
   const emojiIcons = replyEmojiArray();
+  const currentPost: any = location.state;
 
   const [displayName, setDisplayName] = useState("");
   const [userId, setUserId] = useState("");
@@ -74,19 +69,22 @@ const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
     else {
       setAlert(false);
       const replyContent: Reply = setReplyContent(userId, displayName, REPLY_TYPES.EMOJI,
-                                  choicesIndexes, FamilyPost.from, FamilyPost.creatorID);
+                                  choicesIndexes, currentPost.pid, currentPost.creatorID);
       submitReply(e, replyContent)
-        .then( () => { history.push({pathname: "/newReply",  state: replyContent}); } );
+        .then( () => { history.push({
+          pathname: "/newReply",
+          state: {
+            replyContent: replyContent,
+            currentPost: currentPost  }
+        });
+      });
     }
   }
 
   return (
     <>
-      <Dialog fullScreen
-              open={isOpen}
-              aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description">
       <GrandparentLayout
+        from={currentPost.from}
         headerText={"Replying to "}
         header2Text={"Choose which smileys to send!"}
         alertText={getAlertText()}
@@ -116,7 +114,9 @@ const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
         </Grid>
         }
           buttonText={["Go back to Reply Options", "Send Smiley(s)"]}
-          buttonActions={ [returnToPost, e => buildReply(e, choicesList) ] }
+          buttonActions={[
+            () => history.goBack(),
+            e => buildReply(e, choicesList) ] }
           buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]} />
 
         <Box className="todo">
@@ -125,7 +125,6 @@ const GetEmojiReply: React.FC<IEmojiReply> = ({isOpen, returnToPost}) => {
             <li>Alert that grandparent must choose at least 1 emoji does not work if have already sent message and return to Inbox</li>
           </ul>
         </Box>
-      </Dialog>
     </>
   )
 };

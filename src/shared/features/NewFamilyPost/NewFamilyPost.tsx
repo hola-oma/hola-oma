@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 
 import { useHistory } from "react-router";
 
-import { Box, TextField, Button, Checkbox } from '@material-ui/core';
+import { TextField, Button, Checkbox, Typography } from '@material-ui/core';
 import { createPost, updatePostID, uploadFile } from "services/post";
 import { getUserProfile } from "services/user";
 import { getLinkedAccounts } from "services/accountLink";
-import Alert from '@material-ui/lab/Alert';
+import FormError from 'shared/components/FormError/FormError';
+import ClearIcon from '@material-ui/icons/Clear';
+import Column from 'shared/components/Column/Column';
+import Row from 'shared/components/Row/Row';
 
 import './NewFamilyPost.css';
 // @ts-ignore
@@ -16,6 +19,10 @@ interface IReceiver {
     id: string
     name: string
     checked: boolean
+}
+
+interface IReadObj {
+    [key: string]: boolean
 }
 
 const NewFamilyPost: React.FC = () => {
@@ -51,7 +58,7 @@ const NewFamilyPost: React.FC = () => {
             from: displayName,
             message: textValue,
             photoURL: "",
-            read: false,
+            read: setRead(receiverIDs),
             date: new Date().getTime(),
             receiverIDs: receiverIDs
         };
@@ -74,11 +81,27 @@ const NewFamilyPost: React.FC = () => {
           }
       };
 
+    const setRead = (receiverIDs: Array<string>) => {
+        let readObj: IReadObj;
+        readObj = {};
+        for (let i = 0; i < receiverIDs.length; i++) {
+            readObj[receiverIDs[i]] = false;
+        }
+        return readObj;
+    }
+
     const handleCheckboxes = (event: any, index: number) => {
         event.persist();
         let newArray = [...receivers];
         newArray[index].checked = event.target.checked;
         setReceivers(newArray);
+    }
+
+    const clickFileUpload = () => {
+        let element = document.getElementById("file-upload");
+        if (element != null) {
+            element.click();
+        }
     }
 
     const onSelect = (file: File | null) => {
@@ -125,43 +148,76 @@ const NewFamilyPost: React.FC = () => {
 
     return (
         <>
-        <form className="newFamilyPostForm" noValidate onSubmit={e => submitPost(e)}>
-        <Box>
-            <input
-                type="file"
-                onChange={(event) => onSelect(event.target.files ? event.target.files[0] : null)} />
-        </Box>
-        <TextField
-            multiline
-            fullWidth
-            margin="normal"
-            rows="10"
-            variant="outlined"
-            label="Type a Message"
-            value={textValue}
-            onChange={e => updateTextValue(e.target.value)}/>
-        Recipients
-        <br/>
-        {
-            receivers.map((receiver: IReceiver, index: number) => {
-                return (
-                    <label key={receiver.id}>
-                        {receiver.name}
-                        <Checkbox name={receiver.id} checked={receiver.checked} onChange={e => handleCheckboxes(e, index)} />
-                    </label>
-                )
-            })
-        }
-        <br/>
-        <Button
-            type="submit"
-            variant="contained">
-            Send Post
-        </Button>
-        {error &&
-            <Alert className="error" severity="error">{error}</Alert>
-        }
-        </form>
+        <Column justify="center" alignItems="center">
+            <Typography component="h2" variant="h5" align="center">
+                Create Post
+            </Typography>
+            <br/>
+            <form className="newFamilyPostForm" noValidate onSubmit={e => submitPost(e)}>
+            {!selectedFile &&
+                <Row justify="center">
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        size="small"
+                        onClick={clickFileUpload}>
+                        Select a photo
+                    </Button>
+                    <input
+                        type="file"
+                        id="file-upload"
+                        style={{display:'none'}}
+                        onChange={(event) => onSelect(event.target.files ? event.target.files[0] : null)} />
+                </Row>
+            }
+            {selectedFile && 
+                <Row justify="center">
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        onClick={() => setSelectedFile(null)}>
+                        <ClearIcon/>Remove file
+                    </Button>
+                </Row>
+            }
+            <TextField
+                multiline
+                fullWidth
+                margin="normal"
+                rows="10"
+                variant="outlined"
+                label="Type a Message"
+                value={textValue}
+                onChange={e => updateTextValue(e.target.value)}/>
+            <Row justify="center">
+                Recipients
+            </Row>
+            {
+                receivers.map((receiver: IReceiver, index: number) => {
+                    return (
+                        <Row justify="center" key={receiver.id}>
+                            <label>
+                                {receiver.name}
+                                <Checkbox name={receiver.id} checked={receiver.checked} onChange={e => handleCheckboxes(e, index)} />
+                            </label>
+                        </Row>
+                    )
+                })
+            }
+            <br/>
+            <Row justify="center">
+            <Button
+                type="submit"
+                variant="contained">
+                Send Post
+            </Button>
+            </Row>
+            {error &&
+                <FormError error={error}/>
+            }
+            </form>
+        </Column>
      </>
     )
 };

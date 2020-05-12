@@ -1,56 +1,38 @@
-import React, { useState } from 'react';
-import { useHistory } from "react-router-dom";
+import React from 'react';
+import { useLocation, useHistory } from "react-router-dom";
 
-import { Box } from '@material-ui/core';
-import { Post } from "../../../models/post.model";
+import { GrandparentPostLayout } from "../Components/GrandparentPostLayout";
 import { replyOptionIcons } from "../../../../Icons";
-import GetEmojiReply from "./components/GetEmojiReply";
-import GrandparentLayout from "../GrandparentLayout";
+import GrandparentLayout from "../Components/GrandparentLayout";
 
-interface IGrandparentReplyOpts {
-  post: Post;
-}
+const GrandparentReplyOpts: React.FC = () => {
 
-const GrandparentReplyOpts: React.FC<IGrandparentReplyOpts> = ({post}) => {
-
-  const [EmojiReplyOpen, setEmojiReplyOpen] = useState<boolean>(false);
-  const boxContent = post.message + "\n\n" + post.photoURL;
-  let history = useHistory();
+  const history = useHistory();
+  const location = useLocation();
+  const currentPost: any = location.state;
 
   return (
         <>
 
         <GrandparentLayout
-          headerText={"Reply to Letter from "}
-          boxContent={boxContent}
-          buttonText={["Return to Messages", "Smiley", "Voice Message", "Your Picture"]}
+          from={currentPost.from}
+          headerText={"Letter from "}
+          header2Text={"Choose how to reply below!"}
+          boxContent={
+            <GrandparentPostLayout
+              from={currentPost.from}
+              imageURL={currentPost.photoURL}
+              message={currentPost.message}
+            />
+          }
+          buttonText={["Smiley", "Voice Message", "Your Picture"]}
           buttonActions={[
-            () => history.push("/posts"),
-            () => setEmojiReplyOpen(true),
-            () => console.log("Grandparent wants to send a \"voicemail\"!"),
-            () => console.log("Grandparent wants to send a picture!")
+            () => history.push( {pathname: '/emoji', state: currentPost } ),
+            () => console.log("Grandparent wants to send a voicemail!"),
+            () => history.push( {pathname: '/photo', state: currentPost } ),
           ]}
-          buttonIcons={[replyOptionIcons.closedEnvelope, replyOptionIcons.emoji,
-                        replyOptionIcons.voicemail, replyOptionIcons.photo]}
+          buttonIcons={[replyOptionIcons.emoji, replyOptionIcons.voicemail, replyOptionIcons.photo]}
           />
-
-         <Box className="todo">
-            <h3>To do items:</h3>
-            <ul>
-              <li>Fix Box size</li>
-              <li>Create replies:</li>
-                <ul>Send Emoji</ul>
-                <ul>Send "Voice Message"</ul>
-                <ul>Send Selfie</ul>
-              <li>"Sent reply" View</li>
-              <li>Return to Post (requires return to Inbox + open modal</li>
-            </ul>
-        </Box>
-
-        <GetEmojiReply
-          isOpen={EmojiReplyOpen}
-          returnToPost={() => setEmojiReplyOpen(false)}
-        />
 
      </>
     )

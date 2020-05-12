@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 
-import {Box, Card, Modal, CardContent, Paper, Typography, Grid, Container, Button} from '@material-ui/core';
+import {Box, Card, Modal, CardContent, CardActions, Paper, Typography, Grid, Container, Button} from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 import { Post } from 'shared/models/post.model';
 import { getLinkedAccounts } from "services/accountLink";
 import { deletePost } from "services/post";
-
+import { getRepliesToPost, markReplyRead } from "services/reply";
+import { Reply } from "../../models/reply.model";
+import { replyEmojiArray } from "../../../Icons";
+import ModalReply from "./ModalReply";
+import ManageConfirmDelete from "./ManageConfirmDelete";
 
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+
+import Column from 'shared/components/Column/Column';
 
 import Moment from 'react-moment';
 
@@ -20,32 +26,22 @@ import './FamilyMsgView.css';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    paper: {
+    modal: {
       position: 'absolute',
       width: 400,
       backgroundColor: theme.palette.background.paper,
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
+      padding: theme.spacing(2, 4, 3)
     },
-    root: {
-        minWidth: 250,
-        maxWidth: 250
+    paper: {
+        minHeight: 300
     },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
+    postStyle: {
+      height: "100%"
     },
-    title: {
-        fontSize: 16,
-    },
-    pos: {
-        marginBottom: 12,
-    },
-    media: {
-        height: 300,
-        maxWidth: "100%"
+    spacing: {
+        margin: '5px'
     }
   })
 );
@@ -62,16 +58,6 @@ interface ISubSubProps {
     post: Post
 }
 
-//For testing - update with actual format
-interface IReply {
-    message: string,
-    creatorId: string,
-    date: number,
-    read: boolean,
-    responseTo: string,
-    creatorName: string
-}
-
 interface IReceiver {
     id: string
     name: string
@@ -81,8 +67,12 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const classes = useStyles();
     const [modalOpen, setModalOpen] = useState(false);
     const post = props.location.state.post;
-    const [modalReply, setModalReply] = useState<IReply>();
+    const [modalReply, setModalReply] = useState<Reply>();
     const [receivers, setReceivers] = useState<IReceiver[]>([]);
+    const [replies, setReplies] = useState<Reply[]>([]);
+    const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState<boolean>(false);
+
+    const emojiIcons = replyEmojiArray();
     let history = useHistory();
 
     useEffect(() => {
@@ -101,131 +91,158 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             }
             setReceivers(rcvrs);
         });
+        getRepliesToPost(post.pid).then((replyArray: any) => {
+            setReplies(replyArray);
+            for (let i = 0; i < replyArray.length; i++) {
+                markReplyRead(replyArray[i].rid);
+            }
+        });
     }, []); // fires on page load if this is empty [] 
 
-    const handleClick = (reply: IReply) => {
+    const handleClick = (reply: Reply) => {
         setModalOpen(!modalOpen);
         if (reply) {
             setModalReply(reply);
         }
     }
 
+    const handleConfirmDeleteModalClose = () => {
+        setConfirmDeleteModalOpen(false);
+    }
+
+    const onClickDelete = () => {
+        setConfirmDeleteModalOpen(true);
+    }
+
     const deleteCurrentPost = () => {
-        // To do: Add confirm modal
+        setConfirmDeleteModalOpen(false);
         deletePost(post.pid);
         history.push('/posts')
     }
 
-    const mockReplies = [
-        {message: "Hello", creatorId: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", date: 1587597619986, read: false, responseTo: "sITkY10bItkczjAHkkUJ", creatorName: "Kristin Grandparent Test"},
-        {message: "Thanks", creatorId: "pfvIc4RIGmRz1gyqMxsHuLW5mNA3", date: 1587597619986, read: false, responseTo: "sITkY10bItkczjAHkkUJ", creatorName: "Kristin Grandparent Test"}
-    ]
+    const messageAsArray = (reply: Reply) => {
+        return reply.message as number[];
+    }
+    
+    const isEmoji = (reply: Reply) => {
+        return (reply.replyType === "emoji" && typeof reply.message !== "string");
+    }
 
     return (
         <>
         <Container>
-            <Typography variant="h3">
+            <Typography component="h2" variant="h5" align="center">
                 Sent Message
             </Typography>
         </Container>
         <Grid container alignItems="center">
-            <Grid item xs={3}></Grid>
-            <Grid item xs={6}>
-                <Paper>
-                    {post.photoURL && <img
-                        src={post.photoURL}
-                        alt="Attached img"
-                    />}
-                    <Typography variant="h5">
-                        {post.message}
-                    </Typography>
+            <Grid item sm={3}></Grid>
+            <Grid item sm={6} xs={12}>
+                <Paper className={classes.paper}>
+                    <Column justify="center" alignItems="center">
+                        {post.photoURL && <img
+                            src={post.photoURL}
+                            className="photo"
+                            alt="Attached img"
+                        />}
+                        <br/>
+                        <Typography variant="h5" style={{margin:10}}>
+                            {post.message}
+                        </Typography>
+                    </Column>
                 </Paper>
             </Grid>
-            <Grid item xs={3}>
-                <Typography variant="subtitle2">
-                    Sent <Moment format="MMMM Do YYYY, h:mm a">{post.date}</Moment>
-                    <br/>
-                    <br/>
-                    Seen by:
-                </Typography>
-                {
-                    receivers.map((receiver: IReceiver, index: number) => {
-                        return (
-                        <Grid container alignItems="center" justify="center" key={index}>
-                            <Grid item>
-                                {post.read === true ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="subtitle2">
+            <Grid item sm={3} xs={12}>
+                <Column justify="center" alignItems="center">
+                    <Typography variant="caption" align="center">
+                        Sent <Moment format="MMMM Do YYYY, h:mm a">{post.date}</Moment>
+                        <br/>
+                        <br/>
+                        Seen by:
+                    </Typography>
+                    {
+                        receivers.map((receiver: IReceiver, index: number) => {
+                            return (
+                            <Grid container alignItems="center" justify="center" key={index}>
+                                {post.read[receiver.id] === true ? <CheckBoxIcon fontSize="small"/> : <CheckBoxOutlineBlankIcon fontSize="small"/>}
+                                <Typography variant="caption" align="center">
                                     {receiver.name}
                                 </Typography>
                             </Grid>
-                        </Grid>
-                        )
-                    })
-                }
-                <br/>
-                <br/>
-                <Button
-                    variant="contained"
-                    startIcon={<EditIcon />}
-                    disabled>
-                    Edit Post
-                </Button>
-                <br/>
-                <Button
-                    variant="contained"
-                    startIcon={<DeleteIcon />}
-                    onClick={deleteCurrentPost}>
-                    Delete Post
-                </Button>
+                            )
+                        })
+                    }
+                    <br/>
+                    <br/>
+                    <Button
+                        variant="contained"
+                        size="small"
+                        className={classes.spacing}
+                        startIcon={<EditIcon />}
+                        disabled>
+                        Edit Post
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        className={classes.spacing}
+                        startIcon={<DeleteIcon />}
+                        onClick={onClickDelete}>
+                        Delete Post
+                    </Button>
+                </Column>
             </Grid>
         </Grid>
+        <Container>
+            <hr />
+            <Typography component="h2" variant="h5" align="center">
+                Replies
+            </Typography>
+                <Grid container spacing={2}>
+                {
+                replies.map((reply: Reply, index: number) => {
+                    return (
+                    <Grid item xs={4} key={index}>
+                        <div className={"postStyle"} onClick={()=>handleClick(reply)}>
+                            <Card variant="outlined" className={"postStyle"}>
+                                <CardContent>
+                                    {isEmoji(reply) &&
+                                        messageAsArray(reply).map((emojiIndex: number, replyIndex: number) => {
+                                            return (
+                                                <Typography variant="h5" key={replyIndex}>
+                                                    {emojiIcons[emojiIndex]}
+                                                </Typography>
+                                            )
+                                        })
+                                    }
+                                </CardContent>
+                                <CardActions>
+                                    <Typography variant="caption">
+                                        Sent by {reply.from}
+                                        <br/>
+                                        <Moment format="MMMM Do YYYY, h:mm a">{reply.date}</Moment>
+                                    </Typography>
+                                </CardActions>
+                            </Card>
+                        </div>
+                    </Grid>
+                    )
+                })
+                }
+            </Grid>
+            <Modal open={modalOpen} onClose={handleClick} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <div className={classes.modal}>
+                {modalReply && <ModalReply reply={modalReply}/>}
+            </div>
+            </Modal>
+        </Container>
 
-        <Typography variant="h3">
-            Replies
-        </Typography>
-
-            <Grid container spacing={2}>
-            {
-            mockReplies.map((reply: IReply, index: number) => {
-                return (
-                <Grid item xs={4} key={index}>
-                    <div>
-                    <div onClick={()=>handleClick(reply)}>
-                    <Card variant="outlined">
-                        <CardContent>
-                            <Typography variant="h5">
-                                {reply.message}
-                            </Typography>
-                            <Typography variant="subtitle2">
-                                Sent by {reply.creatorName}
-                                <br/>
-                                <Moment format="MMMM Do YYYY, h:mm a">{reply.date}</Moment>
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                    </div>
-                    </div>
-                </Grid>
-                )
-            })
-            }
-        </Grid>
-        <Modal open={modalOpen} onClose={handleClick} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-        <div className={classes.paper}>
-            {modalReply && modalReply.message}
-        </div>
-        </Modal>
-
-         <Box className="todo">
-            <h3>To do items:</h3>
-            <ul>
-                <li>Display responses associated with this post.</li>
-                <li>Break out seen by by individual receiver "read" receipts - After post model has been changed to accommodate.</li>
-                <li>Edit/delete options?</li>
-            </ul>
-        </Box>
+        <ManageConfirmDelete 
+            isOpen={confirmDeleteModalOpen} 
+            deleteConfirmed={() => deleteCurrentPost()}
+            onClose={handleConfirmDeleteModalClose} 
+        />
      </>
     )
 };

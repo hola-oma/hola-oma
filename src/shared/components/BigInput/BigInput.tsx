@@ -66,22 +66,22 @@ const BigInput: React.FC<IBigInput> = ({ error, labelText, name, required, value
 
   return (
     <div className="bigInput">
-    <span className="bigInputLabel">{labelText}</span>
-    <TextField
-      error={error}
-      name="displayName"
-      variant="outlined"
-      required={required}
-      fullWidth
-      id={name}
-      autoFocus={autoFocus}
-      value={value}
-      autoComplete={autoComplete}
-      InputProps={{
-        type: type === "password" ? passwordVisible() : type, // if type is password, use passwordVisible to determine type, otherwise pass type through
-        endAdornment: type === "password" ? passwordAdornment() : ''}}
-      onChange={onChange}
-    />
+      <span className="boldText bigInputLabel">{labelText}</span>
+      <TextField
+        error={error}
+        name="displayName"
+        variant="outlined"
+        required={required}
+        fullWidth
+        id={name}
+        autoFocus={autoFocus}
+        value={value}
+        autoComplete={autoComplete}
+        InputProps={{
+          type: type === "password" ? passwordVisible() : type, // if type is password, use passwordVisible to determine type, otherwise pass type through
+          endAdornment: type === "password" ? passwordAdornment() : ''}}
+        onChange={onChange}
+      />
     </div>
   )
 }

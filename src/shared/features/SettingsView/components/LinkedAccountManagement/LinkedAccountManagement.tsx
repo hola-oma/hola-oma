@@ -4,8 +4,11 @@ import { Box, List, ListItem, ListItemAvatar, Avatar, ListItemText, ListItemSeco
 import { roles } from 'enums/enums';
 
 import PersonIcon from '@material-ui/icons/Person';
-import ManageAccountLinkAlert from './ManageAccountLinkAlert';
+import ManageAccountLinkAlert from '../ManageAccountLinkAlert';
 import { acceptLink, removeLink, getLinkedAccounts } from 'services/accountLink';
+
+import './LinkedAccountManagement.css';
+import Child from 'shared/components/Child/Child';
 
 interface ILinkedAccountManagement {
   role: string;
@@ -153,14 +156,18 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
             </ListItemAvatar>
 
             {/* Text */}
-            <ListItemText
-              primary={showPrimaryText(friend)}
-              secondary={showSecondaryText(friend)}
-            />
+            <Child xs={7} className="breakLongName">
+              <ListItemText
+                primary={showPrimaryText(friend)}
+                secondary={showSecondaryText(friend)}
+              />
+            </Child>
             {/* Button to the right */}
-            <ListItemSecondaryAction>
-              {friend.verified ? <>{manageButton(friend)}</> : role === roles.poster ? <>{cancelButton(friend)}</> : <>{declineButton(friend)} {acceptButton(friend)}</>}
-            </ListItemSecondaryAction>
+            <Child xs={4}>
+              <ListItemSecondaryAction className="noRight">
+                {friend.verified ? <>{manageButton(friend)}</> : role === roles.poster ? <>{cancelButton(friend)}</> : <>{declineButton(friend)} {acceptButton(friend)}</>}
+              </ListItemSecondaryAction>
+            </Child>
           </ListItem>
       );
     })
@@ -169,7 +176,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
   return (
     <>
     <Box className="devBox">
-      <h3>{role === roles.poster ? 'Sharing posts with:' : 'Getting updates from:'}</h3>
+      <span className="boldText">{role === roles.poster ? 'Sharing posts with' : 'Getting updates from'}</span>
       <div>
         <List>
           {linkedAccounts.length ? generateLinkedAccountsList(role, linkedAccounts) : 'You are not following anyone. Ask a family member to send you an invitation so you can view their photos.'}
@@ -179,7 +186,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
     <br/>
 
     <Box className="devBox">
-      <h3>{role === roles.poster ? 'Sent invitations:' : 'Pending invitations:'}</h3>
+      <span className="boldText">{role === roles.poster ? 'Sent invitations' : 'Pending invitations'}</span>
       <div>
         <List>
           {pendingAccounts.length ? generateLinkedAccountsList(role, pendingAccounts) : 'No pending invitations'}
@@ -194,6 +201,7 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
         friend={selectedFriend} 
         unfriendFriend={() => deleteAccountLink(selectedFriend)}
         onClose={handleManageAccountLinkAlertClose} 
+        role={role}
       />
     }
     </>
