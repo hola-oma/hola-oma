@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import createPonyfill from 'web-speech-cognitive-services/lib/SpeechServices';
 import DictateButton from 'react-dictate-button';
 
