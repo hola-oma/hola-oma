@@ -110,19 +110,6 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
     </Button>
   )
 
-  const photoButton = () => (
-    <Button
-      variant="outlined"
-      color="secondary"
-      size="medium"
-      className=""
-      onClick={() => goToPhotoPrototype()}
-      startIcon={<CameraAltIcon />}
-      >
-      Proto
-    </Button>
-  )
-
   const inboxButton = () => (
     <Button
       variant="contained"
@@ -173,10 +160,6 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
   const drawerContents = () => (
     <List>
       <Divider />
-
-      <ListItem>
-        {photoButton()}
-      </ListItem>
 
       <ListItem>
         {inboxButton()}
@@ -245,10 +228,6 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
               {/* big buttons for desktop and wide tablets */}
               <Hidden xsDown>
               <ul>
-                <li>
-                  {photoButton()}
-                </li>
-
                 <li>
                   {inboxButton()}
                 </li>

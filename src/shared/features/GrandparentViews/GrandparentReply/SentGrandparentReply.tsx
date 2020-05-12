@@ -8,7 +8,7 @@ import {Card, CardContent, Grid, SvgIconProps} from "@material-ui/core";
 import {Post} from "../../../models/post.model";
 import { REPLY_TYPES } from "../../../models/reply.model";
 
-export const NewGrandparentReply: React.FC = () => {
+export const SentGrandparentReply: React.FC = () => {
   const history = useHistory();
   const location = useLocation();
   const state: any = location.state;
@@ -66,4 +66,4 @@ export const NewGrandparentReply: React.FC = () => {
   )
 };
 
-export default NewGrandparentReply;
+export default SentGrandparentReply;

@@ -88,8 +88,8 @@ const GetPhotoReply: React.FC<IPhotoReplyPrototype> = () => {
               ["Back to message", "Take Photo"] :
               ["Back to message", "Retake Photo", "Send Photo"]}
             buttonActions={!photoPreview ?
-              [() => console.log("Go back to message"), capture] :
-              [() => console.log("Go back to message"), capture, e => buildReply(e) ]}
+              [() => history.push({pathname: '/startReply', state: currentPost }), capture] :
+              [() => history.push({pathname: '/startReply', state: currentPost }), capture, e => buildReply(e) ]}
             buttonIcons={!photoPreview ?
               [cameraIcons.openEnvelope, cameraIcons.camera] :
               [cameraIcons.openEnvelope, cameraIcons.camera, cameraIcons.paperAirplane]}
