@@ -42,6 +42,12 @@ export const replyOptionIcons = {
   photo: <PhotoCameraIcon />
 }
 
+export const cameraIcons = {
+  openEnvelope: <DraftsIcon fontSize={"large"}/>,
+  camera: <PhotoCameraIcon fontSize={"large"}/>,
+  paperAirplane: <SendIcon fontSize={"large"}/>
+}
+
 export const magnifyIcon = {
   magnify: <ZoomInIcon fontSize={"large"}/>
 }
