@@ -194,6 +194,15 @@ const NewFamilyPost: React.FC = () => {
                                 alt="Attached img"/>
                         </Row>
                     }
+                    {fileType === 'video' &&
+                        <Row justify="center">
+                            <video src={getImageAsUrl()}
+                                className="photo"
+                                preload="auto"
+                                controls
+                            />
+                        </Row>
+                    }
                     <Row justify="center">
                         <Button
                             variant="outlined"
