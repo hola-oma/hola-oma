@@ -9,8 +9,8 @@ import { getUserProfile } from "../../../../services/user";
 import { Reply, REPLY_TYPES } from "../../../models/reply.model";
 
 const videoConstraints = {
-  width: 864,
-  height: 486,
+  maxWidth: 848,     // 16:9 aspect ratio
+  maxHeight: 477,
   facingMode: "user"
 };
 
@@ -64,7 +64,8 @@ const GetPhotoReply: React.FC = () => {
               <Webcam
                 audio={false}
                 ref={webcamRef}
-                height={486}
+                // width={848}
+                height={477}
                 screenshotFormat="image/jpeg"
                 videoConstraints={videoConstraints}
               /> :

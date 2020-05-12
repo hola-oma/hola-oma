@@ -59,7 +59,7 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
             mx={"auto"}
             fontSize={24}
             display={"flex"}
-            height={486}      // Other heights methods incl. min-height did not work
+            height={486}      // 16:9 ratio
             width={864}
           >
 
