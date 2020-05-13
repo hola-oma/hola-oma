@@ -21,6 +21,7 @@ import { Grid } from "@material-ui/core";
 import SentGrandparentReply from "./shared/features/GrandparentViews/GrandparentReply/SentGrandparentReply";
 import GrandparentReplyOpts from "./shared/features/GrandparentViews/GrandparentReply/GrandparentReplyOpts";
 import GetEmojiReply from "./shared/features/GrandparentViews/GrandparentReply/GetEmojiReply";
+import GetVoiceReply from "./shared/features/GrandparentViews/GrandparentReply/GetVoiceReply";
 import GetPhotoReply from "./shared/features/GrandparentViews/GrandparentReply/GetPhotoReply";
 
 interface IRoutes {
@@ -75,6 +76,7 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
               <ProtectedRouteHoc exact path="/startReply" isLoggedIn={isLoggedIn} public={false} RouteComponent={GrandparentReplyOpts} />
               <ProtectedRouteHoc exact path="/newReply" isLoggedIn={isLoggedIn} public={false} RouteComponent={SentGrandparentReply} />
               <ProtectedRouteHoc exact path="/emoji" isLoggedIn={isLoggedIn} public={false} RouteComponent={GetEmojiReply} />
+              <ProtectedRouteHoc exact path="/voice" isLoggedIn={isLoggedIn} public={false} RouteComponent={GetVoiceReply} />
               <ProtectedRouteHoc exact path="/photo" isLoggedIn={isLoggedIn} public={false} RouteComponent={GetPhotoReply} />
               <ProtectedRouteHoc exact setIsLoading={setIsLoading} path="/settings" isLoggedIn={isLoggedIn} public={false} RouteComponent={SettingsView} />
               <ProtectedRouteHoc exact path="/addAccountLink" isLoggedIn={isLoggedIn} public={false} RouteComponent={AddAccountLink} />

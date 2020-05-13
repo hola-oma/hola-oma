@@ -128,6 +128,10 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         return (reply.replyType === "emoji" && typeof reply.message !== "string");
     }
 
+    const isMessage = (reply: Reply) => {
+        return (reply.replyType === "voice" && typeof reply.message === "string"); 
+    }
+
     return (
         <>
         <Container>
@@ -221,6 +225,10 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                                                 </Typography>
                                             )
                                         })
+                                    }
+
+                                    {isMessage(reply) && 
+                                        <p>{reply.message}</p>
                                     }
                                 </CardContent>
                                 <CardActions>
