@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) =>
   },
     paper: {
       position: 'absolute',
-      width: 400,
+      maxWidth: 800,
       backgroundColor: theme.palette.background.paper,
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
@@ -84,17 +84,14 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
   const [modalStyle] = React.useState(getModalStyle);
   const [imageModalOpen, setImageModalOpen] = useState<boolean>(false);
 
-  const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <h2 id="simple-modal-title">Text in a modal</h2>
-      <p id="simple-modal-description">
-        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-      </p>
-    </div>
-  );
-
   const postImage = new Image();
   postImage.src = imageURL;
+
+  const modalBody = (
+    <div style={modalStyle} className={classes.paper}>
+      <img src={imageURL} alt={"Message from {from}"}></img>
+    </div>
+  );
 
   useEffect(() => {
     postImage.addEventListener('load', () => {
@@ -149,7 +146,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
           >
-            {body}
+            {modalBody}
           </Modal>
 
         </div>
