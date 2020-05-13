@@ -42,7 +42,7 @@ const GetVoiceReply: React.FC = () => {
   const [displayName, setDisplayName] = useState("");
   const [userId, setUserId] = useState("");
   const [alertOn, setAlert] =  useState<boolean>(false);
-  const [savedReply, setSavedReply] = useState("");
+  const [completeReply, setCompleteReply] = useState("");
   const [dictatedReply, setDictatedReply] = useState("");
   const [lowConfidence, setLowConfidence] = useState(false);
   const [inProgress, setInProgress] = useState(false);
@@ -62,15 +62,15 @@ const GetVoiceReply: React.FC = () => {
   const handleProgress = (results: any) => {
     setInProgress(true);
     setLowConfidence(false);
-    
+
     if (!results.results || results.results.length === 0) {
-      setDictatedReply("...");
+      setDictatedReply(completeReply + " ...");
     } else if (results.results.length > 0) {
       const { confidence, transcript } = results.results[0];
       if (confidence < 0.40) {
-        setDictatedReply("...");
+        setDictatedReply(completeReply + " ...");
       } else {
-        setDictatedReply(transcript);
+        setDictatedReply(completeReply + " " + transcript);
       }
     }
   }
@@ -78,14 +78,20 @@ const GetVoiceReply: React.FC = () => {
   const handleDictationDone = (results: any) => {
     setInProgress(false);
     const { confidence, transcript } = results.result;
+
     if (results && confidence > 0.40 || results && !confidence) {
-      setDictatedReply(transcript);
       setLowConfidence(false);
+      if (completeReply.length > 0) {
+        setDictatedReply(completeReply + " " + transcript);
+        setCompleteReply(completeReply + " " + transcript);
+      } else {
+        setDictatedReply(transcript);
+        setCompleteReply(transcript);
+      }
     } else {
-      setDictatedReply("");
+      setDictatedReply(completeReply);
       setLowConfidence(true);
     }
-    setSavedReply(dictatedReply);
   }
 
   const buildReply = (e: any) => {
