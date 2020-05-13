@@ -13,6 +13,10 @@ const useStyles = makeStyles((theme: Theme) =>
     height: 425,
     objectFit: 'contain',
   },
+  mediumText: {   // works for ~110 words
+    height: 375,
+    objectFit: 'contain'
+  },
   both: {
     height: 200,
     objectFit: 'contain',
@@ -54,10 +58,15 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
   const postImage = new Image();
   postImage.src = imageURL;
 
-  console.log("message length: " + message.length);
-
   const handleClick = () => {
     imageModalOpen ? setImageModalOpen(false) : setImageModalOpen(true)
+  }
+
+  const getStyle = (length: number) => {
+    // todo: add more variation depending on message length
+    if (length < 50) return classes.media;
+    if (length < 200) return classes.mediumText;
+    else return classes.both;
   }
 
   const modalBody = (
@@ -65,8 +74,6 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
       <img src={imageURL} alt={"Message from {from}"}></img>
     </div>
   );
-
-  // todo: test messages with different lengths to adjust CardMedia className
   return (
     <Grid container
           spacing={0}
@@ -82,7 +89,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
                   <div style={{ position: 'relative' }} >
                       <CardMedia
                           component="img"
-                          className={ (message.length > 200) ? classes.both : classes.media}
+                          className={getStyle(message.length)}
                           image={imageURL}
                           onClick={handleClick}
                       />
@@ -102,7 +109,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
                   </div>
                 {message &&
                 <CardContent>
-                    <Typography variant="h6" color="textPrimary" component="p">
+                    <Typography variant="h5" color="textPrimary" component="p">
                       {getMessageSubstring(message, 400)}
                     </Typography>
                 </CardContent>
@@ -111,6 +118,12 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
               </CardActionArea>
           </Card>
       </Grid>
+      }
+
+      {!imageURL &&
+        <Typography variant="h5" align={message.length < 50 ? "center" : "left"} >
+          {getMessageSubstring(message, 625)}
+        </Typography>
       }
       <Modal
         open={imageModalOpen}
