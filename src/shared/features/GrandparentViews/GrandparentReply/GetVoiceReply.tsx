@@ -68,7 +68,7 @@ const GetVoiceReply: React.FC = () => {
     else {
       setAlert(false);
       const replyContent: Reply = setReplyContent(userId, displayName, REPLY_TYPES.VOICE,
-                                  [dictatedReply], currentPost.pid, currentPost.creatorID);
+                                  dictatedReply, currentPost.pid, currentPost.creatorID);
       submitReply(e, replyContent)
         .then( () => { history.push({
           pathname: "/posts",
