@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router'
 
-import {Box, Grid, TextField, TextareaAutosize} from "@material-ui/core";
+import {Box, Grid, TextareaAutosize} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
 import GrandparentLayout from "../Components/GrandparentLayout";
@@ -42,6 +42,7 @@ const GetVoiceReply: React.FC = () => {
   const [displayName, setDisplayName] = useState("");
   const [userId, setUserId] = useState("");
   const [alertOn, setAlert] =  useState<boolean>(false);
+  const [savedReply, setSavedReply] = useState("");
   const [dictatedReply, setDictatedReply] = useState("");
   const [lowConfidence, setLowConfidence] = useState(false);
   const [inProgress, setInProgress] = useState(false);
@@ -77,13 +78,23 @@ const GetVoiceReply: React.FC = () => {
   const handleDictationDone = (results: any) => {
     setInProgress(false);
     const { confidence, transcript } = results.result;
-    if (results && confidence > 0.40) {
+    if (results && confidence > 0.40 || results && !confidence) {
       setDictatedReply(transcript);
       setLowConfidence(false);
     } else {
       setDictatedReply("");
       setLowConfidence(true);
     }
+  }
+
+  const handleManualStop = () => {
+    // there is no "confidence" score because by stopping recording manually,
+    // we bypass the Azure service's final processing that's normally called
+    // when using onDictate
+
+    // When the user manually stops recording, just keep whatever they have so far
+    setInProgress(false);
+    setLowConfidence(false);
   }
 
   const buildReply = (e: any) => {
@@ -113,7 +124,11 @@ const GetVoiceReply: React.FC = () => {
         boxContent={
           <Grid container>
             <Row alignItems="center" justify="center">
-              <RecordButton handleDictationDone={handleDictationDone} handleProgress={handleProgress}/>
+              <RecordButton 
+                handleDictationDone={handleDictationDone} 
+                handleProgress={handleProgress}
+                handleManualStop={handleManualStop}
+              />
 
 
               {lowConfidence && 
