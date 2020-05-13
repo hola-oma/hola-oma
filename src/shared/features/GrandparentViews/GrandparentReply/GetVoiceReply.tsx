@@ -42,8 +42,10 @@ const GetVoiceReply: React.FC = () => {
   const [displayName, setDisplayName] = useState("");
   const [userId, setUserId] = useState("");
   const [alertOn, setAlert] =  useState<boolean>(false);
+
   const [completeReply, setCompleteReply] = useState("");
   const [dictatedReply, setDictatedReply] = useState("");
+
   const [lowConfidence, setLowConfidence] = useState(false);
   const [inProgress, setInProgress] = useState(false);
 
@@ -59,12 +61,22 @@ const GetVoiceReply: React.FC = () => {
       });
   }, []);
 
+  // fires after completeReply is updated to update what's in the text area
+  useEffect(() => {
+    setDictatedReply(completeReply);
+  }, [completeReply]);
+
+  const handleTextareaChange = (event: any) => {
+    setCompleteReply(event.target.value);
+    setDictatedReply(event.target.value);
+  }
+
   const handleProgress = (results: any) => {
     setInProgress(true);
     setLowConfidence(false);
 
     if (!results.results || results.results.length === 0) {
-      setDictatedReply(completeReply + " ...");
+      setDictatedReply(completeReply + "...");
     } else if (results.results.length > 0) {
       const { confidence, transcript } = results.results[0];
       if (confidence < 0.40) {
@@ -136,7 +148,8 @@ const GetVoiceReply: React.FC = () => {
                 rowsMin={8}
                 aria-label="voice reply"
                 placeholder="Your voice message appears here"
-                defaultValue={dictatedReply}
+                value={inProgress ? dictatedReply : completeReply}
+                onChange={handleTextareaChange}
               />
             </Row>
           </Grid>
