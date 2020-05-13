@@ -11,10 +11,9 @@ import Column from 'shared/components/Column/Column';
 interface IRecordButton {
   handleDictationDone: (result:any) => void;
   handleProgress: (result:any) => void;
-  handleManualStop: (result: any) => void;
 }
 
-const RecordButton: React.FC<IRecordButton> = ({ handleDictationDone, handleProgress, handleManualStop }) => {
+const RecordButton: React.FC<IRecordButton> = ({ handleDictationDone, handleProgress }) => {
   const [azureSettings, setAzureSettings] = useState<any>(null);
   const [recording, setRecording] = useState(false);
 
@@ -42,24 +41,15 @@ const RecordButton: React.FC<IRecordButton> = ({ handleDictationDone, handleProg
     handleDictationDone(result);
   }
 
-  const onRawEvent = (e: any) => {
-    // if user manually ends the listening, send what they do have off for processing
-    if (e.type === "soundend") {
-      setRecording(false);
-      handleManualStop(e);
-    }
-  }
-
   return (
     <Column container alignItems="center" justify="center">
       <Child xs={12}>
         <DictateButton
           onProgress={ onProgress }
-          className={`my-dictate-checkbox hidden noMargin recordButton ${recording ? 'recordButtonRecording recordAnim' : 'recordButtonIdle' }`}
+          className={`my-dictate-button noMargin recordButton ${recording ? 'recordButtonRecording recordAnim' : 'recordButtonIdle' }`}
           speechGrammarList={azureSettings?.SpeechGrammarList}
           speechRecognition={azureSettings?.SpeechRecognition}
           onDictate={ onDictationDone }
-          onRawEvent={ onRawEvent }
         >
           <MicIcon />
         </DictateButton>

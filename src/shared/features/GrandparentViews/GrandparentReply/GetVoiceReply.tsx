@@ -62,11 +62,11 @@ const GetVoiceReply: React.FC = () => {
   const handleProgress = (results: any) => {
     setInProgress(true);
     setLowConfidence(false);
+    
     if (!results.results || results.results.length === 0) {
       setDictatedReply("...");
     } else if (results.results.length > 0) {
       const { confidence, transcript } = results.results[0];
-      console.log(confidence);
       if (confidence < 0.40) {
         setDictatedReply("...");
       } else {
@@ -85,16 +85,7 @@ const GetVoiceReply: React.FC = () => {
       setDictatedReply("");
       setLowConfidence(true);
     }
-  }
-
-  const handleManualStop = () => {
-    // there is no "confidence" score because by stopping recording manually,
-    // we bypass the Azure service's final processing that's normally called
-    // when using onDictate
-
-    // When the user manually stops recording, just keep whatever they have so far
-    setInProgress(false);
-    setLowConfidence(false);
+    setSavedReply(dictatedReply);
   }
 
   const buildReply = (e: any) => {
@@ -127,7 +118,6 @@ const GetVoiceReply: React.FC = () => {
               <RecordButton 
                 handleDictationDone={handleDictationDone} 
                 handleProgress={handleProgress}
-                handleManualStop={handleManualStop}
               />
 
 
