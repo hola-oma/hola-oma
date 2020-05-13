@@ -121,7 +121,15 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
                       <CardMedia
                         className={classes.media}
                         image={post.photoURL}
-                        title={"Photo shared on " + post.date}
+                        title={"Photo shared"}
+                      />
+                    }
+                    {post.videoURL && 
+                      <CardMedia
+                        className={classes.media}
+                        image={post.videoURL}
+                        title={"Video shared"}
+                        component="video"
                       />
                     }
                     <CardContent>

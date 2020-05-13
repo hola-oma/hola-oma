@@ -5,6 +5,7 @@ export interface Post {
   read: {[key: string]: boolean},
   message: string,
   photoURL: string,
+  videoURL: string,
   date: number,
   receiverIDs: Array<string>
 }
