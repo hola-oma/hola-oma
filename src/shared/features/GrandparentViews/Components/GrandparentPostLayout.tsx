@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
-import {Theme, Grid, Typography, ButtonBase, Modal} from '@material-ui/core';
+import {
+  Theme,
+  Grid,
+  Typography,
+  ButtonBase,
+  Modal,
+  Button,
+  CardActions,
+  CardContent,
+  CardMedia, CardActionArea, Card, IconButton
+} from '@material-ui/core';
 import { makeStyles,  createStyles } from "@material-ui/core/styles";
 
 import {  getMessageSubstring } from "../../../../services/post";
@@ -9,8 +19,8 @@ import { magnifyIcon } from "../../../../Icons";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
   root: {
-    maxWidth: '100%',
-    maxHeight: '100%'
+    // maxWidth: '100%',
+    // maxHeight: '100%'
   },
   media: {
     width: '100%',
@@ -57,6 +67,9 @@ const useStyles = makeStyles((theme: Theme) =>
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
     },
+    fitImage: {
+
+    },
   }),
 );
 
@@ -100,45 +113,113 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
   });
 
   return (
-    <Grid container alignItems="flex-start">
-      <Grid item xs={12}>
-        <div className={classes.root}>
+    <Grid container
+          spacing={0}
+          direction={"column"}
+          alignItems="center"
+          justify="center"
+          style={{ height: "100%", overflowY: "hidden" }}
+    >
+      {(imageURL && !message) &&
+      <Grid item className={classes.fitImage}>
+          <Card >
+              <div >
+                  <CardContent >
+                      <div
+                          style={{
+                            position: 'relative',
+                          }} >
+                          <CardMedia
+                              component="img"
+                              className={classes.media}
+                              image={imageURL}
+                              onClick={() => setImageModalOpen(true)}
+                          />
+                          <div
+                            onClick={() => setImageModalOpen(true)}
+                            style={{
+                              position: 'absolute',
+                              backgroundColor: '#d8e0e440',
+                              color: 'black',
+                              right: '0%',
+                              bottom: '0%',
+                              transform: 'translateX(-50%)',
+                          }} >
+                            {magnifyIcon.magnify}
+                          </div>
+                      </div>
+                  </CardContent>
+              </div>
+          </Card>
 
-          {imageURL &&
-          <div className={classes.root} onClick={() => setImageModalOpen(true)}>
-            <ButtonBase
-                key={from}
-                className={message ? classes.both : classes.media}
-                style={{ width: postImage.width }}
-                 >
-              <span className=
-                  {classes.imageSrc}
-                  style={{
-                      backgroundImage: `url(${imageURL})`,
-                      display: loaded ? "" : "none",
-                    }}  />
-                <span className={classes.imageBackdrop} />
-                <span className={classes.imageButton} >
-                  <Typography
-                      component="span"
-                      className={classes.imageButton}
-                      color="primary"
-                      aria-label="enlarge photo"
-                      onClick={() => setImageModalOpen(true)} >
-                    {magnifyIcon.magnify}
-                  </Typography>
-                </span>
-            </ButtonBase>
-          </div>
-          }
+      </Grid>
 
-          <Typography variant="h5"
-                      className={message.length < 50 ? classes.textSpace : ""}
-                      align={message.length < 50 ? "center" : "left"}
-          >
-            {!imageURL && getMessageSubstring(message, 625)}
-            {imageURL && getMessageSubstring(message, 325)}
-          </Typography>
+      // <Card className={classes.root}>
+      //     <CardActionArea>
+      //         <CardMedia
+      //             className={classes.media}
+      //             image={imageURL}
+      //             title="Contemplative Reptile"
+      //         />
+      //         <CardContent>
+      //             {/*<Typography gutterBottom variant="h5" component="h2">*/}
+      //             {/*    Lizard*/}
+      //             {/*</Typography>*/}
+      //             {/*<Typography variant="body2" color="textSecondary" component="p">*/}
+      //             {/*    Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging*/}
+      //             {/*    across all continents except Antarctica*/}
+      //             {/*</Typography>*/}
+      //         </CardContent>
+      //     </CardActionArea>
+      //     <CardActions>
+      //         <Button size="small" color="primary">
+      //             Share
+      //         </Button>
+      //         <Button size="small" color="primary">
+      //             Learn More
+      //         </Button>
+      //     </CardActions>
+      // </Card>
+
+      }
+      {/*<Grid item xs={12}>*/}
+      {/*  <div className={classes.root}>*/}
+
+          {/*{imageURL &&*/}
+          {/*<div className={classes.root} onClick={() => setImageModalOpen(true)}>*/}
+          {/*  <ButtonBase*/}
+          {/*      key={from}*/}
+          {/*      className={message ? classes.both : classes.media}*/}
+          {/*      style={{ width: postImage.width }}*/}
+          {/*       >*/}
+          {/*    <span className=*/}
+          {/*        {classes.imageSrc}*/}
+          {/*        style={{*/}
+          {/*            backgroundImage: `url(${imageURL})`,*/}
+          {/*            display: loaded ? "" : "none",*/}
+          {/*          }}  />*/}
+          {/*      <span className={classes.imageBackdrop} />*/}
+          {/*      <span className={classes.imageButton} >*/}
+          {/*        <Typography*/}
+          {/*            component="span"*/}
+          {/*            className={classes.imageButton}*/}
+          {/*            color="primary"*/}
+          {/*            aria-label="enlarge photo"*/}
+          {/*            onClick={() => setImageModalOpen(true)} >*/}
+          {/*          {magnifyIcon.magnify}*/}
+          {/*        </Typography>*/}
+          {/*      </span>*/}
+          {/*  </ButtonBase>*/}
+          {/*</div>*/}
+          {/*}*/}
+
+          {/*<Typography variant="h5"*/}
+          {/*            className={message.length < 50 ? classes.textSpace : ""}*/}
+          {/*            align={message.length < 50 ? "center" : "left"}*/}
+          {/*>*/}
+          {/*  {!imageURL && getMessageSubstring(message, 625)}*/}
+          {/*  {imageURL && getMessageSubstring(message, 325)}*/}
+          {/*</Typography>*/}
 
           <Modal
             open={imageModalOpen}
@@ -149,8 +230,8 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
             {modalBody}
           </Modal>
 
-        </div>
-      </Grid>
+      {/*  </div>*/}
+      {/*</Grid>*/}
     </Grid>
   )
 
