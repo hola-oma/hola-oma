@@ -4,7 +4,7 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {Grid, Box, Button, SvgIconProps} from '@material-ui/core';
 import {Alert} from "@material-ui/lab";
 
-import RecordButton from './RecordButton';
+import RecordButton from './RecordButton/RecordButton';
 import Child from 'shared/components/Child/Child';
 import Column from 'shared/components/Column/Column';
 
@@ -32,8 +32,6 @@ interface IGrandparentLayout {
   from: string,
   headerText: string;
   header2Text?:string;
-  recordButton?: boolean; //optional, used by GetVoiceReply
-  handleDictationDone?: (result:any) => void; // optional, used by GetVoiceReply
   alertText?: string | null;
   boxContent: any;
   buttonText: Array<string>;
@@ -41,7 +39,7 @@ interface IGrandparentLayout {
   buttonIcons: React.ReactElement<SvgIconProps>[];
 }
 
-export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerText, header2Text, recordButton = false, handleDictationDone = () => {}, alertText, boxContent, buttonText,  buttonActions, buttonIcons}) => {
+export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerText, header2Text, alertText, boxContent, buttonText,  buttonActions, buttonIcons}) => {
 
   const classes = useStyles();
 
@@ -52,12 +50,6 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
         <h1>{headerText} {from}</h1>
         { header2Text && <h2>{header2Text}</h2> }
       </Grid>
-
-      <Child xs={12}>
-        {recordButton && 
-          <RecordButton handleDictationDone={handleDictationDone}/>
-        }
-      </Child>
 
       {/*Alert*/}
       {alertText &&  <Alert className="error" severity="error">{alertText}</Alert>}

@@ -13,7 +13,8 @@ import { mailIcons } from "../../../../Icons";
 
 import './GrandparentReply.css';
 import FormError from 'shared/components/FormError/FormError';
-import Child from 'shared/components/Child/Child';
+import RecordButton from '../Components/RecordButton/RecordButton';
+import Row from 'shared/components/Row/Row';
 
 let choicesList: Array<number> = [];
 
@@ -56,9 +57,24 @@ const GetVoiceReply: React.FC = () => {
       });
   }, []);
 
+  const handleProgress = (results: any) => {
+    setLowConfidence(false);
+    if (!results.results || results.results.length === 0) {
+      setDictatedReply("...");
+    } else if (results.results.length > 0) {
+      const { confidence, transcript } = results.results[0];
+      console.log(confidence);
+      if (confidence < 0.40) {
+        setDictatedReply("...");
+      } else {
+        setDictatedReply(transcript);
+      }
+    }
+  }
+
   const handleDictationDone = (results: any) => {
     const { confidence, transcript } = results.result;
-    if (results && confidence > 0.70) {
+    if (results && confidence > 0.40) {
       setDictatedReply(transcript);
       setLowConfidence(false);
     } else {
@@ -90,23 +106,25 @@ const GetVoiceReply: React.FC = () => {
         from={currentPost.from}
         headerText={"Replying to "}
         header2Text={"Press 'RECORD' to dictate a short message"}
-        recordButton={true}
-        handleDictationDone={handleDictationDone}
         alertText={getAlertText()}
         boxContent={
           <Grid container>
-            <Child xs={12}>
+            <Row alignItems="center" justify="center">
+              <RecordButton handleDictationDone={handleDictationDone} handleProgress={handleProgress}/>
+
+
               {lowConfidence && 
                 <FormError error={"Sorry, I didn't catch that. Please record again."}/>
               }
-            </Child>
-            <TextareaAutosize
-              className="grandparentReplyText"
-              rowsMin={8}
-              aria-label="voice reply"
-              placeholder="Your voice message appears here"
-              defaultValue={dictatedReply}
-            />
+
+              <TextareaAutosize
+                className="grandparentReplyText"
+                rowsMin={8}
+                aria-label="voice reply"
+                placeholder="Your voice message appears here"
+                defaultValue={dictatedReply}
+              />
+            </Row>
           </Grid>
         }
           buttonText={["Go back to Reply Options", "Send reply"]}
@@ -119,9 +137,6 @@ const GetVoiceReply: React.FC = () => {
           <h3>To do items:</h3>
           <ul>
             <li>Grey out the "Start recording" button while actively recording</li>
-            <li>Make it obvious when it's actively recording</li>
-            <li>Add message to the textfield in pieces as it is constructed?</li>
-            <li>Low confidence = prompt user to re-record</li>
             <li>Max length on recording</li>
           </ul>
         </Box>
