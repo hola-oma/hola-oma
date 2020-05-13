@@ -208,6 +208,10 @@ Use: <Box className="devBox">...stuff here...</Box> */
   border:1px solid green;
 }
 
+.inProgressText {
+  color:lightslategrey;
+}
+
 /* 
   const useStyles = makeStyles((theme) => ({
     paper: {

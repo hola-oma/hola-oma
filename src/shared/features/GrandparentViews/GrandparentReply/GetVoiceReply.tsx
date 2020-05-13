@@ -44,6 +44,7 @@ const GetVoiceReply: React.FC = () => {
   const [alertOn, setAlert] =  useState<boolean>(false);
   const [dictatedReply, setDictatedReply] = useState("");
   const [lowConfidence, setLowConfidence] = useState(false);
+  const [inProgress, setInProgress] = useState(false);
 
   const getAlertText = () => {
     return alertOn ? "Must create a message to send" : null;
@@ -58,6 +59,7 @@ const GetVoiceReply: React.FC = () => {
   }, []);
 
   const handleProgress = (results: any) => {
+    setInProgress(true);
     setLowConfidence(false);
     if (!results.results || results.results.length === 0) {
       setDictatedReply("...");
@@ -73,6 +75,7 @@ const GetVoiceReply: React.FC = () => {
   }
 
   const handleDictationDone = (results: any) => {
+    setInProgress(false);
     const { confidence, transcript } = results.result;
     if (results && confidence > 0.40) {
       setDictatedReply(transcript);
@@ -118,7 +121,7 @@ const GetVoiceReply: React.FC = () => {
               }
 
               <TextareaAutosize
-                className="grandparentReplyText"
+                className={`grandparentReplyText ${inProgress ? 'inProgressText' : ''}`}
                 rowsMin={8}
                 aria-label="voice reply"
                 placeholder="Your voice message appears here"
