@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Theme, Grid, Typography, ButtonBase } from '@material-ui/core';
+import {Theme, Grid, Typography, ButtonBase, Modal} from '@material-ui/core';
 import { makeStyles,  createStyles } from "@material-ui/core/styles";
 
 import {  getMessageSubstring } from "../../../../services/post";
@@ -49,6 +49,14 @@ const useStyles = makeStyles((theme: Theme) =>
     opacity: 0.4,
     transition: theme.transitions.create('opacity'),
   },
+    paper: {
+      position: 'absolute',
+      width: 400,
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
   }),
 );
 
@@ -58,10 +66,32 @@ interface IPostLayout {
   message: string
 }
 
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
 export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, message}) => {
 
   const classes = useStyles();
   const [loaded, setLoaded] = useState(false);
+  const [modalStyle] = React.useState(getModalStyle);
+  const [imageModalOpen, setImageModalOpen] = useState<boolean>(false);
+
+  const body = (
+    <div style={modalStyle} className={classes.paper}>
+      <h2 id="simple-modal-title">Text in a modal</h2>
+      <p id="simple-modal-description">
+        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+      </p>
+    </div>
+  );
 
   const postImage = new Image();
   postImage.src = imageURL;
@@ -72,17 +102,13 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
     })
   });
 
-  const enlargeImage = () => {
-    console.log("Open enlarge image modal");
-  }
-
   return (
     <Grid container alignItems="flex-start">
       <Grid item xs={12}>
         <div className={classes.root}>
 
           {imageURL &&
-          <div className={classes.root} onClick={enlargeImage}>
+          <div className={classes.root} onClick={() => setImageModalOpen(true)}>
             <ButtonBase
                 key={from}
                 className={message ? classes.both : classes.media}
@@ -101,7 +127,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
                       className={classes.imageButton}
                       color="primary"
                       aria-label="enlarge photo"
-                      onClick={enlargeImage} >
+                      onClick={() => setImageModalOpen(true)} >
                     {magnifyIcon.magnify}
                   </Typography>
                 </span>
@@ -116,6 +142,15 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
             {!imageURL && getMessageSubstring(message, 625)}
             {imageURL && getMessageSubstring(message, 325)}
           </Typography>
+
+          <Modal
+            open={imageModalOpen}
+            onClose={() => setImageModalOpen(false)}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+          >
+            {body}
+          </Modal>
 
         </div>
       </Grid>
