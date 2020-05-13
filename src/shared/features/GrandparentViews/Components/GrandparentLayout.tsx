@@ -61,19 +61,18 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
 
       {/*Alert*/}
       {alertText &&  <Alert className="error" severity="error">{alertText}</Alert>}
-
-      {/*Content Box*/}
-      <Grid item xs={12} className={classes.root}>
-        <Box
-          border={1}
-          borderRadius="borderRadius"
-          mx={"auto"}
-          fontSize={24}
-          display={"flex"}
-          height={460}      // Other heights methods incl. min-height did not work
-          width={850}
-        >
-
+      
+        {/*Content Box*/}
+        <Grid item xs={12} className={classes.root}>
+          <Box
+            border={1}
+            borderRadius="borderRadius"
+            mx={"auto"}
+            fontSize={24}
+            display={"flex"}
+            height={486}      // 16:9 ratio
+            width={864}
+          >
           {boxContent}
         </Box>
       </Grid>

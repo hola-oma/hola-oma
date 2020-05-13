@@ -1,17 +1,20 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../App";
 
 import './Header.css';
 
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { signUserOut } from "services/user";
-import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, Button, Hidden, Drawer, List, ListItem, Divider } from "@material-ui/core";
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import SettingsIcon from '@material-ui/icons/Settings';
+import Child from "shared/components/Child/Child";
+import Column from "shared/components/Column/Column";
 
+import MenuIcon from '@material-ui/icons/Menu';
 
 interface IHeader {
   isLoggedIn: boolean;
@@ -22,28 +25,49 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
 
   const Auth = useContext(AuthContext);
   let history = useHistory();
+  let location = useLocation();
 
-  const goToPhotoPrototype = () => {
-    history.push('/photoReplyPrototype')
-  }
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [onSignIn, setOnSignIn] = useState(false);
+  const [onJoin, setOnJoin] = useState(false);
 
   const goToRegistration = () => {
-    history.push('/join')
+    setDrawerOpen(false);
+    history.push('/join');
   }
 
   const goToSignIn = () => {
-    history.push('/signIn')
+    setDrawerOpen(false);
+    history.push('/signIn');
   }
 
   const goToInbox = () => {
-    history.push('/posts')
+    setDrawerOpen(false);
+    history.push('/posts');
   }
 
   const goToSettings = () => {
-    history.push('/settings')
+    setDrawerOpen(false);
+    history.push('/settings');
   }
 
+  const toggleDrawer = (open: boolean) =>  (e: React.KeyboardEvent | React.MouseEvent,
+    ) => {
+
+      if (e.type === 'keydown' &&
+        ((e as React.KeyboardEvent).key === 'Tab' ||
+          (e as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return;
+      }
+
+    setDrawerOpen(open);
+  };
+
   const handleSignOut = () => {
+
+    setDrawerOpen(false);
+
     signUserOut().then(function() {
       
       Auth?.setLoggedIn(false);
@@ -53,6 +77,114 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
       console.log(error);
     });
   }
+
+  const joinButton = () => (
+    <Button
+      variant="contained"
+      color="secondary"
+      size="large"
+      className=""
+      onClick={() => goToRegistration()}
+      startIcon={<AccountCircleIcon />}
+    >
+      Join
+    </Button>
+  )
+
+  const signInButton = () => (
+    <Button
+      variant="contained"
+      color="secondary"
+      size="large"
+      className=""
+      onClick={() => goToSignIn()}
+      startIcon={<AccountCircleIcon />}
+      >
+      Sign in
+    </Button>
+  )
+
+  const inboxButton = () => (
+    <Button
+      variant="contained"
+      color="secondary"
+      size="medium"
+      className=""
+      onClick={() => goToInbox()}
+      startIcon={<MailIcon />}
+    >
+      Inbox
+    </Button>
+  )
+
+  const settingsButton = () => (
+    <Button
+      variant="contained"
+      color="secondary"
+      size="medium"
+      className=""
+      onClick={() => goToSettings()}
+      startIcon={<SettingsIcon />}
+    >
+      Settings
+    </Button>
+  )
+
+  const signOutButton = () => (
+    <button 
+      onClick={handleSignOut}
+      >
+      Sign out
+    </button>
+  )
+
+  const menuButton = () => (
+    <Button
+      variant="contained"
+      color="secondary"
+      size="medium"
+      className=""
+      onClick={toggleDrawer(true)}
+      startIcon={<MenuIcon />}
+    >
+      Menu
+    </Button>
+  )
+
+  const drawerContents = () => (
+    <List>
+      <Divider />
+
+      <ListItem>
+        {inboxButton()}
+      </ListItem>
+
+      <ListItem>
+        {settingsButton()}
+      </ListItem>
+
+      <Divider />
+
+      <ListItem>
+        {signOutButton()}
+      </ListItem>
+
+
+    </List>
+  )
+
+  useEffect(() => {
+    if (location?.pathname === "/signIn" || location?.pathname === "/") {
+      setOnSignIn(true);
+      setOnJoin(false);
+    } else if (location?.pathname === "/join" || location?.pathname === "/resetPassword") {
+      setOnJoin(true);
+      setOnSignIn(false);
+    } else {
+      setOnJoin(false);
+      setOnSignIn(false);
+    }
+  }, [location]); 
   
   return (
     <AppBar position="static" className="headerBar">
@@ -71,77 +203,53 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
         <div className="nav">
           {!isLoggedIn && 
             <ul>
-              <li>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="large"
-                  className=""
-                  onClick={() => goToRegistration()}
-                  startIcon={<AccountCircleIcon />}
-                >
-                  Join
-                </Button>
+              {onSignIn && 
+                <li>
+                {joinButton()} 
                 </li>
+              }
 
-              <li><Button
-                  variant="contained"
-                  color="secondary"
-                  size="large"
-                  className=""
-                  onClick={() => goToSignIn()}
-                  startIcon={<AccountCircleIcon />}
-                >
-                  Sign in
-                </Button></li>
+              {onJoin && 
+                <li>
+                  {signInButton()}
+                </li>
+              }
             </ul>
           }
 
           {(isLoggedIn && settingsComplete) &&
-            <ul>
-              {/* Remove later */}
-              <li>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  size="medium"
-                  className=""
-                  onClick={() => goToPhotoPrototype()}
-                  startIcon={<AccountCircleIcon />}
-                >Photo
-                </Button>
-              </li>
+            <>
+              {/* big buttons for desktop and wide tablets */}
+              <Hidden xsDown>
+              <ul>
+                <li>
+                  {inboxButton()}
+                </li>
 
-              <li>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="medium"
-                  className=""
-                  onClick={() => goToInbox()}
-                  startIcon={<MailIcon />}
-                >
-                  Inbox
-                </Button>
-              </li>
+                <li>
+                  {settingsButton()}
+                </li>
+                
+                <li>
+                  {signOutButton()}
+                </li>
+              </ul>
+              </Hidden>
 
-              <li>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="medium"
-                  className=""
-                  onClick={() => goToSettings()}
-                  startIcon={<SettingsIcon />}
-                >
-                  Settings
-                </Button>
-              </li>
-              
-              <li><button onClick={handleSignOut}>Sign out</button></li>
-            </ul>
+              {/* menu drawer for phones */}
+              <Hidden smUp>
+                <Column alignItems="flex-end">
+                  <Child>
+                    {menuButton()}
+                  </Child>
+                </Column>
+              </Hidden>
+            </>
           }
 
+        <Drawer anchor={"right"} open={drawerOpen} onClose={toggleDrawer(false)}>
+            {drawerContents()}
+        </Drawer>
         </div>
 
       </Toolbar>
