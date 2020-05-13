@@ -12,6 +12,8 @@ import { getUserProfile } from "../../../../services/user";
 import { mailIcons } from "../../../../Icons";
 
 import './GrandparentReply.css';
+import FormError from 'shared/components/FormError/FormError';
+import Child from 'shared/components/Child/Child';
 
 let choicesList: Array<number> = [];
 
@@ -40,6 +42,7 @@ const GetVoiceReply: React.FC = () => {
   const [userId, setUserId] = useState("");
   const [alertOn, setAlert] =  useState<boolean>(false);
   const [dictatedReply, setDictatedReply] = useState("");
+  const [lowConfidence, setLowConfidence] = useState(false);
 
   const getAlertText = () => {
     return alertOn ? "Must create a message to send" : null;
@@ -55,11 +58,12 @@ const GetVoiceReply: React.FC = () => {
 
   const handleDictationDone = (results: any) => {
     const { confidence, transcript } = results.result;
-    console.log(results);
-    if (results) {
-      // todo: if confidence is too low, we could ask them to record again 
-      // for now it just uses whatever you recorded
+    if (results && confidence > 0.70) {
       setDictatedReply(transcript);
+      setLowConfidence(false);
+    } else {
+      setDictatedReply("");
+      setLowConfidence(true);
     }
   }
 
@@ -91,11 +95,16 @@ const GetVoiceReply: React.FC = () => {
         alertText={getAlertText()}
         boxContent={
           <Grid container>
+            <Child xs={12}>
+              {lowConfidence && 
+                <FormError error={"Sorry, I didn't catch that. Please record again."}/>
+              }
+            </Child>
             <TextareaAutosize
               className="grandparentReplyText"
               rowsMin={8}
               aria-label="voice reply"
-              placeholder="Your message appears here"
+              placeholder="Your voice message appears here"
               defaultValue={dictatedReply}
             />
           </Grid>
