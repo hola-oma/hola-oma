@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useHistory } from "react-router";
 
-import { TextField, Button, Checkbox, Typography } from '@material-ui/core';
+import { TextField, Button, Checkbox, Typography, Tooltip } from '@material-ui/core';
 import { createPost, updatePostID, uploadFile } from "services/post";
 import { getUserProfile } from "services/user";
 import { getLinkedAccounts } from "services/accountLink";
@@ -26,12 +26,14 @@ interface IReadObj {
 }
 
 const NewFamilyPost: React.FC = () => {
-    const [selectedFile, setSelectedFile] = useState<Blob | null>();
+    const [selectedFile, setSelectedFile] = useState<Blob | File | null>();
+    const [fileType, setFileType] = useState("");
     const [textValue, updateTextValue] = useState("");
     const [displayName, setDisplayName] = useState("");
     const [userId, setUserId] = useState("");
     const [receivers, setReceivers] = useState<IReceiver[]>([]);
     const [error, setError] = useState<string | null>();
+    const [fileTypeError, setFileTypeError] = useState<string | null>();
     const history = useHistory();
 
     const submitPost = async (e: any) => {
@@ -58,6 +60,7 @@ const NewFamilyPost: React.FC = () => {
             from: displayName,
             message: textValue,
             photoURL: "",
+            videoURL: "",
             read: setRead(receiverIDs),
             date: new Date().getTime(),
             receiverIDs: receiverIDs
@@ -65,8 +68,11 @@ const NewFamilyPost: React.FC = () => {
 
         if (selectedFile) {
             const fileURL = await uploadFile(selectedFile);
-            if (fileURL) {
+            if (fileURL && fileType === 'image') {
                 post.photoURL = fileURL;
+            }
+            else if (fileURL && fileType === 'video') {
+                post.videoURL = fileURL;
             }
         }
     
@@ -105,7 +111,9 @@ const NewFamilyPost: React.FC = () => {
     }
 
     const onSelect = (file: File | null) => {
-        if (file) {
+        setFileTypeError(null);
+        if (file && file.type.indexOf('image') !== -1) {
+            setFileType('image');
             Resizer.imageFileResizer(
                 file,
                 600,
@@ -119,7 +127,21 @@ const NewFamilyPost: React.FC = () => {
                 },
                 'blob'
             );
+        } else if (file && file.type.indexOf('video') !== -1) {
+            if (file.type === 'video/mp4' || file.type === 'video/ogg' || file.type === 'video/webm') {
+                setSelectedFile(file);
+                setFileType('video');
+            }
+            else {
+                setFileTypeError("This file type is not supported.");
+            }
         }
+    }
+
+    const getImageAsUrl = () => {
+        let urlCreator = window.URL || window.webkitURL;
+        let imageUrl: string = urlCreator.createObjectURL(selectedFile);
+        return imageUrl;
     }
 
     useEffect(() => {
@@ -156,30 +178,54 @@ const NewFamilyPost: React.FC = () => {
             <form className="newFamilyPostForm" noValidate onSubmit={e => submitPost(e)}>
             {!selectedFile &&
                 <Row justify="center">
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        size="small"
-                        onClick={clickFileUpload}>
-                        Select a photo
-                    </Button>
+                    <Tooltip title="Supported video formats: mp4, webm, ogv">
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            size="small"
+                            onClick={clickFileUpload}>
+                            Select a photo or video
+                        </Button>
+                    </Tooltip>
                     <input
                         type="file"
                         id="file-upload"
                         style={{display:'none'}}
                         onChange={(event) => onSelect(event.target.files ? event.target.files[0] : null)} />
+                    {fileTypeError &&
+                        <FormError error={fileTypeError}/>
+                    }
                 </Row>
             }
-            {selectedFile && 
-                <Row justify="center">
-                    <Button
-                        variant="outlined"
-                        color="primary"
-                        size="small"
-                        onClick={() => setSelectedFile(null)}>
-                        <ClearIcon/>Remove file
-                    </Button>
-                </Row>
+            {selectedFile &&
+                <>
+                    {fileType === 'image' &&
+                        <Row justify="center">
+                            <img src={getImageAsUrl()}
+                                className="photo"
+                                alt="Attached img"/>
+                        </Row>
+                    }
+                    {fileType === 'video' &&
+                        <Row justify="center">
+                            <video src={getImageAsUrl()}
+                                className="photo"
+                                preload="auto"
+                                controls
+                                style={{height: '95%', width: '95%'}}
+                            />
+                        </Row>
+                    }
+                    <Row justify="center">
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            onClick={() => setSelectedFile(null)}>
+                            <ClearIcon/>Remove file
+                        </Button>
+                    </Row>
+                </>
             }
             <TextField
                 multiline

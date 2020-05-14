@@ -128,6 +128,10 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         return (reply.replyType === "emoji" && typeof reply.message !== "string");
     }
 
+    const isMessage = (reply: Reply) => {
+        return (reply.replyType === "voice" && typeof reply.message === "string"); 
+    }
+
     return (
         <>
         <Container>
@@ -144,6 +148,12 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                             src={post.photoURL}
                             className="photo"
                             alt="Attached img"
+                        />}
+                        {post.videoURL && <video
+                            src={post.videoURL}
+                            preload="auto"
+                            controls
+                            className="photo"
                         />}
                         <br/>
                         <Typography variant="h5" style={{margin:10}}>
@@ -215,6 +225,10 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                                                 </Typography>
                                             )
                                         })
+                                    }
+
+                                    {isMessage(reply) && 
+                                        <p>{reply.message}</p>
                                     }
                                 </CardContent>
                                 <CardActions>

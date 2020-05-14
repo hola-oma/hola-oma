@@ -23,6 +23,10 @@ const ModalReply: React.FC<IReply> = ({reply}) => {
         return (reply.replyType === "emoji" && typeof reply.message !== "string");
     }
 
+    const isMessage = (reply: Reply) => {
+        return (reply.replyType === "voice" && typeof reply.message[0] === "string");
+    }
+
     if (isEmoji(reply)) {
         return (
             <>
@@ -36,6 +40,10 @@ const ModalReply: React.FC<IReply> = ({reply}) => {
                     })
                 }
             </>
+        )
+    } else if (isMessage(reply)) {
+        return (
+            <Container>{reply.message}</Container>
         )
     } else {
         return (
