@@ -15,6 +15,8 @@ import './GrandparentReply.css';
 import FormError from 'shared/components/FormError/FormError';
 import RecordButton from '../Components/RecordButton/RecordButton';
 import Row from 'shared/components/Row/Row';
+import Child from 'shared/components/Child/Child';
+import Column from 'shared/components/Column/Column';
 
 let choicesList: Array<number> = [];
 
@@ -106,6 +108,10 @@ const GetVoiceReply: React.FC = () => {
     }
   }
 
+  const handleError = (e: any) => {
+    setInProgress(false);
+  }
+
   const buildReply = (e: any) => {
     if (dictatedReply.length < 1) { setAlert(true); return; }
     else {
@@ -119,7 +125,7 @@ const GetVoiceReply: React.FC = () => {
             replyContent: replyContent,
             currentPost: currentPost  }
         });
-        });
+      });
     }
   }
 
@@ -131,42 +137,45 @@ const GetVoiceReply: React.FC = () => {
         header2Text={"Press 'RECORD' to dictate a short message"}
         alertText={getAlertText()}
         boxContent={
-          <Grid container>
-            <Row alignItems="center" justify="center">
-              <RecordButton 
-                handleDictationDone={handleDictationDone} 
-                handleProgress={handleProgress}
-              />
+            <Row alignItems="flex-start" justify="center">
+              <Column xs={12}>
+                  <RecordButton 
+                    handleDictationDone={handleDictationDone} 
+                    handleProgress={handleProgress}
+                    handleError={handleError}
+                  />
 
+                  <span className="listenError">
+                    {lowConfidence && 
+                      <Row xs={12} justify="center">
+                        <Child xs={11}>
+                          <FormError error={"Sorry, I didn't catch that. Please record again."}/>
+                        </Child>
+                      </Row>
+                    }
+                  </span>
 
-              {lowConfidence && 
-                <FormError error={"Sorry, I didn't catch that. Please record again."}/>
-              }
+                  <Row xs={12} justify="center">
+                    <Child xs={11}>
+                      <TextareaAutosize
+                        className={`grandparentReplyText thinBorder ${inProgress ? 'inProgressText' : ''}`}
+                        rowsMin={7}
+                        aria-label="voice reply"
+                        placeholder="Your voice message appears here"
+                        value={inProgress ? dictatedReply : completeReply}
+                        onChange={handleTextareaChange}
+                      />
+                    </Child>
+                  </Row>
 
-              <TextareaAutosize
-                className={`grandparentReplyText ${inProgress ? 'inProgressText' : ''}`}
-                rowsMin={8}
-                aria-label="voice reply"
-                placeholder="Your voice message appears here"
-                value={inProgress ? dictatedReply : completeReply}
-                onChange={handleTextareaChange}
-              />
+              </Column>
             </Row>
-          </Grid>
         }
           buttonText={["Go back to Reply Options", "Send reply"]}
           buttonActions={[
             () => history.goBack(),
             e => buildReply(e) ] }
           buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]} />
-
-        <Box className="todo">
-          <h3>To do items:</h3>
-          <ul>
-            <li>Grey out the "Start recording" button while actively recording</li>
-            <li>Max length on recording</li>
-          </ul>
-        </Box>
     </>
   )
 };

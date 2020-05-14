@@ -212,6 +212,20 @@ Use: <Box className="devBox">...stuff here...</Box> */
   color:lightslategrey;
 }
 
+.thinBorder {
+  border:1px solid gray;
+}
+
+.listenError {
+  height:64px;
+  margin-bottom:10px;
+}
+
+.listenError .errorAlert {
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+}
+
 /* 
   const useStyles = makeStyles((theme) => ({
     paper: {
