@@ -82,7 +82,7 @@ const GetVoiceReply: React.FC = () => {
       if (confidence < 0.40) {
         setDictatedReply(completeReply + " ...");
       } else {
-        setDictatedReply(completeReply + " " + transcript);
+        setDictatedReply((completeReply + " " + transcript).trim());
       }
     }
   }
