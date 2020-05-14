@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router'
+import key from 'weak-key';
 
 import {Box, Button, Card, CardContent, Grid, SvgIconProps} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
@@ -95,7 +96,7 @@ const GetEmojiReply: React.FC = () => {
               return (
                 <Grid item xs={4}
                   className={"inboxCard"}
-                  key={index}>
+                  key={key(icon)}>
                   <Card>
                     <CardContent onClick={() => getChoices(index)}
                                  className={ highlightedList[index] ? classes.highlighted : classes.root }>
