@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { useHistory, useLocation } from 'react-router'
 import key from 'weak-key';
 
@@ -6,7 +6,7 @@ import {Box, Button, Card, CardContent, Grid, SvgIconProps} from "@material-ui/c
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
 import GrandparentLayout from "../Components/GrandparentLayout";
-import { setReplyContent, submitReply } from "../../../../services/reply";
+import { setReplyContent, submitReply, checkIfEmojiReplySent } from "../../../../services/reply";
 
 import { Reply, REPLY_TYPES } from "../../../models/reply.model";
 import { getUserProfile } from "../../../../services/user";
@@ -40,6 +40,7 @@ const GetEmojiReply: React.FC = () => {
   const [userId, setUserId] = useState("");
   const [highlightedList, setHighlighted] = useState<Array<boolean>>([false, false, false, false, false, false]);
   const [alertOn, setAlert] =  useState<boolean>(false);
+  const [replySent, setReplySent] = useState<boolean>(false);
 
   const handleHighlight = (index: number) => {
     let copy = [...highlightedList];
@@ -57,9 +58,14 @@ const GetEmojiReply: React.FC = () => {
         setDisplayName(userProfile.displayName);
         setUserId(userProfile?.uid);
       });
-  }, []);
+    checkIfEmojiReplySent(currentPost.pid, userId)
+      .then((sent: any) => {
+        setReplySent(sent);
+      });
+  });
 
   const getChoices = (choice: number) => {
+    console.log("reply sent? " + replySent);
     handleHighlight(choice);
     let position = choicesList.indexOf(choice);   // Find clicked icon's array position
     (position < 0) ? choicesList.push(choice) : choicesList.splice(position, 1); // Adjust array

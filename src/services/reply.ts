@@ -1,7 +1,7 @@
 import * as firebase from "firebase/app";
 import 'firebase/storage';
 
-import { Reply } from 'shared/models/reply.model';
+import { Reply, REPLY_TYPES } from 'shared/models/reply.model';
 
 export const setReplyContent = (userID: string, displayName: string, replyType: string,
                                 message: Array<number> | string, responseTo: string, receiverID: string) => {
@@ -71,6 +71,25 @@ export const updateReplyID = async (replyID: string) => {
     .then(function() {
       console.log("Reply successfully updated with reply ID");
     });
+}
+
+export const checkIfEmojiReplySent = async (postId: string, creatorId: string) => {
+  const db = firebase.firestore();
+  let replySent: boolean = false;
+
+  try {
+    await db.collection('replies')
+      .where("responseTo", "==", postId)
+      .where("replyType", "==", REPLY_TYPES.EMOJI)
+      .where("creatorID", "==", creatorId)
+      .get()
+      .then(snapshot => { replySent = !snapshot.empty; })
+    } catch (error) {
+    console.error(error);
+  }
+
+  console.log("reply found in database? " + replySent)
+  return replySent;
 }
 
 export const getRepliesToPost = async (postId: string) => {
