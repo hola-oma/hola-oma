@@ -4,8 +4,6 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {Grid, Box, Button, SvgIconProps} from '@material-ui/core';
 import {Alert} from "@material-ui/lab";
 
-import RecordButton from './RecordButton/RecordButton';
-import Child from 'shared/components/Child/Child';
 import Column from 'shared/components/Column/Column';
 
 const useStyles = makeStyles((theme: Theme) =>

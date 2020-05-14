@@ -30,7 +30,7 @@ const RecordButton: React.FC<IRecordButton> = ({ handleDictationDone, handleProg
       })
     }
 
-  }, []);
+  }, [azureSettings]);
 
   const onProgress = (result: any) => {
     setRecording(true);

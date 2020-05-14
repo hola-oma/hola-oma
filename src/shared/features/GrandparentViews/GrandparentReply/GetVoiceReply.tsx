@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router'
 
-import {Box, Grid, TextareaAutosize} from "@material-ui/core";
+import {TextareaAutosize} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
 import GrandparentLayout from "../Components/GrandparentLayout";
@@ -103,7 +103,7 @@ const GetVoiceReply: React.FC = () => {
       }
     }
 
-  }, [completeReply]);
+  }, [MAX_REPLY_LENGTH, NEAR_MAX_REPLY_LENGTH, completeReply, replyNearlyTooLong, replyTooLong]);
 
   const handleTextareaChange = (event: any) => {
     setCompleteReply(event.target.value);
@@ -130,7 +130,7 @@ const GetVoiceReply: React.FC = () => {
     setInProgress(false);
     const { confidence, transcript } = results.result;
 
-    if (results && confidence > 0.40 || results && !confidence) {
+    if ((results && confidence > 0.40) || (results && !confidence)) {
       setLowConfidence(false);
       if (completeReply.length > 0) {
         setDictatedReply(completeReply + " " + transcript);
