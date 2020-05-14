@@ -36,8 +36,8 @@ const GetVoiceReply: React.FC = () => {
     }),
   );
 
-  const MAX_REPLY_LENGTH = 50;
-  const NEAR_MAX_REPLY_LENGTH = MAX_REPLY_LENGTH - 15;
+  const MAX_REPLY_LENGTH = 400;
+  const NEAR_MAX_REPLY_LENGTH = MAX_REPLY_LENGTH - 50;
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
@@ -225,7 +225,8 @@ const GetVoiceReply: React.FC = () => {
                     <Child xs={11}>
                       <TextareaAutosize
                         className={`grandparentReplyText thinBorder ${inProgress ? 'inProgressText' : ''}`}
-                        rowsMin={7}
+                        rowsMin={8}
+                        rowsMax={8}
                         aria-label="voice reply"
                         placeholder="Your voice message appears here"
                         value={inProgress ? dictatedReply : completeReply}
