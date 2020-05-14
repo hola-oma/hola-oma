@@ -46,7 +46,7 @@ const GetPhotoReply: React.FC = () => {
                                   photoPreview, currentPost.pid, currentPost.creatorID);
       submitReply(e, replyContent)
         .then( () => { history.push({
-          pathname: "/newReply",
+          pathname: "/sentReply",
           state: {
             replyContent: replyContent,
             currentPost: currentPost  }

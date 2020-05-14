@@ -1,14 +1,14 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router'
 import key from 'weak-key';
 
-import {Box, Button, Card, CardContent, Grid, SvgIconProps} from "@material-ui/core";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import { Button, Card, CardContent, Grid, SvgIconProps } from "@material-ui/core";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 import GrandparentLayout from "../Components/GrandparentLayout";
-import { setReplyContent, submitReply, checkIfEmojiReplySent } from "../../../../services/reply";
+import { setReplyContent, submitReply } from "../../../../services/reply";
 
-import { Reply, REPLY_TYPES } from "../../../models/reply.model";
+import { REPLY_TYPES } from "../../../models/reply.model";
 import { getUserProfile } from "../../../../services/user";
 import { replyEmojiArray, mailIcons } from "../../../../Icons";
 
@@ -40,7 +40,10 @@ const GetEmojiReply: React.FC = () => {
   const [userId, setUserId] = useState("");
   const [highlightedList, setHighlighted] = useState<Array<boolean>>([false, false, false, false, false, false]);
   const [alertOn, setAlert] =  useState<boolean>(false);
-  const [replySent, setReplySent] = useState<boolean>(false);
+
+  const clearChoices = () => {
+    choicesList = [];
+  }
 
   const handleHighlight = (index: number) => {
     let copy = [...highlightedList];
@@ -58,33 +61,34 @@ const GetEmojiReply: React.FC = () => {
         setDisplayName(userProfile.displayName);
         setUserId(userProfile?.uid);
       });
-    checkIfEmojiReplySent(currentPost.pid, userId)
-      .then((sent: any) => {
-        setReplySent(sent);
-      });
+    // checkIfEmojiReplySent(currentPost.pid, userId)
+    //   .then((sent: any) => {
+    //     setReplySent(sent);
+    //   });
   });
 
   const getChoices = (choice: number) => {
-    console.log("reply sent? " + replySent);
     handleHighlight(choice);
     let position = choicesList.indexOf(choice);   // Find clicked icon's array position
     (position < 0) ? choicesList.push(choice) : choicesList.splice(position, 1); // Adjust array
   }
 
-  const buildReply = (e: any, choicesIndexes: Array<number>) => {
-    if (choicesIndexes.length < 1) { setAlert(true); return; }
+  const buildReply = (e: any) => {
+    if (choicesList.length < 1) { setAlert(true); return; }
     else {
       setAlert(false);
-      const replyContent: Reply = setReplyContent(userId, displayName, REPLY_TYPES.EMOJI,
-                                  choicesIndexes, currentPost.pid, currentPost.creatorID);
+      const replyContent = setReplyContent(userId, displayName, REPLY_TYPES.EMOJI,
+        choicesList, currentPost.pid, currentPost.creatorID);
       submitReply(e, replyContent)
-        .then( () => { history.push({
-          pathname: "/newReply",
-          state: {
-            replyContent: replyContent,
-            currentPost: currentPost  }
-        });
-      });
+        .then( () => {
+          clearChoices();
+          history.push({
+            pathname: "/sentReply",
+            state: {
+              replyContent: replyContent,
+              currentPost: currentPost  }
+          });
+      })
     }
   }
 
@@ -123,15 +127,8 @@ const GetEmojiReply: React.FC = () => {
           buttonText={["Go back to Reply Options", "Send Smiley(s)"]}
           buttonActions={[
             () => history.goBack(),
-            e => buildReply(e, choicesList) ] }
+            e => buildReply(e) ] }
           buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]} />
-
-        <Box className="todo">
-          <h3>To do items:</h3>
-          <ul>
-            <li>Alert that grandparent must choose at least 1 emoji does not work if have already sent message and return to Inbox</li>
-          </ul>
-        </Box>
     </>
   )
 };

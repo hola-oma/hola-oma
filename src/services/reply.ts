@@ -1,7 +1,7 @@
 import * as firebase from "firebase/app";
 import 'firebase/storage';
 
-import { Reply, REPLY_TYPES } from 'shared/models/reply.model';
+import { Reply } from 'shared/models/reply.model';
 
 export const setReplyContent = (userID: string, displayName: string, replyType: string,
                                 message: Array<number> | string, responseTo: string, receiverID: string) => {
@@ -69,18 +69,19 @@ export const updateReplyID = async (replyID: string) => {
     "rid": replyID,
   })
     .then(function() {
-      console.log("Reply successfully updated with reply ID");
+      // console.log("Reply successfully updated with reply ID");
     });
 }
 
-export const checkIfEmojiReplySent = async (postId: string, creatorId: string) => {
+// Can be used to alert grandparent that they have already replied to a post
+export const checkIfReplySent = async (postId: string, creatorId: string, replyType: string) => {
   const db = firebase.firestore();
   let replySent: boolean = false;
 
   try {
     await db.collection('replies')
       .where("responseTo", "==", postId)
-      .where("replyType", "==", REPLY_TYPES.EMOJI)
+      .where("replyType", "==", replyType)
       .where("creatorID", "==", creatorId)
       .get()
       .then(snapshot => { replySent = !snapshot.empty; })
@@ -88,7 +89,6 @@ export const checkIfEmojiReplySent = async (postId: string, creatorId: string) =
     console.error(error);
   }
 
-  console.log("reply found in database? " + replySent)
   return replySent;
 }
 
