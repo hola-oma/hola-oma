@@ -207,7 +207,7 @@ const GetVoiceReply: React.FC = () => {
                     {replyNearlyTooLong &&
                       <Row xs={12} justify="center">
                         <Child xs={11}>
-                          <FormError error={`Maximum ${MAX_REPLY_LENGTH} characters (${charsRemaining()} remaining)`}/>
+                          <FormError error={`Approaching character limit! ${MAX_REPLY_LENGTH} allowed (${charsRemaining()} remaining)`} severity="warning"/>
                         </Child>
                       </Row>
                     }

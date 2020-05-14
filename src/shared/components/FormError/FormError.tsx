@@ -5,15 +5,16 @@ import Child from '../Child/Child';
 import './FormError.css';
 
 interface IFormError {
-  error: String
+  error: String;
+  severity?: "error" | "success" | "info" | "warning" | undefined;
 }
 
-const FormError: React.FC<IFormError> = ({ error }) => {
+const FormError: React.FC<IFormError> = ({ error, severity="error" }) => {
   return (
     <>
       {error && 
         <Child item xs={12}>
-          <Alert severity="error" className="errorAlert">{error}</Alert>
+          <Alert severity={severity} className={`${severity+'Alert'}`}>{error}</Alert>
         </Child>
       }
     </>

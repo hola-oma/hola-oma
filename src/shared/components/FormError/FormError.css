@@ -1,5 +1,15 @@
 .errorAlert {
-  margin-top:20px;
-  margin-bottom:20px;
-  border:1px solid red;
+  border:1px solid #f44336;
+}
+
+.warningAlert {
+  border:1px solid #ff9800;
+}
+
+.successAlert {
+  border:1px solid#4caf50;
+}
+
+.infoAlert {
+  border:1px solid #2196f3;
 }
