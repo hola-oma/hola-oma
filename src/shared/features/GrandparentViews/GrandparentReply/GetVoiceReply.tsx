@@ -36,6 +36,8 @@ const GetVoiceReply: React.FC = () => {
     }),
   );
 
+  const MAX_REPLY_LENGTH = 50;
+  const NEAR_MAX_REPLY_LENGTH = MAX_REPLY_LENGTH - 15;
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
@@ -49,6 +51,12 @@ const GetVoiceReply: React.FC = () => {
   const [dictatedReply, setDictatedReply] = useState("");
 
   const [lowConfidence, setLowConfidence] = useState(false);
+
+  const [replyLength, setReplyLength] = useState(0);
+
+  const [replyNearlyTooLong, setReplyNearlyTooLong] = useState(false);
+  const [replyTooLong, setReplyTooLong] = useState(false);
+
   const [inProgress, setInProgress] = useState(false);
 
   const getAlertText = () => {
@@ -66,6 +74,35 @@ const GetVoiceReply: React.FC = () => {
   // fires after completeReply is updated to update what's in the text area
   useEffect(() => {
     setDictatedReply(completeReply);
+  }, [completeReply]);
+
+  // fires every time completeReply is updated
+  useEffect(() => {
+    // update character count
+    setReplyLength(completeReply.length);
+
+    // check if we're nearing the max length or already past it  
+
+    if (completeReply.length > MAX_REPLY_LENGTH) {
+      setReplyTooLong(true);
+      setReplyNearlyTooLong(false);
+    } else if (completeReply.length > NEAR_MAX_REPLY_LENGTH) {
+      setReplyNearlyTooLong(true);
+    }
+
+    // check if we're below the max length after having been at/above it 
+    if (replyTooLong) {
+      if (completeReply.length <= MAX_REPLY_LENGTH) {
+        setReplyTooLong(false);
+      }
+    }
+
+    if (replyNearlyTooLong) {
+      if (completeReply.length <= NEAR_MAX_REPLY_LENGTH) {
+        setReplyNearlyTooLong(false);
+      }
+    }
+
   }, [completeReply]);
 
   const handleTextareaChange = (event: any) => {
@@ -129,6 +166,19 @@ const GetVoiceReply: React.FC = () => {
     }
   }
 
+  const charsRemaining = () => {
+    let remaining = MAX_REPLY_LENGTH - replyLength;
+    if (remaining > 0) {
+      return remaining;
+    } else if (remaining <= 0) {
+      return 0;
+    }
+  }
+
+  const charsOver = () => {
+    return Math.abs(MAX_REPLY_LENGTH - replyLength);
+  }
+
   return (
     <>
       <GrandparentLayout
@@ -153,6 +203,22 @@ const GetVoiceReply: React.FC = () => {
                         </Child>
                       </Row>
                     }
+
+                    {replyNearlyTooLong &&
+                      <Row xs={12} justify="center">
+                        <Child xs={11}>
+                          <FormError error={`Maximum ${MAX_REPLY_LENGTH} characters (${charsRemaining()} remaining)`}/>
+                        </Child>
+                      </Row>
+                    }
+
+                    {replyTooLong && 
+                      <Row xs={12} justify="center">
+                        <Child xs={11}>
+                          <FormError error={`Maximum ${MAX_REPLY_LENGTH} characters (${charsOver()} over)`}/>
+                        </Child>
+                      </Row>
+                    }
                   </span>
 
                   <Row xs={12} justify="center">
@@ -166,6 +232,7 @@ const GetVoiceReply: React.FC = () => {
                         onChange={handleTextareaChange}
                       />
                     </Child>
+
                   </Row>
 
               </Column>
@@ -175,7 +242,8 @@ const GetVoiceReply: React.FC = () => {
           buttonActions={[
             () => history.goBack(),
             e => buildReply(e) ] }
-          buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]} />
+          buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]} 
+          buttonDisabled={[false,replyTooLong]} />
     </>
   )
 };

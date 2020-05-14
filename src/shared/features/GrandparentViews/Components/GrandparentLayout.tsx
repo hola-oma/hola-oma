@@ -37,9 +37,10 @@ interface IGrandparentLayout {
   buttonText: Array<string>;
   buttonActions: { (arg0: any): void } [];   //  Array of functions
   buttonIcons: React.ReactElement<SvgIconProps>[];
+  buttonDisabled?: boolean[];
 }
 
-export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerText, header2Text, alertText, boxContent, buttonText,  buttonActions, buttonIcons}) => {
+export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerText, header2Text, alertText, boxContent, buttonText,  buttonActions, buttonIcons, buttonDisabled = [] }) => {
 
   const classes = useStyles();
 
@@ -83,6 +84,7 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
                   className={classes.button}
                   startIcon={buttonIcons[index]}
                   onClick={buttonActions[index]}
+                  disabled={buttonDisabled[index]}
                   key={index}
                 >
                   {buttonText[index]}
