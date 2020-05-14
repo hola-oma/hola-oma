@@ -16,6 +16,7 @@ import PermPhoneMsgIcon from '@material-ui/icons/PermPhoneMsg';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
+import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 
 // Returns an array so both grandparent and family sides can map and/or access by index
 export const replyEmojiArray = (): Array<React.ReactElement<SvgIconProps>> => {
@@ -48,6 +49,7 @@ export const cameraIcons = {
   paperAirplane: <SendIcon fontSize={"large"}/>
 }
 
-export const magnifyIcon = {
-  magnify: <ZoomInIcon fontSize={"large"}/>
+export const viewPostIcons = {
+  magnify: <ZoomInIcon fontSize={"large"}/>,
+  close: <CancelPresentationIcon fontSize={"large"}/>
 }
