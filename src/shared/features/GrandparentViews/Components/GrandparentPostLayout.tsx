@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 
-import { Theme, Grid, Typography, Modal, Card,
-  CardContent, CardMedia, CardActionArea } from '@material-ui/core';
+import {
+  Theme, Grid, Typography, Modal, Card,
+  CardContent, CardMedia, CardActionArea,
+} from '@material-ui/core';
 import { makeStyles,  createStyles } from "@material-ui/core/styles";
 
 import {  getMessageSubstring } from "../../../../services/post";
-import { magnifyIcon } from "../../../../Icons";
+import { viewPostIcons } from "../../../../Icons";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -72,8 +74,21 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
   const modalBody = (
     <div style={modalStyle} className={classes.paper}>
       <img src={imageURL} alt={"Message from {from}"}></img>
+      <div
+        onClick={handleClick}
+        style={{
+          position: 'absolute',
+          backgroundColor: '#d8e0e440',
+          color: 'black',
+          top: '0%',
+          right: '0%',
+        }}
+      >
+        {viewPostIcons.close}
+      </div>
     </div>
   );
+
   return (
     <Grid container
           spacing={0}
@@ -103,7 +118,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
                             left: '50%',
                             transform: 'translateX(-50%)',
                           }} >
-                          {magnifyIcon.magnify}
+                          {viewPostIcons.magnify}
                       </div>
 
                   </div>
