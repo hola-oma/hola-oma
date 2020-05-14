@@ -10,25 +10,26 @@ import './Inbox.css';
 import { markPostRead, getPostReadByCurrentUser } from "../../../../services/post";
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    minWidth: 250,
-    maxWidth: 250,
-  },
-  title: {
-    fontSize: 22,
-    color: 'black',
-  },
-  gridList: {
-    height: '500px',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-    transform: 'translateZ(0)',
-  },
-  titleBar: {
-    height: '40px',
-    background: '#faf9f9',
-  }
+    root: {
+      minWidth: 250,
+      maxWidth: 250,
+    },
+    title: {
+      fontSize: 22,
+      color: 'black',
+      textAlign: 'center'
+    },
+    gridList: {
+      height: '500px',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+      transform: 'translateZ(0)',
+    },
+    titleBar: {
+      height: '40px',
+      background: '#faf9f9',
+    }
   }),
 );
 
@@ -49,6 +50,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
       await markPostRead(postID);
       history.push({pathname: '/startReply', state: envelopePost } );
     }
+
   return (
     <>
       <Container>

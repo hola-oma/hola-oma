@@ -8,6 +8,7 @@ import { useHistory, useLocation } from "react-router";
 import { getUserProfile } from "../../../../services/user";
 import { Reply, REPLY_TYPES } from "../../../models/reply.model";
 
+// Reminder: https://stackoverflow.com/questions/29642685/maintain-aspect-ratio-of-image-with-full-width-in-react-native
 const videoConstraints = {
   maxWidth: 848,     // 16:9 aspect ratio
   maxHeight: 477,

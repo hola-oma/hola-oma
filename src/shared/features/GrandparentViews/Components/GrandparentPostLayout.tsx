@@ -1,54 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { Theme, Grid, Typography, ButtonBase } from '@material-ui/core';
+import {
+  Theme, Grid, Typography, Modal, Card,
+  CardContent, CardMedia, CardActionArea,
+} from '@material-ui/core';
 import { makeStyles,  createStyles } from "@material-ui/core/styles";
 
 import {  getMessageSubstring } from "../../../../services/post";
-import { magnifyIcon } from "../../../../Icons";
+import { viewPostIcons } from "../../../../Icons";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-  root: {
-    maxWidth: '100%',
-    maxHeight: '100%'
-  },
   media: {
-    width: '100%',
     height: 425,
     objectFit: 'contain',
   },
+  mediumText: {   // works for ~110 words
+    height: 375,
+    objectFit: 'contain'
+  },
   both: {
-    width: '100%',
     height: 200,
     objectFit: 'contain',
   },
-  textSpace: {
-    marginTop: '10%',
-  },
-  imageSrc: {
-    position: 'absolute',
-    left: '33%',
-    right: 0,
-    top: 0,
-    bottom: 0,
-    backgroundSize: 'contain',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-  },
-  imageButton: {
-    position: 'absolute',
-    bottom: '0%',
-    backgroundColor: '#d8e0e440 !important'
-  },
-  imageBackdrop: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    opacity: 0.4,
-    transition: theme.transitions.create('opacity'),
-  },
+    paper: {
+      position: 'absolute',
+      maxWidth: 800,
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
   }),
 );
 
@@ -58,68 +40,117 @@ interface IPostLayout {
   message: string
 }
 
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
 export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, message}) => {
 
   const classes = useStyles();
-  const [loaded, setLoaded] = useState(false);
+  const [modalStyle] = React.useState(getModalStyle);
+  const [imageModalOpen, setImageModalOpen] = useState<boolean>(false);
 
   const postImage = new Image();
   postImage.src = imageURL;
 
-  useEffect(() => {
-    postImage.addEventListener('load', () => {
-      setLoaded(true);
-    })
-  });
-
-  const enlargeImage = () => {
-    console.log("Open enlarge image modal");
+  const handleClick = () => {
+    imageModalOpen ? setImageModalOpen(false) : setImageModalOpen(true)
   }
 
+  const getStyle = (length: number) => {
+    // todo: add more variation depending on message length
+    if (length < 50) return classes.media;
+    if (length < 200) return classes.mediumText;
+    else return classes.both;
+  }
+
+  const modalBody = (
+    <div style={modalStyle} className={classes.paper}>
+      <img src={imageURL} alt={"Message from {from}"}></img>
+      <div
+        onClick={handleClick}
+        style={{
+          position: 'absolute',
+          backgroundColor: '#d8e0e440',
+          color: 'black',
+          top: '0%',
+          right: '0%',
+        }}
+      >
+        {viewPostIcons.close}
+      </div>
+    </div>
+  );
+
   return (
-    <Grid container alignItems="flex-start">
-      <Grid item xs={12}>
-        <div className={classes.root}>
+    <Grid container
+          spacing={0}
+          direction={"column"}
+          alignItems="center"
+          justify="center"
+          style={{ height: "100%", overflowY: "hidden" }}
+    >
+      {imageURL &&
+      <Grid item >
+          <Card >
+              <CardActionArea>
+                  <div style={{ position: 'relative' }} >
+                      <CardMedia
+                          component="img"
+                          className={getStyle(message.length)}
+                          image={imageURL}
+                          onClick={handleClick}
+                      />
+                      <div
+                          onClick={handleClick}
+                          style={{
+                            position: 'absolute',
+                            backgroundColor: '#d8e0e440',
+                            color: 'black',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                          }} >
+                          {viewPostIcons.magnify}
+                      </div>
 
-          {imageURL &&
-          <div className={classes.root} onClick={enlargeImage}>
-            <ButtonBase
-                key={from}
-                className={message ? classes.both : classes.media}
-                style={{ width: postImage.width }}
-                 >
-              <span className=
-                  {classes.imageSrc}
-                  style={{
-                      backgroundImage: `url(${imageURL})`,
-                      display: loaded ? "" : "none",
-                    }}  />
-                <span className={classes.imageBackdrop} />
-                <span className={classes.imageButton} >
-                  <Typography
-                      component="span"
-                      className={classes.imageButton}
-                      color="primary"
-                      aria-label="enlarge photo"
-                      onClick={enlargeImage} >
-                    {magnifyIcon.magnify}
-                  </Typography>
-                </span>
-            </ButtonBase>
-          </div>
-          }
+                  </div>
+                {message &&
+                <CardContent>
+                    <Typography variant="h5" color="textPrimary" component="p">
+                      {getMessageSubstring(message, 400)}
+                    </Typography>
+                </CardContent>
+                }
 
-          <Typography variant="h5"
-                      className={message.length < 50 ? classes.textSpace : ""}
-                      align={message.length < 50 ? "center" : "left"}
-          >
-            {!imageURL && getMessageSubstring(message, 625)}
-            {imageURL && getMessageSubstring(message, 325)}
-          </Typography>
-
-        </div>
+              </CardActionArea>
+          </Card>
       </Grid>
+      }
+
+      {!imageURL &&
+        <Typography variant="h5" align={message.length < 50 ? "center" : "left"} >
+          {getMessageSubstring(message, 625)}
+        </Typography>
+      }
+      <Modal
+        open={imageModalOpen}
+        onClose={() => setImageModalOpen(false)}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {modalBody}
+      </Modal>
     </Grid>
+
+
   )
 
 }
