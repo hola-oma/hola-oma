@@ -43,7 +43,7 @@ const ModalReply: React.FC<IReply> = ({reply}) => {
         )
     } else if (isMessage(reply)) {
         return (
-            <Container>{reply.message}</Container>
+            <Container className="wrapReply">{reply.message}</Container>
         )
     } else {
         return (

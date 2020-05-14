@@ -226,6 +226,10 @@ Use: <Box className="devBox">...stuff here...</Box> */
   margin-bottom:0 !important;
 }
 
+.wrapReply {
+  overflow-wrap:break-word;
+}
+
 /* 
   const useStyles = makeStyles((theme) => ({
     paper: {

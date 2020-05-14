@@ -37,7 +37,7 @@ const GetVoiceReply: React.FC = () => {
   );
 
   const MAX_REPLY_LENGTH = 400;
-  const NEAR_MAX_REPLY_LENGTH = MAX_REPLY_LENGTH - 50;
+  const NEAR_MAX_REPLY_LENGTH = MAX_REPLY_LENGTH - 30;
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
