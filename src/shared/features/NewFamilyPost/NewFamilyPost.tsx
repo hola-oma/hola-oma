@@ -26,6 +26,7 @@ interface IReadObj {
 }
 
 const NewFamilyPost: React.FC = () => {
+    const MAX_POST_LENGTH = 400;
     const [selectedFile, setSelectedFile] = useState<Blob | File | null>();
     const [fileType, setFileType] = useState("");
     const [textValue, updateTextValue] = useState("");
@@ -34,11 +35,20 @@ const NewFamilyPost: React.FC = () => {
     const [receivers, setReceivers] = useState<IReceiver[]>([]);
     const [error, setError] = useState<string | null>();
     const [fileTypeError, setFileTypeError] = useState<string | null>();
+    const [postTooLong, setPostTooLong] = useState(false);
+    const [postLength, setPostLength] = useState(0);
     const history = useHistory();
+
+    const charsOver = () => {
+        return Math.abs(MAX_POST_LENGTH - postLength);
+    }
 
     const submitPost = async (e: any) => {
         e.preventDefault();
         setError(null);
+        if (postTooLong) {
+            return;
+        }
         if (!selectedFile && !textValue) {
             setError("You must provide a message and/or photo.");
             return;
@@ -168,6 +178,15 @@ const NewFamilyPost: React.FC = () => {
         });
     }, []); // fires on page load if this is empty [] 
 
+    useEffect(() => {
+        setPostLength(textValue.length);
+        if (textValue.length > MAX_POST_LENGTH) {
+            setPostTooLong(true);
+        } else {
+            setPostTooLong(false);
+        }
+    }, [textValue]); // fires when text changes
+
     return (
         <>
         <Column justify="center" alignItems="center">
@@ -236,6 +255,12 @@ const NewFamilyPost: React.FC = () => {
                 label="Type a Message"
                 value={textValue}
                 onChange={e => updateTextValue(e.target.value)}/>
+            <Typography variant="subtitle2">{postLength}/{MAX_POST_LENGTH}</Typography>
+            {postTooLong && 
+                <Row xs={12} justify="center">
+                    <FormError error={`Maximum ${MAX_POST_LENGTH} characters (${charsOver()} over)`}/>
+                </Row>
+            }
             <Row justify="center">
                 Recipients
             </Row>
@@ -255,7 +280,8 @@ const NewFamilyPost: React.FC = () => {
             <Row justify="center">
             <Button
                 type="submit"
-                variant="contained">
+                variant="contained"
+                disabled={postTooLong}>
                 Send Post
             </Button>
             </Row>

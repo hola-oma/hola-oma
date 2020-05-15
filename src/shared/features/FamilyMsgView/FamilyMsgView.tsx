@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 
-import {Box, Card, Modal, CardContent, CardActions, Paper, Typography, Grid, Container, Button} from '@material-ui/core';
+import {Card, Modal, CardContent, CardActions, Paper, Typography, Grid, Container, Button} from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 import { Post } from 'shared/models/post.model';
@@ -42,6 +42,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     spacing: {
         margin: '5px'
+    },
+    message: {
+        margin: '10',
+        width: '100%'
     }
   })
 );
@@ -97,7 +101,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 markReplyRead(replyArray[i].rid);
             }
         });
-    }, []); // fires on page load if this is empty [] 
+    }, [post.pid]); // fires on page load if this is empty [] 
 
     const handleClick = (reply: Reply) => {
         setModalOpen(!modalOpen);
@@ -156,7 +160,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                             className="photo"
                         />}
                         <br/>
-                        <Typography variant="h5" style={{margin:10}}>
+                        <Typography variant="h5" className={[classes.message, "wrapReply"].join(' ')}>
                             {post.message}
                         </Typography>
                     </Column>

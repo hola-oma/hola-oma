@@ -1,0 +1,46 @@
+.recordButton {
+  border-radius: 999em;
+  width: 56px;
+  height: 56px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  line-height: 1;
+  font-size: 36px;
+  position: relative;
+  cursor: pointer;
+}
+
+.recordButtonIdle {
+  color:white;
+  background-color: #2E8B57;
+}
+
+.recordButtonRecording {
+  color:red;
+  background-color:darkred;
+}
+
+.recordAnim {
+  animation-duration: 1.0s;
+  animation-name: grow;
+  animation-timing-function: ease-in;
+  animation-iteration-count: 30;
+  animation-direction: alternate;
+}
+
+@keyframes grow {
+  0% {
+      transform: scale(1.0);
+  }
+  100% {
+      transform: scale(1.2);
+  }
+}
+
+@-webkit-keyframes grow {
+  0% {
+      -webkit-transform: scale(1.0);
+  }
+  100% {
+      -webkit-transform: scale(1.2);
+  }
+}
