@@ -42,6 +42,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     spacing: {
         margin: '5px'
+    },
+    message: {
+        margin: '10',
+        width: '100%'
     }
   })
 );
@@ -156,7 +160,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                             className="photo"
                         />}
                         <br/>
-                        <Typography variant="h5" style={{margin:10}}>
+                        <Typography variant="h5" className={[classes.message, "wrapReply"].join(' ')}>
                             {post.message}
                         </Typography>
                     </Column>
