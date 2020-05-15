@@ -61,10 +61,11 @@ const GetEmojiReply: React.FC = () => {
         setDisplayName(userProfile.displayName);
         setUserId(userProfile?.uid);
       });
-    // checkIfEmojiReplySent(currentPost.pid, userId)
-    //   .then((sent: any) => {
-    //     setReplySent(sent);
-    //   });
+    // This does not do anything on Rebecca's setup if try to navigate directly to route
+    console.log(currentPost);
+    if (currentPost === undefined) {
+      history.push("/posts");
+    }
   });
 
   const getChoices = (choice: number) => {
