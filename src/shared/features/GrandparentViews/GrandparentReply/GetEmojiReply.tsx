@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router'
 import key from 'weak-key';
 
@@ -11,6 +11,7 @@ import { setReplyContent, submitReply } from "../../../../services/reply";
 import { REPLY_TYPES } from "../../../models/reply.model";
 import { getUserProfile } from "../../../../services/user";
 import { replyEmojiArray, mailIcons } from "../../../../Icons";
+import { Redirect } from 'react-router-dom';
 
 let choicesList: Array<number> = [];
 
@@ -36,6 +37,7 @@ const GetEmojiReply: React.FC = () => {
   const emojiIcons = replyEmojiArray();
   const currentPost: any = location.state;
 
+  const [redirect, setRedirect] = useState<boolean>(true);
   const [displayName, setDisplayName] = useState("");
   const [userId, setUserId] = useState("");
   const [highlightedList, setHighlighted] = useState<Array<boolean>>([false, false, false, false, false, false]);
@@ -55,18 +57,14 @@ const GetEmojiReply: React.FC = () => {
     return alertOn ? "Must select at least one emoji to reply" : null;
   }
 
-  const redirectToPosts = () => {
-    console.log("current post undefined");
-    history.push("/posts");
-  }
-
   useEffect(() => {
+    if (currentPost) {setRedirect(false)}
     getUserProfile()
       .then((userProfile:any) => {
         setDisplayName(userProfile.displayName);
         setUserId(userProfile?.uid);
       });
-  });
+  }, [currentPost]);
 
   const getChoices = (choice: number) => {
     handleHighlight(choice);
@@ -93,9 +91,12 @@ const GetEmojiReply: React.FC = () => {
     }
   }
 
-  return (
-    <>
-      {currentPost &&
+  if(redirect){ return <Redirect to="/posts" /> }
+
+  else {
+    return (
+      <>
+        {currentPost &&
         <GrandparentLayout
             from={currentPost.from}
             headerText={"Replying to "}
@@ -132,14 +133,16 @@ const GetEmojiReply: React.FC = () => {
               e => buildReply(e) ] }
             buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]}
         />
-      }
+        }
 
-      {!currentPost &&
-        redirectToPosts()
-      }
+        {/*{!currentPost &&*/}
+        {/*  redirectToPosts()*/}
+        {/*}*/}
 
-    </>
-  )
+      </>
+    )
+  }
+
 };
 
 export default GetEmojiReply;
