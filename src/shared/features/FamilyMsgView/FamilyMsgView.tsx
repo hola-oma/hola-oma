@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 
-import {Box, Card, Modal, CardContent, CardActions, Paper, Typography, Grid, Container, Button} from '@material-ui/core';
+import {Card, Modal, CardContent, CardActions, Paper, Typography, Grid, Container, Button} from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 import { Post } from 'shared/models/post.model';
@@ -101,7 +101,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 markReplyRead(replyArray[i].rid);
             }
         });
-    }, []); // fires on page load if this is empty [] 
+    }, [post.pid]); // fires on page load if this is empty [] 
 
     const handleClick = (reply: Reply) => {
         setModalOpen(!modalOpen);

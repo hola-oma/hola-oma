@@ -208,6 +208,28 @@ Use: <Box className="devBox">...stuff here...</Box> */
   border:1px solid green;
 }
 
+.inProgressText {
+  color:lightslategrey;
+}
+
+.thinBorder {
+  border:1px solid gray;
+}
+
+.listenError {
+  height:64px;
+  margin-bottom:10px;
+}
+
+.listenError .errorAlert {
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+}
+
+.wrapReply {
+  overflow-wrap:break-word;
+}
+
 /* 
   const useStyles = makeStyles((theme) => ({
     paper: {

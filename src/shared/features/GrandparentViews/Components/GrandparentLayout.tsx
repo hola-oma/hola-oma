@@ -4,8 +4,6 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {Grid, Box, Button, SvgIconProps} from '@material-ui/core';
 import {Alert} from "@material-ui/lab";
 
-import RecordButton from './RecordButton';
-import Child from 'shared/components/Child/Child';
 import Column from 'shared/components/Column/Column';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -32,16 +30,15 @@ interface IGrandparentLayout {
   from: string,
   headerText: string;
   header2Text?:string;
-  recordButton?: boolean; //optional, used by GetVoiceReply
-  handleDictationDone?: (result:any) => void; // optional, used by GetVoiceReply
   alertText?: string | null;
   boxContent: any;
   buttonText: Array<string>;
   buttonActions: { (arg0: any): void } [];   //  Array of functions
   buttonIcons: React.ReactElement<SvgIconProps>[];
+  buttonDisabled?: boolean[];
 }
 
-export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerText, header2Text, recordButton = false, handleDictationDone = () => {}, alertText, boxContent, buttonText,  buttonActions, buttonIcons}) => {
+export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerText, header2Text, alertText, boxContent, buttonText,  buttonActions, buttonIcons, buttonDisabled = [] }) => {
 
   const classes = useStyles();
 
@@ -52,12 +49,6 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
         <h1>{headerText} {from}</h1>
         { header2Text && <h2>{header2Text}</h2> }
       </Grid>
-
-      <Child xs={12}>
-        {recordButton && 
-          <RecordButton handleDictationDone={handleDictationDone}/>
-        }
-      </Child>
 
       {/*Alert*/}
       {alertText &&  <Alert className="error" severity="error">{alertText}</Alert>}
@@ -91,6 +82,7 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
                   className={classes.button}
                   startIcon={buttonIcons[index]}
                   onClick={buttonActions[index]}
+                  disabled={buttonDisabled[index]}
                   key={index}
                 >
                   {buttonText[index]}
