@@ -55,17 +55,17 @@ const GetEmojiReply: React.FC = () => {
     return alertOn ? "Must select at least one emoji to reply" : null;
   }
 
+  const redirectToPosts = () => {
+    console.log("current post undefined");
+    history.push("/posts");
+  }
+
   useEffect(() => {
     getUserProfile()
       .then((userProfile:any) => {
         setDisplayName(userProfile.displayName);
         setUserId(userProfile?.uid);
       });
-    // This does not do anything on Rebecca's setup if try to navigate directly to route
-    console.log(currentPost);
-    if (currentPost === undefined) {
-      history.push("/posts");
-    }
   });
 
   const getChoices = (choice: number) => {
@@ -95,41 +95,49 @@ const GetEmojiReply: React.FC = () => {
 
   return (
     <>
-      <GrandparentLayout
-        from={currentPost.from}
-        headerText={"Replying to "}
-        header2Text={"Choose which smileys to send!"}
-        alertText={getAlertText()}
-        boxContent={
-          <Grid container>
-          {
-            emojiIcons.map( (icon: React.ReactElement<SvgIconProps>, index: number) => {
-              return (
-                <Grid item xs={4}
-                  className={"inboxCard"}
-                  key={key(icon)}>
-                  <Card>
-                    <CardContent onClick={() => getChoices(index)}
-                                 className={ highlightedList[index] ? classes.highlighted : classes.root }>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}>
-                        {icon}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              )
-            })
-          }
-        </Grid>
-        }
-          buttonText={["Go back to Reply Options", "Send Smiley(s)"]}
-          buttonActions={[
-            () => history.goBack(),
-            e => buildReply(e) ] }
-          buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]} />
+      {currentPost &&
+        <GrandparentLayout
+            from={currentPost.from}
+            headerText={"Replying to "}
+            header2Text={"Choose which smileys to send!"}
+            alertText={getAlertText()}
+            boxContent={
+              <Grid container>
+                {
+                  emojiIcons.map( (icon: React.ReactElement<SvgIconProps>, index: number) => {
+                    return (
+                      <Grid item xs={4}
+                            className={"inboxCard"}
+                            key={key(icon)}>
+                        <Card>
+                          <CardContent onClick={() => getChoices(index)}
+                                       className={ highlightedList[index] ? classes.highlighted : classes.root }>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              className={classes.button}>
+                              {icon}
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                    )
+                  })
+                }
+              </Grid>
+            }
+            buttonText={["Go back to Reply Options", "Send Smiley(s)"]}
+            buttonActions={[
+              () => history.goBack(),
+              e => buildReply(e) ] }
+            buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]}
+        />
+      }
+
+      {!currentPost &&
+        redirectToPosts()
+      }
+
     </>
   )
 };
