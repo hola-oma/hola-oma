@@ -82,7 +82,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const classes = useStyles();
     const [modalOpen, setModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
-    const post = props.location.state.post;
+    const [post, setPost] = useState(props.location.state.post);
     const [modalReply, setModalReply] = useState<Reply>();
     const [receivers, setReceivers] = useState<IReceiver[]>([]);
     const [replies, setReplies] = useState<Reply[]>([]);
@@ -126,6 +126,11 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const handleEditModal = () => {
         setEditModalOpen(!editModalOpen);
         setEditPost(!editPost);
+    }
+
+    const doneEditing = (newPost: Post) => {
+        handleEditModal();
+        setPost(newPost);
     }
 
     const handleConfirmDeleteModalClose = () => {
@@ -274,7 +279,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             </Modal>
             <Modal open={editModalOpen} onClose={handleEditModal} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
             <div className={classes.editModal}>
-                {editPost && <NewFamilyPost post={post}/>}
+                {editPost && <NewFamilyPost currentPost={post} closeModal={doneEditing}/>}
             </div>
             </Modal>
         </Container>

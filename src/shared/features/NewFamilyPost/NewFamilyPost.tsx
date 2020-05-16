@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router";
 
 import { TextField, Button, Checkbox, Typography, Tooltip } from '@material-ui/core';
-import { createPost, updatePostID, uploadFile } from "services/post";
+import { createPost, updatePostID, uploadFile, updatePost } from "services/post";
 import { Post } from "../../models/post.model";
 import { getUserProfile } from "services/user";
 import { getLinkedAccounts } from "services/accountLink";
@@ -27,10 +27,11 @@ interface IReadObj {
 }
 
 interface IPost {
-    post: Post | null
+    currentPost: Post | null,
+    closeModal: any
 }
 
-const NewFamilyPost: React.FC<IPost> = (post) => {
+const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
     const MAX_POST_LENGTH = 400;
     const [selectedFile, setSelectedFile] = useState<Blob | File | null>();
     const [fileType, setFileType] = useState("");
@@ -57,7 +58,7 @@ const NewFamilyPost: React.FC<IPost> = (post) => {
         if (postTooLong) {
             return;
         }
-        if (!selectedFile && !textValue) {
+        if (!selectedFile && !textValue && !photoURL.length && !videoURL.length) {
             setError("You must provide a message and/or photo.");
             return;
         }
@@ -93,16 +94,34 @@ const NewFamilyPost: React.FC<IPost> = (post) => {
                 post.videoURL = fileURL;
             }
         }
+
+        if (photoURL.length) {
+            post.photoURL = photoURL;
+        }
+
+        if (videoURL.length) {
+            post.videoURL = videoURL;
+        }
     
-        try {
-            const postSent = await createPost(post);
-            if (postSent) {
-                await updatePostID(postSent);       // Add post id to new post document
+        if (!currentPost) {
+            try {
+                const postSent = await createPost(post);
+                if (postSent) {
+                    await updatePostID(postSent);       // Add post id to new post document
+                }
+                if (history) history.push('/posts');
+            } catch(e) {
+                console.error(e.message);
             }
-            if (history) history.push('/posts');
-          } catch(e) {
-            console.error(e.message);
-          }
+        } else {
+            post.pid = currentPost.pid;
+            try {
+                updatePost(post);
+                closeModal(post);
+            } catch(e) {
+                console.error(e.message);
+            }
+        }
       };
 
     const setRead = (receiverIDs: Array<string>) => {
@@ -181,7 +200,7 @@ const NewFamilyPost: React.FC<IPost> = (post) => {
                 if (linkedAccounts[i].verified === true) {
                     let displayName = linkedAccounts[i].displayName ? linkedAccounts[i].displayName : "Unknown Username";
                     let checked = true;
-                    if (post.post && post.post.receiverIDs.indexOf(linkedAccounts[i].id) === -1) {
+                    if (currentPost && currentPost.receiverIDs.indexOf(linkedAccounts[i].id) === -1) {
                         checked = false;
                     }
                     let receiver = {
@@ -193,14 +212,14 @@ const NewFamilyPost: React.FC<IPost> = (post) => {
             }
             setReceivers(rcvrs);
         });
-        if (post.post) {
+        if (currentPost) {
             setEditing(true);
-            updateTextValue(post.post.message);
-            if (post.post.photoURL) {
-                setPhotoURL(post.post.photoURL);
+            updateTextValue(currentPost.message);
+            if (currentPost.photoURL) {
+                setPhotoURL(currentPost.photoURL);
                 setFileType('image');
-            } else if (post.post.videoURL) {
-                setVideoURL(post.post.videoURL);
+            } else if (currentPost.videoURL) {
+                setVideoURL(currentPost.videoURL);
                 setFileType('video');
             }
         }
