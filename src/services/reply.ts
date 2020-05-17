@@ -69,8 +69,27 @@ export const updateReplyID = async (replyID: string) => {
     "rid": replyID,
   })
     .then(function() {
-      console.log("Reply successfully updated with reply ID");
+      // console.log("Reply successfully updated with reply ID");
     });
+}
+
+// Can be used to alert grandparent that they have already replied to a post
+export const checkIfReplySent = async (postId: string, creatorId: string, replyType: string) => {
+  const db = firebase.firestore();
+  let replySent: boolean = false;
+
+  try {
+    await db.collection('replies')
+      .where("responseTo", "==", postId)
+      .where("replyType", "==", replyType)
+      .where("creatorID", "==", creatorId)
+      .get()
+      .then(snapshot => { replySent = !snapshot.empty; })
+    } catch (error) {
+    console.error(error);
+  }
+
+  return replySent;
 }
 
 export const getRepliesToPost = async (postId: string) => {
