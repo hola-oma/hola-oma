@@ -157,7 +157,7 @@ const GetVoiceReply: React.FC = () => {
                                   dictatedReply, currentPost.pid, currentPost.creatorID);
       submitReply(e, replyContent)
         .then( () => { history.push({
-          pathname: "/posts",
+          pathname: "/sentReply",
           state: {
             replyContent: replyContent,
             currentPost: currentPost  }

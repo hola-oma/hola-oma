@@ -46,7 +46,11 @@ export const SentGrandparentReply: React.FC = () => {
   }
 
   if (replyContent.replyType === REPLY_TYPES.PHOTO) {
-    boxContent = <img src={replyContent.message} alt="Sent message"></img>;
+    boxContent = <img src={replyContent.message} alt="Sent message"/>;
+  }
+
+  if (replyContent.replyType === REPLY_TYPES.VOICE) {
+    boxContent = replyContent.message;
   }
 
 
