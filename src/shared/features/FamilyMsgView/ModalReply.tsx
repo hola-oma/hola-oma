@@ -1,9 +1,11 @@
 import React from 'react';
 
-import { Container } from '@material-ui/core';
+import { Container, Typography } from '@material-ui/core';
 
 import { Reply } from "../../models/reply.model";
 import { replyEmojiArray } from "../../../Icons";
+
+import './FamilyMsgView.css';
 
 interface IReply {
     // add posts as Post model here
@@ -47,13 +49,17 @@ const ModalReply: React.FC<IReply> = ({reply}) => {
         )
     } else if (isMessage(reply)) {
         return (
-            <Container className="wrapReply">{reply.message}</Container>
+            <Container className="wrapReply">
+                <Typography variant="h5">
+                    {reply.message}
+                </Typography>
+            </Container>
         )
     } else {
         return (
             <img
                 src={messageAsString(reply)}
-                className="photo"
+                className="modalPhoto"
                 alt="Reply img"
             />
         )
