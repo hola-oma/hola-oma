@@ -37,7 +37,6 @@ const GetEmojiReply: React.FC = () => {
   const emojiIcons = replyEmojiArray();
   const currentPost: any = location.state;
 
-  const [redirect, setRedirect] = useState<boolean>(true);
   const [displayName, setDisplayName] = useState("");
   const [userId, setUserId] = useState("");
   const [highlightedList, setHighlighted] = useState<Array<boolean>>([false, false, false, false, false, false]);
@@ -58,7 +57,6 @@ const GetEmojiReply: React.FC = () => {
   }
 
   useEffect(() => {
-    if (currentPost) {setRedirect(false)}
     getUserProfile()
       .then((userProfile:any) => {
         setDisplayName(userProfile.displayName);
@@ -91,12 +89,9 @@ const GetEmojiReply: React.FC = () => {
     }
   }
 
-  if(redirect){ return <Redirect to="/posts" /> }
-
-  else {
-    return (
-      <>
-        {currentPost &&
+  return (
+    <>
+      {currentPost &&
         <GrandparentLayout
             from={currentPost.from}
             headerText={"Replying to "}
@@ -133,16 +128,9 @@ const GetEmojiReply: React.FC = () => {
               e => buildReply(e) ] }
             buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]}
         />
-        }
-
-        {/*{!currentPost &&*/}
-        {/*  redirectToPosts()*/}
-        {/*}*/}
-
-      </>
-    )
-  }
-
+      }
+    </>
+  )
 };
 
 export default GetEmojiReply;
