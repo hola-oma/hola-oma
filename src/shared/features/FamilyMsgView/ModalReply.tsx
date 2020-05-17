@@ -39,7 +39,7 @@ const ModalReply: React.FC<IReply> = ({reply}) => {
                 {
                     messageAsArray(reply).map((emojiIndex: number, replyIndex: number) => {
                         return (
-                            <Container>
+                            <Container key={replyIndex}>
                                 {emojiIcons[emojiIndex]}
                             </Container>
                         )

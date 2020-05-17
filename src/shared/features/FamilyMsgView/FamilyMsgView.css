@@ -7,3 +7,15 @@
     margin: auto;
     display: block;
 }
+.replyCard {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.replyContent {
+    display: flex;
+    flex: 1 0 auto;
+}
+.replyActions {
+    justify-content: space-between;
+}

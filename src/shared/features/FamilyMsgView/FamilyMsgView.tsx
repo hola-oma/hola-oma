@@ -226,9 +226,9 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 replies.map((reply: Reply, index: number) => {
                     return (
                     <Grid item xs={4} key={index}>
-                        <div className={"postStyle"} onClick={()=>handleClick(reply)}>
-                            <Card variant="outlined" className={"postStyle"}>
-                                <CardContent>
+                        <div className={classes.postStyle} onClick={()=>handleClick(reply)}>
+                            <Card variant="outlined" className="replyCard">
+                                <CardContent className="replyContent">
                                     {isEmoji(reply) &&
                                         messageAsArray(reply).map((emojiIndex: number, replyIndex: number) => {
                                             return (
@@ -251,7 +251,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                                         />
                                     }
                                 </CardContent>
-                                <CardActions>
+                                <CardActions className="replyActions">
                                     <Typography variant="caption">
                                         Sent by {reply.from}
                                         <br/>
