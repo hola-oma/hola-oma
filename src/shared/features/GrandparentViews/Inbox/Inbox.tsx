@@ -57,26 +57,28 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
         <Grid container>
           {posts.length === 0 &&
               <Grid item xs>
-                  <Typography variant="h2">Your mailbox is empty</Typography>
+                  <Typography variant="h4">Your mailbox is empty</Typography>
               </Grid>
           }
-            <GridList className={classes.gridList} cols={3}>
-              {posts.map((post, index: number) => (
-                <GridListTile key={post.pid} onClick={() => pressEnvelope(post)} rows={1.25}>
-                  <img src={getPostReadByCurrentUser(post) ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
-                       alt={"Letter from " + post.from}
-                  />
-                  <GridListTileBar
-                    title={"From: " + post.from}
-                    classes={{
-                      root: classes.titleBar,
-                      title: classes.title,
-                    }}
-                  />
-                </GridListTile>
-              ))}
-            </GridList>
 
+          <GridList className={classes.gridList} cols={3}>
+            {posts.map((post, index: number) => (
+              <GridListTile key={post.pid} onClick={() => pressEnvelope(post)} rows={1.25}>
+                <img src={getPostReadByCurrentUser(post) ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
+                     alt={"Letter from " + post.from}
+                />
+
+                <GridListTileBar
+                  title={"From: " + post.from}
+                  classes={{
+                    root: classes.titleBar,
+                    title: classes.title,
+                  }}
+                />
+
+              </GridListTile>
+            ))}
+            </GridList>
         </Grid>
       </Container>
     </>

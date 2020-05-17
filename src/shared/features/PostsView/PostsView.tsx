@@ -5,7 +5,7 @@ import {roles} from '../../../enums/enums';
 import {getUserSettings} from "services/user";
 import Inbox from '../GrandparentViews/Inbox/Inbox';
 import PostManagement from '../PostManagement/PostManagement';
-import { Link as ButtonLink, Button, Tooltip } from '@material-ui/core';
+import {Link as ButtonLink, Button, Tooltip, Typography} from '@material-ui/core';
 import {getPosts} from 'services/post';
 
 import {Post} from '../../models/post.model';
@@ -224,7 +224,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
                 </Child>
 
                 <Child xs={12}>
-                  <p>You have {numNewReplies} new {role === roles.poster ? (numNewReplies !== 1 ? 'replies' : 'reply') : 'letters'}.</p>
+                  <Typography variant="subtitle1" gutterBottom>You have {numNewReplies} new {role === roles.poster ? (numNewReplies !== 1 ? 'replies' : 'reply') : 'letters'}.</Typography>
                 </Child>
               </Column>
             </Child>
