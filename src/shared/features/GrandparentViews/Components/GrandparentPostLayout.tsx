@@ -150,7 +150,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
 
       {!imageURL &&
         <Typography variant="h5" align={message.length <= 50 ? "center" : "left"} >
-          {getMessageSubstring(message, 625)}
+          {message}
         </Typography>
       }
       <Modal

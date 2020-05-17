@@ -2,11 +2,12 @@ import React from 'react';
 
 import { useLocation, useHistory } from "react-router";
 
-import { mailIcons, replyEmojiArray } from "../../../../Icons";
+import {mailIcons, replyEmojiArray, viewPostIcons} from "../../../../Icons";
 import GrandparentLayout from "../Components/GrandparentLayout";
-import {Card, CardContent, Grid, SvgIconProps} from "@material-ui/core";
+import {Card, CardActionArea, CardContent, CardMedia, Grid, Modal, SvgIconProps, Typography} from "@material-ui/core";
 import {Post} from "../../../models/post.model";
 import { REPLY_TYPES } from "../../../models/reply.model";
+import {getMessageSubstring} from "../../../../services/post";
 
 export const SentGrandparentReply: React.FC = () => {
   const history = useHistory();
@@ -50,7 +51,18 @@ export const SentGrandparentReply: React.FC = () => {
   }
 
   if (replyContent.replyType === REPLY_TYPES.VOICE) {
-    boxContent = replyContent.message;
+    boxContent =
+      <Grid container
+            spacing={0}
+            direction={"column"}
+            alignItems="center"
+            justify="center"
+            style={{ height: "100%", overflowY: "hidden" }}
+      >
+        <Typography variant="h5" align={replyContent.message.length <= 50 ? "center" : "left"} >
+          {replyContent.message}
+        </Typography>
+      </Grid>
   }
 
 
