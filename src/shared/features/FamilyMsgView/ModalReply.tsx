@@ -18,6 +18,10 @@ const ModalReply: React.FC<IReply> = ({reply}) => {
     const messageAsArray = (reply: Reply) => {
         return reply.message as number[];
     }
+
+    const messageAsString = (reply: Reply) => {
+        return reply.message as string;
+    }
     
     const isEmoji = (reply: Reply) => {
         return (reply.replyType === "emoji" && typeof reply.message !== "string");
@@ -47,8 +51,11 @@ const ModalReply: React.FC<IReply> = ({reply}) => {
         )
     } else {
         return (
-            <>
-            </>
+            <img
+                src={messageAsString(reply)}
+                className="photo"
+                alt="Reply img"
+            />
         )
     }
 };

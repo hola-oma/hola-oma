@@ -127,6 +127,10 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const messageAsArray = (reply: Reply) => {
         return reply.message as number[];
     }
+
+    const messageAsString = (reply: Reply) => {
+        return reply.message as string;
+    }
     
     const isEmoji = (reply: Reply) => {
         return (reply.replyType === "emoji" && typeof reply.message !== "string");
@@ -134,6 +138,10 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
 
     const isMessage = (reply: Reply) => {
         return (reply.replyType === "voice" && typeof reply.message === "string"); 
+    }
+
+    const isPhoto = (reply: Reply) => {
+        return (reply.replyType === "photo" && typeof reply.message === "string");
     }
 
     return (
@@ -233,6 +241,14 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
 
                                     {isMessage(reply) && 
                                         <p>{reply.message}</p>
+                                    }
+
+                                    {isPhoto(reply) &&
+                                        <img
+                                            src={messageAsString(reply)}
+                                            className="photo"
+                                            alt="Reply img"
+                                        />
                                     }
                                 </CardContent>
                                 <CardActions>
