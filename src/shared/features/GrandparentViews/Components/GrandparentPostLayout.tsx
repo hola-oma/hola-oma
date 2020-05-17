@@ -11,18 +11,24 @@ import { viewPostIcons } from "../../../../Icons";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-  media: {
-    height: 425,
-    objectFit: 'contain',
-  },
-  mediumText: {   // works for ~110 words
-    height: 375,
-    objectFit: 'contain'
-  },
-  both: {
-    height: 200,
-    objectFit: 'contain',
-  },
+    objectFit: {
+      objectFit: 'contain',
+    },
+    media: {
+      height: 425,
+    },
+    shortText: {
+      height: 400,
+    },
+    mediumShortText: {   // works for ~110 words
+      height: 350,
+    },
+    mediumText: {   // works for ~110 words
+      height: 300,
+    },
+    largeText: {
+      height: 200,
+    },
     paper: {
       position: 'absolute',
       maxWidth: 800,
@@ -65,10 +71,11 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
   }
 
   const getStyle = (length: number) => {
-    // todo: add more variation depending on message length
-    if (length < 50) return classes.media;
-    if (length < 200) return classes.mediumText;
-    else return classes.both;
+    if (length <= 50) return `${classes.media} ${classes.objectFit}`;
+    if (length <= 100) return `${classes.shortText} ${classes.objectFit}`;
+    if (length <= 150) return `${classes.mediumShortText} ${classes.objectFit}`;
+    if (length <= 200) return `${classes.mediumText} ${classes.objectFit}`;
+    else return `${classes.largeText} ${classes.objectFit}`;
   }
 
   const modalBody = (
@@ -98,7 +105,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
           style={{ height: "100%", overflowY: "hidden" }}
     >
       {imageURL &&
-      <Grid item xs={12} style={{display: 'inline-block'}}>
+      <Grid item xs={12} style={{display: "inline-block"}}>
           <Card >
               <CardActionArea>
                   <div style={{ position: 'relative' }} >
@@ -129,6 +136,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
                         color="textPrimary"
                         component="p"
                         style={{overflowWrap: "break-word"}}
+                        align={message.length <= 50 ? "center" : "left"}
                     >
                       {message}
                     </Typography>
@@ -141,7 +149,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
       }
 
       {!imageURL &&
-        <Typography variant="h5" align={message.length < 50 ? "center" : "left"} >
+        <Typography variant="h5" align={message.length <= 50 ? "center" : "left"} >
           {getMessageSubstring(message, 625)}
         </Typography>
       }
