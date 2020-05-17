@@ -20,10 +20,10 @@ const useStyles = makeStyles((theme: Theme) =>
     shortText: {
       height: 400,
     },
-    mediumShortText: {   // works for ~110 words
+    mediumShortText: {
       height: 350,
     },
-    mediumText: {   // works for ~110 words
+    mediumText: {
       height: 300,
     },
     largeText: {
