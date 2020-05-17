@@ -98,7 +98,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
           style={{ height: "100%", overflowY: "hidden" }}
     >
       {imageURL &&
-      <Grid item >
+      <Grid item xs={12} style={{display: 'inline-block'}}>
           <Card >
               <CardActionArea>
                   <div style={{ position: 'relative' }} >
@@ -124,8 +124,13 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
                   </div>
                 {message &&
                 <CardContent>
-                    <Typography variant="h5" color="textPrimary" component="p">
-                      {getMessageSubstring(message, 400)}
+                    <Typography
+                        variant="h5"
+                        color="textPrimary"
+                        component="p"
+                        style={{overflowWrap: "break-word"}}
+                    >
+                      {message}
                     </Typography>
                 </CardContent>
                 }
