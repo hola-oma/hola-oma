@@ -2,7 +2,7 @@ import React, {useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router'
 import key from 'weak-key';
 
-import { Button, Card, CardContent, Grid, SvgIconProps } from "@material-ui/core";
+import {Box, Button, ButtonBase, Card, CardContent, Grid, SvgIconProps, Typography} from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 import GrandparentLayout from "../Components/GrandparentLayout";
@@ -17,19 +17,63 @@ let choicesList: Array<number> = [];
 
 const GetEmojiReply: React.FC = () => {
 
+  const images = [
+    {
+      url: require('../../../../icons/smile.png'),
+    },
+    {
+      url: require('../../../../icons/smile.png'),
+    },
+    {
+      url: require('../../../../icons/smile.png'),
+    },
+    {
+      url: require('../../../../icons/smile.png'),
+    },
+    {
+      url: require('../../../../icons/smile.png'),
+    },
+    {
+      url: require('../../../../icons/smile.png'),
+    },
+  ];
+
+  // Adapted from: https://material-ui.com/components/buttons/
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
-        flexGrow: 1,
+        display: 'flex',
+        flexWrap: 'wrap',
+        minWidth: 300,
+        width: '100%',
       },
-      button: {
-        margin: theme.spacing(5),
+      image: {
+        position: 'relative',
+        // objectFit: 'contain',
+        height: 150,
       },
-      highlighted: {
-        backgroundColor: 'gray'
-      }
+      imageSrc: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center 40%',
+      },
+      imageBackdrop: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundColor: theme.palette.common.black,
+        opacity: 0.4,
+        transition: theme.transitions.create('opacity'),
+      },
     }),
   );
+
 
   const classes = useStyles();
   const history = useHistory();
@@ -99,27 +143,23 @@ const GetEmojiReply: React.FC = () => {
             alertText={getAlertText()}
             boxContent={
               <Grid container>
-                {
-                  emojiIcons.map( (icon: React.ReactElement<SvgIconProps>, index: number) => {
-                    return (
-                      <Grid item xs={4}
-                            className={"inboxCard"}
-                            key={key(icon)}>
-                        <Card>
-                          <CardContent onClick={() => getChoices(index)}
-                                       className={ highlightedList[index] ? classes.highlighted : classes.root }>
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              className={classes.button}>
-                              {icon}
-                            </Button>
-                          </CardContent>
-                        </Card>
-                      </Grid>
-                    )
-                  })
-                }
+                {images.map((image) => (
+                  <ButtonBase
+                    className={classes.image}
+                    style={{
+                      width: '50%',
+                    }}
+                  >
+          <span
+            className={classes.imageSrc}
+            style={{
+              backgroundImage: `url(${image.url})`,
+            }}
+          />
+                    <span className={classes.imageBackdrop} />
+
+                  </ButtonBase>
+                ))}
               </Grid>
             }
             buttonText={["Go back to Reply Options", "Send Smiley(s)"]}
