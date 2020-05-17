@@ -47,7 +47,16 @@ export const SentGrandparentReply: React.FC = () => {
   }
 
   if (replyContent.replyType === REPLY_TYPES.PHOTO) {
-    boxContent = <img src={replyContent.message} alt="Sent message"/>;
+    boxContent =
+      <Grid container
+            spacing={0}
+            direction={"column"}
+            alignItems="center"
+            justify="center"
+            style={{ height: "100%", overflowY: "hidden" }}
+      >
+        <img src={replyContent.message} alt="Sent message"/>
+      </Grid>
   }
 
   if (replyContent.replyType === REPLY_TYPES.VOICE) {

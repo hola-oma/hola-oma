@@ -7,6 +7,7 @@ import GrandparentLayout from "../Components/GrandparentLayout";
 import { useHistory, useLocation } from "react-router";
 import { getUserProfile } from "../../../../services/user";
 import { Reply, REPLY_TYPES } from "../../../models/reply.model";
+import {Grid} from "@material-ui/core";
 
 // Reminder: https://stackoverflow.com/questions/29642685/maintain-aspect-ratio-of-image-with-full-width-in-react-native
 const videoConstraints = {
@@ -61,16 +62,31 @@ const GetPhotoReply: React.FC = () => {
         <GrandparentLayout
             from={currentPost.from}
             headerText={ !photoPreview ? "Take a photo to send to " : "Sending photo to "}
-            boxContent={ !photoPreview ?
-              <Webcam
-                audio={false}
-                ref={webcamRef}
-                // width={848}
-                height={477}
-                screenshotFormat="image/jpeg"
-                videoConstraints={videoConstraints}
-              /> :
-              <img src={photoPreview} alt="Current selfie"></img>
+            boxContent={
+              <Grid container
+                    spacing={0}
+                    direction={"column"}
+                    alignItems="center"
+                    justify="center"
+                    style={{ height: "100%", overflowY: "hidden" }}
+              >
+
+                {!photoPreview &&
+                  <Webcam
+                    audio={false}
+                    ref={webcamRef}
+                    // width={848}
+                    height={477}
+                    screenshotFormat="image/jpeg"
+                    videoConstraints={videoConstraints}
+                  />
+                }
+
+                {photoPreview &&
+                  <img src={photoPreview} alt="Current selfie"/>
+                }
+
+              </Grid>
             }
             buttonText={!photoPreview ?
               ["Back to message", "Take Photo"] :

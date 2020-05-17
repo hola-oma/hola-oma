@@ -6,7 +6,6 @@ import {
 } from '@material-ui/core';
 import { makeStyles,  createStyles } from "@material-ui/core/styles";
 
-import {  getMessageSubstring } from "../../../../services/post";
 import { viewPostIcons } from "../../../../Icons";
 
 const useStyles = makeStyles((theme: Theme) =>
