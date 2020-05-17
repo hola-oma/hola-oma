@@ -1,8 +1,7 @@
 import React, {useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router'
-import key from 'weak-key';
 
-import {Box, Button, ButtonBase, Card, CardContent, Grid, SvgIconProps, Typography} from "@material-ui/core";
+import { ButtonBase,  Grid } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 import GrandparentLayout from "../Components/GrandparentLayout";
@@ -11,32 +10,10 @@ import { setReplyContent, submitReply } from "../../../../services/reply";
 import { REPLY_TYPES } from "../../../models/reply.model";
 import { getUserProfile } from "../../../../services/user";
 import { replyEmojiArray, mailIcons } from "../../../../Icons";
-import { Redirect } from 'react-router-dom';
 
 let choicesList: Array<number> = [];
 
 const GetEmojiReply: React.FC = () => {
-
-  const images = [
-    {
-      url: require('../../../../icons/smile.png'),
-    },
-    {
-      url: require('../../../../icons/smile.png'),
-    },
-    {
-      url: require('../../../../icons/smile.png'),
-    },
-    {
-      url: require('../../../../icons/smile.png'),
-    },
-    {
-      url: require('../../../../icons/smile.png'),
-    },
-    {
-      url: require('../../../../icons/smile.png'),
-    },
-  ];
 
   // Adapted from: https://material-ui.com/components/buttons/
   const useStyles = makeStyles((theme: Theme) =>
@@ -49,8 +26,6 @@ const GetEmojiReply: React.FC = () => {
       },
       image: {
         position: 'relative',
-        // objectFit: 'contain',
-        height: 150,
       },
       imageSrc: {
         position: 'absolute',
@@ -58,16 +33,28 @@ const GetEmojiReply: React.FC = () => {
         right: 0,
         top: 0,
         bottom: 0,
-        backgroundSize: 'cover',
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center 40%',
       },
-      imageBackdrop: {
+      highlight: {
         position: 'absolute',
         left: 0,
         right: 0,
         top: 0,
         bottom: 0,
         backgroundColor: theme.palette.common.black,
+        opacity: 0.4,
+        transition: theme.transitions.create('opacity'),
+      },
+      noHighlight: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundColor: 'white',
+        color: 'black',
         opacity: 0.4,
         transition: theme.transitions.create('opacity'),
       },
@@ -143,21 +130,13 @@ const GetEmojiReply: React.FC = () => {
             alertText={getAlertText()}
             boxContent={
               <Grid container>
-                {images.map((image) => (
+                {emojiIcons.map((icon, index: number) => (
                   <ButtonBase
                     className={classes.image}
-                    style={{
-                      width: '50%',
-                    }}
-                  >
-          <span
-            className={classes.imageSrc}
-            style={{
-              backgroundImage: `url(${image.url})`,
-            }}
-          />
-                    <span className={classes.imageBackdrop} />
-
+                    style={{width: '33%'}}
+                    onClick={() => getChoices(index)} >
+                    <span className={classes.imageSrc} style={{backgroundImage: `url(${icon})` }} />
+                    <span className={highlightedList[index] ? classes.highlight : classes.noHighlight} />
                   </ButtonBase>
                 ))}
               </Grid>

@@ -2,12 +2,11 @@ import React from 'react';
 
 import { useLocation, useHistory } from "react-router";
 
-import {mailIcons, replyEmojiArray, viewPostIcons} from "../../../../Icons";
+import {mailIcons, replyEmojiArray} from "../../../../Icons";
 import GrandparentLayout from "../Components/GrandparentLayout";
-import {Card, CardActionArea, CardContent, CardMedia, Grid, Modal, SvgIconProps, Typography} from "@material-ui/core";
+import {Card, CardContent, Grid, SvgIconProps, Typography} from "@material-ui/core";
 import {Post} from "../../../models/post.model";
 import { REPLY_TYPES } from "../../../models/reply.model";
-import {getMessageSubstring} from "../../../../services/post";
 
 export const SentGrandparentReply: React.FC = () => {
   const history = useHistory();
