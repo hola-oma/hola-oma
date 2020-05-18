@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useLocation, useHistory } from "react-router";
 
-import {mailIcons, replyEmojiArray} from "../../../../Icons";
+import {mailIcons, replyEmojiPNGs} from "../../../../Icons";
 import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
 import {ButtonBase, Grid, SvgIconProps, Typography} from "@material-ui/core";
 import {Post} from "../../../models/post.model";
@@ -39,7 +39,7 @@ export const SentGrandparentReply: React.FC = () => {
 
   if (replyContent.replyType === REPLY_TYPES.EMOJI) {
     const sentEmojis: Array<React.ReactElement<SvgIconProps>> = [];
-    const allEmojis: Array<React.ReactElement<SvgIconProps>> = replyEmojiArray();
+    const allEmojis: Array<React.ReactElement<SvgIconProps>> = replyEmojiPNGs();
     (replyContent.message).forEach(function(index: number) {
       sentEmojis.push(allEmojis[index]);
     })

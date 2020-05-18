@@ -9,7 +9,7 @@ import { setReplyContent, submitReply } from "../../../../services/reply";
 
 import { REPLY_TYPES } from "../../../models/reply.model";
 import { getUserProfile } from "../../../../services/user";
-import { replyEmojiArray, mailIcons } from "../../../../Icons";
+import { replyEmojiPNGs, mailIcons } from "../../../../Icons";
 
 let choicesList: Array<number> = [];
 
@@ -61,11 +61,10 @@ const GetEmojiReply: React.FC = () => {
     }),
   );
 
-
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
-  const emojiIcons = replyEmojiArray();
+  const emojiIcons = replyEmojiPNGs();
   const currentPost: any = location.state;
 
   const [displayName, setDisplayName] = useState("");
