@@ -222,6 +222,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                     <Button
                         variant="contained"
                         size="small"
+                        color="secondary"
                         className={classes.spacing}
                         startIcon={<EditIcon />}
                         onClick={handleEditModal}>
