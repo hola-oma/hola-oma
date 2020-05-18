@@ -171,55 +171,58 @@ const GetVoiceReply: React.FC = () => {
           alertText={getAlertText()}
           boxContent={
             <Row alignItems="flex-start" justify="center">
-              <Column xs={12}>
-                <RecordButton
-                  handleDictationDone={handleDictationDone}
-                  handleProgress={handleProgress}
-                  handleError={handleError}
-                />
+              <Child xs={12}>
+                <Column>
+                  <Child>
+                  <RecordButton
+                    handleDictationDone={handleDictationDone}
+                    handleProgress={handleProgress}
+                    handleError={handleError}
+                  />
 
-                <span className="listenError">
-                    {lowConfidence &&
-                    <Row xs={12} justify="center">
+                  <span className="listenError">
+                      {lowConfidence &&
+                      <Row justify="center">
+                          <Child xs={11}>
+                              <FormError error={"Sorry, I didn't catch that. Please record again."}/>
+                          </Child>
+                      </Row>
+                      }
+
+                    {replyNearlyTooLong &&
+                    <Row justify="center">
                         <Child xs={11}>
-                            <FormError error={"Sorry, I didn't catch that. Please record again."}/>
+                            <FormError error={`Approaching character limit! ${MAX_REPLY_LENGTH} allowed (${charsRemaining()} remaining)`} severity="warning"/>
                         </Child>
                     </Row>
                     }
 
-                  {replyNearlyTooLong &&
-                  <Row xs={12} justify="center">
-                      <Child xs={11}>
-                          <FormError error={`Approaching character limit! ${MAX_REPLY_LENGTH} allowed (${charsRemaining()} remaining)`} severity="warning"/>
-                      </Child>
-                  </Row>
-                  }
+                    {replyTooLong &&
+                    <Row justify="center">
+                        <Child xs={11}>
+                            <FormError error={`Maximum ${MAX_REPLY_LENGTH} characters (${charsOver()} over)`}/>
+                        </Child>
+                    </Row>
+                    }
+                    </span>
 
-                  {replyTooLong &&
-                  <Row xs={12} justify="center">
+                    <Row justify="center">
                       <Child xs={11}>
-                          <FormError error={`Maximum ${MAX_REPLY_LENGTH} characters (${charsOver()} over)`}/>
+                        <TextareaAutosize
+                          className={`grandparentReplyText thinBorder ${inProgress ? 'inProgressText' : ''}`}
+                          rowsMin={8}
+                          rowsMax={8}
+                          aria-label="voice reply"
+                          placeholder="Your voice message appears here"
+                          value={inProgress ? dictatedReply : completeReply}
+                          onChange={handleTextareaChange}
+                        />
                       </Child>
-                  </Row>
-                  }
-                  </span>
 
-                <Row xs={12} justify="center">
-                  <Child xs={11}>
-                    <TextareaAutosize
-                      className={`grandparentReplyText thinBorder ${inProgress ? 'inProgressText' : ''}`}
-                      rowsMin={8}
-                      rowsMax={8}
-                      aria-label="voice reply"
-                      placeholder="Your voice message appears here"
-                      value={inProgress ? dictatedReply : completeReply}
-                      onChange={handleTextareaChange}
-                    />
+                    </Row>
                   </Child>
-
-                </Row>
-
-              </Column>
+                </Column>
+              </Child>
             </Row>
           }
           buttonText={["Go back to Reply Options", "Send reply"]}
