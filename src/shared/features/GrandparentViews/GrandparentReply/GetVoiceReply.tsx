@@ -18,27 +18,10 @@ import Row from 'shared/components/Row/Row';
 import Child from 'shared/components/Child/Child';
 import Column from 'shared/components/Column/Column';
 
-let choicesList: Array<number> = [];
-
 const GetVoiceReply: React.FC = () => {
-
-  const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-      root: {
-        flexGrow: 1,
-      },
-      button: {
-        margin: theme.spacing(5),
-      },
-      highlighted: {
-        backgroundColor: 'gray'
-      }
-    }),
-  );
 
   const MAX_REPLY_LENGTH = 400;
   const NEAR_MAX_REPLY_LENGTH = MAX_REPLY_LENGTH - 30;
-  const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
   const currentPost: any = location.state;
