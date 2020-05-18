@@ -12,6 +12,7 @@ import { Reply } from "../../models/reply.model";
 import { replyEmojiArray } from "../../../Icons";
 import ModalReply from "./ModalReply";
 import ManageConfirmDelete from "./ManageConfirmDelete";
+import NewFamilyPost from "../NewFamilyPost/NewFamilyPost";
 
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -33,6 +34,16 @@ const useStyles = makeStyles((theme: Theme) =>
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3)
+    },
+    editModal: {
+      position: 'absolute',
+      width: '75%',
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+      overflow: "scroll",
+      maxHeight: '95%'
     },
     paper: {
         minHeight: 300
@@ -70,11 +81,13 @@ interface IReceiver {
 const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const classes = useStyles();
     const [modalOpen, setModalOpen] = useState(false);
-    const post = props.location.state.post;
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [post, setPost] = useState(props.location.state.post);
     const [modalReply, setModalReply] = useState<Reply>();
     const [receivers, setReceivers] = useState<IReceiver[]>([]);
     const [replies, setReplies] = useState<Reply[]>([]);
     const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState<boolean>(false);
+    const [editPost, setEditPost] = useState(false);
 
     const emojiIcons = replyEmojiArray();
     let history = useHistory();
@@ -108,6 +121,16 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         if (reply) {
             setModalReply(reply);
         }
+    }
+
+    const handleEditModal = () => {
+        setEditModalOpen(!editModalOpen);
+        setEditPost(!editPost);
+    }
+
+    const doneEditing = (newPost: Post) => {
+        handleEditModal();
+        setPost(newPost);
     }
 
     const handleConfirmDeleteModalClose = () => {
@@ -199,9 +222,10 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                     <Button
                         variant="contained"
                         size="small"
+                        color="secondary"
                         className={classes.spacing}
                         startIcon={<EditIcon />}
-                        disabled>
+                        onClick={handleEditModal}>
                         Edit Post
                     </Button>
                     <Button
@@ -268,6 +292,11 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             <Modal open={modalOpen} onClose={handleClick} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
             <div className={classes.modal}>
                 {modalReply && <ModalReply reply={modalReply}/>}
+            </div>
+            </Modal>
+            <Modal open={editModalOpen} onClose={handleEditModal} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <div className={classes.editModal}>
+                {editPost && <NewFamilyPost currentPost={post} closeModal={doneEditing}/>}
             </div>
             </Modal>
         </Container>

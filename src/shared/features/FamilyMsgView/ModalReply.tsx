@@ -8,9 +8,7 @@ import { replyEmojiArray } from "../../../Icons";
 import './FamilyMsgView.css';
 
 interface IReply {
-    // add posts as Post model here
-    // For now, I made it a number to show how you might loop through a quantity of things passed in
-    reply: Reply; // array of type "Post"
+    reply: Reply;
   }
 
 const ModalReply: React.FC<IReply> = ({reply}) => {
