@@ -11,7 +11,6 @@ import { setReplyContent, submitReply } from "../../../../services/reply";
 import { REPLY_TYPES } from "../../../models/reply.model";
 import { getUserProfile } from "../../../../services/user";
 import { replyEmojiArray, mailIcons } from "../../../../Icons";
-import { Redirect } from 'react-router-dom';
 
 let choicesList: Array<number> = [];
 
