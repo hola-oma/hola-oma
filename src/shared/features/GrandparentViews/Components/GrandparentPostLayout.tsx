@@ -79,7 +79,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
 
   const modalBody = (
     <div style={modalStyle} className={classes.paper}>
-      <img src={imageURL} alt={"Message from {from}"}></img>
+      <img src={imageURL} alt={"Message from {from}"}/>
       <div
         onClick={handleClick}
         style={{
@@ -141,7 +141,6 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
                     </Typography>
                 </CardContent>
                 }
-
               </CardActionArea>
           </Card>
       </Grid>

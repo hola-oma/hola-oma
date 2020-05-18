@@ -4,18 +4,37 @@ import { useLocation, useHistory } from "react-router";
 
 import {mailIcons, replyEmojiArray} from "../../../../Icons";
 import GrandparentLayout from "../Components/GrandparentLayout";
-import {Card, CardContent, Grid, SvgIconProps, Typography} from "@material-ui/core";
+import {ButtonBase, Card, CardContent, Grid, SvgIconProps, Typography} from "@material-ui/core";
 import {Post} from "../../../models/post.model";
 import { REPLY_TYPES } from "../../../models/reply.model";
+import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    imageSrc: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      backgroundSize: 'contain',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center 40%',
+    },
+    image: {
+      position: 'relative',
+    }
+  }),
+);
 
 export const SentGrandparentReply: React.FC = () => {
+  const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
   const state: any = location.state;
 
   const replyContent = state.replyContent;
   const currentPost: Post = state.currentPost;
-
   let boxContent: any = {}
 
   if (replyContent.replyType === REPLY_TYPES.EMOJI) {
@@ -26,23 +45,16 @@ export const SentGrandparentReply: React.FC = () => {
     })
 
     boxContent =
-      <Grid container>
-      {
-        sentEmojis.map( (icon: React.ReactElement<SvgIconProps>, index: number) => {
-          return (
-            <Grid item xs={6}
-                  className={"inboxCard"}
-                  key={currentPost.pid}>
-              <Card>
-                <CardContent>
-                  {icon}
-                </CardContent>
-              </Card>
-            </Grid>
-          )
-        })
-      }
-    </Grid>
+      <Grid container justify={"center"}>
+        {sentEmojis.map((icon, index: number) => (
+          <ButtonBase
+            className={classes.image}
+            style={{width: '33%'}}
+            >
+            <span className={classes.imageSrc} style={{backgroundImage: `url(${icon})` }} />
+          </ButtonBase>
+        ))}
+      </Grid>
   }
 
   if (replyContent.replyType === REPLY_TYPES.PHOTO) {
