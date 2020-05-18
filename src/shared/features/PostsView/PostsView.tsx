@@ -231,7 +231,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
             {/* ROW CHILD 3 * - invite button OR empty spacer */ }
             {role === roles.poster &&
-              <Child xs justify="center" alignItems="center" style={{display: 'flex'}}>
+              <Child container xs justify="center" alignItems="center" style={{display: 'flex'}}>
                 {inviteButton()}
               </Child>
             }
