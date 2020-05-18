@@ -3,8 +3,8 @@ import React from 'react';
 import { useLocation, useHistory } from "react-router";
 
 import {mailIcons, replyEmojiArray} from "../../../../Icons";
-import GrandparentLayout from "../Components/GrandparentLayout";
-import {ButtonBase, Card, CardContent, Grid, SvgIconProps, Typography} from "@material-ui/core";
+import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
+import {ButtonBase, Grid, SvgIconProps, Typography} from "@material-ui/core";
 import {Post} from "../../../models/post.model";
 import { REPLY_TYPES } from "../../../models/reply.model";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
@@ -92,7 +92,7 @@ export const SentGrandparentReply: React.FC = () => {
         from={currentPost.from}
         headerText={ "Reply sent to " }
         boxContent={boxContent}
-        buttonText={["Go back to letter", "Close letter"]}
+        buttonText={[buttonText.backToMessage, buttonText.inbox]}
         buttonActions={[
           () => history.push({pathname: '/startReply', state: currentPost }),
           () => history.push("/posts")

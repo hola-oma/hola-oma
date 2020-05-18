@@ -6,9 +6,24 @@ import {Alert} from "@material-ui/lab";
 
 import Column from 'shared/components/Column/Column';
 
-const enum boxDimensions {
-  height = 486,   // 16:9 ratio
-  width = 864
+const boxDimensions = {
+  height: 486,   // 16:9 ratio
+  width: 864
+}
+
+export const buttonText = {
+  // Navigation
+  inbox: "Go back to Inbox",
+  replyOptions: "Go back to Reply Options",
+  backToMessage: "Go back to Message",
+  // Reply options
+  smiley: "Smiley",
+  voice: "Voice Message",
+  photo: "Your Picture",
+  send: "Send Reply",
+  // Photo options
+  take: "Take Photo",
+  retake: "Retake Photo",
 }
 
 const useStyles = makeStyles((theme: Theme) =>

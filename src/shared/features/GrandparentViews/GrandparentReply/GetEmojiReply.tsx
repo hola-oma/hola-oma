@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router'
 import { ButtonBase,  Grid } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
-import GrandparentLayout from "../Components/GrandparentLayout";
+import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
 import { setReplyContent, submitReply } from "../../../../services/reply";
 
 import { REPLY_TYPES } from "../../../models/reply.model";
@@ -141,7 +141,7 @@ const GetEmojiReply: React.FC = () => {
                 ))}
               </Grid>
             }
-            buttonText={["Go back to Reply Options", "Send Smiley(s)"]}
+            buttonText={[buttonText.replyOptions, buttonText.send]}
             buttonActions={[
               () => history.goBack(),
               e => buildReply(e) ] }

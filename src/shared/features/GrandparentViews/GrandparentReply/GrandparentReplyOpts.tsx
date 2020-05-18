@@ -3,7 +3,7 @@ import { useLocation, useHistory } from "react-router-dom";
 
 import { GrandparentPostLayout } from "../Components/GrandparentPostLayout";
 import { replyOptionIcons } from "../../../../Icons";
-import GrandparentLayout from "../Components/GrandparentLayout";
+import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
 
 const GrandparentReplyOpts: React.FC = () => {
 
@@ -25,7 +25,7 @@ const GrandparentReplyOpts: React.FC = () => {
               message={currentPost.message}
             />
           }
-          buttonText={["Smiley", "Voice Message", "Your Picture"]}
+          buttonText={[buttonText.smiley, buttonText.voice, buttonText.photo]}
           buttonActions={[
             () => history.push({pathname: '/emoji', state: currentPost } ),
             () => history.push({pathname: '/voice', state: currentPost } ),

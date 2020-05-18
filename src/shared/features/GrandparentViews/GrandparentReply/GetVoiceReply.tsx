@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router'
 
 import {TextareaAutosize} from "@material-ui/core";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
-import GrandparentLayout from "../Components/GrandparentLayout";
+import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
 import { setReplyContent, submitReply } from "../../../../services/reply";
 
 import { Reply, REPLY_TYPES } from "../../../models/reply.model";
@@ -18,27 +17,10 @@ import Row from 'shared/components/Row/Row';
 import Child from 'shared/components/Child/Child';
 import Column from 'shared/components/Column/Column';
 
-let choicesList: Array<number> = [];
-
 const GetVoiceReply: React.FC = () => {
-
-  const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-      root: {
-        flexGrow: 1,
-      },
-      button: {
-        margin: theme.spacing(5),
-      },
-      highlighted: {
-        backgroundColor: 'gray'
-      }
-    }),
-  );
 
   const MAX_REPLY_LENGTH = 400;
   const NEAR_MAX_REPLY_LENGTH = MAX_REPLY_LENGTH - 30;
-  const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
   const currentPost: any = location.state;
@@ -240,7 +222,7 @@ const GetVoiceReply: React.FC = () => {
               </Column>
             </Row>
           }
-          buttonText={["Go back to Reply Options", "Send reply"]}
+          buttonText={[buttonText.replyOptions, buttonText.send]}
           buttonActions={[
             () => history.goBack(),
             e => buildReply(e) ] }

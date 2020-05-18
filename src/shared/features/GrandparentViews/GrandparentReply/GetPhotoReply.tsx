@@ -3,7 +3,7 @@ import Webcam from "react-webcam";
 
 import { setReplyContent, submitReply } from 'services/reply';
 import { cameraIcons } from "../../../../Icons";
-import GrandparentLayout from "../Components/GrandparentLayout";
+import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
 import { useHistory, useLocation } from "react-router";
 import { getUserProfile } from "../../../../services/user";
 import { Reply, REPLY_TYPES } from "../../../models/reply.model";
@@ -89,8 +89,8 @@ const GetPhotoReply: React.FC = () => {
               </Grid>
             }
             buttonText={!photoPreview ?
-              ["Back to message", "Take Photo"] :
-              ["Back to message", "Retake Photo", "Send Photo"]}
+              [buttonText.backToMessage, buttonText.take] :
+              [buttonText.backToMessage, buttonText.retake, buttonText.send]}
             buttonActions={!photoPreview ?
               [() => history.push({pathname: '/startReply', state: currentPost }), capture] :
               [() => history.push({pathname: '/startReply', state: currentPost }), capture, e => buildReply(e) ]}
