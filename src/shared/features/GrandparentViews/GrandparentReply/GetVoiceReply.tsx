@@ -181,70 +181,73 @@ const GetVoiceReply: React.FC = () => {
 
   return (
     <>
-      <GrandparentLayout
-        from={currentPost.from}
-        headerText={"Replying to "}
-        header2Text={"Press 'RECORD' to dictate a short message"}
-        alertText={getAlertText()}
-        boxContent={
+      { currentPost &&
+        <GrandparentLayout
+          from={currentPost.from}
+          headerText={"Replying to "}
+          header2Text={"Press 'RECORD' to dictate a short message"}
+          alertText={getAlertText()}
+          boxContent={
             <Row alignItems="flex-start" justify="center">
               <Column xs={12}>
-                  <RecordButton 
-                    handleDictationDone={handleDictationDone} 
-                    handleProgress={handleProgress}
-                    handleError={handleError}
-                  />
+                <RecordButton
+                  handleDictationDone={handleDictationDone}
+                  handleProgress={handleProgress}
+                  handleError={handleError}
+                />
 
-                  <span className="listenError">
-                    {lowConfidence && 
-                      <Row xs={12} justify="center">
+                <span className="listenError">
+                    {lowConfidence &&
+                    <Row xs={12} justify="center">
                         <Child xs={11}>
-                          <FormError error={"Sorry, I didn't catch that. Please record again."}/>
+                            <FormError error={"Sorry, I didn't catch that. Please record again."}/>
                         </Child>
-                      </Row>
+                    </Row>
                     }
 
-                    {replyNearlyTooLong &&
-                      <Row xs={12} justify="center">
-                        <Child xs={11}>
+                  {replyNearlyTooLong &&
+                  <Row xs={12} justify="center">
+                      <Child xs={11}>
                           <FormError error={`Approaching character limit! ${MAX_REPLY_LENGTH} allowed (${charsRemaining()} remaining)`} severity="warning"/>
-                        </Child>
-                      </Row>
-                    }
+                      </Child>
+                  </Row>
+                  }
 
-                    {replyTooLong && 
-                      <Row xs={12} justify="center">
-                        <Child xs={11}>
+                  {replyTooLong &&
+                  <Row xs={12} justify="center">
+                      <Child xs={11}>
                           <FormError error={`Maximum ${MAX_REPLY_LENGTH} characters (${charsOver()} over)`}/>
-                        </Child>
-                      </Row>
-                    }
+                      </Child>
+                  </Row>
+                  }
                   </span>
 
-                  <Row xs={12} justify="center">
-                    <Child xs={11}>
-                      <TextareaAutosize
-                        className={`grandparentReplyText thinBorder ${inProgress ? 'inProgressText' : ''}`}
-                        rowsMin={8}
-                        rowsMax={8}
-                        aria-label="voice reply"
-                        placeholder="Your voice message appears here"
-                        value={inProgress ? dictatedReply : completeReply}
-                        onChange={handleTextareaChange}
-                      />
-                    </Child>
+                <Row xs={12} justify="center">
+                  <Child xs={11}>
+                    <TextareaAutosize
+                      className={`grandparentReplyText thinBorder ${inProgress ? 'inProgressText' : ''}`}
+                      rowsMin={8}
+                      rowsMax={8}
+                      aria-label="voice reply"
+                      placeholder="Your voice message appears here"
+                      value={inProgress ? dictatedReply : completeReply}
+                      onChange={handleTextareaChange}
+                    />
+                  </Child>
 
-                  </Row>
+                </Row>
 
               </Column>
             </Row>
-        }
+          }
           buttonText={["Go back to Reply Options", "Send reply"]}
           buttonActions={[
             () => history.goBack(),
             e => buildReply(e) ] }
-          buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]} 
+          buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]}
           buttonDisabled={[false,(replyTooLong || !completeReply.trim())]} />
+
+      }
     </>
   )
 };

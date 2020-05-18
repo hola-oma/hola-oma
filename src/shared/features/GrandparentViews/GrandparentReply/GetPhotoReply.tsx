@@ -47,7 +47,7 @@ const GetPhotoReply: React.FC = () => {
                                   photoPreview, currentPost.pid, currentPost.creatorID);
       submitReply(e, replyContent)
         .then( () => { history.push({
-          pathname: "/newReply",
+          pathname: "/sentReply",
           state: {
             replyContent: replyContent,
             currentPost: currentPost  }
@@ -56,8 +56,8 @@ const GetPhotoReply: React.FC = () => {
     }
 
   return (
-    <div>
-      <>
+    <>
+      {currentPost &&
         <GrandparentLayout
             from={currentPost.from}
             headerText={ !photoPreview ? "Take a photo to send to " : "Sending photo to "}
@@ -82,8 +82,8 @@ const GetPhotoReply: React.FC = () => {
               [cameraIcons.openEnvelope, cameraIcons.camera] :
               [cameraIcons.openEnvelope, cameraIcons.camera, cameraIcons.paperAirplane]}
         />
-      </>
-    </div>
+      }
+    </>
   );
 };
 

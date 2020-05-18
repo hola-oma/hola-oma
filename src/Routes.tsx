@@ -74,7 +74,7 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
               <ProtectedRouteHoc exact path="/postDetails" isLoggedIn={isLoggedIn} public={false} RouteComponent={FamilyMsgView} />
               <ProtectedRouteHoc exact path="/newPost" isLoggedIn={isLoggedIn} public={false} RouteComponent={CreatePost} />
               <ProtectedRouteHoc exact path="/startReply" isLoggedIn={isLoggedIn} public={false} RouteComponent={GrandparentReplyOpts} />
-              <ProtectedRouteHoc exact path="/newReply" isLoggedIn={isLoggedIn} public={false} RouteComponent={SentGrandparentReply} />
+              <ProtectedRouteHoc exact path="/sentReply" isLoggedIn={isLoggedIn} public={false} RouteComponent={SentGrandparentReply} />
               <ProtectedRouteHoc exact path="/emoji" isLoggedIn={isLoggedIn} public={false} RouteComponent={GetEmojiReply} />
               <ProtectedRouteHoc exact path="/voice" isLoggedIn={isLoggedIn} public={false} RouteComponent={GetVoiceReply} />
               <ProtectedRouteHoc exact path="/photo" isLoggedIn={isLoggedIn} public={false} RouteComponent={GetPhotoReply} />
