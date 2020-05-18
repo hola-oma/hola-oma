@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {css} from "@emotion/core";
 import ClockLoader from "react-spinners/ClockLoader";
 
+import About from './shared/features/About/About';
 import SignIn from "./shared/features/SignIn/SignIn";
 import Join from "./shared/features/Join/Join";
 import RegisterDetails from './shared/features/RegisterDetails'
@@ -66,6 +67,7 @@ const Routes: React.FC<IRoutes & RouteComponentProps> = (props) => {   // {} is 
             <Route exact path="/signIn" component={SignIn} />
             <Route exact path="/resetPassword" component={ResetPassword} />
             <Route exact path="/handleReset" component={HandleReset} />
+            <Route exact path="/about" component={About} />
         {
           sessionRead && (
             <>
