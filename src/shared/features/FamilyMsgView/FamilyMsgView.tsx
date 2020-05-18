@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     modal: {
       position: 'absolute',
-      width: 400,
+      width: '50%',
       backgroundColor: theme.palette.background.paper,
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
@@ -150,6 +150,10 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const messageAsArray = (reply: Reply) => {
         return reply.message as number[];
     }
+
+    const messageAsString = (reply: Reply) => {
+        return reply.message as string;
+    }
     
     const isEmoji = (reply: Reply) => {
         return (reply.replyType === "emoji" && typeof reply.message !== "string");
@@ -157,6 +161,10 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
 
     const isMessage = (reply: Reply) => {
         return (reply.replyType === "voice" && typeof reply.message === "string"); 
+    }
+
+    const isPhoto = (reply: Reply) => {
+        return (reply.replyType === "photo" && typeof reply.message === "string");
     }
 
     return (
@@ -241,9 +249,9 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 replies.map((reply: Reply, index: number) => {
                     return (
                     <Grid item xs={4} key={index}>
-                        <div className={"postStyle"} onClick={()=>handleClick(reply)}>
-                            <Card variant="outlined" className={"postStyle"}>
-                                <CardContent>
+                        <div className={classes.postStyle} onClick={()=>handleClick(reply)}>
+                            <Card variant="outlined" className="replyCard">
+                                <CardContent className="replyContent">
                                     {isEmoji(reply) &&
                                         messageAsArray(reply).map((emojiIndex: number, replyIndex: number) => {
                                             return (
@@ -257,8 +265,16 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                                     {isMessage(reply) && 
                                         <p>{reply.message}</p>
                                     }
+
+                                    {isPhoto(reply) &&
+                                        <img
+                                            src={messageAsString(reply)}
+                                            className="photo"
+                                            alt="Reply img"
+                                        />
+                                    }
                                 </CardContent>
-                                <CardActions>
+                                <CardActions className="replyActions">
                                     <Typography variant="caption">
                                         Sent by {reply.from}
                                         <br/>

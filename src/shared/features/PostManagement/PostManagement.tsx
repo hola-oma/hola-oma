@@ -56,7 +56,7 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
         onNewReplies(numNewReplies);
       });
     }
-}, []); // fires on page load if this is empty [] 
+}, [onNewReplies, posts]); // fires on page load if this is empty [] 
 
   const getMessageSubstring = function(message: string) {
     let returnValue = "";
