@@ -6,6 +6,11 @@ import {Alert} from "@material-ui/lab";
 
 import Column from 'shared/components/Column/Column';
 
+const enum boxDimensions {
+  height = 486,   // 16:9 ratio
+  width = 864
+}
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -62,8 +67,8 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
             mx={"auto"}
             fontSize={24}
             display={"flex"}
-            height={486}      // 16:9 ratio
-            width={864}
+            height={boxDimensions.height}
+            width={boxDimensions.width}
           >
           {boxContent}
         </Box>
