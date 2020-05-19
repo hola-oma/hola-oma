@@ -43,10 +43,10 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
     let isMounted = true;
     let numNewReplies = 0;
 
-    if (isMounted) {
-      for (let i = 0; i < posts.length; i++) {
-      // eslint-disable-next-line no-loop-func
-        getRepliesToPost(posts[i].pid).then((replyArray: any) => {
+    for (let i = 0; i < posts.length; i++) {
+    // eslint-disable-next-line no-loop-func
+      getRepliesToPost(posts[i].pid).then((replyArray: any) => {
+        if (isMounted) {
           let newRep = false;
           setNumReplies(numReplies => numReplies.concat(replyArray.length));
           for (let j = 0; j < replyArray.length; j++) {
@@ -57,9 +57,10 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
           }
           setNewReplies(newReplies => newReplies.concat(newRep));
           onNewReplies(numNewReplies);
-        });
-      }
+        }
+      });
     }
+
     return () => { isMounted = false; }
 }, [onNewReplies, posts]); // fires on page load if this is empty [] 
 
