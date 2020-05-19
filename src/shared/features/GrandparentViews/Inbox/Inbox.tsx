@@ -2,12 +2,14 @@ import React from 'react';
 import { useHistory } from "react-router-dom";
 import { Theme, makeStyles } from '@material-ui/core/styles';
 
-import { Container, Grid, Typography, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
+import { Grid, Typography, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
 
 import { Post } from 'shared/models/post.model';
+import { navigationIcons } from "../../../../Icons";
 
 import './Inbox.css';
 import { markPostRead, getPostReadByCurrentUser } from "../../../../services/post";
+import GrandparentLayout from "../Components/GrandparentLayout";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -53,34 +55,48 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
   return (
     <>
-      <Container>
-        <Grid container>
-          {posts.length === 0 &&
-              <Grid item xs>
-                  <Typography variant="h4">Your mailbox is empty</Typography>
-              </Grid>
-          }
+      <GrandparentLayout
+        boxContent={
+          <Grid container spacing={0}>
+            {posts.length === 0 &&
+            <Grid item xs>
+                <Typography variant="h4">Your mailbox is empty</Typography>
+            </Grid>
+            }
 
-          <GridList className={classes.gridList} cols={3}>
-            {posts.map((post, index: number) => (
-              <GridListTile key={post.pid} onClick={() => pressEnvelope(post)} rows={1.25}>
-                <img src={getPostReadByCurrentUser(post) ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
-                     alt={"Letter from " + post.from}
-                />
+            <GridList
+              className={classes.gridList}
+              cols={3}
+              spacing={0}
+              cellHeight={160}   // 180 is default
+            >
+              {posts.map((post, index: number) => (
+                <GridListTile key={post.pid} onClick={() => pressEnvelope(post)} rows={1.25}>
+                  <img src={getPostReadByCurrentUser(post) ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
+                       alt={"Letter from " + post.from}
+                  />
 
-                <GridListTileBar
-                  title={"From: " + post.from}
-                  classes={{
-                    root: classes.titleBar,
-                    title: classes.title,
-                  }}
-                />
+                  <GridListTileBar
+                    title={"From: " + post.from}
+                    classes={{
+                      root: classes.titleBar,
+                      title: classes.title,
+                    }}
+                  />
 
-              </GridListTile>
-            ))}
+                </GridListTile>
+              ))}
             </GridList>
-        </Grid>
-      </Container>
+          </Grid>
+        }
+        buttonText={["Next messages"]}
+        buttonActions={[() => console.log("Go to next 6 messages")]}
+        buttonIcons={[navigationIcons.forward]}
+
+      />
+
+
+
     </>
   )
 }

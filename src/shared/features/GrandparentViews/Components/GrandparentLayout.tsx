@@ -46,8 +46,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IGrandparentLayout {
-  from: string,
-  headerText: string;
+  from?: string,
+  headerText?: string;
   header2Text?:string;
   alertText?: string | null;
   boxContent: any;
