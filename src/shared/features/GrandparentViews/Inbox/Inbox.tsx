@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useHistory} from "react-router-dom";
 import {makeStyles} from '@material-ui/core/styles';
 
@@ -47,6 +47,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
   const classes = useStyles();
   const history = useHistory();
   const [currentMessages, setCurrentMessages] = useState<Array<Post>>(posts.slice(0, 6));
+  const [buttonsDisabled, setButtonsDisabled]  = useState<Array<boolean>>([true, false]);
 
   const pressEnvelope = async function (envelopePost: Post) {
       currentPost = envelopePost;
@@ -58,15 +59,21 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
   const getNextMessages = () => {
     console.log("Go to next 6 messages");
     if (messageIndex < 12) { messageIndex += 6; }
-    console.log("message index set to: " + messageIndex);
+    updateButtonsDisabled();
     setCurrentMessages(posts.slice(messageIndex, messageIndex + 6));
   }
 
   const getPrevMessages = () => {
     console.log("Go back 6 messages");
     if (messageIndex > 0) { messageIndex -= 6; }
-    console.log("message index set to: " + messageIndex);
+    updateButtonsDisabled();
     setCurrentMessages(posts.slice(messageIndex, messageIndex + 6));
+  }
+
+  const updateButtonsDisabled = () => {
+    if (messageIndex === 0) { setButtonsDisabled([true, false]); }
+    if (messageIndex === 6) { setButtonsDisabled([false, false]); }
+    if (messageIndex === 12) { setButtonsDisabled([false, true]); }
   }
 
   return (
@@ -104,7 +111,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
         buttonText={ ["Previous Messages", "Next Messages"] }
         buttonActions={ [() => getPrevMessages(), () => getNextMessages()] }
         buttonIcons={ [navigationIcons.back, navigationIcons.forward] }
-
+        buttonDisabled={ buttonsDisabled }
       />
     </>
   )
