@@ -57,7 +57,14 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
   const getNextMessages = () => {
     console.log("Go to next 6 messages");
-    messageIndex += 6;
+    if (messageIndex < 12) { messageIndex += 6; }
+    console.log("message index set to: " + messageIndex);
+    setCurrentMessages(posts.slice(messageIndex, messageIndex + 6));
+  }
+
+  const getPrevMessages = () => {
+    console.log("Go back 6 messages");
+    if (messageIndex > 0) { messageIndex -= 6; }
     console.log("message index set to: " + messageIndex);
     setCurrentMessages(posts.slice(messageIndex, messageIndex + 6));
   }
@@ -101,7 +108,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
           ["Previous Messages", "Next Messages"]
         }
         buttonActions={[
-            () => console.log("GetPrevMessages"),
+            () => getPrevMessages(),
             () => getNextMessages()
           ]}
         buttonIcons={[navigationIcons.back, navigationIcons.forward]}
