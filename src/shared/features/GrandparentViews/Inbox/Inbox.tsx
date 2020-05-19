@@ -88,30 +88,22 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
               {currentMessages.map((post, index: number) => (
                 <GridListTile key={post.pid} onClick={() => pressEnvelope(post)} rows={1.25}>
                   <img src={getPostReadByCurrentUser(post) ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
-                       alt={"Letter from " + post.from}
-                  />
+                       alt={"Letter from " + post.from} />
 
                   <GridListTileBar
                     title={"From: " + post.from}
                     classes={{
                       root: classes.titleBar,
                       title: classes.title,
-                    }}
-                  />
-
+                    }} />
                 </GridListTile>
               ))}
             </GridList>
           </Grid>
         }
-        buttonText={
-          ["Previous Messages", "Next Messages"]
-        }
-        buttonActions={[
-            () => getPrevMessages(),
-            () => getNextMessages()
-          ]}
-        buttonIcons={[navigationIcons.back, navigationIcons.forward]}
+        buttonText={ ["Previous Messages", "Next Messages"] }
+        buttonActions={ [() => getPrevMessages(), () => getNextMessages()] }
+        buttonIcons={ [navigationIcons.back, navigationIcons.forward] }
 
       />
     </>
