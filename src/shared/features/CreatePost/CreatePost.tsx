@@ -24,7 +24,7 @@ const CreatePost: React.FC = () => {
     return (
         <>
             <>
-                {role === roles.poster && <NewFamilyPost/>}
+                {role === roles.poster && <NewFamilyPost currentPost={null} closeModal={null}/>}
                 {role === roles.receiver && history.push({pathname: '/startReply', state: currentPost }) }
             </>
         </>

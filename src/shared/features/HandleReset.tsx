@@ -40,7 +40,6 @@ const HandleReset: React.FC<IHandleReset> = () => {
   const [newPassword, setNewPassword] = useState("");
   const [resetSent, setResetSent] = useState(false);
 
-  const [mode, setMode] = useState("");
   const [actionCode, setActionCode] = useState("");
 
   const [error, setErrors] = useState("");
@@ -113,12 +112,11 @@ const HandleReset: React.FC<IHandleReset> = () => {
       .catch((error) => {
         setErrors(error.message);
       })
-  }, []);
+  }, [params]);
 
   useEffect(() => {
-    setMode(params?.mode as string); // "resetPassword"
     setActionCode(params?.oobCode as string); // long string
-  }, []);
+  }, [params]);
 
   /* RESET PASSWORD */
   const handleForm = async (e: any) => {

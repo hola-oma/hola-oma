@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { Container } from '@material-ui/core';
+import { Container, Typography } from '@material-ui/core';
 
 import { Reply } from "../../models/reply.model";
 import { replyEmojiArray } from "../../../Icons";
 
+import './FamilyMsgView.css';
+
 interface IReply {
-    // add posts as Post model here
-    // For now, I made it a number to show how you might loop through a quantity of things passed in
-    reply: Reply; // array of type "Post"
+    reply: Reply;
   }
 
 const ModalReply: React.FC<IReply> = ({reply}) => {
@@ -17,6 +17,10 @@ const ModalReply: React.FC<IReply> = ({reply}) => {
 
     const messageAsArray = (reply: Reply) => {
         return reply.message as number[];
+    }
+
+    const messageAsString = (reply: Reply) => {
+        return reply.message as string;
     }
     
     const isEmoji = (reply: Reply) => {
@@ -33,7 +37,7 @@ const ModalReply: React.FC<IReply> = ({reply}) => {
                 {
                     messageAsArray(reply).map((emojiIndex: number, replyIndex: number) => {
                         return (
-                            <Container>
+                            <Container key={replyIndex}>
                                 {emojiIcons[emojiIndex]}
                             </Container>
                         )
@@ -43,12 +47,19 @@ const ModalReply: React.FC<IReply> = ({reply}) => {
         )
     } else if (isMessage(reply)) {
         return (
-            <Container className="wrapReply">{reply.message}</Container>
+            <Container className="wrapReply">
+                <Typography variant="h5">
+                    {reply.message}
+                </Typography>
+            </Container>
         )
     } else {
         return (
-            <>
-            </>
+            <img
+                src={messageAsString(reply)}
+                className="modalPhoto"
+                alt="Reply img"
+            />
         )
     }
 };

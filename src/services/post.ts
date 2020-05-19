@@ -91,6 +91,21 @@ export const updatePostID = async (postID: string) => {
     });
 }
 
+export const updatePost = async (post: Post) => {
+  const db = firebase.firestore();
+  console.log(post);
+
+  try {
+    await db.collection("posts").doc(post.pid).set(post)
+      .then(function() {
+      console.log("Document successfully updated");
+      })
+  } catch(e) {
+    console.log(e.message);
+    throw Error(e.message);
+  }
+}
+
 export const uploadFile = async(selectedFile: Blob | File) => {
   // Get a unique name to store the file under
   let fileName = Date.now(); 

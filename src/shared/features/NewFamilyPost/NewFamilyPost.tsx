@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router";
 
 import { TextField, Button, Checkbox, Typography, Tooltip } from '@material-ui/core';
-import { createPost, updatePostID, uploadFile } from "services/post";
+import { createPost, updatePostID, uploadFile, updatePost } from "services/post";
+import { Post } from "../../models/post.model";
 import { getUserProfile } from "services/user";
 import { getLinkedAccounts } from "services/accountLink";
 import FormError from 'shared/components/FormError/FormError';
@@ -25,7 +26,12 @@ interface IReadObj {
     [key: string]: boolean
 }
 
-const NewFamilyPost: React.FC = () => {
+interface IPost {
+    currentPost: Post | null,
+    closeModal: any
+}
+
+const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
     const MAX_POST_LENGTH = 400;
     const [selectedFile, setSelectedFile] = useState<Blob | File | null>();
     const [fileType, setFileType] = useState("");
@@ -37,6 +43,9 @@ const NewFamilyPost: React.FC = () => {
     const [fileTypeError, setFileTypeError] = useState<string | null>();
     const [postTooLong, setPostTooLong] = useState(false);
     const [postLength, setPostLength] = useState(0);
+    const [editing, setEditing] = useState(false);
+    const [photoURL, setPhotoURL] = useState("");
+    const [videoURL, setVideoURL] = useState("");
     const history = useHistory();
 
     const charsOver = () => {
@@ -49,7 +58,7 @@ const NewFamilyPost: React.FC = () => {
         if (postTooLong) {
             return;
         }
-        if (!selectedFile && !textValue) {
+        if (!selectedFile && !textValue && !photoURL.length && !videoURL.length) {
             setError("You must provide a message and/or photo.");
             return;
         }
@@ -85,16 +94,34 @@ const NewFamilyPost: React.FC = () => {
                 post.videoURL = fileURL;
             }
         }
+
+        if (photoURL.length) {
+            post.photoURL = photoURL;
+        }
+
+        if (videoURL.length) {
+            post.videoURL = videoURL;
+        }
     
-        try {
-            const postSent = await createPost(post);
-            if (postSent) {
-                await updatePostID(postSent);       // Add post id to new post document
+        if (!currentPost) {
+            try {
+                const postSent = await createPost(post);
+                if (postSent) {
+                    await updatePostID(postSent);       // Add post id to new post document
+                }
+                if (history) history.push('/posts');
+            } catch(e) {
+                console.error(e.message);
             }
-            if (history) history.push('/posts');
-          } catch(e) {
-            console.error(e.message);
-          }
+        } else {
+            post.pid = currentPost.pid;
+            try {
+                updatePost(post);
+                closeModal(post);
+            } catch(e) {
+                console.error(e.message);
+            }
+        }
       };
 
     const setRead = (receiverIDs: Array<string>) => {
@@ -154,6 +181,11 @@ const NewFamilyPost: React.FC = () => {
         return imageUrl;
     }
 
+    const setMediaNull = () => {
+        setVideoURL("");
+        setPhotoURL("");
+    }
+
     useEffect(() => {
         getUserProfile()
         .then((userProfile:any) => {
@@ -167,15 +199,30 @@ const NewFamilyPost: React.FC = () => {
             for (let i = 0; i < linkedAccounts.length; i++) {
                 if (linkedAccounts[i].verified === true) {
                     let displayName = linkedAccounts[i].displayName ? linkedAccounts[i].displayName : "Unknown Username";
+                    let checked = true;
+                    if (currentPost && currentPost.receiverIDs.indexOf(linkedAccounts[i].id) === -1) {
+                        checked = false;
+                    }
                     let receiver = {
                         id: linkedAccounts[i].id,
                         name: displayName,
-                        checked: true};
+                        checked: checked};
                     rcvrs.push(receiver);
                 }
             }
             setReceivers(rcvrs);
         });
+        if (currentPost) {
+            setEditing(true);
+            updateTextValue(currentPost.message);
+            if (currentPost.photoURL) {
+                setPhotoURL(currentPost.photoURL);
+                setFileType('image');
+            } else if (currentPost.videoURL) {
+                setVideoURL(currentPost.videoURL);
+                setFileType('video');
+            }
+        }
     }, []); // fires on page load if this is empty [] 
 
     useEffect(() => {
@@ -190,12 +237,15 @@ const NewFamilyPost: React.FC = () => {
     return (
         <>
         <Column justify="center" alignItems="center">
-            <Typography component="h2" variant="h5" align="center">
+            {!editing && <Typography component="h2" variant="h5" align="center">
                 Create Post
-            </Typography>
+            </Typography>}
+            {editing && <Typography component="h2" variant="h5" align="center">
+                Edit Post
+            </Typography>}
             <br/>
             <form className="newFamilyPostForm" noValidate onSubmit={e => submitPost(e)}>
-            {!selectedFile &&
+            {(!selectedFile && !photoURL && !videoURL) &&
                 <Row justify="center">
                     <Tooltip title="Supported video formats: mp4, webm, ogv">
                         <Button
@@ -246,6 +296,36 @@ const NewFamilyPost: React.FC = () => {
                     </Row>
                 </>
             }
+            {(photoURL || videoURL) &&
+                <>
+                    {fileType === 'image' &&
+                        <Row justify="center">
+                            <img src={photoURL}
+                                className="photo"
+                                alt="Attached img"/>
+                        </Row>
+                    }
+                    {fileType === 'video' &&
+                        <Row justify="center">
+                            <video src={videoURL}
+                                className="photo"
+                                preload="auto"
+                                controls
+                                style={{height: '95%', width: '95%'}}
+                            />
+                        </Row>
+                    }
+                    <Row justify="center">
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            onClick={() => setMediaNull()}>
+                            <ClearIcon/>Remove file
+                        </Button>
+                    </Row>
+                </>
+            }
             <TextField
                 multiline
                 fullWidth
@@ -278,12 +358,21 @@ const NewFamilyPost: React.FC = () => {
             }
             <br/>
             <Row justify="center">
-            <Button
+            {editing &&
+                <Button
                 type="submit"
                 variant="contained"
                 disabled={postTooLong}>
-                Send Post
-            </Button>
+                Update Post
+            </Button>}
+            {!editing &&
+                <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={postTooLong}>
+                    Send Post
+                </Button>
+            }
             </Row>
             {error &&
                 <FormError error={error}/>
