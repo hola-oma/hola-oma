@@ -10,7 +10,6 @@ import { deletePost } from "services/post";
 import { getRepliesToPost, markReplyRead } from "services/reply";
 import { Reply } from "../../models/reply.model";
 import { replyEmojiArray } from "../../../Icons";
-import ModalReply from "./ModalReply";
 import ManageConfirmDelete from "./ManageConfirmDelete";
 import NewFamilyPost from "../NewFamilyPost/NewFamilyPost";
 
@@ -20,6 +19,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
 import Column from 'shared/components/Column/Column';
+import Child from 'shared/components/Child/Child';
 
 import Moment from 'react-moment';
 
@@ -27,14 +27,6 @@ import './FamilyMsgView.css';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    modal: {
-      position: 'absolute',
-      width: '50%',
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3)
-    },
     editModal: {
       position: 'absolute',
       width: '75%',
@@ -49,7 +41,9 @@ const useStyles = makeStyles((theme: Theme) =>
         minHeight: 300
     },
     postStyle: {
-      height: "100%"
+      height: "100%",
+      width: '50%',
+      margin: 'auto'
     },
     spacing: {
         margin: '5px'
@@ -80,10 +74,8 @@ interface IReceiver {
 
 const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const classes = useStyles();
-    const [modalOpen, setModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [post, setPost] = useState(props.location.state.post);
-    const [modalReply, setModalReply] = useState<Reply>();
     const [receivers, setReceivers] = useState<IReceiver[]>([]);
     const [replies, setReplies] = useState<Reply[]>([]);
     const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState<boolean>(false);
@@ -115,13 +107,6 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             }
         });
     }, [post.pid]); // fires on page load if this is empty [] 
-
-    const handleClick = (reply: Reply) => {
-        setModalOpen(!modalOpen);
-        if (reply) {
-            setModalReply(reply);
-        }
-    }
 
     const handleEditModal = () => {
         setEditModalOpen(!editModalOpen);
@@ -245,12 +230,12 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             <Typography component="h2" variant="h5" align="center">
                 Replies
             </Typography>
-                <Grid container spacing={2}>
+                <Grid container>
                 {
                 replies.map((reply: Reply, index: number) => {
                     return (
-                    <Grid item xs={4} key={index}>
-                        <div className={classes.postStyle} onClick={()=>handleClick(reply)}>
+                    <Child xs={12} key={index}>
+                        <div className={classes.postStyle}>
                             <Card variant="outlined" className="replyCard">
                                 <CardContent className="replyContent">
                                     {isEmoji(reply) &&
@@ -284,16 +269,11 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                                 </CardActions>
                             </Card>
                         </div>
-                    </Grid>
+                    </Child>
                     )
                 })
                 }
             </Grid>
-            <Modal open={modalOpen} onClose={handleClick} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-            <div className={classes.modal}>
-                {modalReply && <ModalReply reply={modalReply}/>}
-            </div>
-            </Modal>
             <Modal open={editModalOpen} onClose={handleEditModal} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
             <div className={classes.editModal}>
                 {editPost && <NewFamilyPost currentPost={post} closeModal={doneEditing}/>}
