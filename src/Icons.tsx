@@ -19,6 +19,18 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 
 // Returns an array so both grandparent and family sides can map and/or access by index
+export const replyEmojiPNGs = () => {
+  return [
+    require('../src/icons/smile.png'),
+    require('../src/icons/thumbsup.png'),
+    require('../src/icons/frown.png'),
+    require('../src/icons/heart.png'),
+    require('../src/icons/cake.png'),
+    require('../src/icons/band-aid.png'),
+  ];
+}
+
+// Returns an array so both grandparent and family sides can map and/or access by index
 export const replyEmojiArray = (): Array<React.ReactElement<SvgIconProps>> => {
   return [
     <InsertEmoticonIcon/>,

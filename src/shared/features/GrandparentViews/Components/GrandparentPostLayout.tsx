@@ -6,23 +6,28 @@ import {
 } from '@material-ui/core';
 import { makeStyles,  createStyles } from "@material-ui/core/styles";
 
-import {  getMessageSubstring } from "../../../../services/post";
 import { viewPostIcons } from "../../../../Icons";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-  media: {
-    height: 425,
-    objectFit: 'contain',
-  },
-  mediumText: {   // works for ~110 words
-    height: 375,
-    objectFit: 'contain'
-  },
-  both: {
-    height: 200,
-    objectFit: 'contain',
-  },
+    objectFit: {
+      objectFit: 'contain',
+    },
+    media: {
+      height: 425,
+    },
+    shortText: {
+      height: 400,
+    },
+    mediumShortText: {
+      height: 350,
+    },
+    mediumText: {
+      height: 300,
+    },
+    largeText: {
+      height: 200,
+    },
     paper: {
       position: 'absolute',
       maxWidth: 800,
@@ -65,15 +70,16 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
   }
 
   const getStyle = (length: number) => {
-    // todo: add more variation depending on message length
-    if (length < 50) return classes.media;
-    if (length < 200) return classes.mediumText;
-    else return classes.both;
+    if (length <= 50) return `${classes.media} ${classes.objectFit}`;
+    if (length <= 100) return `${classes.shortText} ${classes.objectFit}`;
+    if (length <= 150) return `${classes.mediumShortText} ${classes.objectFit}`;
+    if (length <= 200) return `${classes.mediumText} ${classes.objectFit}`;
+    else return `${classes.largeText} ${classes.objectFit}`;
   }
 
   const modalBody = (
     <div style={modalStyle} className={classes.paper}>
-      <img src={imageURL} alt={"Message from {from}"}></img>
+      <img src={imageURL} alt={"Message from {from}"}/>
       <div
         onClick={handleClick}
         style={{
@@ -98,7 +104,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
           style={{ height: "100%", overflowY: "hidden" }}
     >
       {imageURL &&
-      <Grid item >
+      <Grid item xs={12} style={{display: "inline-block"}}>
           <Card >
               <CardActionArea>
                   <div style={{ position: 'relative' }} >
@@ -124,20 +130,25 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
                   </div>
                 {message &&
                 <CardContent>
-                    <Typography variant="h5" color="textPrimary" component="p">
-                      {getMessageSubstring(message, 400)}
+                    <Typography
+                        variant="h5"
+                        color="textPrimary"
+                        component="p"
+                        style={{overflowWrap: "break-word"}}
+                        align={message.length <= 50 ? "center" : "left"}
+                    >
+                      {message}
                     </Typography>
                 </CardContent>
                 }
-
               </CardActionArea>
           </Card>
       </Grid>
       }
 
       {!imageURL &&
-        <Typography variant="h5" align={message.length < 50 ? "center" : "left"} >
-          {getMessageSubstring(message, 625)}
+        <Typography variant="h5" align={message.length <= 50 ? "center" : "left"} >
+          {message}
         </Typography>
       }
       <Modal

@@ -1,39 +1,70 @@
 import React, {useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router'
-import key from 'weak-key';
 
-import { Button, Card, CardContent, Grid, SvgIconProps } from "@material-ui/core";
+import { ButtonBase,  Grid } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
-import GrandparentLayout from "../Components/GrandparentLayout";
+import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
 import { setReplyContent, submitReply } from "../../../../services/reply";
 
 import { REPLY_TYPES } from "../../../models/reply.model";
 import { getUserProfile } from "../../../../services/user";
-import { replyEmojiArray, mailIcons } from "../../../../Icons";
+import { replyEmojiPNGs, mailIcons } from "../../../../Icons";
 
 let choicesList: Array<number> = [];
 
 const GetEmojiReply: React.FC = () => {
 
+  // Adapted from: https://material-ui.com/components/buttons/
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
-        flexGrow: 1,
+        display: 'flex',
+        flexWrap: 'wrap',
+        minWidth: 300,
+        width: '100%',
       },
-      button: {
-        margin: theme.spacing(5),
+      image: {
+        position: 'relative',
       },
-      highlighted: {
-        backgroundColor: 'gray'
-      }
+      imageSrc: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center 40%',
+      },
+      highlight: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundColor: theme.palette.common.black,
+        opacity: 0.4,
+        transition: theme.transitions.create('opacity'),
+      },
+      noHighlight: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundColor: 'white',
+        color: 'black',
+        opacity: 0.4,
+        transition: theme.transitions.create('opacity'),
+      },
     }),
   );
 
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
-  const emojiIcons = replyEmojiArray();
+  const emojiIcons = replyEmojiPNGs();
   const currentPost: any = location.state;
 
   const [displayName, setDisplayName] = useState("");
@@ -98,30 +129,18 @@ const GetEmojiReply: React.FC = () => {
             alertText={getAlertText()}
             boxContent={
               <Grid container>
-                {
-                  emojiIcons.map( (icon: React.ReactElement<SvgIconProps>, index: number) => {
-                    return (
-                      <Grid item xs={4}
-                            className={"inboxCard"}
-                            key={key(icon)}>
-                        <Card>
-                          <CardContent onClick={() => getChoices(index)}
-                                       className={ highlightedList[index] ? classes.highlighted : classes.root }>
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              className={classes.button}>
-                              {icon}
-                            </Button>
-                          </CardContent>
-                        </Card>
-                      </Grid>
-                    )
-                  })
-                }
+                {emojiIcons.map((icon, index: number) => (
+                  <ButtonBase
+                    className={classes.image}
+                    style={{width: '33%'}}
+                    onClick={() => getChoices(index)} >
+                    <span className={classes.imageSrc} style={{backgroundImage: `url(${icon})` }} />
+                    <span className={highlightedList[index] ? classes.highlight : classes.noHighlight} />
+                  </ButtonBase>
+                ))}
               </Grid>
             }
-            buttonText={["Go back to Reply Options", "Send Smiley(s)"]}
+            buttonText={[buttonText.replyOptions, buttonText.send]}
             buttonActions={[
               () => history.goBack(),
               e => buildReply(e) ] }

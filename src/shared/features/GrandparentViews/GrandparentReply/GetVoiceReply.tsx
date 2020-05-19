@@ -3,7 +3,7 @@ import { useHistory, useLocation } from 'react-router'
 
 import {TextareaAutosize} from "@material-ui/core";
 
-import GrandparentLayout from "../Components/GrandparentLayout";
+import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
 import { setReplyContent, submitReply } from "../../../../services/reply";
 
 import { Reply, REPLY_TYPES } from "../../../models/reply.model";
@@ -139,7 +139,7 @@ const GetVoiceReply: React.FC = () => {
                                   dictatedReply, currentPost.pid, currentPost.creatorID);
       submitReply(e, replyContent)
         .then( () => { history.push({
-          pathname: "/posts",
+          pathname: "/sentReply",
           state: {
             replyContent: replyContent,
             currentPost: currentPost  }
@@ -225,7 +225,7 @@ const GetVoiceReply: React.FC = () => {
               </Child>
             </Row>
           }
-          buttonText={["Go back to Reply Options", "Send reply"]}
+          buttonText={[buttonText.replyOptions, buttonText.send]}
           buttonActions={[
             () => history.goBack(),
             e => buildReply(e) ] }

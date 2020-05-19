@@ -1,10 +1,30 @@
 import React from 'react';
 
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {Grid, Box, Button, SvgIconProps} from '@material-ui/core';
+import {Grid, Box, Button, SvgIconProps, Typography} from '@material-ui/core';
 import {Alert} from "@material-ui/lab";
 
 import Column from 'shared/components/Column/Column';
+
+const boxDimensions = {
+  height: 486,   // 16:9 ratio
+  width: 864
+}
+
+export const buttonText = {
+  // Navigation
+  inbox: "Go back to Inbox",
+  replyOptions: "Go back to Reply Options",
+  backToMessage: "Go back to Message",
+  // Reply options
+  smiley: "Smiley",
+  voice: "Voice Message",
+  photo: "Your Picture",
+  send: "Send Reply",
+  // Photo options
+  take: "Take Photo",
+  retake: "Retake Photo",
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,7 +40,6 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.text.secondary,
     },
     title: {
-      padding: theme.spacing(2),
       textAlign: 'center',
     }
   }),
@@ -46,8 +65,10 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
     <Column justify="center" alignItems="center">
       {/*Header*/}
       <Grid item xs={12} className={classes.title}>
-        <h1>{headerText} {from}</h1>
-        { header2Text && <h2>{header2Text}</h2> }
+        <Typography variant="h4" gutterBottom>{headerText} {from}</Typography>
+        { header2Text &&
+          <Typography variant="h5" gutterBottom>{header2Text}</Typography>
+        }
       </Grid>
 
       {/*Alert*/}
@@ -61,8 +82,8 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
             mx={"auto"}
             fontSize={24}
             display={"flex"}
-            height={486}      // 16:9 ratio
-            width={864}
+            height={boxDimensions.height}
+            width={boxDimensions.width}
           >
           {boxContent}
         </Box>
