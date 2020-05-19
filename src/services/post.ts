@@ -6,6 +6,9 @@ import { Post } from '../shared/models/post.model';
 import {authenticateFromStore, getUserRoleByID} from "./user";
 import {roles} from "../enums/enums";
 
+export const grandparentLimit = 18;
+export const familyLimit = 120;
+
 export const getPosts = async (): Promise<Post[]> => {
   await authenticateFromStore();
   const user = firebase.auth().currentUser;
@@ -17,17 +20,17 @@ export const getPosts = async (): Promise<Post[]> => {
   let userRole: string = await getUserRoleByID(user?.uid as string);
   let fieldPath = (userRole === roles.receiver) ? "receiverIDs" : "creatorID";
   let opStr = (userRole === roles.receiver) ? "array-contains" : "==";
-  let limit = (userRole === roles.receiver) ? 6 : 120;
+  let limit = (userRole === roles.receiver) ? grandparentLimit : familyLimit;
 
   try {
     const postRef = db.collection('posts')
       .where(fieldPath, opStr as "==" | "array-contains", userId)
       .orderBy("date", "desc")
-      .limit(limit)                                 // quick-and-dirty "age off" queue
-    postRef.onSnapshot(snapshot => {          // listen for state change
+      .limit(limit)                                   // "age off" queue
+    postRef.onSnapshot(snapshot => {           // listen for state change
       const currentPosts: Post[] = [];
       snapshot.forEach(doc => {
-        // console.log(doc.id, '->', doc.data());
+        console.log(doc.id, '->', doc.data()["from"]);
         const data = doc.data();
         currentPosts.push({
           pid: data.pid,

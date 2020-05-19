@@ -62,13 +62,12 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
   const classes = useStyles();
 
   return (
-    <Column justify="center" alignItems="center">
+    <Column justify="center">
+
       {/*Header*/}
       <Grid item xs={12} className={classes.title}>
         <Typography variant="h4" gutterBottom>{headerText} {from}</Typography>
-        { header2Text &&
-          <Typography variant="h5" gutterBottom>{header2Text}</Typography>
-        }
+        { header2Text && <Typography variant="h5" align={"center"}>{header2Text}</Typography> }
       </Grid>
 
       {/*Alert*/}
