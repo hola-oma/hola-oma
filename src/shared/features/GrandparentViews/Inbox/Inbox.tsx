@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { useHistory } from "react-router-dom";
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import React, {useEffect, useState} from 'react';
+import {useHistory} from "react-router-dom";
+import {makeStyles} from '@material-ui/core/styles';
 
-import { Grid, Typography, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
+import {Grid, GridList, GridListTile, GridListTileBar, Typography} from '@material-ui/core';
 
-import { Post } from 'shared/models/post.model';
-import { navigationIcons } from "../../../../Icons";
+import {Post} from 'shared/models/post.model';
+import {navigationIcons} from "../../../../Icons";
 
 import './Inbox.css';
-import {markPostRead, getPostReadByCurrentUser, getPosts} from "../../../../services/post";
+import {getPostReadByCurrentUser, markPostRead} from "../../../../services/post";
 import GrandparentLayout from "../Components/GrandparentLayout";
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
       minWidth: 250,
       maxWidth: 250,
@@ -40,13 +40,13 @@ interface IInbox {
 }
 
 let currentPost: Post;
+let messageIndex: number = 0;
 
 const Inbox: React.FC<IInbox> = ({ posts }) => {
 
   const classes = useStyles();
   const history = useHistory();
-  const [currentPosts, setCurrentPosts] = useState<Post[]>(posts.slice(0, 6));    // Start with first six messages
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentMessages, setCurrentMessages] = useState<Array<Post>>(posts.slice(0, 6));
 
   const pressEnvelope = async function (envelopePost: Post) {
       currentPost = envelopePost;
@@ -55,10 +55,11 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
       history.push({pathname: '/startReply', state: envelopePost } );
     }
 
-  const getNextMessages = async function (index: number)  {
-    console.log("Go to next 6 messages")
-    setCurrentPosts(posts.slice(index, index + 6));
-    setCurrentPage(currentPage+1);
+  const getNextMessages = () => {
+    console.log("Go to next 6 messages");
+    messageIndex += 6;
+    console.log("message index set to: " + messageIndex);
+    setCurrentMessages(posts.slice(messageIndex, messageIndex + 6));
   }
 
   return (
@@ -77,7 +78,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
               spacing={0}
               cellHeight={160}   // 180 is default
             >
-              {currentPosts.map((post, index: number) => (
+              {currentMessages.map((post, index: number) => (
                 <GridListTile key={post.pid} onClick={() => pressEnvelope(post)} rows={1.25}>
                   <img src={getPostReadByCurrentUser(post) ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
                        alt={"Letter from " + post.from}
@@ -97,10 +98,13 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
           </Grid>
         }
         buttonText={
-          (currentPage === 1 || currentPage === 3) ? ["Next Messages"] : ["Previous Messages", "Next Messages"]
+          ["Previous Messages", "Next Messages"]
         }
-        buttonActions={[() => getNextMessages(6)]}
-        buttonIcons={[navigationIcons.forward]}
+        buttonActions={[
+            () => console.log("GetPrevMessages"),
+            () => getNextMessages()
+          ]}
+        buttonIcons={[navigationIcons.back, navigationIcons.forward]}
 
       />
     </>
