@@ -6,7 +6,7 @@ import {Alert} from "@material-ui/lab";
 
 import Column from 'shared/components/Column/Column';
 
-export const boxDimensions = {
+const boxDimensions = {
   height: 486,   // 16:9 ratio
   width: 864
 }
@@ -46,8 +46,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IGrandparentLayout {
-  from: string,
-  headerText: string;
+  from?: string,
+  headerText?: string;
   header2Text?:string;
   alertText?: string | null;
   boxContent: any;
