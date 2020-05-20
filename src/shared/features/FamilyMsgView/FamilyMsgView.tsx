@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 
-import {Card, Modal, CardContent, CardActions, Paper, Typography, Grid, Container, Button} from '@material-ui/core';
+import {Card, Modal, CardContent, CardActions, Paper, Typography, Grid, Container, Button, Tooltip} from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 import { Post } from 'shared/models/post.model';
@@ -19,6 +19,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
 import Column from 'shared/components/Column/Column';
+import Row from 'shared/components/Row/Row';
 import Child from 'shared/components/Child/Child';
 
 import Moment from 'react-moment';
@@ -51,6 +52,9 @@ const useStyles = makeStyles((theme: Theme) =>
     message: {
         margin: '10',
         width: '100%'
+    },
+    emojis: {
+        margin: '5px'
     }
   })
 );
@@ -78,6 +82,8 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const [post, setPost] = useState(props.location.state.post);
     const [receivers, setReceivers] = useState<IReceiver[]>([]);
     const [replies, setReplies] = useState<Reply[]>([]);
+    const [repliesSet, setRepliesSet] = useState<boolean>(false);
+    const [emojiReplies, setEmojiReplies] = useState<Array<Array<string>>>();
     const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState<boolean>(false);
     const [editPost, setEditPost] = useState(false);
 
@@ -101,10 +107,24 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             setReceivers(rcvrs);
         });
         getRepliesToPost(post.pid).then((replyArray: any) => {
-            setReplies(replyArray);
+            let replies: Reply[];
+            replies = [];
+            let emojiReplies: Array<Array<string>>;
+            emojiReplies = [[], [], [], [], [], []];
             for (let i = 0; i < replyArray.length; i++) {
                 markReplyRead(replyArray[i].rid);
+                if (replyArray[i].replyType === "emoji") {
+                    for (let j = 0; j < replyArray[i].message.length; j++) {
+                        let emojiIndex = replyArray[i].message[j];
+                        emojiReplies[emojiIndex].push(replyArray[i].from);
+                    }
+                } else {
+                    replies.push(replyArray[i]);
+                }
             }
+            setReplies(replies);
+            setRepliesSet(true);
+            setEmojiReplies(emojiReplies);
         });
     }, [post.pid]); // fires on page load if this is empty [] 
 
@@ -132,16 +152,8 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         history.push('/posts')
     }
 
-    const messageAsArray = (reply: Reply) => {
-        return reply.message as number[];
-    }
-
     const messageAsString = (reply: Reply) => {
         return reply.message as string;
-    }
-    
-    const isEmoji = (reply: Reply) => {
-        return (reply.replyType === "emoji" && typeof reply.message !== "string");
     }
 
     const isMessage = (reply: Reply) => {
@@ -150,6 +162,18 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
 
     const isPhoto = (reply: Reply) => {
         return (reply.replyType === "photo" && typeof reply.message === "string");
+    }
+
+    const getTooltip = (reply: Array<string>) => {
+        return (
+            <React.Fragment>
+                {reply.map((reply, index: number) => {
+                    return (
+                        <Typography key={index}>{reply}</Typography>
+                    )
+                })}
+            </React.Fragment>
+          );
     }
 
     return (
@@ -230,7 +254,18 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             <Typography component="h2" variant="h5" align="center">
                 Replies
             </Typography>
-                <Grid container>
+            <Row alignItems="center" justify="center">
+                {emojiReplies && emojiReplies.filter(reply => {return reply.length}).map((reply, index: number) => {
+                    return (
+                        <Tooltip title={getTooltip(reply)} key={index} arrow>
+                            <Typography variant="h5" className={classes.emojis}>
+                                {emojiIcons[index] }
+                            </Typography>
+                        </Tooltip>
+                    )
+                })}
+            </Row>
+            <Grid container>
                 {
                 replies.map((reply: Reply, index: number) => {
                     return (
@@ -238,16 +273,6 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                         <div className={classes.postStyle}>
                             <Card variant="outlined" className="replyCard">
                                 <CardContent className="replyContent">
-                                    {isEmoji(reply) &&
-                                        messageAsArray(reply).map((emojiIndex: number, replyIndex: number) => {
-                                            return (
-                                                <Typography variant="h5" key={replyIndex}>
-                                                    {emojiIcons[emojiIndex]}
-                                                </Typography>
-                                            )
-                                        })
-                                    }
-
                                     {isMessage(reply) && 
                                         <p>{reply.message}</p>
                                     }
@@ -274,6 +299,11 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 })
                 }
             </Grid>
+            {(repliesSet && replies.length === 0) &&
+                <Typography variant="caption" style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+                    You have no message or photo replies to this post.
+                </Typography>
+            }
             <Modal open={editModalOpen} onClose={handleEditModal} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
             <div className={classes.editModal}>
                 {editPost && <NewFamilyPost currentPost={post} closeModal={doneEditing}/>}
