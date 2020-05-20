@@ -19,6 +19,7 @@
     "moment": "^2.24.0",
     "query-string": "^6.12.1",
     "react": "^16.13.1",
+    "react-device-detect": "^1.12.1",
     "react-dictate-button": "^1.2.2",
     "react-dom": "^16.13.1",
     "react-image-file-resizer": "^0.2.3",
