@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useHistory} from "react-router-dom";
 import {makeStyles} from '@material-ui/core/styles';
 
@@ -15,7 +15,6 @@ import {
 } from '@material-ui/core';
 
 import {Post} from 'shared/models/post.model';
-import {navigationIcons} from "../../../../Icons";
 
 import './Inbox.css';
 import {getPostReadByCurrentUser, markPostRead} from "../../../../services/post";
@@ -56,14 +55,11 @@ interface IInbox {
 }
 
 let currentPost: Post;
-let messageIndex: number = 0;
 
 const Inbox: React.FC<IInbox> = ({ posts }) => {
 
   const classes = useStyles();
   const history = useHistory();
-  const [currentMessages, setCurrentMessages] = useState<Array<Post>>(posts.slice(0, 6));
-  const [buttonsDisabled, setButtonsDisabled]  = useState<Array<boolean>>([true, false]);
 
   const pressEnvelope = async function (envelopePost: Post) {
       currentPost = envelopePost;
@@ -71,26 +67,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
       await markPostRead(postID);
       history.push({pathname: '/startReply', state: envelopePost } );
     }
-
-  const getNextMessages = () => {
-    console.log("Go to next 6 messages");
-    if (messageIndex < 12) { messageIndex += 6; }
-    updateButtonsDisabled();
-    setCurrentMessages(posts.slice(messageIndex, messageIndex + 6));
-  }
-
-  const getPrevMessages = () => {
-    console.log("Go back 6 messages");
-    if (messageIndex > 0) { messageIndex -= 6; }
-    updateButtonsDisabled();
-    setCurrentMessages(posts.slice(messageIndex, messageIndex + 6));
-  }
-
-  const updateButtonsDisabled = () => {
-    if (messageIndex === 0) { setButtonsDisabled([true, false]); }
-    if (messageIndex === 6) { setButtonsDisabled([false, false]); }
-    if (messageIndex === 12) { setButtonsDisabled([false, true]); }
-  }
 
   return (
     <>
