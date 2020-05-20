@@ -80,7 +80,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
             mx={"auto"}
             fontSize={24}
             display={"flex"}
-            height={boxDimensions.height}
+            height={478}
             width={boxDimensions.width}
             alignItems={"center"}
             style={{ overflowY: "hidden" }}>

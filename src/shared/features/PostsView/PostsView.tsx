@@ -240,7 +240,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
                   </Typography>
                   }
                   { (role === roles.receiver && pendingInvitations.length === 0) &&
-                    <Typography variant="subtitle1" gutterBottom>
+                    <Typography variant="subtitle1">
                       You have {countNewPosts(posts)} new letter(s).
                     </Typography>
                   }
