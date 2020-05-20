@@ -37,6 +37,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
+  const [userID, setUserID] = useState("");
   const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects
   const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
   const [pendingInvitations, setPendingInvitations] = useState<AccountLink[]>([]);
@@ -73,6 +74,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
             }).then(() => {
               getUserSettings()
                 .then((userSettings:any) => {
+                  setUserID(userSettings?.uid ? userSettings.uid : '');
                   setDisplayName(userSettings?.displayName ? userSettings.displayName : '');
                   setRole(userSettings?.role ? userSettings.role : roles.receiver);
                   setIsLoading(false);
@@ -134,6 +136,14 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
   const updateNewReplies = (num: number) => {
     setNumNewReplies(num);
+  }
+
+  const countNewPosts = (posts: Array<Post>) => {
+    let unreadCount = 0;
+    posts.forEach(function(post) {
+      if (!post.read[userID]) {unreadCount++}
+    })
+    return unreadCount;
   }
 
   const welcomeName = () => (
@@ -224,9 +234,14 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
                 </Child>
 
                 <Child xs={12}>
-                  { ((role === roles.poster) || (role === roles.receiver && pendingInvitations.length === 0)) &&
+                  {role === roles.poster &&
                     <Typography variant="subtitle1" gutterBottom>
-                      You have {numNewReplies} new {role === roles.poster ? (numNewReplies !== 1 ? 'replies' : 'reply') : 'letters'}.
+                      You have {numNewReplies} new {numNewReplies !== 1 ? 'replies' : 'reply'}.
+                  </Typography>
+                  }
+                  { (role === roles.receiver && pendingInvitations.length === 0) &&
+                    <Typography variant="subtitle1" gutterBottom>
+                      You have {countNewPosts(posts)} new letter(s).
                     </Typography>
                   }
 
