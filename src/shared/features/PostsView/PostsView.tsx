@@ -224,7 +224,12 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
                 </Child>
 
                 <Child xs={12}>
-                  <Typography variant="subtitle1" gutterBottom>You have {numNewReplies} new {role === roles.poster ? (numNewReplies !== 1 ? 'replies' : 'reply') : 'letters'}.</Typography>
+                  { ((role === roles.poster) || (role === roles.receiver && pendingInvitations.length < 0)) &&
+                    <Typography variant="subtitle1" gutterBottom>
+                      You have {numNewReplies} new {role === roles.poster ? (numNewReplies !== 1 ? 'replies' : 'reply') : 'letters'}.
+                    </Typography>
+                  }
+
                 </Child>
               </Column>
             </Child>

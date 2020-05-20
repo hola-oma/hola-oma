@@ -30,7 +30,7 @@ export const getPosts = async (): Promise<Post[]> => {
     postRef.onSnapshot(snapshot => {           // listen for state change
       const currentPosts: Post[] = [];
       snapshot.forEach(doc => {
-        console.log(doc.id, '->', doc.data()["from"]);
+        // console.log(doc.id, '->', doc.data()["from"]);
         const data = doc.data();
         currentPosts.push({
           pid: data.pid,
