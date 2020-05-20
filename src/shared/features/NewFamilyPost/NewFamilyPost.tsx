@@ -223,7 +223,7 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
                 setFileType('video');
             }
         }
-    }, []); // fires on page load if this is empty [] 
+    }, [currentPost]); // fires on page load if this is empty [] 
 
     useEffect(() => {
         setPostLength(textValue.length);
