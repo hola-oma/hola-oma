@@ -2,19 +2,29 @@ import React, {useState} from 'react';
 import {useHistory} from "react-router-dom";
 import {makeStyles} from '@material-ui/core/styles';
 
-import {Grid, GridList, GridListTile, GridListTileBar, Typography} from '@material-ui/core';
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Grid,
+  GridList,
+  GridListTile,
+  GridListTileBar,
+  Typography
+} from '@material-ui/core';
 
 import {Post} from 'shared/models/post.model';
 import {navigationIcons} from "../../../../Icons";
 
 import './Inbox.css';
 import {getPostReadByCurrentUser, markPostRead} from "../../../../services/post";
-import GrandparentLayout from "../Components/GrandparentLayout";
+import Column from "../../../components/Column/Column";
+import {boxDimensions} from "../Components/GrandparentLayout";
 
 const useStyles = makeStyles(() => ({
     root: {
-      minWidth: 250,
-      maxWidth: 250,
+      flexGrow: 1,
     },
     title: {
       fontSize: 22,
@@ -23,15 +33,21 @@ const useStyles = makeStyles(() => ({
     },
     gridList: {
       height: '500px',
+      width: '100%',
       flexWrap: 'wrap',
       alignItems: 'center',
+      justifyContent: 'center',
       // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
       transform: 'translateZ(0)',
     },
     titleBar: {
       height: '40px',
       background: '#faf9f9',
-    }
+    },
+    media: {
+      height: 400,
+      objectFit: "scale-down"
+    },
   }),
 );
 
@@ -78,23 +94,44 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
   return (
     <>
-      <GrandparentLayout
-        boxContent={
-          <Grid container spacing={0}>
-            {posts.length === 0 &&
-            <Grid item xs>
-                <Typography variant="h4">Your mailbox is empty</Typography>
-            </Grid> }
+      <Column justify="center">
 
-            <GridList
-              className={classes.gridList}
-              cols={3}
-              spacing={0}
-              cellHeight={160}   // 180 is default
-            >
-              {currentMessages.map((post, index: number) => (
-                <GridListTile key={post.pid} onClick={() => pressEnvelope(post)} rows={1.25}>
-                  <img src={getPostReadByCurrentUser(post) ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
+        {/*Content Box*/}
+        <Grid item xs={12} className={classes.root}>
+          <Box
+            border={1}
+            borderRadius="borderRadius"
+            mx={"auto"}
+            fontSize={24}
+            display={"flex"}
+            height={boxDimensions.height}
+            width={boxDimensions.width}
+            alignItems={"center"}
+            style={{ overflowY: "hidden" }}>
+
+            {/*If mailbox empty*/}
+            {posts.length === 0 &&
+              <Grid item xs={12}>
+                <Card>
+                  <CardMedia className={classes.media}
+                             image={require("../../../../icons/empty-mailbox.png")}
+                             title="Empty Mailbox" />
+                  <CardContent>
+                      <Typography variant="h4" align={"center"}>Your mailbox is empty</Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            }
+
+            {/*If mailbox not empty*/}
+            {posts.length > 0 &&
+              <GridList className={classes.gridList} cols={3}>
+                {posts.map((post, index: number) => (
+                  <GridListTile
+                    key={post.pid}
+                    onClick={() => pressEnvelope(post)}
+                    rows={1.25} >
+                    <img src={getPostReadByCurrentUser(post) ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
                        alt={"Letter from " + post.from} />
 
                   <GridListTileBar
@@ -103,16 +140,14 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                       root: classes.titleBar,
                       title: classes.title,
                     }} />
-                </GridListTile>
-              ))}
-            </GridList>
-          </Grid>
-        }
-        buttonText={ ["Previous Messages", "Next Messages"] }
-        buttonActions={ [() => getPrevMessages(), () => getNextMessages()] }
-        buttonIcons={ [navigationIcons.back, navigationIcons.forward] }
-        buttonDisabled={ buttonsDisabled }
-      />
+                  </GridListTile>
+                ))}
+              </GridList>
+            }
+
+          </Box>
+        </Grid>
+      </Column>
     </>
   )
 }
