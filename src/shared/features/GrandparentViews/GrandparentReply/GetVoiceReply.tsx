@@ -17,6 +17,8 @@ import Row from 'shared/components/Row/Row';
 import Child from 'shared/components/Child/Child';
 import Column from 'shared/components/Column/Column';
 
+import { isIOS, isSafari } from 'react-device-detect';
+
 const GetVoiceReply: React.FC = () => {
 
   const MAX_REPLY_LENGTH = 400;
@@ -28,6 +30,8 @@ const GetVoiceReply: React.FC = () => {
   const [displayName, setDisplayName] = useState("");
   const [userId, setUserId] = useState("");
   const [alertOn, setAlert] =  useState<boolean>(false);
+  const [supportedMessage, setSupportedMessage] = useState("");
+  const [supportedDeviceBrowser, setSupportedDeviceBrowser] = useState<boolean>(false);
 
   const [completeReply, setCompleteReply] = useState("");
   const [dictatedReply, setDictatedReply] = useState("");
@@ -86,6 +90,16 @@ const GetVoiceReply: React.FC = () => {
     }
 
   }, [MAX_REPLY_LENGTH, NEAR_MAX_REPLY_LENGTH, completeReply, replyNearlyTooLong, replyTooLong]);
+
+  // see if the user's device and browser combo supports microphone usage 
+  useEffect(() => {
+    if (isIOS && !isSafari) {
+      setSupportedMessage("iPad and iPhone users must use Safari to access microphone features.");
+      setSupportedDeviceBrowser(false);
+    } else {
+      setSupportedDeviceBrowser(true);
+    }
+  }, [])
 
   const handleTextareaChange = (event: any) => {
     setCompleteReply(event.target.value);
@@ -170,60 +184,69 @@ const GetVoiceReply: React.FC = () => {
           header2Text={"Press 'RECORD' to dictate a short message"}
           alertText={getAlertText()}
           boxContent={
-            <Row alignItems="flex-start" justify="center">
-              <Child xs={12}>
-                <Column>
-                  <Child>
-                  <RecordButton
-                    handleDictationDone={handleDictationDone}
-                    handleProgress={handleProgress}
-                    handleError={handleError}
-                  />
+            <>
+            { supportedDeviceBrowser &&
+              <Row alignItems="flex-start" justify="center">
+                <Child xs={12}>
+                  <Column>
+                    <Child>
+                    <RecordButton
+                      handleDictationDone={handleDictationDone}
+                      handleProgress={handleProgress}
+                      handleError={handleError}
+                    />
 
-                  <span className="listenError">
-                      {lowConfidence &&
+                    <span className="listenError">
+                        {lowConfidence &&
+                        <Row justify="center">
+                            <Child xs={11}>
+                                <FormError error={"Sorry, I didn't catch that. Please record again."}/>
+                            </Child>
+                        </Row>
+                        }
+
+                      {replyNearlyTooLong &&
                       <Row justify="center">
                           <Child xs={11}>
-                              <FormError error={"Sorry, I didn't catch that. Please record again."}/>
+                              <FormError error={`Approaching character limit! ${MAX_REPLY_LENGTH} allowed (${charsRemaining()} remaining)`} severity="warning"/>
                           </Child>
                       </Row>
                       }
 
-                    {replyNearlyTooLong &&
-                    <Row justify="center">
-                        <Child xs={11}>
-                            <FormError error={`Approaching character limit! ${MAX_REPLY_LENGTH} allowed (${charsRemaining()} remaining)`} severity="warning"/>
-                        </Child>
-                    </Row>
-                    }
+                        {replyTooLong &&
+                        <Row justify="center">
+                            <Child xs={11}>
+                                <FormError error={`Maximum ${MAX_REPLY_LENGTH} characters (${charsOver()} over)`}/>
+                            </Child>
+                        </Row>
+                        }
+                        </span>
 
-                    {replyTooLong &&
-                    <Row justify="center">
-                        <Child xs={11}>
-                            <FormError error={`Maximum ${MAX_REPLY_LENGTH} characters (${charsOver()} over)`}/>
-                        </Child>
-                    </Row>
-                    }
-                    </span>
+                        <Row justify="center">
+                          <Child xs={11}>
+                            <TextareaAutosize
+                              className={`grandparentReplyText thinBorder ${inProgress ? 'inProgressText' : ''}`}
+                              rowsMin={8}
+                              rowsMax={8}
+                              aria-label="voice reply"
+                              placeholder="Your voice message appears here"
+                              value={inProgress ? dictatedReply : completeReply}
+                              onChange={handleTextareaChange}
+                            />
+                          </Child>
 
-                    <Row justify="center">
-                      <Child xs={11}>
-                        <TextareaAutosize
-                          className={`grandparentReplyText thinBorder ${inProgress ? 'inProgressText' : ''}`}
-                          rowsMin={8}
-                          rowsMax={8}
-                          aria-label="voice reply"
-                          placeholder="Your voice message appears here"
-                          value={inProgress ? dictatedReply : completeReply}
-                          onChange={handleTextareaChange}
-                        />
+                        </Row>
                       </Child>
-
-                    </Row>
+                    </Column>
                   </Child>
-                </Column>
-              </Child>
-            </Row>
+                </Row>
+              }
+
+              {!supportedDeviceBrowser && 
+                <p>{supportedMessage}</p>
+              }
+
+            </>
           }
           buttonText={[buttonText.replyOptions, buttonText.send]}
           buttonActions={[
