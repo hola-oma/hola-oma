@@ -40,22 +40,28 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
   const [numReplies, setNumReplies] = useState<number[]>([]);
 
   useEffect(() => {
+    let isMounted = true;
     let numNewReplies = 0;
+
     for (let i = 0; i < posts.length; i++) {
-      // eslint-disable-next-line no-loop-func
+    // eslint-disable-next-line no-loop-func
       getRepliesToPost(posts[i].pid).then((replyArray: any) => {
-        let newRep = false;
-        setNumReplies(numReplies => numReplies.concat(replyArray.length));
-        for (let j = 0; j < replyArray.length; j++) {
-          if (replyArray[j].read === false) {
-            newRep = true;
-            numNewReplies++;
+        if (isMounted) {
+          let newRep = false;
+          setNumReplies(numReplies => numReplies.concat(replyArray.length));
+          for (let j = 0; j < replyArray.length; j++) {
+            if (replyArray[j].read === false) {
+              newRep = true;
+              numNewReplies++;
+            }
           }
+          setNewReplies(newReplies => newReplies.concat(newRep));
+          onNewReplies(numNewReplies);
         }
-        setNewReplies(newReplies => newReplies.concat(newRep));
-        onNewReplies(numNewReplies);
       });
     }
+
+    return () => { isMounted = false; }
 }, [onNewReplies, posts]); // fires on page load if this is empty [] 
 
   const getMessageSubstring = function(message: string) {
