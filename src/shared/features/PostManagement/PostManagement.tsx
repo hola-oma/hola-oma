@@ -62,7 +62,9 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
     }
 
     return () => { isMounted = false; }
-}, [onNewReplies, posts]); // fires on page load if this is empty [] 
+}, []); 
+// caution: putting in the dependencies the linter wants into this array 
+// causes an infinite loop with infinite calls to the db
 
   const getMessageSubstring = function(message: string) {
     let returnValue = "";
