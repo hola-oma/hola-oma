@@ -6,10 +6,6 @@
   margin: 20px;
 }
 
-html, body {
-  overflow: hidden;
-}
-
-body {
-  -webkit-overflow-scrolling: touch;
-}
+/*html, body {*/
+/*  overflow: hidden;*/
+/*}*/
