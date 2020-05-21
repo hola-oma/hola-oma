@@ -38,7 +38,8 @@ export const getPosts = async (): Promise<Post[]> => {
           videoURL: data.videoURL,
           read: data.read,
           date: data.date,
-          receiverIDs: data.receiverIDs
+          receiverIDs: data.receiverIDs,
+          unreadReplyCount:0,
         })
       })
       posts.length = 0;      // Clear array so items not appended on state change

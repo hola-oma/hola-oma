@@ -9,6 +9,7 @@ import {Link as ButtonLink, Button, Tooltip, Typography} from '@material-ui/core
 import {getPosts} from 'services/post';
 
 import {Post} from '../../models/post.model';
+import { getRepliesToPost } from "services/reply";
 
 import {acceptLink, getLinkedAccounts, removeLink} from 'services/accountLink';
 import {Link} from 'react-router-dom';
@@ -42,7 +43,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   const [pendingInvitations, setPendingInvitations] = useState<AccountLink[]>([]);
   const [invite, setInvite] = useState<AccountLink>();
   const [invitationModalOpen, setInvitationModalOpen] = useState<boolean>(false);
-  const [numNewReplies, setNumNewReplies] = useState(0);
+  const [unreadRepliesTotal, setUnreadRepliesTotal] = useState(0);
   const [verifiedReceivers, setVerifiedReceivers] = useState<boolean>(false);
 
   const updatePendingInvitations = (dataArr: AccountLink[]) => {
@@ -132,10 +133,6 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     if (history) history.push('/newPost')
   }
 
-  const updateNewReplies = (num: number) => {
-    setNumNewReplies(num);
-  }
-
   const welcomeName = () => (
     <div className="welcomeName">
       <span className="boldText">
@@ -206,6 +203,32 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     </Alert>
   )
 
+
+  // this updates the "You have N new replies waiting" number 
+  useEffect(() => {
+    let isMounted = true;
+    posts.forEach((post) => {
+      if (isMounted) {
+    
+        getRepliesToPost(post.pid).then((replyArray: any) => {
+          replyArray.forEach((reply: any) => {
+            if (!reply.read) {
+              // found an unread reply! - mark this particular post as having new replies
+              post.unreadReplyCount = 1214;
+              // increase the 'global' count of unread replies 
+              setUnreadRepliesTotal(unreadRepliesTotal + 1);
+            } else {
+              console.log("Post ID [" + post.pid + " ] has no unread replies");
+            }
+          });
+        });
+      } // closes if isMounted
+    })
+
+    return () => { isMounted = false; }
+  }, [posts]); // fires on page load and if posts changes for some reason 
+
+
   return (
     <CredentialsWrapper>
 
@@ -224,7 +247,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
                 </Child>
 
                 <Child xs={12}>
-                  <Typography variant="subtitle1" gutterBottom>You have {numNewReplies} new {role === roles.poster ? (numNewReplies !== 1 ? 'replies' : 'reply') : 'letters'}.</Typography>
+                  <Typography variant="subtitle1" gutterBottom>You have {unreadRepliesTotal} new {role === roles.poster ? (unreadRepliesTotal !== 1 ? 'replies' : 'reply') : 'letters'}.</Typography>
                 </Child>
               </Column>
             </Child>
@@ -288,7 +311,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
                 <hr/>
 
-                {role === roles.poster && <PostManagement displayName={displayName} posts={posts} onNewReplies={updateNewReplies}/>}
+                {role === roles.poster && <PostManagement displayName={displayName} posts={posts}/>}
                 {role === roles.receiver && <Inbox posts={posts}/>}
               </Child>
             </Row>

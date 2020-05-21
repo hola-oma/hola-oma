@@ -5,7 +5,6 @@ import { Container, Card, CardMedia, CardContent, Typography, CardHeader, Avatar
 import { Link } from 'react-router-dom';
 
 import { Post } from 'shared/models/post.model';
-import { getRepliesToPost } from "services/reply";
 
 import AlarmIcon from '@material-ui/icons/Alarm';
 import CommentIcon from '@material-ui/icons/Comment';
@@ -30,43 +29,10 @@ const useStyles = makeStyles({
 interface IPostManagement {
   displayName: String;
   posts: Array<Post>; // array of type "Post"
-  onNewReplies: any;
 }
 
-const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewReplies }) => {
-
+const PostManagement: React.FC<IPostManagement> = ({ displayName, posts }) => {
   const classes = useStyles();
-  const [numReplies, setNumReplies] = useState<number[]>([]);
-  const [newReplies, setNewReplies] = useState<boolean[]>([]);
-
-  const calculateReplies = (postPID: string) => {
-    let numNewReplies = 0;
-    
-    getRepliesToPost(postPID).then((replyArray: any) => {
-      let newRep = false;
-      setNumReplies(numReplies => numReplies.concat(replyArray.length));
-      for (let j = 0; j < replyArray.length; j++) {
-        if (replyArray[j].read === false) {
-          newRep = true;
-          numNewReplies++;
-        }
-      }
-      setNewReplies(newReplies => newReplies.concat(newRep));
-      onNewReplies(numNewReplies);
-    });
-  }
-
-  useEffect(() => {
-    let isMounted = true;
-    for (let i = 0; i < posts.length; i++) {
-    // eslint-disable-next-line no-loop-func
-      if (isMounted) {
-        calculateReplies(posts[i].pid);
-      }
-    }
-    return () => { isMounted = false; }
-  }, [onNewReplies, posts]); // fires on page load if this is empty [] 
-
   const getMessageSubstring = function(message: string) {
     let returnValue = "";
     if (message.trim().length !== 0) {
@@ -152,11 +118,11 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewRe
                         <CommentIcon color="secondary"/>
                       </IconButton>
                       <Typography variant="caption" color="textSecondary">
-                        {numReplies[index] === 1 ? (numReplies[index] + ' reply') : (numReplies[index] + ' replies')}
+                        {post.unreadReplyCount === 1 ? '1 reply': post.unreadReplyCount + ' replies'}
                       </Typography>
 
                       {/* if there are NEW REPLIES, show this messaging */}
-                      {newReplies[index] && 
+                      {(post.unreadReplyCount && post.unreadReplyCount > 0) && 
                         <span className="newAlert pullRight">
                           <Typography variant="caption">New replies!</Typography>
                           <IconButton>
