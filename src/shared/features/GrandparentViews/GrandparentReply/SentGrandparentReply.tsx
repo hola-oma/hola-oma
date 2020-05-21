@@ -1,4 +1,5 @@
 import React from 'react';
+import uuid from 'react-uuid';
 
 import { useLocation, useHistory } from "react-router";
 
@@ -48,6 +49,7 @@ export const SentGrandparentReply: React.FC = () => {
       <Grid container justify={"center"}>
         {sentEmojis.map((icon, index: number) => (
           <ButtonBase
+            key={uuid()}
             className={classes.image}
             style={{width: '33%'}}
             >
