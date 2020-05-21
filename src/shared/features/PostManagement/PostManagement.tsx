@@ -36,33 +36,36 @@ interface IPostManagement {
 const PostManagement: React.FC<IPostManagement> = ({ displayName, posts, onNewReplies }) => {
 
   const classes = useStyles();
-  const [newReplies, setNewReplies] = useState<boolean[]>([]);
   const [numReplies, setNumReplies] = useState<number[]>([]);
+  const [newReplies, setNewReplies] = useState<boolean[]>([]);
+
+  const calculateReplies = (postPID: string) => {
+    let numNewReplies = 0;
+    
+    getRepliesToPost(postPID).then((replyArray: any) => {
+      let newRep = false;
+      setNumReplies(numReplies => numReplies.concat(replyArray.length));
+      for (let j = 0; j < replyArray.length; j++) {
+        if (replyArray[j].read === false) {
+          newRep = true;
+          numNewReplies++;
+        }
+      }
+      setNewReplies(newReplies => newReplies.concat(newRep));
+      onNewReplies(numNewReplies);
+    });
+  }
 
   useEffect(() => {
     let isMounted = true;
-    let numNewReplies = 0;
-
     for (let i = 0; i < posts.length; i++) {
     // eslint-disable-next-line no-loop-func
-      getRepliesToPost(posts[i].pid).then((replyArray: any) => {
-        if (isMounted) {
-          let newRep = false;
-          setNumReplies(numReplies => numReplies.concat(replyArray.length));
-          for (let j = 0; j < replyArray.length; j++) {
-            if (replyArray[j].read === false) {
-              newRep = true;
-              numNewReplies++;
-            }
-          }
-          setNewReplies(newReplies => newReplies.concat(newRep));
-          onNewReplies(numNewReplies);
-        }
-      });
+      if (isMounted) {
+        calculateReplies(posts[i].pid);
+      }
     }
-
     return () => { isMounted = false; }
-}, [onNewReplies, posts]); // fires on page load if this is empty [] 
+  }, [onNewReplies, posts]); // fires on page load if this is empty [] 
 
   const getMessageSubstring = function(message: string) {
     let returnValue = "";
