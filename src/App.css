@@ -2,6 +2,10 @@
   font-size:1.2em;
 }
 
+body {
+  -webkit-overflow-scrolling: touch;
+}
+
 .fullHeight {
   height: calc(100vh - 100px);
   display:block;

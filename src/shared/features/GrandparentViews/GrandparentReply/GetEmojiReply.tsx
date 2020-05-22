@@ -1,5 +1,6 @@
 import React, {useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router'
+import { useHistory, useLocation } from 'react-router';
+import uuid from 'react-uuid';
 
 import { ButtonBase,  Grid } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -131,6 +132,7 @@ const GetEmojiReply: React.FC = () => {
               <Grid container>
                 {emojiIcons.map((icon, index: number) => (
                   <ButtonBase
+                    key={uuid()}
                     className={classes.image}
                     style={{width: '33%'}}
                     onClick={() => getChoices(index)} >

@@ -26,9 +26,9 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-spinners": "^0.8.1",
+    "react-uuid": "^1.0.2",
     "react-webcam": "^5.0.1",
     "typescript": "^3.7.5",
-    "weak-key": "^1.0.2",
     "web-speech-cognitive-services": "^7.0.0-master.da7babf"
   },
   "scripts": {
