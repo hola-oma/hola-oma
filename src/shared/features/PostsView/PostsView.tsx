@@ -53,36 +53,70 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     }
   }
 
-  // Get display name
+  const processLinkedAccounts = async () => {
+    // db call, check for invitations and linked accounts 
+    const links:AccountLink[] = await getLinkedAccounts();
+        const pendingInvitations = links.filter(link => !link.verified);
+        updatePendingInvitations(pendingInvitations);
+        const verified = links.filter(link => link.verified);
+        if (verified.length > 0) {
+          setVerifiedReceivers(true);
+        }
+        setLinkedAccounts(links);
+  }
+
+  const processUnreadReplies = async (userPosts: Post[]) => {
+    for await (let post of userPosts) {
+        const replyArray: any = await getRepliesToPost(post.pid);
+          replyArray.forEach((reply: any) => {
+            if (!reply.read) {
+              // found an unread reply! - mark this particular post as having new replies
+              post.unreadReplyCount = (post.unreadReplyCount ?? 0) + 1;
+              // increase the 'global' count of unread replies 
+              setUnreadRepliesTotal(unreadRepliesTotal + 1);
+            }
+          });
+      };
+  }
+
+  const processPosts = async () => {
+    // db call, get the posts for this user 
+    const docs = await getPosts();
+      setPosts(docs)
+      await processUnreadReplies(docs);
+  }
+
+  const processUserSettings = async () => {
+    // db call, get this user's profile settings
+    await getUserSettings()
+    .then((userSettings:any) => {
+      setDisplayName(userSettings?.displayName ? userSettings.displayName : '');
+      setRole(userSettings?.role ? userSettings.role : roles.receiver);
+      setIsLoading(false);
+    }); // closes if isMounted
+  }
+
+  const processPage = async () => {
+    await processLinkedAccounts();
+    await processPosts();
+    await processUserSettings();
+  }
+
+  // Fires on page load. Gets pending invites, posts, and user settings. 
   useEffect(() => {
-    let isMounted = true;
     setIsLoading(true);
+    let isMounted = true;
 
-    getLinkedAccounts()
-      .then((links:AccountLink[]) => {
-        if (isMounted) {
-          const pendingInvitations = links.filter(link => !link.verified);
-          updatePendingInvitations(pendingInvitations);
-          const verified = links.filter(link => link.verified);
-          if (verified.length > 0) {
-            setVerifiedReceivers(true);
-          }
-          setLinkedAccounts(links);
-          getPosts()
-            .then((docs:Post[]) => {
-              setPosts(docs);
-            }).then(() => {
-              getUserSettings()
-                .then((userSettings:any) => {
-                  setDisplayName(userSettings?.displayName ? userSettings.displayName : '');
-                  setRole(userSettings?.role ? userSettings.role : roles.receiver);
-                  setIsLoading(false);
-                });
-            })
-          }
-      });
+    if (isMounted) {
+      processPage().then(() => {
+        setIsLoading(false);
+      })
+    }
 
-      return () => { isMounted = false; }
+    return () => { isMounted = false; }
+
+    // don't put the processPage function in here, that's unreasonable 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setIsLoading]);
 
   const acceptInvite = () => {
@@ -202,32 +236,6 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
       </span>
     </Alert>
   )
-
-
-  // this updates the "You have N new replies waiting" number 
-  useEffect(() => {
-    let isMounted = true;
-    posts.forEach((post) => {
-      if (isMounted) {
-    
-        getRepliesToPost(post.pid).then((replyArray: any) => {
-          replyArray.forEach((reply: any) => {
-            if (!reply.read) {
-              // found an unread reply! - mark this particular post as having new replies
-              post.unreadReplyCount = (post.unreadReplyCount ?? 0) + 1;
-              // increase the 'global' count of unread replies 
-              setUnreadRepliesTotal(unreadRepliesTotal + 1);
-            } else {
-              console.log("Post ID [" + post.pid + " ] has no unread replies");
-            }
-          });
-        });
-      } // closes if isMounted
-    })
-
-    return () => { isMounted = false; }
-  }, [posts]); // fires on page load and if posts changes for some reason 
-
 
   return (
     <CredentialsWrapper>

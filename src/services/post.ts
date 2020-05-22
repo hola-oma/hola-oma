@@ -18,12 +18,18 @@ export const getPosts = async (): Promise<Post[]> => {
   let fieldPath = (userRole === roles.receiver) ? "receiverIDs" : "creatorID";
   let opStr = (userRole === roles.receiver) ? "array-contains" : "==";
   let limit = (userRole === roles.receiver) ? 6 : 120;
+  let resolvePostPromise = (posts: Post[]) => {};
+
+  const postPromise: Promise<Post[]> = new Promise((resolve)=> {
+    resolvePostPromise = resolve;
+  });
 
   try {
-    const postRef = db.collection('posts')
+    const postRef = await db.collection('posts')
       .where(fieldPath, opStr as "==" | "array-contains", userId)
       .orderBy("date", "desc")
-      .limit(limit)                                 // quick-and-dirty "age off" queue
+      .limit(limit);                                 // quick-and-dirty "age off" queue
+
     postRef.onSnapshot(snapshot => {          // listen for state change
       const currentPosts: Post[] = [];
       snapshot.forEach(doc => {
@@ -44,11 +50,12 @@ export const getPosts = async (): Promise<Post[]> => {
       })
       posts.length = 0;      // Clear array so items not appended on state change
       posts.push(...currentPosts);
+      resolvePostPromise(posts);
     })
   } catch (error) {
     console.error(error);
   }
-  return posts;
+  return postPromise;
 }
 
 export const createPost = async (post: Post) => {

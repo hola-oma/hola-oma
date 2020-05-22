@@ -122,7 +122,7 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts }) => {
                       </Typography>
 
                       {/* if there are NEW REPLIES, show this messaging */}
-                      {(post.unreadReplyCount && post.unreadReplyCount > 0) && 
+                      {(post?.unreadReplyCount ?? 0) > 0 && 
                         <span className="newAlert pullRight">
                           <Typography variant="caption">New replies!</Typography>
                           <IconButton>
