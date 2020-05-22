@@ -214,7 +214,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
           replyArray.forEach((reply: any) => {
             if (!reply.read) {
               // found an unread reply! - mark this particular post as having new replies
-              post.unreadReplyCount = 1214;
+              post.unreadReplyCount = (post.unreadReplyCount ?? 0) + 1;
               // increase the 'global' count of unread replies 
               setUnreadRepliesTotal(unreadRepliesTotal + 1);
             } else {
