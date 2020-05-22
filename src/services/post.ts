@@ -52,8 +52,8 @@ export const getPosts = async (): Promise<Post[]> => {
       posts.length = 0;      // Clear array so items not appended on state change
       posts.push(...currentPosts);
 
-      // we know we're done once we've done that push, so resolve the promise
-      // and the place that's awaiting on it can have it all as a complete set 
+      // we know we're done once that push happens, so resolve the promise
+      // and the place that's awaiting on it (postsView) can have it all as a complete set 
       resolvePostPromise(posts);
     })
   } catch (error) {
