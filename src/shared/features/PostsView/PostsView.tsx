@@ -38,6 +38,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
+  const [userID, setUserID] = useState("");
   const [posts, setPosts] = useState<Post[]>([]); // an array of Post type objects
   const [linkedAccounts, setLinkedAccounts] = useState<AccountLink[]>([]); // an array of AccountLink type objects 
   const [pendingInvitations, setPendingInvitations] = useState<AccountLink[]>([]);
@@ -169,6 +170,14 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     if (history) history.push('/newPost')
   }
 
+  const countNewPosts = (posts: Array<Post>) => {
+    let unreadCount = 0;
+    posts.forEach(function(post) {
+      if (!post.read[userID]) {unreadCount++}
+    })
+    return unreadCount;
+  }
+
   const welcomeName = () => (
     <div className="welcomeName">
       <span className="boldText">
@@ -240,9 +249,10 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   )
 
   return (
-    <CredentialsWrapper>
+    <div style={{overflow: role === roles.receiver ? 'hidden' : 'auto'}}>
+      <CredentialsWrapper>
 
-      <Column justify="center" alignItems="center" id="postViewColumn">
+        <Column justify="center" alignItems="center" id="postViewColumn">
 
           {/* COLUMN CHILD 1: Welcome, X read letters, invitations alert */ }
           <Row justify="center" id="postsViewRow">
@@ -257,22 +267,32 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
                 </Child>
 
                 <Child xs={12}>
-                  <Typography variant="subtitle1" gutterBottom>You have {unreadRepliesTotal} new {role === roles.poster ? (unreadRepliesTotal !== 1 ? 'replies' : 'reply') : 'letters'}.</Typography>
+                  {role === roles.poster &&
+                  <Typography variant="subtitle1" gutterBottom>
+                      You have {unreadRepliesTotal} new {unreadRepliesTotal !== 1 ? 'replies' : 'reply'}.
+                  </Typography>
+                  }
+                  { (role === roles.receiver && pendingInvitations.length === 0) &&
+                  <Typography variant="subtitle1">
+                      You have {countNewPosts(posts)} new letter(s).
+                  </Typography>
+                  }
+
                 </Child>
               </Column>
             </Child>
 
             {/* ROW CHILD 3 * - invite button OR empty spacer */ }
             {role === roles.poster &&
-              <Child container xs justify="center" alignItems="center" style={{display: 'flex'}}>
-                {inviteButton()}
-              </Child>
+            <Child container xs justify="center" alignItems="center" style={{display: 'flex'}}>
+              {inviteButton()}
+            </Child>
             }
 
-            {role === roles.receiver && 
-              <Child xs>
-                {/* Intentionally empty so the user's name centers without INVITE FOLLOWER button present*/}
-              </Child>
+            {role === roles.receiver &&
+            <Child xs>
+              {/* Intentionally empty so the user's name centers without INVITE FOLLOWER button present*/}
+            </Child>
             }
           </Row>
 
@@ -282,53 +302,55 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
             <Row>
               <Child xs={12}>
                 {role === roles.poster &&
-                  <>
+                <>
                   {!verifiedReceivers &&
+                  <>
+                    {linkedAccounts.length === 0 &&
                     <>
-                      {linkedAccounts.length === 0 && 
-                      <>
                         <Alert variant="filled" severity="warning">
-                          You are not linked with any accounts yet! <Link to="/addAccountLink">Invite someone</Link>
+                            You are not linked with any accounts yet! <Link to="/addAccountLink">Invite someone</Link>
                         </Alert>
-                      </>
-                    }
-                    <Row justify="center">
-                      <Child>
-                        <Child xs={12}>
-                        {disabledCreateNewPostButton()}
-                        </Child>
-                      </Child>
-                    </Row>
                     </>
+                    }
+                      <Row justify="center">
+                          <Child>
+                              <Child xs={12}>
+                                {disabledCreateNewPostButton()}
+                              </Child>
+                          </Child>
+                      </Row>
+                  </>
                   }
                   {verifiedReceivers &&
-                    <Row justify="center">
+                  <Row justify="center">
                       <Child>
-                        <Child xs={12}>
-                          {createNewPostButton()}
-                        </Child>
+                          <Child xs={12}>
+                            {createNewPostButton()}
+                          </Child>
                       </Child>
-                    </Row>
+                  </Row>
                   }
-                  </>
+                </>
                 }
 
                 {role === roles.receiver && pendingInvitations.length > 0 &&
-                  <>
-                    {pendingInviteAlert()}
-                  </>
+                <>
+                  {pendingInviteAlert()}
+                </>
                 }
 
-                <hr/>
+                {role === roles.poster && <hr/>}
 
                 {role === roles.poster && <PostManagement displayName={displayName} posts={posts}/>}
                 {role === roles.receiver && <Inbox posts={posts}/>}
               </Child>
             </Row>
 
-        </Child>
-      </Column>
-    </CredentialsWrapper>
+          </Child>
+        </Column>
+      </CredentialsWrapper>
+    </div>
+
   )
 }
 

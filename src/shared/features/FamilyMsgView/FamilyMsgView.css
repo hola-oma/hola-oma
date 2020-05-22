@@ -2,11 +2,6 @@
     margin: 10px !important;
     max-width: 95%;
 }
-.modalPhoto {
-    max-width: 95%;
-    margin: auto;
-    display: block;
-}
 .replyCard {
     display: flex;
     flex-direction: column;
