@@ -20,12 +20,13 @@ export const getPosts = async (): Promise<Post[]> => {
   let limit = (userRole === roles.receiver) ? 6 : 120;
   let resolvePostPromise = (posts: Post[]) => {};
 
+  // this is what we'll return from this function
   const postPromise: Promise<Post[]> = new Promise((resolve)=> {
     resolvePostPromise = resolve;
   });
 
   try {
-    const postRef = await db.collection('posts')
+    const postRef = db.collection('posts')
       .where(fieldPath, opStr as "==" | "array-contains", userId)
       .orderBy("date", "desc")
       .limit(limit);                                 // quick-and-dirty "age off" queue
@@ -50,6 +51,9 @@ export const getPosts = async (): Promise<Post[]> => {
       })
       posts.length = 0;      // Clear array so items not appended on state change
       posts.push(...currentPosts);
+
+      // we know we're done once we've done that push, so resolve the promise
+      // and the place that's awaiting on it can have it all as a complete set 
       resolvePostPromise(posts);
     })
   } catch (error) {

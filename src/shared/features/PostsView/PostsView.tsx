@@ -66,6 +66,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   }
 
   const processUnreadReplies = async (userPosts: Post[]) => {
+    let repliesTotal = 0;
     for await (let post of userPosts) {
         const replyArray: any = await getRepliesToPost(post.pid);
           replyArray.forEach((reply: any) => {
@@ -73,10 +74,11 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
               // found an unread reply! - mark this particular post as having new replies
               post.unreadReplyCount = (post.unreadReplyCount ?? 0) + 1;
               // increase the 'global' count of unread replies 
-              setUnreadRepliesTotal(unreadRepliesTotal + 1);
+              repliesTotal++;
             }
           });
       };
+      setUnreadRepliesTotal(repliesTotal);
   }
 
   const processPosts = async () => {
