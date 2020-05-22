@@ -9,6 +9,9 @@ import { getUserProfile } from "../../../../services/user";
 import { Reply, REPLY_TYPES } from "../../../models/reply.model";
 import {Grid} from "@material-ui/core";
 
+import { isIOS, isSafari } from 'react-device-detect';
+
+
 // Reminder: https://stackoverflow.com/questions/29642685/maintain-aspect-ratio-of-image-with-full-width-in-react-native
 const videoConstraints = {
   maxWidth: 848,     // 16:9 aspect ratio
@@ -25,6 +28,9 @@ const GetPhotoReply: React.FC = () => {
   const [displayName, setDisplayName] = useState("");
   const [userId, setUserId] = useState("");
   const [photoPreview, setPhotoPreview] = useState("");
+
+  const [supportedMessage, setSupportedMessage] = useState("");
+  const [supportedDeviceBrowser, setSupportedDeviceBrowser] = useState<boolean>(false);
 
   useEffect(() => {
     getUserProfile()
@@ -44,60 +50,78 @@ const GetPhotoReply: React.FC = () => {
   );
 
   const buildReply = (e: any) => {
-      const replyContent: Reply = setReplyContent(userId, displayName, REPLY_TYPES.PHOTO,
-                                  photoPreview, currentPost.pid, currentPost.creatorID);
-      submitReply(e, replyContent)
-        .then( () => { history.push({
-          pathname: "/sentReply",
-          state: {
-            replyContent: replyContent,
-            currentPost: currentPost  }
-        });
+    const replyContent: Reply = setReplyContent(userId, displayName, REPLY_TYPES.PHOTO,
+                                photoPreview, currentPost.pid, currentPost.creatorID);
+    submitReply(e, replyContent)
+      .then( () => { history.push({
+        pathname: "/sentReply",
+        state: {
+          replyContent: replyContent,
+          currentPost: currentPost  }
       });
+    });
+  }
+
+  // see if the user's device and browser combo supports microphone usage 
+  useEffect(() => {
+    if (isIOS && !isSafari) {
+      setSupportedMessage("iPad and iPhone users must use Safari to access microphone features.");
+      setSupportedDeviceBrowser(false);
+    } else {
+      setSupportedDeviceBrowser(true);
     }
+  }, [])
 
   return (
     <>
-      {currentPost &&
+      { currentPost &&
         <GrandparentLayout
             from={currentPost.from}
             headerText={ !photoPreview ? "Take a photo to send to " : "Sending photo to "}
             boxContent={
-              <Grid container
-                    spacing={0}
-                    direction={"column"}
-                    alignItems="center"
-                    justify="center"
-                    style={{ height: "100%", overflowY: "hidden" }}
-              >
+              <>
+                { supportedDeviceBrowser &&
+                  <Grid container
+                        spacing={0}
+                        direction={"column"}
+                        alignItems="center"
+                        justify="center"
+                        style={{ height: "100%", overflowY: "hidden" }}
+                        >
 
-                {!photoPreview &&
-                  <Webcam
-                    audio={false}
-                    ref={webcamRef}
-                    // width={848}
-                    height={477}
-                    screenshotFormat="image/jpeg"
-                    videoConstraints={videoConstraints}
-                  />
+                    {!photoPreview &&
+                      <Webcam
+                        audio={false}
+                        ref={webcamRef}
+                        // width={848}
+                        height={477}
+                        screenshotFormat="image/jpeg"
+                        videoConstraints={videoConstraints}
+                      />
+                    }
+
+                    {photoPreview &&
+                      <img src={photoPreview} alt="Current selfie"/>
+                    }
+
+                    </Grid>
+                  }
+
+                {!supportedDeviceBrowser &&
+                  <p>{supportedMessage}</p>
                 }
-
-                {photoPreview &&
-                  <img src={photoPreview} alt="Current selfie"/>
-                }
-
-              </Grid>
-            }
-            buttonText={!photoPreview ?
-              [buttonText.backToMessage, buttonText.take] :
-              [buttonText.backToMessage, buttonText.retake, buttonText.send]}
-            buttonActions={!photoPreview ?
-              [() => history.push({pathname: '/startReply', state: currentPost }), capture] :
-              [() => history.push({pathname: '/startReply', state: currentPost }), capture, e => buildReply(e) ]}
-            buttonIcons={!photoPreview ?
-              [cameraIcons.openEnvelope, cameraIcons.camera] :
-              [cameraIcons.openEnvelope, cameraIcons.camera, cameraIcons.paperAirplane]}
-        />
+                </>
+              }
+              buttonText={!photoPreview ?
+                [buttonText.backToMessage, buttonText.take] :
+                [buttonText.backToMessage, buttonText.retake, buttonText.send]}
+              buttonActions={!photoPreview ?
+                [() => history.push({pathname: '/startReply', state: currentPost }), capture] :
+                [() => history.push({pathname: '/startReply', state: currentPost }), capture, e => buildReply(e) ]}
+              buttonIcons={!photoPreview ?
+                [cameraIcons.openEnvelope, cameraIcons.camera] :
+                [cameraIcons.openEnvelope, cameraIcons.camera, cameraIcons.paperAirplane]}
+          />
       }
     </>
   );
