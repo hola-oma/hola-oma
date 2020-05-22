@@ -93,6 +93,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     // db call, get this user's profile settings
     await getUserSettings()
     .then((userSettings:any) => {
+      setUserID(userSettings?.uid ? userSettings.uid : '');
       setDisplayName(userSettings?.displayName ? userSettings.displayName : '');
       setRole(userSettings?.role ? userSettings.role : roles.receiver);
       setIsLoading(false);
