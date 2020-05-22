@@ -238,3 +238,13 @@ Use: <Box className="devBox">...stuff here...</Box> */
 .wrapReply {
   overflow-wrap:break-word;
 }
+
+.grandparentSubtitle {
+  line-height:1.2em !important;
+  margin-bottom:1px !important;
+}
+
+.grandparentBox {
+  height:calc(70vh - 100px);
+  width:calc(100vw - 60px);
+}

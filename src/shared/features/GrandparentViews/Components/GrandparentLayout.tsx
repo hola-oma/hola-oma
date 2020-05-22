@@ -7,8 +7,8 @@ import {Alert} from "@material-ui/lab";
 import Column from 'shared/components/Column/Column';
 
 export const boxDimensions = {
-  height: 486,   // 16:9 ratio
-  width: 864
+  height: '80vh',   // 16:9 ratio, was 486 at first 
+  width: '80vw'  // was 864
 }
 
 export const buttonText = {
@@ -76,10 +76,11 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
         {/*Content Box*/}
         <Grid item xs={12} className={classes.root}>
           <Box
+            id="grandparentLayout-Box"
             border={1}
             borderRadius="borderRadius"
             mx={"auto"}
-            fontSize={24}
+            fontSize={20}
             display={"flex"}
             height={boxDimensions.height}
             width={boxDimensions.width}

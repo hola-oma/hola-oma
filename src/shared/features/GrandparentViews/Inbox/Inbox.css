@@ -1,11 +1,8 @@
-.icon {
-  font-size:72px !important;
-}
-
 .inboxCard {
   margin: 20px;
 }
 
-/*html, body {*/
-/*  overflow: hidden;*/
-/*}*/
+.inboxLetter img {
+  display:block;
+  height:100%;
+}

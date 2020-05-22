@@ -31,10 +31,10 @@ const useStyles = makeStyles(() => ({
       textAlign: 'center'
     },
     gridList: {
-      height: '500px',
+      height: '90%',
       width: '100%',
       flexWrap: 'wrap',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'center',
       // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
       transform: 'translateZ(0)',
@@ -73,15 +73,15 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
       <Column justify="center">
 
         {/*Content Box*/}
-        <Grid item xs={12} className={classes.root}>
+        <Grid item xs={12} className={classes.root} id="inbox-grid">
           <Box
+            id="inbox-box"
+            className="grandparentBox"
             border={1}
             borderRadius="borderRadius"
             mx={"auto"}
             fontSize={24}
             display={"flex"}
-            height={478}
-            width={boxDimensions.width}
             alignItems={"center"}
             style={{ overflowY: "hidden" }}>
 
@@ -101,14 +101,23 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
             {/*If mailbox not empty*/}
             {posts.length > 0 &&
-              <GridList className={classes.gridList} cols={3}>
+              <GridList 
+                  className={classes.gridList} 
+                  cols={4} 
+                  spacing={2}
+                >
                 {posts.map((post, index: number) => (
                   <GridListTile
+                    id={`grid-list-tile-${post.pid}`}
+                    className="inboxLetter"
                     key={post.pid}
                     onClick={() => pressEnvelope(post)}
                     rows={1.25} >
-                    <img src={getPostReadByCurrentUser(post) ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
-                       alt={"Letter from " + post.from} />
+                    <img 
+                        src={getPostReadByCurrentUser(post) ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
+                        alt={"Letter from " + post.from} 
+                        className="inboxLetter"
+                    />
 
                   <GridListTileBar
                     title={"From: " + post.from}

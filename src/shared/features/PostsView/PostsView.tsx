@@ -217,8 +217,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   )
 
   return (
-    <div style={{overflow: role === roles.receiver ? 'hidden' : 'auto'}}>
-      <CredentialsWrapper>
+    <div style={{overflow: role === roles.receiver ? 'visible' : 'auto'}} id="posts-view-div">
 
         <Column justify="center" alignItems="center" id="postViewColumn">
 
@@ -241,7 +240,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
                   </Typography>
                   }
                   { (role === roles.receiver && pendingInvitations.length === 0) &&
-                  <Typography variant="subtitle1">
+                  <Typography variant="subtitle1" className="grandparentSubtitle">
                       You have {countNewPosts(posts)} new letter(s).
                   </Typography>
                   }
@@ -316,7 +315,6 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
           </Child>
         </Column>
-      </CredentialsWrapper>
     </div>
 
   )
