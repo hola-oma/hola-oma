@@ -11,28 +11,40 @@ const GrandparentReplyOpts: React.FC = () => {
   const location = useLocation();
   const currentPost: any = location.state;
 
-  return (
-        <>
+  const getImageURL = (): string => {
+    if (currentPost.photoURL) { return currentPost.photoURL; }
+    else if (currentPost.videoURL) { return currentPost.videoURL; }
+    else { return ""; }
+  }
 
-        <GrandparentLayout
-          from={currentPost.from}
-          headerText={"Letter from "}
-          header2Text={"Choose how to reply below!"}
-          boxContent={
-            <GrandparentPostLayout
-              from={currentPost.from}
-              imageURL={currentPost.photoURL}
-              message={currentPost.message}
-            />
-          }
-          buttonText={[buttonText.smiley, buttonText.voice, buttonText.photo]}
-          buttonActions={[
-            () => history.push({pathname: '/emoji', state: currentPost } ),
-            () => history.push({pathname: '/voice', state: currentPost } ),
-            () => history.push( {pathname: '/photo', state: currentPost } ),
-          ]}
-          buttonIcons={[replyOptionIcons.emoji, replyOptionIcons.voicemail, replyOptionIcons.photo]}
+  const getImageType = (): string => {
+    if (currentPost.photoURL) { return "img"; }
+    else if (currentPost.videoURL) { return "video"; }
+    else { return ""; }
+  }
+
+  return (
+    <>
+      <GrandparentLayout
+        from={currentPost.from}
+        headerText={"Letter from "}
+        header2Text={"Choose how to reply below!"}
+        boxContent={
+          <GrandparentPostLayout
+            from={currentPost.from}
+            imageURL={getImageURL()}
+            imageType={getImageType()}
+            message={currentPost.message}
           />
+        }
+        buttonText={[buttonText.smiley, buttonText.voice, buttonText.photo]}
+        buttonActions={[
+          () => history.push({pathname: '/emoji', state: currentPost}),
+          () => history.push({pathname: '/voice', state: currentPost}),
+          () => history.push({pathname: '/photo', state: currentPost}),
+        ]}
+        buttonIcons={[replyOptionIcons.emoji, replyOptionIcons.voicemail, replyOptionIcons.photo]}
+      />
 
      </>
     )

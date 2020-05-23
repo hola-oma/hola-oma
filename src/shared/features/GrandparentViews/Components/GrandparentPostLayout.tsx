@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface IPostLayout {
   from: string,
   imageURL: string,
+  imageType: string,
   message: string
 }
 
@@ -56,7 +57,7 @@ function getModalStyle() {
   };
 }
 
-export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, message}) => {
+export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, imageType, message}) => {
 
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
@@ -109,7 +110,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
               <CardActionArea>
                   <div style={{ position: 'relative' }} >
                       <CardMedia
-                          component="img"
+                          component={imageType === "img" ? "img" : "video"}
                           className={getStyle(message.length)}
                           image={imageURL}
                           onClick={handleClick}
