@@ -12,13 +12,13 @@ const GrandparentReplyOpts: React.FC = () => {
   const location = useLocation();
   const currentPost: any = location.state;
 
-  const getImageURL = (): string => {
+  const getMediaURL = (): string => {
     if (currentPost.photoURL) { return currentPost.photoURL; }
     else if (currentPost.videoURL) { return currentPost.videoURL; }
     else { return ""; }
   }
 
-  const getImageType = (): string => {
+  const getMediaType = (): string => {
     if (currentPost.photoURL) { return MEDIA_TYPES.IMAGE; }
     else if (currentPost.videoURL) { return MEDIA_TYPES.VIDEO; }
     else { return ""; }
@@ -33,8 +33,8 @@ const GrandparentReplyOpts: React.FC = () => {
         boxContent={
           <GrandparentPostLayout
             from={currentPost.from}
-            imageURL={getImageURL()}
-            imageType={getImageType()}
+            mediaURL={getMediaURL()}
+            mediaType={getMediaType()}
             message={currentPost.message}
           />
         }

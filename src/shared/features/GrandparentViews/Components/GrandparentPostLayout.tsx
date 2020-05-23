@@ -81,7 +81,14 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
 
   const modalBody = (
     <div style={modalStyle} className={classes.paper}>
-      <img src={mediaURL} alt={"Message from {from}"}/>
+
+      {/*Display image or video*/}
+      {mediaType === MEDIA_TYPES.IMAGE &&
+        <img src={mediaURL} alt={"Message content"}/>
+      }
+      {mediaType === MEDIA_TYPES.VIDEO && <video src={mediaURL}/> }
+
+      {/*Div for closing 'x' overlay*/}
       <div
         onClick={handleClick}
         style={{
