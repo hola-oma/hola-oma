@@ -186,7 +186,7 @@ const GetVoiceReply: React.FC = () => {
           boxContent={
             <>
             { supportedDeviceBrowser &&
-              <Row alignItems="flex-start" justify="center">
+              <Row style={{overflowY: 'scroll'}} alignItems="flex-start" justify="center">
                 <Child xs={12}>
                   <Column>
                     <Child>
