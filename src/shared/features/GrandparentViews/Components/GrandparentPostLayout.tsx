@@ -87,9 +87,9 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
         <img src={mediaURL} alt={"Message content"}/>
       }
       {mediaType === MEDIA_TYPES.VIDEO &&
-      <video controls autoPlay muted>
-          <source src={mediaURL} type="video/mp4"/>
-      </video>
+        <video controls autoPlay preload="auto">
+          <source src={mediaURL}/>
+        </video>
       }
 
       {/*Div for closing 'x' overlay*/}
@@ -118,17 +118,16 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
       {mediaURL &&
         <Grid item xs={12} style={{display: "inline-block"}}>
           <Card >
-              <CardActionArea>
-                  <div style={{ position: 'relative' }} >
-                      <CardMedia
-                          component={mediaType === MEDIA_TYPES.IMAGE ? "img" : "video"}
-                          className={getStyle(message.length)}
-                          image={mediaURL}
-                          onClick={handleClick}
-                      />
+            <CardActionArea>
+                <div style={{ position: 'relative' }} >
+                    <CardMedia
+                        component={mediaType === MEDIA_TYPES.IMAGE ? "img" : "video"}
+                        className={getStyle(message.length)}
+                        image={mediaURL}
+                        onClick={handleClick} />
                       <div
-                          onClick={handleClick}
-                          style={{
+                        onClick={handleClick}
+                        style={{
                             position: 'absolute',
                             backgroundColor: '#d8e0e440',
                             color: 'black',
@@ -136,7 +135,8 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
                             left: '50%',
                             transform: 'translateX(-50%)',
                           }} >
-                          {viewPostIcons.magnify}
+                          { mediaType === MEDIA_TYPES.IMAGE && viewPostIcons.magnify }
+                          { mediaType === MEDIA_TYPES.VIDEO && viewPostIcons.play }
                       </div>
 
                   </div>
