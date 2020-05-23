@@ -245,7 +245,7 @@ Use: <Box className="devBox">...stuff here...</Box> */
 }
 
 .grandparentBox {
-  height:calc(70vh - 130px);
+  height:calc(70vh - 140px);
   width:calc(100vw - 60px);
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {useHistory} from "react-router-dom";
 import {makeStyles} from '@material-ui/core/styles';
 
@@ -22,7 +22,6 @@ import {Post} from 'shared/models/post.model';
 import './Inbox.css';
 import {getPostReadByCurrentUser, markPostRead} from "../../../../services/post";
 import Column from "../../../components/Column/Column";
-import {boxDimensions} from "../Components/GrandparentLayout";
 
 const useStyles = makeStyles(() => ({
     root: {
