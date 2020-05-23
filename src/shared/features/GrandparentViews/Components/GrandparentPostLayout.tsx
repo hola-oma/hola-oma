@@ -86,7 +86,11 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
       {mediaType === MEDIA_TYPES.IMAGE &&
         <img src={mediaURL} alt={"Message content"}/>
       }
-      {mediaType === MEDIA_TYPES.VIDEO && <video src={mediaURL}/> }
+      {mediaType === MEDIA_TYPES.VIDEO &&
+      <video controls autoPlay muted>
+          <source src={mediaURL} type="video/mp4"/>
+      </video>
+      }
 
       {/*Div for closing 'x' overlay*/}
       <div
