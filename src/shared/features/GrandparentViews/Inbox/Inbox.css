@@ -8,6 +8,10 @@
   object-fit:contain;
 }
 
+.noInboxMargin.MuiGrid-item {
+  margin-top:0px !important;
+}
+
 .inboxTitle div div {
   font-size:18px !important;
 }

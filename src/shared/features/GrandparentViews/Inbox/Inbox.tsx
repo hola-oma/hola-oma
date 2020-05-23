@@ -99,10 +99,10 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
       <Column justify="center">
 
         {/*Content Box*/}
-        <Grid item xs={12} className={classes.root} id="inbox-grid">
+        <Grid item xs={12} className={`noInboxMargin ${classes.root}`} id="inbox-grid">
           <Box
             id="inbox-box"
-            className="grandparentBox"
+            className="grandparentBox inboxBox"
             border={1}
             borderRadius="borderRadius"
             mx={"auto"}

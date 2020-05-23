@@ -249,6 +249,10 @@ Use: <Box className="devBox">...stuff here...</Box> */
   width:calc(100vw - 60px);
 }
 
+.inboxBox {
+  height:calc(70vh - 50px);
+}
+
 /* the grandparent buttons are just like big buttons but a bit shorter and without a top margin*/
 .grandparentOptionsButton {
   height:60px !important;
