@@ -5,4 +5,15 @@
 .inboxLetter img {
   display:block;
   height:100%;
+  object-fit:contain;
+}
+
+.inboxTitle div div {
+  font-size:18px !important;
+}
+
+@media screen and (max-width:500px) {
+  .inboxTitle div div {
+    font-size:14px !important;
+  }
 }

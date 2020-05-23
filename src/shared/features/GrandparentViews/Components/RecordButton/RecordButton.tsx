@@ -63,7 +63,7 @@ const RecordButton: React.FC<IRecordButton> = ({ handleDictationDone, handleProg
       </Child>
 
       <Child xs={6}>
-        <span>{recording ? 'Listening...' : 'Press to listen'}</span>
+        <span>{recording ? 'Listening...' : 'Press once to begin dictation'}</span>
     </Child>
 
   </Column>

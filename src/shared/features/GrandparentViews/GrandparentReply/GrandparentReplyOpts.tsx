@@ -13,11 +13,10 @@ const GrandparentReplyOpts: React.FC = () => {
 
   return (
         <>
-
         <GrandparentLayout
           from={currentPost.from}
           headerText={"Letter from "}
-          header2Text={"Choose how to reply below!"}
+          header2Text={''}
           boxContent={
             <GrandparentPostLayout
               from={currentPost.from}
@@ -33,7 +32,6 @@ const GrandparentReplyOpts: React.FC = () => {
           ]}
           buttonIcons={[replyOptionIcons.emoji, replyOptionIcons.voicemail, replyOptionIcons.photo]}
           />
-
      </>
     )
 };

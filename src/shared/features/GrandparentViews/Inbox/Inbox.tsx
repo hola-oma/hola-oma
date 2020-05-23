@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {useHistory} from "react-router-dom";
 import {makeStyles} from '@material-ui/core/styles';
+
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import {
   Box,
@@ -26,12 +29,11 @@ const useStyles = makeStyles(() => ({
       flexGrow: 1,
     },
     title: {
-      fontSize: 22,
       color: 'black',
       textAlign: 'center'
     },
     gridList: {
-      height: '90%',
+      height: '100%',
       width: '100%',
       flexWrap: 'wrap',
       alignItems: 'flex-start',
@@ -58,15 +60,40 @@ let currentPost: Post;
 
 const Inbox: React.FC<IInbox> = ({ posts }) => {
 
+  const theme = useTheme();
+
+  // this looks wacky but React doesn't let you use 'useMediaQuery' inside a function
+  const screenExtraLarge = useMediaQuery(theme.breakpoints.only('xl'));
+  const screenLarge = useMediaQuery(theme.breakpoints.only('lg'));
+  const screenMedium = useMediaQuery(theme.breakpoints.only('md'));
+  const screenSmall = useMediaQuery(theme.breakpoints.only('sm'));
+  const screenExtraSmall = useMediaQuery(theme.breakpoints.only('xs'));
+
+  const getScreenWidth = () => {
+    if (screenExtraLarge) {
+      return 6;
+    } else if (screenLarge) {
+      return 5;
+    } else if (screenMedium) {
+      return 4;
+    } else if (screenSmall) {
+      return 3;
+    } else if (screenExtraSmall) {
+      return 2;
+    } else {
+      return 3;
+    }
+  }
+
   const classes = useStyles();
   const history = useHistory();
 
   const pressEnvelope = async function (envelopePost: Post) {
-      currentPost = envelopePost;
-      let postID = currentPost?.pid;
-      await markPostRead(postID);
-      history.push({pathname: '/startReply', state: envelopePost } );
-    }
+    currentPost = envelopePost;
+    let postID = currentPost?.pid;
+    await markPostRead(postID);
+    history.push({pathname: '/startReply', state: envelopePost } );
+  }
 
   return (
     <>
@@ -80,7 +107,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
             border={1}
             borderRadius="borderRadius"
             mx={"auto"}
-            fontSize={24}
+            fontSize={20}
             display={"flex"}
             alignItems={"center"}
             style={{ overflowY: "hidden" }}>
@@ -103,8 +130,9 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
             {posts.length > 0 &&
               <GridList 
                   className={classes.gridList} 
-                  cols={4} 
+                  cols={getScreenWidth()}  // cols={tile.featured ? 2 : 1}  query screen width 
                   spacing={2}
+                  id="grid-list-inbox"
                 >
                 {posts.map((post, index: number) => (
                   <GridListTile
@@ -116,11 +144,11 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                     <img 
                         src={getPostReadByCurrentUser(post) ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
                         alt={"Letter from " + post.from} 
-                        className="inboxLetter"
                     />
 
                   <GridListTileBar
                     title={"From: " + post.from}
+                    className="inboxTitle"
                     classes={{
                       root: classes.titleBar,
                       title: classes.title,

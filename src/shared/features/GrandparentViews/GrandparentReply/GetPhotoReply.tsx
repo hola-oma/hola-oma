@@ -77,7 +77,7 @@ const GetPhotoReply: React.FC = () => {
       { currentPost &&
         <GrandparentLayout
             from={currentPost.from}
-            headerText={ !photoPreview ? "Take a photo to send to " : "Sending photo to "}
+            headerText={ !photoPreview ? "Send a photo to " : "Sending photo to "}
             boxContent={
               <>
                 { supportedDeviceBrowser &&

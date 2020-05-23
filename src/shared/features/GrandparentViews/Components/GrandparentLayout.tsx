@@ -66,8 +66,10 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
 
       {/*Header*/}
       <Grid item xs={12} className={classes.title}>
-        <Typography variant="h4" gutterBottom>{headerText} {from}</Typography>
+        <Typography variant="h4">{headerText} {from}</Typography>
+        {/* MB: Commented out header2 text in effort to fit everything on ipad 
         { (header2Text && !alertText) && <Typography variant="h5" align={"center"}>{header2Text}</Typography> }
+        */} 
       </Grid>
 
       {/*Alert*/}
@@ -77,13 +79,12 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
         <Grid item xs={12} className={classes.root}>
           <Box
             id="grandparentLayout-Box"
+            className="grandparentBox"
             border={1}
             borderRadius="borderRadius"
             mx={"auto"}
             fontSize={20}
             display={"flex"}
-            height={boxDimensions.height}
-            width={boxDimensions.width}
           >
           {boxContent}
         </Box>
@@ -100,7 +101,7 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
                 <Button
                   variant="contained"
                   color="primary"
-                  className={classes.button}
+                  className={`${classes.button} bigButton grandparentOptionsButton`}
                   startIcon={buttonIcons[index]}
                   onClick={buttonActions[index]}
                   disabled={buttonDisabled[index]}
