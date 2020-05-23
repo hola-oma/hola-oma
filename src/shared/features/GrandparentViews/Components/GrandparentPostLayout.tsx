@@ -7,6 +7,7 @@ import {
 import { makeStyles,  createStyles } from "@material-ui/core/styles";
 
 import { viewPostIcons } from "../../../../Icons";
+import {MEDIA_TYPES} from "../../../models/post.model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,8 +42,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface IPostLayout {
   from: string,
-  imageURL: string,
-  imageType: string,
+  mediaURL: string,
+  mediaType: string,
   message: string
 }
 
@@ -57,14 +58,14 @@ function getModalStyle() {
   };
 }
 
-export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, imageType, message}) => {
+export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, mediaType, message}) => {
 
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   const [imageModalOpen, setImageModalOpen] = useState<boolean>(false);
 
   const postImage = new Image();
-  postImage.src = imageURL;
+  postImage.src = mediaURL;
 
   const handleClick = () => {
     imageModalOpen ? setImageModalOpen(false) : setImageModalOpen(true)
@@ -80,7 +81,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, im
 
   const modalBody = (
     <div style={modalStyle} className={classes.paper}>
-      <img src={imageURL} alt={"Message from {from}"}/>
+      <img src={mediaURL} alt={"Message from {from}"}/>
       <div
         onClick={handleClick}
         style={{
@@ -102,17 +103,16 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, im
           direction={"column"}
           alignItems="center"
           justify="center"
-          style={{ height: "100%", overflowY: "hidden" }}
-    >
-      {imageURL &&
-      <Grid item xs={12} style={{display: "inline-block"}}>
+          style={{ height: "100%", overflowY: "hidden" }} >
+      {mediaURL &&
+        <Grid item xs={12} style={{display: "inline-block"}}>
           <Card >
               <CardActionArea>
                   <div style={{ position: 'relative' }} >
                       <CardMedia
-                          component={imageType === "img" ? "img" : "video"}
+                          component={mediaType === MEDIA_TYPES.IMAGE ? "img" : "video"}
                           className={getStyle(message.length)}
-                          image={imageURL}
+                          image={mediaURL}
                           onClick={handleClick}
                       />
                       <div
@@ -144,10 +144,10 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, im
                 }
               </CardActionArea>
           </Card>
-      </Grid>
+        </Grid>
       }
 
-      {!imageURL &&
+      {!mediaURL &&
         <Typography variant="h5" align={message.length <= 50 ? "center" : "left"} >
           {message}
         </Typography>

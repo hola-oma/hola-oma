@@ -1,3 +1,8 @@
+export const MEDIA_TYPES = {
+  IMAGE: "img",
+  VIDEO: "video"
+}
+
 export interface Post {
   pid: string,
   creatorID: string,

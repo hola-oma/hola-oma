@@ -4,6 +4,7 @@ import { useLocation, useHistory } from "react-router-dom";
 import { GrandparentPostLayout } from "../Components/GrandparentPostLayout";
 import { replyOptionIcons } from "../../../../Icons";
 import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
+import {MEDIA_TYPES} from "../../../models/post.model";
 
 const GrandparentReplyOpts: React.FC = () => {
 
@@ -18,8 +19,8 @@ const GrandparentReplyOpts: React.FC = () => {
   }
 
   const getImageType = (): string => {
-    if (currentPost.photoURL) { return "img"; }
-    else if (currentPost.videoURL) { return "video"; }
+    if (currentPost.photoURL) { return MEDIA_TYPES.IMAGE; }
+    else if (currentPost.videoURL) { return MEDIA_TYPES.VIDEO; }
     else { return ""; }
   }
 
