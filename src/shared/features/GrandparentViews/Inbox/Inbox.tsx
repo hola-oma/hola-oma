@@ -67,10 +67,13 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
   const screenMedium = useMediaQuery(theme.breakpoints.only('md'));
   const screenSmall = useMediaQuery(theme.breakpoints.only('sm'));
   const screenExtraSmall = useMediaQuery(theme.breakpoints.only('xs'));
+  const screenNarrow = useMediaQuery('(max-width:340px)');
 
   const getScreenWidth = () => {
     if (screenExtraLarge) {
       return 6;
+    } else if (screenNarrow) {
+      return 1;
     } else if (screenLarge) {
       return 5;
     } else if (screenMedium) {
@@ -129,7 +132,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
             {posts.length > 0 &&
               <GridList 
                   className={classes.gridList} 
-                  cols={getScreenWidth()}  // cols={tile.featured ? 2 : 1}  query screen width 
+                  cols={getScreenWidth()} 
                   spacing={2}
                   id="grid-list-inbox"
                 >

@@ -22,7 +22,6 @@ import Alert from '@material-ui/lab/Alert';
 
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AddCommentIcon from '@material-ui/icons/AddComment';
-import CredentialsWrapper from 'shared/components/CredentialsWrapper';
 import Column from 'shared/components/Column/Column';
 import Child from 'shared/components/Child/Child';
 import Row from 'shared/components/Row/Row';
