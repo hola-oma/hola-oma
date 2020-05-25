@@ -1,7 +1,7 @@
 .recordButton {
-  border-radius: 100%;
-  width: 80px;
-  height: 80px;
+  border-radius: 10%;
+  width: 60px;
+  height: 60px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
   line-height: 1;
   position: relative;

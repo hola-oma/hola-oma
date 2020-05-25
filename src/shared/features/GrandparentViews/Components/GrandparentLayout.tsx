@@ -66,7 +66,7 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
 
       {/*Header*/}
       <Grid item xs={12} className={classes.title}>
-        <Typography variant="h4">{headerText} {from}</Typography>
+        <Typography variant="h5">{headerText} {from}</Typography>
         {/* MB: Commented out header2 text in effort to fit everything on ipad 
         { (header2Text && !alertText) && <Typography variant="h5" align={"center"}>{header2Text}</Typography> }
         */} 

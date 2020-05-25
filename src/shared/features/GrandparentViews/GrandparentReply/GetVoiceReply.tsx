@@ -186,7 +186,7 @@ const GetVoiceReply: React.FC = () => {
           boxContent={
             <>
             { supportedDeviceBrowser &&
-              <Row style={{overflowY: 'scroll'}} alignItems="flex-start" justify="center">
+              <Row alignItems="flex-start" justify="center">
                 <Child xs={12}>
                   <Column>
                     <Child>
@@ -196,46 +196,47 @@ const GetVoiceReply: React.FC = () => {
                       handleError={handleError}
                     />
 
-                    <span className="listenError">
+                    <Row justify="center">
+                      <Child xs={11}>
+                        <TextareaAutosize
+                          className={`grandparentReplyText thinBorder ${inProgress ? 'inProgressText' : ''}`}
+                          rowsMin={7}
+                          rowsMax={7}
+                          aria-label="voice reply"
+                          placeholder="Your voice message appears here"
+                          value={inProgress ? dictatedReply : completeReply}
+                          onChange={handleTextareaChange}
+                        />
+                      </Child>
+
+                        </Row>
+
+                        <span className="listenError">
                         {lowConfidence &&
-                        <Row justify="center">
-                            <Child xs={11}>
+                        <Row justify="center" className="errorRow">
+                            <Child xs={11} className="recordingAlertChild">
                                 <FormError error={"Sorry, I didn't catch that. Please record again."}/>
                             </Child>
                         </Row>
                         }
 
                       {replyNearlyTooLong &&
-                      <Row justify="center">
-                          <Child xs={11}>
+                      <Row justify="center" className="errorRow">
+                          <Child xs={11} className="recordingAlertChild">
                               <FormError error={`Approaching character limit! ${MAX_REPLY_LENGTH} allowed (${charsRemaining()} remaining)`} severity="warning"/>
                           </Child>
                       </Row>
                       }
 
                         {replyTooLong &&
-                        <Row justify="center">
-                            <Child xs={11}>
+                        <Row justify="center" className="errorRow">
+                            <Child xs={11} className="recordingAlertChild">
                                 <FormError error={`Maximum ${MAX_REPLY_LENGTH} characters (${charsOver()} over)`}/>
                             </Child>
                         </Row>
                         }
-                        </span>
+                    </span>
 
-                        <Row justify="center">
-                          <Child xs={11}>
-                            <TextareaAutosize
-                              className={`grandparentReplyText thinBorder ${inProgress ? 'inProgressText' : ''}`}
-                              rowsMin={8}
-                              rowsMax={8}
-                              aria-label="voice reply"
-                              placeholder="Your voice message appears here"
-                              value={inProgress ? dictatedReply : completeReply}
-                              onChange={handleTextareaChange}
-                            />
-                          </Child>
-
-                        </Row>
                       </Child>
                     </Column>
                   </Child>
