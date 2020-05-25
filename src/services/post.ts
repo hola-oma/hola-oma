@@ -50,6 +50,7 @@ export const getPosts = async (): Promise<Post[]> => {
           date: data.date,
           receiverIDs: data.receiverIDs,
           unreadReplyCount:0,
+          totalReplyCount:0
         })
       })
       posts.length = 0;      // Clear array so items not appended on state change
