@@ -16,10 +16,8 @@ import PermPhoneMsgIcon from '@material-ui/icons/PermPhoneMsg';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
+import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
-
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 // Returns an array so both grandparent and family sides can map and/or access by index
 export const replyEmojiPNGs = () => {
@@ -66,10 +64,6 @@ export const cameraIcons = {
 
 export const viewPostIcons = {
   magnify: <ZoomInIcon fontSize={"large"}/>,
+  play: <PlayCircleOutlineIcon fontSize={"large"}/>,
   close: <CancelPresentationIcon fontSize={"large"}/>
-}
-
-export const navigationIcons = {
-  forward: <ArrowForwardIcon fontSize={"large"}/>,
-  back: <ArrowBackIcon fontSize={"large"}/>
 }
