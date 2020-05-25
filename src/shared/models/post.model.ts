@@ -12,5 +12,6 @@ export interface Post {
   photoURL: string,
   videoURL: string,
   date: number,
-  receiverIDs: Array<string>
+  receiverIDs: Array<string>,
+  unreadReplyCount?: number
 }

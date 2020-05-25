@@ -9,6 +9,7 @@ import {Link as ButtonLink, Button, Tooltip, Typography} from '@material-ui/core
 import {getPosts} from 'services/post';
 
 import {Post} from '../../models/post.model';
+import { getRepliesToPost } from "services/reply";
 
 import {acceptLink, getLinkedAccounts, removeLink} from 'services/accountLink';
 import {Link} from 'react-router-dom';
@@ -43,7 +44,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   const [pendingInvitations, setPendingInvitations] = useState<AccountLink[]>([]);
   const [invite, setInvite] = useState<AccountLink>();
   const [invitationModalOpen, setInvitationModalOpen] = useState<boolean>(false);
-  const [numNewReplies, setNumNewReplies] = useState(0);
+  const [unreadRepliesTotal, setUnreadRepliesTotal] = useState(0);
   const [verifiedReceivers, setVerifiedReceivers] = useState<boolean>(false);
 
   const updatePendingInvitations = (dataArr: AccountLink[]) => {
@@ -53,37 +54,73 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     }
   }
 
-  // Get display name
+  const processLinkedAccounts = async () => {
+    // db call, check for invitations and linked accounts 
+    const links:AccountLink[] = await getLinkedAccounts();
+        const pendingInvitations = links.filter(link => !link.verified);
+        updatePendingInvitations(pendingInvitations);
+        const verified = links.filter(link => link.verified);
+        if (verified.length > 0) {
+          setVerifiedReceivers(true);
+        }
+        setLinkedAccounts(links);
+  }
+
+  const processUnreadReplies = async (userPosts: Post[]) => {
+    let repliesTotal = 0;
+    for await (let post of userPosts) {
+        const replyArray: any = await getRepliesToPost(post.pid);
+          replyArray.forEach((reply: any) => {
+            if (!reply.read) {
+              // found an unread reply! - mark this particular post as having new replies
+              post.unreadReplyCount = (post.unreadReplyCount ?? 0) + 1;
+              // increase the 'global' count of unread replies 
+              repliesTotal++;
+            }
+          });
+      };
+      setUnreadRepliesTotal(repliesTotal);
+  }
+
+  const processPosts = async () => {
+    // db call, get the posts for this user 
+    const docs = await getPosts();
+      setPosts(docs)
+      await processUnreadReplies(docs);
+  }
+
+  const processUserSettings = async () => {
+    // db call, get this user's profile settings
+    await getUserSettings()
+    .then((userSettings:any) => {
+      setUserID(userSettings?.uid ? userSettings.uid : '');
+      setDisplayName(userSettings?.displayName ? userSettings.displayName : '');
+      setRole(userSettings?.role ? userSettings.role : roles.receiver);
+      setIsLoading(false);
+    }); // closes if isMounted
+  }
+
+  const processPage = async () => {
+    await processLinkedAccounts();
+    await processPosts();
+    await processUserSettings();
+  }
+
+  // Fires on page load. Gets pending invites, posts, and user settings. 
   useEffect(() => {
-    let isMounted = true;
     setIsLoading(true);
+    let isMounted = true;
 
-    getLinkedAccounts()
-      .then((links:AccountLink[]) => {
-        if (isMounted) {
-          const pendingInvitations = links.filter(link => !link.verified);
-          updatePendingInvitations(pendingInvitations);
-          const verified = links.filter(link => link.verified);
-          if (verified.length > 0) {
-            setVerifiedReceivers(true);
-          }
-          setLinkedAccounts(links);
-          getPosts()
-            .then((docs:Post[]) => {
-              setPosts(docs);
-            }).then(() => {
-              getUserSettings()
-                .then((userSettings:any) => {
-                  setUserID(userSettings?.uid ? userSettings.uid : '');
-                  setDisplayName(userSettings?.displayName ? userSettings.displayName : '');
-                  setRole(userSettings?.role ? userSettings.role : roles.receiver);
-                  setIsLoading(false);
-                });
-            })
-          }
-      });
+    if (isMounted) {
+      processPage().then(() => {
+        setIsLoading(false);
+      })
+    }
 
-      return () => { isMounted = false; }
+    return () => { isMounted = false; }
+
+    // don't put the processPage function in here, that's unreasonable 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setIsLoading]);
 
   const acceptInvite = () => {
@@ -132,10 +169,6 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
   const goToNewPost = () => {
     if (history) history.push('/newPost')
-  }
-
-  const updateNewReplies = (num: number) => {
-    setNumNewReplies(num);
   }
 
   const countNewPosts = (posts: Array<Post>) => {
@@ -237,7 +270,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
                 <Child xs={12}>
                   {role === roles.poster &&
                   <Typography variant="subtitle1" gutterBottom>
-                      You have {numNewReplies} new {numNewReplies !== 1 ? 'replies' : 'reply'}.
+                      You have {unreadRepliesTotal} new {unreadRepliesTotal !== 1 ? 'replies' : 'reply'}.
                   </Typography>
                   }
                   { (role === roles.receiver && pendingInvitations.length === 0) &&
@@ -309,7 +342,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
                 {role === roles.poster && <hr/>}
 
-                {role === roles.poster && <PostManagement displayName={displayName} posts={posts} onNewReplies={updateNewReplies}/>}
+                {role === roles.poster && <PostManagement displayName={displayName} posts={posts}/>}
                 {role === roles.receiver && <Inbox posts={posts}/>}
               </Child>
             </Row>
