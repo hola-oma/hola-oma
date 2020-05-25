@@ -56,6 +56,8 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
       history.push({pathname: '/startReply', state: envelopePost } );
     }
 
+  // todo: pagination for < 18 messages
+  // this is work in progress
   const getNextMessages = () => {
     console.log("Go to next 6 messages");
     if (messageIndex < 12) { messageIndex += 6; }
