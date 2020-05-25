@@ -156,6 +156,7 @@ const GetEmojiReply: React.FC = () => {
               () => history.goBack(),
               e => buildReply(e) ] }
             buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]}
+            buttonDisabled={[false, (highlightedList.every((element) => element === false))]}
         />
       }
     </>
