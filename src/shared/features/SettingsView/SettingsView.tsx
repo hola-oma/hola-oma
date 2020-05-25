@@ -172,7 +172,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
         </Child>
       </Row>
 
-      <p>User ID: {userID}</p>
+      {/* <p>User ID: {userID}</p> */}
 
     <ChangeAccountTypeAlert 
       isOpen={changeAccountTypeAlertOpen} 
