@@ -13,14 +13,14 @@ export const boxDimensions = {
 
 export const buttonText = {
   // Navigation
-  inbox: "Go back to Inbox",
-  replyOptions: "Go back to Reply Options",
-  backToMessage: "Go back to Message",
+  inbox: "Back to Inbox",
+  replyOptions: "Back to Reply Options",
+  backToMessage: "Back to Message",
   // Reply options
   smiley: "Smiley",
   voice: "Voice Message",
   photo: "Your Picture",
-  send: "Send Reply",
+  send: "Send",
   // Photo options
   take: "Take Photo",
   retake: "Retake Photo",
@@ -79,7 +79,7 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
         <Grid item xs={12} className={classes.root}>
           <Box
             id="grandparentLayout-Box"
-            className="grandparentBox"
+            className="grandparentBoxWidth grandparentBoxHeight"
             border={1}
             borderRadius="borderRadius"
             mx={"auto"}
@@ -93,9 +93,10 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
       {/*Bottom buttons*/}
       {buttonIcons.length > 0 &&
           <Grid container
-                direction="row"
-                justify="space-around"
-                alignItems="center">
+              className="grandparentBoxWidth marginLRAuto"
+              direction="row"
+              justify="space-between"
+              alignItems="center">
             {buttonIcons.map((button: React.ReactElement<SvgIconProps>, index: number) => {
               return (
                 <Button

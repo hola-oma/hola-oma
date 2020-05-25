@@ -6,6 +6,11 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+.marginLRAuto {
+  margin-left:auto;
+  margin-right:auto;
+}
+
 .fullHeight {
   height: calc(100vh - 100px);
   display:block;
@@ -244,9 +249,12 @@ Use: <Box className="devBox">...stuff here...</Box> */
   margin-bottom:1px !important;
 }
 
-.grandparentBox {
+.grandparentBoxHeight {
   height:calc(70vh - 100px);
-  width:calc(100vw - 60px);
+}
+
+.grandparentBoxWidth {
+  width:calc(100vw - 60px) !important;
 }
 
 .inboxBox {
@@ -257,4 +265,6 @@ Use: <Box className="devBox">...stuff here...</Box> */
 .grandparentOptionsButton {
   height:60px !important;
   margin-top:24px !important;
+  margin-left:0px !important;
+  margin-right:0px !important;
 }
