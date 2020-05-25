@@ -105,7 +105,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
         <Grid item xs={12} className={`noInboxMargin ${classes.root}`} id="inbox-grid">
           <Box
             id="inbox-box"
-            className="grandparentBox inboxBox"
+            className="grandparentBoxWidth inboxBox"
             border={1}
             borderRadius="borderRadius"
             mx={"auto"}

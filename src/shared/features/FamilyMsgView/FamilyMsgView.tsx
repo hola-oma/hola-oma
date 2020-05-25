@@ -255,11 +255,11 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 Replies
             </Typography>
             <Row alignItems="center" justify="center">
-                {emojiReplies && emojiReplies.filter(reply => {return reply.length}).map((reply, index: number) => {
-                    return (
+                {emojiReplies && emojiReplies.map((reply, index: number) => {
+                    return reply.length > 0 && (
                         <Tooltip title={getTooltip(reply)} key={index} arrow>
                             <Typography variant="h5" className={classes.emojis}>
-                                {emojiIcons[index] }
+                                {emojiIcons[index]}
                             </Typography>
                         </Tooltip>
                     )

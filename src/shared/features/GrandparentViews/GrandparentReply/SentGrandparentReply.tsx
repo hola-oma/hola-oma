@@ -39,8 +39,8 @@ export const SentGrandparentReply: React.FC = () => {
   let boxContent: any = {}
 
   if (replyContent.replyType === REPLY_TYPES.EMOJI) {
-    const sentEmojis: Array<React.ReactElement<SvgIconProps>> = [];
-    const allEmojis: Array<React.ReactElement<SvgIconProps>> = replyEmojiPNGs();
+    const sentEmojis: Array<string> = [];
+    const allEmojis: Array<string> = replyEmojiPNGs();
     (replyContent.message).forEach(function(index: number) {
       sentEmojis.push(allEmojis[index]);
     })
