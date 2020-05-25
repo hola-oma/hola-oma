@@ -16,10 +16,8 @@ import PermPhoneMsgIcon from '@material-ui/icons/PermPhoneMsg';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
+import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
-
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import smile from '../src/icons/smile.png';
 import thumbsup from '../src/icons/thumbsup.png';
@@ -73,10 +71,6 @@ export const cameraIcons = {
 
 export const viewPostIcons = {
   magnify: <ZoomInIcon fontSize={"large"}/>,
+  play: <PlayCircleOutlineIcon fontSize={"large"}/>,
   close: <CancelPresentationIcon fontSize={"large"}/>
-}
-
-export const navigationIcons = {
-  forward: <ArrowForwardIcon fontSize={"large"}/>,
-  back: <ArrowBackIcon fontSize={"large"}/>
 }

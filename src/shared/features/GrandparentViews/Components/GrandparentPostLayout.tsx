@@ -7,6 +7,7 @@ import {
 import { makeStyles,  createStyles } from "@material-ui/core/styles";
 
 import { viewPostIcons } from "../../../../Icons";
+import {MEDIA_TYPES} from "../../../models/post.model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,7 +42,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface IPostLayout {
   from: string,
-  imageURL: string,
+  mediaURL: string,
+  mediaType: string,
   message: string
 }
 
@@ -56,14 +58,14 @@ function getModalStyle() {
   };
 }
 
-export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, message}) => {
+export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, mediaType, message}) => {
 
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   const [imageModalOpen, setImageModalOpen] = useState<boolean>(false);
 
   const postImage = new Image();
-  postImage.src = imageURL;
+  postImage.src = mediaURL;
 
   const handleClick = () => {
     imageModalOpen ? setImageModalOpen(false) : setImageModalOpen(true)
@@ -79,7 +81,18 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
 
   const modalBody = (
     <div style={modalStyle} className={classes.paper}>
-      <img src={imageURL} alt={"Message from {from}"}/>
+
+      {/*Display image or video*/}
+      {mediaType === MEDIA_TYPES.IMAGE &&
+        <img src={mediaURL} alt={"Message content"}/>
+      }
+      {mediaType === MEDIA_TYPES.VIDEO &&
+        <video controls autoPlay preload="auto">
+          <source src={mediaURL}/>
+        </video>
+      }
+
+      {/*Div for closing 'x' overlay*/}
       <div
         onClick={handleClick}
         style={{
@@ -101,22 +114,20 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
           direction={"column"}
           alignItems="center"
           justify="center"
-          style={{ height: "100%", overflowY: "hidden" }}
-    >
-      {imageURL &&
-      <Grid item xs={12} style={{display: "inline-block"}}>
+          style={{ height: "100%", overflowY: "hidden" }} >
+      {mediaURL &&
+        <Grid item xs={12} style={{display: "inline-block"}}>
           <Card >
-              <CardActionArea>
-                  <div style={{ position: 'relative' }} >
-                      <CardMedia
-                          component="img"
-                          className={getStyle(message.length)}
-                          image={imageURL}
-                          onClick={handleClick}
-                      />
+            <CardActionArea>
+                <div style={{ position: 'relative' }} >
+                    <CardMedia
+                        component={mediaType === MEDIA_TYPES.IMAGE ? "img" : "video"}
+                        className={getStyle(message.length)}
+                        image={mediaURL}
+                        onClick={handleClick} />
                       <div
-                          onClick={handleClick}
-                          style={{
+                        onClick={handleClick}
+                        style={{
                             position: 'absolute',
                             backgroundColor: '#d8e0e440',
                             color: 'black',
@@ -124,7 +135,8 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
                             left: '50%',
                             transform: 'translateX(-50%)',
                           }} >
-                          {viewPostIcons.magnify}
+                          { mediaType === MEDIA_TYPES.IMAGE && viewPostIcons.magnify }
+                          { mediaType === MEDIA_TYPES.VIDEO && viewPostIcons.play }
                       </div>
 
                   </div>
@@ -143,10 +155,10 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, imageURL, me
                 }
               </CardActionArea>
           </Card>
-      </Grid>
+        </Grid>
       }
 
-      {!imageURL &&
+      {!mediaURL &&
         <Typography variant="h5" align={message.length <= 50 ? "center" : "left"} >
           {message}
         </Typography>

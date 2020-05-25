@@ -21,6 +21,13 @@ export const getPosts = async (): Promise<Post[]> => {
   let fieldPath = (userRole === roles.receiver) ? "receiverIDs" : "creatorID";
   let opStr = (userRole === roles.receiver) ? "array-contains" : "==";
   let limit = (userRole === roles.receiver) ? grandparentLimit : familyLimit;
+  let resolvePostPromise = (posts: Post[]) => {};
+
+  // this is what we'll return from this function
+  const postPromise: Promise<Post[]> = new Promise((resolve)=> {
+    resolvePostPromise = resolve;
+  });
+
 
   try {
     const postRef = db.collection('posts')
@@ -41,16 +48,21 @@ export const getPosts = async (): Promise<Post[]> => {
           videoURL: data.videoURL,
           read: data.read,
           date: data.date,
-          receiverIDs: data.receiverIDs
+          receiverIDs: data.receiverIDs,
+          unreadReplyCount:0,
         })
       })
       posts.length = 0;      // Clear array so items not appended on state change
       posts.push(...currentPosts);
+
+      // we know we're done once that push happens, so resolve the promise
+      // and the place that's awaiting on it (postsView) can have it all as a complete set 
+      resolvePostPromise(posts);
     })
   } catch (error) {
     console.error(error);
   }
-  return posts;
+  return postPromise;
 }
 
 export const createPost = async (post: Post) => {

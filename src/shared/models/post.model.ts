@@ -1,3 +1,8 @@
+export const MEDIA_TYPES = {
+  IMAGE: "img",
+  VIDEO: "video"
+}
+
 export interface Post {
   pid: string,
   creatorID: string,
@@ -7,5 +12,6 @@ export interface Post {
   photoURL: string,
   videoURL: string,
   date: number,
-  receiverIDs: Array<string>
+  receiverIDs: Array<string>,
+  unreadReplyCount?: number
 }
