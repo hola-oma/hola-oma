@@ -18,8 +18,8 @@ export const buttonText = {
   backToMessage: "Back to Message",
   // Reply options
   smiley: "Smiley",
-  voice: "Voice Message",
-  photo: "Your Picture",
+  voice: "Message",
+  photo: "Photo",
   send: "Send",
   // Photo options
   take: "Take Photo",

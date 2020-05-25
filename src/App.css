@@ -268,3 +268,8 @@ Use: <Box className="devBox">...stuff here...</Box> */
   margin-left:0px !important;
   margin-right:0px !important;
 }
+
+
+.grandparentOptionsButton .MuiButton-iconSizeMedium > *:first-child {
+  font-size:32px;
+}
