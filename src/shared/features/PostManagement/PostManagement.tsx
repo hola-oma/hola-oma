@@ -118,7 +118,7 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts }) => {
                         <CommentIcon color="secondary"/>
                       </IconButton>
                       <Typography variant="caption" color="textSecondary">
-                        {post.unreadReplyCount === 1 ? '1 reply': post.unreadReplyCount + ' replies'}
+                        {post.totalReplyCount === 1 ? '1 reply': post.totalReplyCount + ' replies'}
                       </Typography>
 
                       {/* if there are NEW REPLIES, show this messaging */}

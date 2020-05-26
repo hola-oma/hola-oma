@@ -71,6 +71,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     for await (let post of userPosts) {
         const replyArray: any = await getRepliesToPost(post.pid);
           replyArray.forEach((reply: any) => {
+            post.totalReplyCount = replyArray.length;
             if (!reply.read) {
               // found an unread reply! - mark this particular post as having new replies
               post.unreadReplyCount = (post.unreadReplyCount ?? 0) + 1;

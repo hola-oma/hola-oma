@@ -13,5 +13,6 @@ export interface Post {
   videoURL: string,
   date: number,
   receiverIDs: Array<string>,
-  unreadReplyCount?: number
+  unreadReplyCount?: number,
+  totalReplyCount?: number
 }
