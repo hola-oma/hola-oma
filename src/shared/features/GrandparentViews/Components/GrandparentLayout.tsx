@@ -79,7 +79,7 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
         <Grid item xs={12} className={classes.root}>
           <Box
             id="grandparentLayout-Box"
-            className="grandparentBoxWidth grandparentBoxHeight"
+            className="grandparentBox grandparentBoxWidth grandparentBoxHeight"
             border={1}
             borderRadius="borderRadius"
             mx={"auto"}

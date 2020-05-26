@@ -269,6 +269,10 @@ Use: <Box className="devBox">...stuff here...</Box> */
   height:calc(70vh - 50px);
 }
 
+.grandparentBox p {
+  font-size:1.2rem !important;
+}
+
 /* the grandparent buttons are just like big buttons but a bit shorter and without a top margin*/
 .grandparentOptionsButton {
   height:60px !important;
