@@ -249,7 +249,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   )
 
   return (
-    <div style={{overflow: role === roles.receiver ? 'visible' : 'auto'}} id="posts-view-div">
+    <div style={{overflow: role === roles.receiver ? 'visible' : ''}} id="posts-view-div">
 
         <Column justify="center" alignItems="center" id="postViewColumn">
 
