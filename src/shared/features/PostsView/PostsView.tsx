@@ -28,6 +28,7 @@ import Child from 'shared/components/Child/Child';
 import Row from 'shared/components/Row/Row';
 
 import './PostsView.css';
+import { Reply } from 'shared/models/reply.model';
 
 interface IPostsView extends RouteComponentProps<any> {
   setIsLoading: (loading: boolean) => void;
@@ -68,21 +69,18 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   const processUnreadReplies = async (userPosts: Post[]) => {
     let repliesTotal = 0;
     for await (let post of userPosts) {
-        const replyArray: any = await getRepliesToPost(post.pid);
-          replyArray.forEach((reply: any) => {
-            if (!reply.read) {
-              // found an unread reply! - mark this particular post as having new replies
-              post.unreadReplyCount = (post.unreadReplyCount ?? 0) + 1;
-              // increase the 'global' count of unread replies 
-              repliesTotal++;
-            }
-          });
-      };
-      setUnreadRepliesTotal(repliesTotal);
+      const replyArray: Array<Reply> = await getRepliesToPost(post.pid);
+        for (let reply of replyArray) {
+          if (!reply.read) {
+            post.unreadReplyCount = (post.unreadReplyCount ?? 0) + 1;
+            repliesTotal++;
+          }
+        };
+    };
+    setUnreadRepliesTotal(repliesTotal);
   }
 
   const processPosts = async () => {
-    // db call, get the posts for this user 
     const docs = await getPosts();
       setPosts(docs)
       await processUnreadReplies(docs);

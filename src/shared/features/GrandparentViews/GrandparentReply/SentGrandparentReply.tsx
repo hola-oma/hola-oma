@@ -5,7 +5,7 @@ import { useLocation, useHistory } from "react-router";
 
 import {mailIcons, replyEmojiPNGs} from "../../../../Icons";
 import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
-import {ButtonBase, Grid, SvgIconProps, Typography} from "@material-ui/core";
+import {ButtonBase, Grid, Typography} from "@material-ui/core";
 import {Post} from "../../../models/post.model";
 import { REPLY_TYPES } from "../../../models/reply.model";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";

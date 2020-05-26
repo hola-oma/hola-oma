@@ -26,7 +26,6 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
-  const [userID, setUserID] = useState("");
   const [changeAccountTypeAlertOpen, setChangeAccountTypeAlertOpen] = useState<boolean>(false);
 
   const [error, setErrors] = useState("");
@@ -117,9 +116,7 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
           setEmail(settings?.email);
           
           getUserProfile()
-          .then((userProfile: any) => {
-            setUserID(userProfile?.uid);
-
+          .then(() => {
             setIsLoading(false);
           });
       }
