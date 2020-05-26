@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
       height: '100%',
       width: '100%',
       flexWrap: 'wrap',
-      alignItems: 'flex-start',
+      alignItems: 'center',
       justifyContent: 'center',
       // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
       transform: 'translateZ(0)',
