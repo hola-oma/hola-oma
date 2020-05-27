@@ -29,6 +29,11 @@ body {
   padding:20px !important;
 }
 
+.viewWrapperDiv {
+  display:flex;
+  flex-direction:column;
+}
+
 .credentialsForm {
   width:100%;
 }
@@ -285,8 +290,15 @@ Use: <Box className="devBox">...stuff here...</Box> */
   font-size:32px;
 }
 
+.grandparent-card {
+  background-color:transparent !important;
+  box-shadow:none !important;
+}
+
 .grandparent-cardActionArea {
   position:relative;
+  background-color:transparent !important;
+  box-shadow:none !important;
 }
 
 .grandarent-imagePreview {

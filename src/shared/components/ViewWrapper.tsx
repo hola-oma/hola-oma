@@ -1,18 +1,22 @@
 import React from 'react';
-import { GridProps, Box } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import Row from './Row/Row';
 import { isMobileSafari } from 'react-device-detect';
+import Copyright from './Copyright';
 
-const ViewWrapper: React.FC<GridProps> = ({ children, ...gridProps }) => {
+interface IViewWrapper {
+  showCopyright?: boolean
+}
+
+const ViewWrapper: React.FC<IViewWrapper> = ({ children, showCopyright, ...gridProps }) => {
   return (
     <Box pl={6} pr={6} className="viewWrapperBox">
-      <Row justify="flex-start" className={isMobileSafari ? 'fullHeightMobileSafari' : 'fullHeight'}>
-        <Row justify="center">
-          <div className="" style={{display: 'flex', flexDirection: 'column'}}>
+      <Row justify="center" className={isMobileSafari ? 'fullHeightMobileSafari' : 'fullHeight'}>
+          <div className="viewWrapperDiv">
             {children}
           </div>
+          {showCopyright ? <Copyright/> : ''}
         </Row>
-      </Row>
     </Box>
   )
 }

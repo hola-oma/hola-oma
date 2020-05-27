@@ -10,12 +10,12 @@ import { RouteComponentProps } from 'react-router-dom'; // give us 'history' obj
 
 import { sendPasswordResetEmail } from 'services/user';
 import BigInput from "shared/components/BigInput/BigInput";
-import CredentialsWrapper from "shared/components/CredentialsWrapper";
 import Row from "shared/components/Row/Row";
 import Child from "shared/components/Child/Child";
 import Column from "shared/components/Column/Column";
 import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
 import CredentialsForm from "shared/components/CredentialsForm/CredentialsForm";
+import ViewWrapper from "shared/components/ViewWrapper";
 
 interface IResetPassword extends RouteComponentProps<any> {
   // empty for now 
@@ -61,13 +61,13 @@ const ResetPassword: React.FC<IResetPassword> = () => {
   }
 
   return (
-    <CredentialsWrapper>
+    <ViewWrapper showCopyright={true}>
 
       {/* Row contains side-by-side form elements */}
       <Row justify="space-around">
 
-         {/* LEFT CHILD: TITLE, HELP */}
-         <Child xs={12} sm={8} md={4}>
+        {/* LEFT CHILD: TITLE, HELP */}
+        <Child xs={12} sm={8} md={4}>
           <Column justify="space-between">
             <CredentialsLeftTitle icon={<HelpIcon />} title="Reset password" subtitle="Enter the e-mail address you used when you signed up and we’ll send a link to reset your password." />
           </Column>
@@ -88,7 +88,7 @@ const ResetPassword: React.FC<IResetPassword> = () => {
           </Column>
         </Child>
       </Row>
-    </CredentialsWrapper>
+    </ViewWrapper>
   );
 };
 

@@ -13,11 +13,11 @@ import { getUserProfile, createUserSettings, updateUserProfile } from "services/
 import BigInput from "shared/components/BigInput/BigInput";
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import CredentialsWrapper from "shared/components/CredentialsWrapper";
 import Child from "shared/components/Child/Child";
 import Row from "shared/components/Row/Row";
 import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
 import CredentialsForm from "shared/components/CredentialsForm/CredentialsForm";
+import ViewWrapper from "shared/components/ViewWrapper";
 
 interface IRegisterDetails extends RouteComponentProps<any> {
     setIsLoading: (loading: boolean) => void
@@ -133,7 +133,7 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
   }
 
   return (
-    <CredentialsWrapper>
+    <ViewWrapper showCopyright={true}>
       <Row justify="center">
       <Child xs={12} sm={8} md={6} lg={4}>
         <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Display my name as" subtitle="" />
@@ -151,7 +151,7 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
           </CredentialsForm>
         </Child>
       </Row>
-    </CredentialsWrapper>
+    </ViewWrapper>
   );
 };
 

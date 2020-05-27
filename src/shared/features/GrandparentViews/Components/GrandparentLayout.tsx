@@ -32,11 +32,6 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       flexGrow: 1,
     },
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
-    },
     title: {
       textAlign: 'center',
     }
@@ -70,8 +65,8 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
       {/*Alert*/}
       {alertText &&  <Alert className="error" severity="error">{alertText}</Alert>}
       
-        {/*Content Box*/}
-        <Child xs={12} className={classes.root}>
+      {/*Content Box*/}
+      <Child xs={12} className={classes.root}>
           <Box
             id="grandparentLayout-Box"
             className="grandparentBox grandparentBoxWidth grandparentBoxHeight"

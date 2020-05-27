@@ -12,11 +12,11 @@ import LinkedAccountManagement from './components/LinkedAccountManagement/Linked
 
 import './SettingsView.css';
 import ChangeAccountTypeAlert from './components/ChangeAccountTypeAlert';
-import CredentialsWrapper from 'shared/components/CredentialsWrapper';
 import Row from 'shared/components/Row/Row';
 import Column from 'shared/components/Column/Column';
 import Child from 'shared/components/Child/Child';
 import CredentialsForm from 'shared/components/CredentialsForm/CredentialsForm';
+import ViewWrapper from 'shared/components/ViewWrapper';
 
 interface ISettingsView extends RouteComponentProps<any>{
   setIsLoading: (loading: boolean) => void;
@@ -125,10 +125,8 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
   }, [setIsLoading]); // fires on page load if this is empty [] 
 
   return (
-    <CredentialsWrapper>
-
+    <ViewWrapper showCopyright={true}>
       <Row justify="space-around">
-    
         {/* LEFT CHILD: ACCOUNT SETTINGS */}
         <Child xs={12} sm={10} md={5}>
           <Column justify="space-between">
@@ -169,16 +167,14 @@ const SettingsView: React.FC<ISettingsView> = ({ history, setIsLoading }) => {
         </Child>
       </Row>
 
-      {/* <p>User ID: {userID}</p> */}
+      <ChangeAccountTypeAlert 
+        isOpen={changeAccountTypeAlertOpen} 
+        role={role} 
+        changeRole={changeRole}
+        onClose={handleChangeAccountTypeAlertClose} 
+      />
 
-    <ChangeAccountTypeAlert 
-      isOpen={changeAccountTypeAlertOpen} 
-      role={role} 
-      changeRole={changeRole}
-      onClose={handleChangeAccountTypeAlertClose} 
-    />
-
-  </CredentialsWrapper>
+    </ViewWrapper>
   )
 }
 

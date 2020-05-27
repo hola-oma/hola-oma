@@ -17,9 +17,6 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
       position: 'absolute',
       maxWidth: 800,
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
     },
   }),
@@ -90,18 +87,18 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
           spacing={0}
           direction={"column"}
           alignItems="center"
-          justify="center"
+          justify="flex-start"
           style={{ height: "auto", overflowY: "hidden" }} >
       {mediaURL &&
-        <Grid item xs={12} style={{display: "inline-block"}}>
-          <Card id={`card-${mediaURL}`} style={{height: '100%'}}>
-            <CardActionArea style={{display: 'flex', flexDirection: 'column'}}>
+        <div style={{display: "inline-block"}}>
+          <Card id={`card-${mediaURL}`} className="grandparent-card" style={{height: '100%'}}>
+            <CardActionArea className="grandparent-cardActionArea" style={{display: 'flex', flexDirection: 'column'}}>
                 <div className="grandparent-cardActionArea">
                     <CardMedia
                         component={mediaType === MEDIA_TYPES.IMAGE ? "img" : "video"}
                         className="grandarent-imagePreview"
                         image={mediaURL}
-                        style={{maxHeight: '40vh', maxWidth: '70%', marginLeft: 'auto', marginRight: 'auto', objectFit: 'contain'}}
+                        style={{maxHeight: '30vh', maxWidth: '70%', marginLeft: 'auto', marginRight: 'auto', objectFit: 'contain'}}
                         onClick={handleClick} />
                       <div
                         onClick={handleClick}
@@ -124,7 +121,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
                         variant="h5"
                         color="textPrimary"
                         component="p"
-                        style={{overflowWrap: "break-word", maxWidth: "90vw"}}
+                        style={{overflowWrap: "break-word", maxWidth: "93vw"}}
                         align={message.length <= 50 ? "center" : "left"}
                     >
                       {message}
@@ -133,7 +130,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
                 }
               </CardActionArea>
           </Card>
-        </Grid>
+        </div>
       }
 
       {!mediaURL &&
