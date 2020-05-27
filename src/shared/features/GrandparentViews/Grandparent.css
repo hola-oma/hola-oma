@@ -56,6 +56,10 @@
   font-size:1.2rem !important;
 }
 
+.photoPreview {
+  height:400px;
+}
+
 @media screen and (max-width: 400px) {
 
   .grandparentBoxWidth {

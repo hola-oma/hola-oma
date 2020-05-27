@@ -95,8 +95,7 @@ const GetPhotoReply: React.FC = () => {
                       <Webcam
                         audio={false}
                         ref={webcamRef}
-                        // width={848}
-                        height={400} // was 477
+                        height={400}
                         width='100%'
                         screenshotFormat="image/jpeg"
                         videoConstraints={videoConstraints}
@@ -104,7 +103,7 @@ const GetPhotoReply: React.FC = () => {
                     }
 
                     {photoPreview &&
-                      <img src={photoPreview} alt="Current selfie"/>
+                      <img className="photoPreview" src={photoPreview} alt="Current selfie"/>
                     }
 
                     </Grid>
