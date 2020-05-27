@@ -135,9 +135,9 @@ const RegisterDetails: React.FC<IRegisterDetails> = ({ history, setIsLoading }) 
   return (
     <ViewWrapper showCopyright={true}>
       <Row justify="center">
-      <Child xs={12} sm={8} md={6} lg={4}>
-        <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Display my name as" subtitle="" />
-        
+        <Child xs={12} sm={8} md={6} lg={6}>
+          <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Display my name as" subtitle="" />
+          
           <CredentialsForm onSubmit={handleForm} submitText="Done" error={error}>
             
             <Child xs={12}>

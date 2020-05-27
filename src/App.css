@@ -2,6 +2,10 @@
   font-size:1.2em;
 }
 
+.landscapeOnly {
+  display:inline-block;
+}
+
 body {
   -webkit-overflow-scrolling: touch;
 }
@@ -37,6 +41,7 @@ body {
 .viewWrapperDiv {
   display:flex;
   flex-direction:column;
+  width:100%;
 }
 
 .credentialsForm {
@@ -261,7 +266,11 @@ Use: <Box className="devBox">...stuff here...</Box> */
   overflow-wrap:break-word;
 }
 
-
+@media screen and (max-width: 700px) {
+  .landscapeOnly {
+    display:none; 
+  }
+}
 
 @media screen and (max-width: 400px) {
 

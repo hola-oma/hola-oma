@@ -47,6 +47,8 @@ const GrandparentReplyOpts: React.FC = () => {
           () => history.push({pathname: '/photo', state: currentPost}),
         ]}
         buttonIcons={[replyOptionIcons.emoji, replyOptionIcons.voicemail, replyOptionIcons.photo]}
+        showReplyWith={true}
+        justifyButtons={"flex-end"}
       />
 
      </>

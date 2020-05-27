@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import {
-  Theme, Grid, Typography, Modal, Card,
-  CardContent, CardMedia, CardActionArea,
+  Theme, Grid, Modal,
+  CardContent, CardMedia,
 } from '@material-ui/core';
 import { makeStyles,  createStyles } from "@material-ui/core/styles";
 

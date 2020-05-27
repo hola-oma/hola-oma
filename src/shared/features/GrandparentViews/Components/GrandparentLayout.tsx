@@ -8,6 +8,7 @@ import ViewWrapper from 'shared/components/ViewWrapper';
 import Child from 'shared/components/Child/Child';
 
 import '../Grandparent.css';
+import Row from 'shared/components/Row/Row';
 
 export const boxDimensions = {
   height: '80vh',   // 16:9 ratio, was 486 at first 
@@ -17,6 +18,7 @@ export const boxDimensions = {
 export const buttonText = {
   // Navigation
   inbox: "Go to Inbox",
+  back: "Go Back",
   replyOptions: "Go Back",
   backToMessage: "Go Back",
   // Reply options
@@ -50,9 +52,12 @@ interface IGrandparentLayout {
   buttonActions: { (arg0: any): void } [];   //  Array of functions
   buttonIcons: React.ReactElement<SvgIconProps>[];
   buttonDisabled?: boolean[];
+  buttonClasses?: string[];
+  showReplyWith?: boolean;
+  justifyButtons?: any;
 }
 
-export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerText, alertText, boxContent, buttonText,  buttonActions, buttonIcons, buttonDisabled = [] }) => {
+export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerText, alertText, boxContent, buttonText,  buttonActions, buttonIcons, buttonDisabled = [], buttonClasses = [], showReplyWith=false, justifyButtons="space-between" }) => {
 
   const classes = useStyles();
 
@@ -84,17 +89,22 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
       {/*Bottom buttons*/}
       <div id="button-wrapper">
       {buttonIcons.length > 0 &&
-          <Child container
-              className="grandparentBoxWidth marginLRAuto grandparentOptionsButtons"
-              justify="space-between"
-              alignItems="center"
+          <Row
+            className="grandparentBoxWidth marginLRAuto grandparentOptionsButtons"
+            justify={justifyButtons} // pass in "space-between" or "flex-end" to make buttons evenly spaced or right justified
+            alignItems="center"
           >
+
+            {showReplyWith && 
+              <span className="landscapeOnly"><i>Reply with...</i></span>
+            }
+
             {buttonIcons.map((button: React.ReactElement<SvgIconProps>, index: number) => {
               return (
                 <Button
                   variant="contained"
                   color="primary"
-                  className={`bigButton grandparentOptionsButton`}
+                  className={`bigButton grandparentOptionsButton ${buttonClasses[index]}`}
                   startIcon={buttonIcons[index]}
                   onClick={buttonActions[index]}
                   disabled={buttonDisabled[index]}
@@ -105,7 +115,7 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
                 </Button>
               )
             })}
-          </Child>
+          </Row>
         }
       </div>
     </ViewWrapper>
