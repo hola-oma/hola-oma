@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import uuid from 'react-uuid';
 
 import { useLocation, useHistory } from "react-router";
@@ -15,28 +15,30 @@ import '../Grandparent.css';
 import Child from 'shared/components/Child/Child';
 import Row from 'shared/components/Row/Row';
 
-const buildSentMessage = (message: string) => (
-  <Row className="redBorder" alignItems="center" justify="center" alignContent="center">
-    <Child xs={12} className="envelopeContainer">
-        <MailOutlineIcon className="envelope envelopeAnimation" fontSize={"inherit"}/>
-    </Child>
-
-    <Child xs={12} className="replyWasSentText">
-      <p className="opacityTransition messageFadeIn">
-        {message}
-      </p>
-    </Child>
-  </Row>
-)
-
 export const SentGrandparentReply: React.FC = () => {
   const history = useHistory();
   const location = useLocation();
   const state: any = location.state;
 
+  const [envelopeHidden, setEnvelopeHidden] = useState<boolean>(false);
+
   const replyContent = state.replyContent;
   const currentPost: Post = state.currentPost;
   let boxContent: any = {}
+
+  const buildSentMessage = (message: string) => (
+    <Row alignItems="center" justify="center" alignContent="center">
+      <Child xs={12} className="envelopeContainer">
+          <MailOutlineIcon className={`envelope envelopeAnimation ${envelopeHidden ? 'hideEnvelope' : ''}`} fontSize={"inherit"}/>
+      </Child>
+  
+      <Child xs={12} className="replyWasSentText">
+        <p className="opacityTransition fadeIn">
+          {message}
+        </p>
+      </Child>
+    </Row>
+  )
 
   if (replyContent.replyType === REPLY_TYPES.EMOJI) {
     boxContent = buildSentMessage("Your reply was sent!");
@@ -102,8 +104,16 @@ export const SentGrandparentReply: React.FC = () => {
   }
 */}
 
+  useEffect(() => {
+    const animationTimeout = setTimeout(() => {
+      setEnvelopeHidden(true);
+    }, 4000);
+    return () => window.clearTimeout(animationTimeout)
+  }, []);
+
 
   return (
+
     <>
       <GrandparentLayout
         from={currentPost.from}

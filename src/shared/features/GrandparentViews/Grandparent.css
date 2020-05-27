@@ -60,15 +60,16 @@
   height:400px;
 }
 
-.invisible {
-  opacity:0;
-}
-
 .opacityTransition {
   transition: opacity 6s linear;
 }
+
+.hideEnvelope {
+  visibility:hidden !important;
+  border:1px solid red;
+}
  
-.messageFadeIn {
+.fadeIn {
   -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
   -moz-animation: fadein 2s; /* Firefox < 16 */
    -ms-animation: fadein 2s; /* Internet Explorer */
@@ -91,7 +92,6 @@
   height:180px;
   font-size:180px;
   text-align:center;
-  border:1px solid black;
 }
 
 .envelopeAnimation {
@@ -103,10 +103,6 @@
   animation-fill-mode: forwards;
   -webkit-animation-fill-mode: forwards;
   animation-play-state:running;
-}
-
-.envelope {
-  visibility:show;
 }
 
 .envelope .MuiSvgIcon-root{
@@ -159,12 +155,7 @@
   /* launch it offscreen */
   50% {
     transform: scale(1.1,1) translate(1000px, 0) skewX(-20deg); 
-  }
-
-  60% {
-    transform: hidden;
-  }
-  
+  } 
 }
 
 @media screen and (max-width: 400px) {
