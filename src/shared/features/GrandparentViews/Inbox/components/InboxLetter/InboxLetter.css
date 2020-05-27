@@ -1,0 +1,42 @@
+.inboxFrom {
+  font-style:italic;
+  font-size:0.8rem;
+  text-align:top;
+}
+
+.inboxLetterInfo {
+  text-align:center;
+  height:52px !important;
+  background:transparent !important;
+}
+
+.inboxLetter {
+  width:80%;
+}
+
+.inboxLetter img {
+  display:block;
+  height:100%;
+  object-fit:contain;
+}
+
+.inboxLetterInfo .MuiGridListTileBar-titleWrap .MuiGridListTileBar-title {
+  font-size:1.4rem;
+  line-height:32px;
+  color:black !important;
+}
+
+.inboxLetterInfo .MuiGridListTileBar-titleWrap .MuiGridListTileBar-subtitle {
+  font-size:1.2rem;
+  color:#666 !important;
+}
+
+@media screen and (max-width:500px) {
+  .inboxLetterInfo .MuiGridListTileBar-titleWrap .MuiGridListTileBar-title {
+    font-size:1.0rem;
+  }
+  
+  .inboxLetterInfo .MuiGridListTileBar-titleWrap .MuiGridListTileBar-subtitle {
+    font-size:0.8rem;
+  }
+}

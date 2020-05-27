@@ -12,17 +12,16 @@ import {
   CardMedia,
   Grid,
   GridList,
-  GridListTile,
-  GridListTileBar,
   Typography
 } from '@material-ui/core';
 
 import {Post} from 'shared/models/post.model';
 
 import './Inbox.css';
-import {getPostReadByCurrentUser, markPostRead} from "../../../../services/post";
+
+import {markPostRead} from "../../../../services/post";
 import Column from "../../../components/Column/Column";
-import Moment from 'react-moment';
+import InboxLetter from './components/InboxLetter/InboxLetter';
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -98,14 +97,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
     history.push({pathname: '/startReply', state: envelopePost } );
   }
 
-  const formatSentDate = (dateToFormat: number) => {
-    return (
-      <>
-        <span><Moment format="MM/DD/YY -- M:HHa" date={dateToFormat}/></span> 
-      </>
-    )
-  }
-
   return (
     <>
       <Column justify="center">
@@ -146,23 +137,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                   id="grid-list-inbox"
                 >
                 {posts.map((post, index: number) => (
-                  <GridListTile
-                    id={`grid-list-tile-${post.pid}`}
-                    className="inboxLetter"
-                    key={post.pid}
-                    onClick={() => pressEnvelope(post)}
-                    rows={1.25} >
-                    <img 
-                        src={getPostReadByCurrentUser(post) ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
-                        alt={"Letter from " + post.from} 
-                    />
-
-                  <GridListTileBar
-                    title={"From: " + post.from}
-                    subtitle={formatSentDate(post.date)}
-                    className="inboxLetterInfo"
-                    />
-                  </GridListTile>
+                  <InboxLetter post={post} onClickHandler={pressEnvelope}/>
                 ))}
               </GridList>
             }
