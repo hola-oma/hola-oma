@@ -70,7 +70,7 @@ export const SentGrandparentReply: React.FC = () => {
             justify="center"
             style={{ height: "100%", overflowY: "hidden" }}
       >
-        <img src={replyContent.message} alt="Sent message"/>
+        <img className="photoPreview" src={replyContent.message} alt="Sent message"/>
       </Grid>
   }
 
