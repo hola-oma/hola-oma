@@ -45,15 +45,15 @@
 }
 
 .grandparentFontSizeBig {
-  font-size:1.8rem !important;
+  font-size:2.0rem !important;
 }
 
 .grandparentFontSizeMedium {
-  font-size:1.6rem !important;
+  font-size:1.8rem !important;
 }
 
 .grandparentFontSizeSmall {
-  font-size:1.2rem !important;
+  font-size:1.4rem !important;
 }
 
 .photoPreview {
@@ -182,5 +182,17 @@
 
   .grandparentOptionsButtons {
     justify-content:center !important;
+  }
+
+  .grandparentFontSizeBig {
+    font-size:1.8rem !important;
+  }
+  
+  .grandparentFontSizeMedium {
+    font-size:1.6rem !important;
+  }
+  
+  .grandparentFontSizeSmall {
+    font-size:1.2rem !important;
   }
 }

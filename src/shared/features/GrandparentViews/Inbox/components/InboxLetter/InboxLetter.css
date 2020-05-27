@@ -87,13 +87,13 @@
   color:#666 !important;
 }
 
-@media screen and (max-width:900px) {
+@media screen and (max-width:1000px) {
   .envelopeCard {
     width: 47%;
   }
 }
 
-@media screen and (max-width:600px) {
+@media screen and (max-width:700px) {
   .envelopeCard {
     width: 100%;
   }
