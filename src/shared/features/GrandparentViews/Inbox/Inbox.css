@@ -4,6 +4,7 @@
 
 .inboxBox {
   height:calc(70vh - 50px);
+  background:#37474f;
 }
 
 .noInboxMargin.MuiGrid-item {

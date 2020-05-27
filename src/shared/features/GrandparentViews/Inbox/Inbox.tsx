@@ -71,17 +71,17 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
   const getScreenWidth = () => {
     if (screenExtraLarge) {
-      return 6;
+      return 3;
     } else if (screenNarrow) {
       return 1;
     } else if (screenLarge) {
-      return 5;
-    } else if (screenMedium) {
-      return 4;
-    } else if (screenSmall) {
       return 3;
-    } else if (screenExtraSmall) {
+    } else if (screenMedium) {
       return 2;
+    } else if (screenSmall) {
+      return 1;
+    } else if (screenExtraSmall) {
+      return 1;
     } else {
       return 3;
     }

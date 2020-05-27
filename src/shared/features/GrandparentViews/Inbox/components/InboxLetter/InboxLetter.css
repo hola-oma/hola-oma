@@ -1,13 +1,69 @@
-.inboxFrom {
+.envelopeCard {
+  margin:12px;
+  width:340px;
+  height:150px;
+}
+
+.envelopeIcon {
+  width:100px;
+  height:100px;
+  float:left;
+}
+
+.letterStatus {
+  font-style:italic;
+  float:right;
+  padding-top:6px;
+  padding-right:12px;
+  color:green;
+}
+
+.letterSenderInfo {
+  height:100px;
+}
+
+.letterSenderInfo ul {
+  list-style:none;
+}
+
+.inboxLetterFrom {
   font-style:italic;
   font-size:0.8rem;
   text-align:top;
+}
+
+.messagePreview {
+  padding:10px !important;
+  height:60px;
+}
+
+.messagePreview p {
+  height:100%;
+  overflow-y:hidden;
+  text-overflow:ellipsis;
+  color:#333;
+  font-style:italic;
+  font-size:1.0rem !important;
+  line-height:20px;
+  margin:0 !important;
+  text-align:left;
+  word-break:normal;
+  vertical-align:top;
+  white-space:nowrap;
+}
+
+.inboxDate {
+  font-size:1.0rem;
 }
 
 .inboxLetterInfo {
   text-align:center;
   height:52px !important;
   background:transparent !important;
+}
+
+.inboxLongName {
+  font-size:1.1rem !important;
 }
 
 .inboxLetter {

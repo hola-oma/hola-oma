@@ -46,6 +46,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   const [invitationModalOpen, setInvitationModalOpen] = useState<boolean>(false);
   const [unreadRepliesTotal, setUnreadRepliesTotal] = useState(0);
   const [verifiedReceivers, setVerifiedReceivers] = useState<boolean>(false);
+  const [newPostsCount, setNewPostsCount] = useState(0);
 
   const updatePendingInvitations = (dataArr: AccountLink[]) => {
     if (dataArr.length > 0) {
@@ -120,6 +121,11 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setIsLoading]);
 
+
+  useEffect(() => {
+    setNewPostsCount(countNewPosts(posts));
+  }, [posts]);
+
   const acceptInvite = () => {
     if (invite) {
       const accepted = acceptLink(invite?.id);
@@ -179,7 +185,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   const welcomeName = () => (
     <div className="welcomeName">
       <span className="boldText">
-        Welcome, {displayName}!
+        Welcome, {displayName.trim()}!
       </span>
     </div>
   )
@@ -271,7 +277,16 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
                   }
                   { (role === roles.receiver && pendingInvitations.length === 0) &&
                   <Typography variant="subtitle1" className="grandparentSubtitle">
-                      You have {countNewPosts(posts)} new letter(s).
+                        {newPostsCount > 0 &&
+                          <>
+                          You have {newPostsCount} new letter{newPostsCount > 1 ? 's' : ''}.
+                          </>
+                        }
+                        {newPostsCount === 0 &&
+                          <>
+                          You have no new letters.
+                          </>
+                        }
                   </Typography>
                   }
 
