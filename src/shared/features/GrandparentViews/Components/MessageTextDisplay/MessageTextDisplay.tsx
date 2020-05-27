@@ -10,9 +10,9 @@ interface IMessageTextDisplay {
 export const MessageTextDisplay: React.FC<IMessageTextDisplay> = ({message}) => { 
 
   const calculateFontSizeClass = () => {
-    if (message.length < 100) {
+    if (message.length < 160) {
       return 'grandparentFontSizeBig';
-    } else if (message.length >= 100 && message.length < 300) {
+    } else if (message.length >= 160 && message.length < 260) {
       return 'grandparentFontSizeMedium';
     } else {
       return 'grandparentFontSizeSmall'

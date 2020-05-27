@@ -19,10 +19,11 @@
 
 /* the grandparent buttons are just like big buttons but a bit shorter and without a top margin*/
 .grandparentOptionsButton {
-  height:60px !important;
+  height:50px !important;
   margin-top:0 !important;
   margin-left:0px !important;
   margin-right:0px !important;
+  width:110px;
 }
 
 .grandparentOptionsButton .MuiButton-iconSizeMedium > *:first-child {
@@ -45,7 +46,7 @@
 }
 
 .grandparentFontSizeBig {
-  font-size:1.9rem !important;
+  font-size:1.8rem !important;
 }
 
 .grandparentFontSizeMedium {
@@ -73,7 +74,7 @@
   
   /* note: singular 'button' here is intentional */
   .grandparentOptionsButton {
-    margin-top:12px !important;
+    margin-top:2px !important;
     margin-left:auto !important;
     margin-right:auto !important;
   }

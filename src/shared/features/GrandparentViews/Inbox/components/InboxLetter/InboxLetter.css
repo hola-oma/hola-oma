@@ -1,6 +1,6 @@
 .envelopeCard {
-  margin:12px;
-  width:340px;
+  margin:8px;
+  width: 31.5%;
   height:150px;
 }
 
@@ -12,9 +12,9 @@
 
 .letterStatus {
   font-style:italic;
-  float:right;
+  position:absolute;
   padding-top:6px;
-  padding-right:12px;
+  padding-left:26px;
   color:green;
 }
 
@@ -87,7 +87,17 @@
   color:#666 !important;
 }
 
-@media screen and (max-width:500px) {
+@media screen and (max-width:900px) {
+  .envelopeCard {
+    width: 47%;
+  }
+}
+
+@media screen and (max-width:600px) {
+  .envelopeCard {
+    width: 100%;
+  }
+
   .inboxLetterInfo .MuiGridListTileBar-titleWrap .MuiGridListTileBar-title {
     font-size:1.0rem;
   }

@@ -69,24 +69,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
   const screenExtraSmall = useMediaQuery(theme.breakpoints.only('xs'));
   const screenNarrow = useMediaQuery('(max-width:340px)');
 
-  const getScreenWidth = () => {
-    if (screenExtraLarge) {
-      return 3;
-    } else if (screenNarrow) {
-      return 1;
-    } else if (screenLarge) {
-      return 3;
-    } else if (screenMedium) {
-      return 2;
-    } else if (screenSmall) {
-      return 1;
-    } else if (screenExtraSmall) {
-      return 1;
-    } else {
-      return 3;
-    }
-  }
-
   const classes = useStyles();
   const history = useHistory();
 
@@ -131,8 +113,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
             {/*If mailbox not empty*/}
             {posts.length > 0 &&
               <GridList 
-                  className={classes.gridList} 
-                  cols={getScreenWidth()} 
+                  className={classes.gridList}
                   spacing={2}
                   id="grid-list-inbox"
                 >

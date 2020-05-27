@@ -16,6 +16,11 @@ body {
   display:block;
 }
 
+.fullHeightMobile {
+  height: calc(100vh - 200px);
+  display:block;
+}
+
 .fullHeightMobileSafari {
   height: calc(100vh - 150px);
   display:block;
@@ -101,7 +106,6 @@ input {
 .bigButton {
   height:100px;
   font-size:1.6em !important;
-  margin-top:40px !important;
   line-height:1.2em !important;
   color:#fff;
   border: 1px solid #2d6898 !important;
