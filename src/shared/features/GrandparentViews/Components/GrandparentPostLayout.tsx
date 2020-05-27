@@ -14,21 +14,6 @@ const useStyles = makeStyles((theme: Theme) =>
     objectFit: {
       objectFit: 'contain',
     },
-    media: {
-      height: 425,
-    },
-    shortText: {
-      height: 400,
-    },
-    mediumShortText: {
-      height: 350,
-    },
-    mediumText: {
-      height: 300,
-    },
-    largeText: {
-      height: 200,
-    },
     paper: {
       position: 'absolute',
       maxWidth: 800,
@@ -71,14 +56,6 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
     imageModalOpen ? setImageModalOpen(false) : setImageModalOpen(true)
   }
 
-  const getStyle = (length: number) => {
-    if (length <= 50) return `${classes.media} ${classes.objectFit}`;
-    if (length <= 100) return `${classes.shortText} ${classes.objectFit}`;
-    if (length <= 150) return `${classes.mediumShortText} ${classes.objectFit}`;
-    if (length <= 200) return `${classes.mediumText} ${classes.objectFit}`;
-    else return `${classes.largeText} ${classes.objectFit}`;
-  }
-
   const modalBody = (
     <div style={modalStyle} className={classes.paper}>
 
@@ -114,16 +91,17 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
           direction={"column"}
           alignItems="center"
           justify="center"
-          style={{ height: "100%", overflowY: "hidden" }} >
+          style={{ height: "auto", overflowY: "hidden" }} >
       {mediaURL &&
         <Grid item xs={12} style={{display: "inline-block"}}>
-          <Card >
-            <CardActionArea>
-                <div style={{ position: 'relative' }} >
+          <Card id={`card-${mediaURL}`} style={{height: '100%'}}>
+            <CardActionArea style={{display: 'flex', flexDirection: 'column'}}>
+                <div className="grandparent-cardActionArea">
                     <CardMedia
                         component={mediaType === MEDIA_TYPES.IMAGE ? "img" : "video"}
-                        className={getStyle(message.length)}
+                        className="grandarent-imagePreview"
                         image={mediaURL}
+                        style={{maxHeight: '40vh', maxWidth: '70%', marginLeft: 'auto', marginRight: 'auto', objectFit: 'contain'}}
                         onClick={handleClick} />
                       <div
                         onClick={handleClick}
@@ -146,7 +124,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
                         variant="h5"
                         color="textPrimary"
                         component="p"
-                        style={{overflowWrap: "break-word"}}
+                        style={{overflowWrap: "break-word", maxWidth: "90vw"}}
                         align={message.length <= 50 ? "center" : "left"}
                     >
                       {message}

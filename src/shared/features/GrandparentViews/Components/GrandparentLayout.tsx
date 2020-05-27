@@ -1,10 +1,11 @@
 import React from 'react';
 
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {Grid, Box, Button, SvgIconProps, Typography} from '@material-ui/core';
+import {Box, Button, SvgIconProps, Typography} from '@material-ui/core';
 import {Alert} from "@material-ui/lab";
 
-import Column from 'shared/components/Column/Column';
+import ViewWrapper from 'shared/components/ViewWrapper';
+import Child from 'shared/components/Child/Child';
 
 export const boxDimensions = {
   height: '80vh',   // 16:9 ratio, was 486 at first 
@@ -14,8 +15,8 @@ export const boxDimensions = {
 export const buttonText = {
   // Navigation
   inbox: "Back to Inbox",
-  replyOptions: "Back to Reply Options",
-  backToMessage: "Back to Message",
+  replyOptions: "Go Back",
+  backToMessage: "Go Back",
   // Reply options
   smiley: "Smiley",
   voice: "Message",
@@ -30,9 +31,6 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
-    },
-    button: {
-      margin: theme.spacing(3),
     },
     paper: {
       padding: theme.spacing(2),
@@ -57,64 +55,64 @@ interface IGrandparentLayout {
   buttonDisabled?: boolean[];
 }
 
-export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerText, header2Text, alertText, boxContent, buttonText,  buttonActions, buttonIcons, buttonDisabled = [] }) => {
+export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerText, alertText, boxContent, buttonText,  buttonActions, buttonIcons, buttonDisabled = [] }) => {
 
   const classes = useStyles();
 
   return (
-    <Column justify="center">
-
+    <ViewWrapper>
+      
       {/*Header*/}
-      <Grid item xs={12} className={classes.title}>
+      <Child xs={12} className={classes.title} style={{flexBasis: 0}}>
         <Typography variant="h5">{headerText} {from}</Typography>
-        {/* MB: Commented out header2 text in effort to fit everything on ipad 
-        { (header2Text && !alertText) && <Typography variant="h5" align={"center"}>{header2Text}</Typography> }
-        */} 
-      </Grid>
+      </Child>
 
       {/*Alert*/}
       {alertText &&  <Alert className="error" severity="error">{alertText}</Alert>}
       
         {/*Content Box*/}
-        <Grid item xs={12} className={classes.root}>
+        <Child xs={12} className={classes.root}>
           <Box
             id="grandparentLayout-Box"
             className="grandparentBox grandparentBoxWidth grandparentBoxHeight"
-            border={1}
             borderRadius="borderRadius"
             mx={"auto"}
             fontSize={20}
             display={"flex"}
+            style={{height: '100%'}}
           >
           {boxContent}
         </Box>
-      </Grid>
+      </Child>
 
       {/*Bottom buttons*/}
+      <div id="button-wrapper">
       {buttonIcons.length > 0 &&
-          <Grid container
-              className="grandparentBoxWidth marginLRAuto"
-              direction="row"
+          <Child container
+              className="grandparentBoxWidth marginLRAuto grandparentOptionsButtons"
               justify="space-between"
-              alignItems="center">
+              alignItems="center"
+          >
             {buttonIcons.map((button: React.ReactElement<SvgIconProps>, index: number) => {
               return (
                 <Button
                   variant="contained"
                   color="primary"
-                  className={`${classes.button} bigButton grandparentOptionsButton`}
+                  className={`bigButton grandparentOptionsButton`}
                   startIcon={buttonIcons[index]}
                   onClick={buttonActions[index]}
                   disabled={buttonDisabled[index]}
                   key={index}
+                  style={{height: '100px'}}
                 >
                   {buttonText[index]}
                 </Button>
               )
             })}
-          </Grid>
-      }
-    </Column>
+          </Child>
+        }
+      </div>
+    </ViewWrapper>
 )}
 
 export default GrandparentLayout;

@@ -94,7 +94,8 @@ const GetPhotoReply: React.FC = () => {
                         audio={false}
                         ref={webcamRef}
                         // width={848}
-                        height={477}
+                        height={420} // was 477
+                        width='100%'
                         screenshotFormat="image/jpeg"
                         videoConstraints={videoConstraints}
                       />
