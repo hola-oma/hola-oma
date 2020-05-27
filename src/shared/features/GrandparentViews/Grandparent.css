@@ -60,6 +60,113 @@
   height:400px;
 }
 
+.invisible {
+  opacity:0;
+}
+
+.opacityTransition {
+  transition: opacity 6s linear;
+}
+ 
+.messageFadeIn {
+  -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 2s; /* Firefox < 16 */
+   -ms-animation: fadein 2s; /* Internet Explorer */
+    -o-animation: fadein 2s; /* Opera < 12.1 */
+       animation: fadein 2s;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.envelopeContainer {
+  height:180px;
+  font-size:180px;
+  text-align:center;
+  border:1px solid black;
+}
+
+.envelopeAnimation {
+  color:#2d6898;
+  animation-name: fly;
+  animation-duration:6s;
+  animation-timing-function: ease-in;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+  animation-play-state:running;
+}
+
+.envelope {
+  visibility:show;
+}
+
+.envelope .MuiSvgIcon-root{
+  font-size:300px;
+}
+
+.replyWasSentText p {
+  font-size:1.8rem;
+  text-align:center;
+}
+
+@keyframes fly {
+  0% { 
+    transform: scale(.4,.4); 
+    
+    /* -webkit-transform: scale(2,2); */ /** Chrome & Safari **/
+    /* -o-transform: scale(2,2); */ /** Opera **/
+    /* -moz-transform: scale(2,2); */ /** Firefox **/
+  }
+  
+  /* come into view */
+  10% { 
+    transform: scale(1.1,1.1) translateY(0); 
+  }
+
+  /* bounce a bit */
+  12% { 
+    transform: scale(1,1) translateY(0); 
+  }
+
+  /* back to normal */
+  20% { 
+    transform: scale(1,1) translateY(0); 
+  }
+
+  /* sit idle before taking off*/
+  30% { 
+    transform: scale(1,1) translateY(0); 
+  }
+
+  /* compress as if gearing up to leave */
+  35% { 
+    transform: scale(.8,1); 
+  }
+
+  40% {
+    transform: scale(1,1) skewX(-10deg);
+  }
+
+  /* launch it offscreen */
+  50% {
+    transform: scale(1.1,1) translate(1000px, 0) skewX(-20deg); 
+  }
+
+  60% {
+    transform: hidden;
+  }
+  
+}
+
 @media screen and (max-width: 400px) {
 
   .grandparentBoxWidth {

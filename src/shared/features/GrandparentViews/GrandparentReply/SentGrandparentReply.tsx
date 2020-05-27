@@ -5,33 +5,31 @@ import { useLocation, useHistory } from "react-router";
 
 import {mailIcons, replyEmojiPNGs} from "../../../../Icons";
 import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
-import {ButtonBase, Grid, Typography} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import {Post} from "../../../models/post.model";
 import { REPLY_TYPES } from "../../../models/reply.model";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
 
 import '../Grandparent.css';
+import Child from 'shared/components/Child/Child';
+import Row from 'shared/components/Row/Row';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    imageSrc: {
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      top: 0,
-      bottom: 0,
-      backgroundSize: 'contain',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center 40%',
-    },
-    image: {
-      position: 'relative',
-    }
-  }),
-);
+const buildSentMessage = (message: string) => (
+  <Row className="redBorder" alignItems="center" justify="center" alignContent="center">
+    <Child xs={12} className="envelopeContainer">
+        <MailOutlineIcon className="envelope envelopeAnimation" fontSize={"inherit"}/>
+    </Child>
+
+    <Child xs={12} className="replyWasSentText">
+      <p className="opacityTransition messageFadeIn">
+        {message}
+      </p>
+    </Child>
+  </Row>
+)
 
 export const SentGrandparentReply: React.FC = () => {
-  const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
   const state: any = location.state;
@@ -39,6 +37,20 @@ export const SentGrandparentReply: React.FC = () => {
   const replyContent = state.replyContent;
   const currentPost: Post = state.currentPost;
   let boxContent: any = {}
+
+  if (replyContent.replyType === REPLY_TYPES.EMOJI) {
+    boxContent = buildSentMessage("Your reply was sent!");
+  }
+
+  if (replyContent.replyType === REPLY_TYPES.PHOTO) {
+    boxContent = buildSentMessage("Lookin' good! Your photo was sent.");
+  }
+
+  if (replyContent.replyType === REPLY_TYPES.VOICE) {
+    boxContent = buildSentMessage("Your reply was sent!");
+  }
+
+  {/* 
 
   if (replyContent.replyType === REPLY_TYPES.EMOJI) {
     const sentEmojis: Array<string> = [];
@@ -88,6 +100,7 @@ export const SentGrandparentReply: React.FC = () => {
         </Typography>
       </Grid>
   }
+*/}
 
 
   return (
