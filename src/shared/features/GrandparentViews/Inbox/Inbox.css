@@ -16,12 +16,29 @@
   margin-top:0px !important;
 }
 
-.inboxTitle div div {
-  font-size:18px !important;
+.inboxLetterInfo {
+  text-align:center;
+  height:52px !important;
+  background:transparent !important;
+}
+
+.inboxLetterInfo .MuiGridListTileBar-titleWrap .MuiGridListTileBar-title {
+  font-size:1.4rem;
+  line-height:32px;
+  color:black !important;
+}
+
+.inboxLetterInfo .MuiGridListTileBar-titleWrap .MuiGridListTileBar-subtitle {
+  font-size:1.2rem;
+  color:#666 !important;
 }
 
 @media screen and (max-width:500px) {
-  .inboxTitle div div {
-    font-size:14px !important;
+  .inboxLetterInfo .MuiGridListTileBar-titleWrap .MuiGridListTileBar-title {
+    font-size:1.0rem;
+  }
+  
+  .inboxLetterInfo .MuiGridListTileBar-titleWrap .MuiGridListTileBar-subtitle {
+    font-size:0.8rem;
   }
 }

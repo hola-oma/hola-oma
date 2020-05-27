@@ -22,6 +22,7 @@ import {Post} from 'shared/models/post.model';
 import './Inbox.css';
 import {getPostReadByCurrentUser, markPostRead} from "../../../../services/post";
 import Column from "../../../components/Column/Column";
+import Moment from 'react-moment';
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -97,6 +98,14 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
     history.push({pathname: '/startReply', state: envelopePost } );
   }
 
+  const formatSentDate = (dateToFormat: number) => {
+    return (
+      <>
+        <span><Moment format="MM/DD/YY -- M:HHa" date={dateToFormat}/></span> 
+      </>
+    )
+  }
+
   return (
     <>
       <Column justify="center">
@@ -150,11 +159,9 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
                   <GridListTileBar
                     title={"From: " + post.from}
-                    className="inboxTitle"
-                    classes={{
-                      root: classes.titleBar,
-                      title: classes.title,
-                    }} />
+                    subtitle={formatSentDate(post.date)}
+                    className="inboxLetterInfo"
+                    />
                   </GridListTile>
                 ))}
               </GridList>
