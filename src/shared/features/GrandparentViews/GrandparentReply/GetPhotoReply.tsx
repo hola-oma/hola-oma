@@ -11,6 +11,8 @@ import {Grid} from "@material-ui/core";
 
 import { isIOS, isSafari } from 'react-device-detect';
 
+import '../Grandparent.css';
+
 
 // Reminder: https://stackoverflow.com/questions/29642685/maintain-aspect-ratio-of-image-with-full-width-in-react-native
 const videoConstraints = {

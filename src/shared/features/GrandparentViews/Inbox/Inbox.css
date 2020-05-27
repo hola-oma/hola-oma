@@ -2,6 +2,10 @@
   margin: 20px;
 }
 
+.inboxBox {
+  height:calc(70vh - 50px);
+}
+
 .inboxLetter img {
   display:block;
   height:100%;

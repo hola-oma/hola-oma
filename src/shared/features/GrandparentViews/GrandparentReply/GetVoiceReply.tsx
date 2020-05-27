@@ -10,7 +10,6 @@ import { Reply, REPLY_TYPES } from "../../../models/reply.model";
 import { getUserProfile } from "../../../../services/user";
 import { mailIcons } from "../../../../Icons";
 
-import './GrandparentReply.css';
 import FormError from 'shared/components/FormError/FormError';
 import RecordButton from '../Components/RecordButton/RecordButton';
 import Row from 'shared/components/Row/Row';
@@ -18,6 +17,8 @@ import Child from 'shared/components/Child/Child';
 import Column from 'shared/components/Column/Column';
 
 import { isIOS, isSafari } from 'react-device-detect';
+
+import '../Grandparent.css';
 
 const GetVoiceReply: React.FC = () => {
 

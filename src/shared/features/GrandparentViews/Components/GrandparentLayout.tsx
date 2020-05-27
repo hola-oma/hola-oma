@@ -7,6 +7,8 @@ import {Alert} from "@material-ui/lab";
 import ViewWrapper from 'shared/components/ViewWrapper';
 import Child from 'shared/components/Child/Child';
 
+import '../Grandparent.css';
+
 export const boxDimensions = {
   height: '80vh',   // 16:9 ratio, was 486 at first 
   width: '80vw'  // was 864
@@ -14,7 +16,7 @@ export const boxDimensions = {
 
 export const buttonText = {
   // Navigation
-  inbox: "Back to Inbox",
+  inbox: "Go to Inbox",
   replyOptions: "Go Back",
   backToMessage: "Go Back",
   // Reply options
@@ -72,7 +74,6 @@ export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerTe
             className="grandparentBox grandparentBoxWidth grandparentBoxHeight"
             borderRadius="borderRadius"
             mx={"auto"}
-            fontSize={20}
             display={"flex"}
             style={{height: '100%'}}
           >

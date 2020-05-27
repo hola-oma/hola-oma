@@ -13,6 +13,8 @@ import { getUserProfile } from "../../../../services/user";
 import { replyEmojiPNGs, mailIcons } from "../../../../Icons";
 import Row from 'shared/components/Row/Row';
 
+import '../Grandparent.css';
+
 let choicesList: Array<number> = [];
 
 const GetEmojiReply: React.FC = () => {

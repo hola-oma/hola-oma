@@ -257,82 +257,12 @@ Use: <Box className="devBox">...stuff here...</Box> */
   overflow-wrap:break-word;
 }
 
-.grandparentSubtitle {
-  line-height:1.2em !important;
-  margin-bottom:1px !important;
-}
 
-.grandparentBoxHeight {
-  height:calc(70vh - 100px);
-}
-
-.grandparentBoxWidth {
-  width:calc(100vw - 60px) !important;
-}
-
-.inboxBox {
-  height:calc(70vh - 50px);
-}
-
-.grandparentBox p {
-  font-size:1.2rem !important;
-}
-
-/* the grandparent buttons are just like big buttons but a bit shorter and without a top margin*/
-.grandparentOptionsButton {
-  height:60px !important;
-  margin-top:0 !important;
-  margin-left:0px !important;
-  margin-right:0px !important;
-}
-
-.grandparentOptionsButton .MuiButton-iconSizeMedium > *:first-child {
-  font-size:32px;
-}
-
-.grandparent-card {
-  background-color:transparent !important;
-  box-shadow:none !important;
-}
-
-.grandparent-cardActionArea {
-  position:relative;
-  background-color:transparent !important;
-  box-shadow:none !important;
-}
-
-.grandarent-imagePreview {
-  height:80%;
-}
 
 @media screen and (max-width: 400px) {
 
   .viewWrapperBox {
     padding-left:0 !important;
     padding-right:0 !important;
-  }
-
-  .grandparentBoxWidth {
-    width:100% !important;
-  }
-
-  .grandparentOptionsButtons {
-    font-size:0.6rem !important;
-  }
-
-  .grandparentOptionsButtons .MuiButton-iconSizeMedium > *:first-child {
-    font-size:20px;
-    padding:1px !important;
-  }
-  
-  /* note: singular 'button' here is intentional */
-  .grandparentOptionsButton {
-    margin-top:12px !important;
-    margin-left:auto !important;
-    margin-right:auto !important;
-  }
-
-  .grandparentOptionsButtons {
-    justify-content:center !important;
   }
 }

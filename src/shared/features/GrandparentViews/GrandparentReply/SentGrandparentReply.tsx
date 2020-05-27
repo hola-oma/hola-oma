@@ -10,6 +10,8 @@ import {Post} from "../../../models/post.model";
 import { REPLY_TYPES } from "../../../models/reply.model";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
+import '../Grandparent.css';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     imageSrc: {

@@ -9,6 +9,9 @@ import { makeStyles,  createStyles } from "@material-ui/core/styles";
 import { viewPostIcons } from "../../../../Icons";
 import {MEDIA_TYPES} from "../../../models/post.model";
 
+import '../Grandparent.css';
+import MessageTextDisplay from './MessageTextDisplay/MessageTextDisplay';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     objectFit: {
@@ -91,8 +94,8 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
           style={{ height: "auto", overflowY: "hidden" }} >
       {mediaURL &&
         <div style={{display: "inline-block"}}>
-          <Card id={`card-${mediaURL}`} className="grandparent-card" style={{height: '100%'}}>
-            <CardActionArea className="grandparent-cardActionArea" style={{display: 'flex', flexDirection: 'column'}}>
+          <div id={`card-${mediaURL}`} className="grandparent-card" style={{height: '100%'}}>
+            <div className="grandparent-cardActionArea" style={{display: 'flex', flexDirection: 'column'}}>
                 <div className="grandparent-cardActionArea">
                     <CardMedia
                         component={mediaType === MEDIA_TYPES.IMAGE ? "img" : "video"}
@@ -113,30 +116,19 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
                           { mediaType === MEDIA_TYPES.IMAGE && viewPostIcons.magnify }
                           { mediaType === MEDIA_TYPES.VIDEO && viewPostIcons.play }
                       </div>
-
                   </div>
                 {message &&
                 <CardContent>
-                    <Typography
-                        variant="h5"
-                        color="textPrimary"
-                        component="p"
-                        style={{overflowWrap: "break-word", maxWidth: "93vw"}}
-                        align={message.length <= 50 ? "center" : "left"}
-                    >
-                      {message}
-                    </Typography>
+                  <MessageTextDisplay message={message}/>
                 </CardContent>
                 }
-              </CardActionArea>
-          </Card>
+              </div>
+          </div>
         </div>
       }
 
       {!mediaURL &&
-        <Typography variant="h5" align={message.length <= 50 ? "center" : "left"} >
-          {message}
-        </Typography>
+        <MessageTextDisplay message={message}/>
       }
       <Modal
         open={imageModalOpen}
