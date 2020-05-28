@@ -58,9 +58,11 @@ const InboxLetter: React.FC<IInboxLetter> = ({ post, onClickHandler }) => {
           </ul>
         </CardContent>
         
-        <CardContent className="messagePreview">
-          <p>{`"` + post.message + `"`}</p>
-        </CardContent>
+        {post.message.length > 0 && 
+          <CardContent className="messagePreview">
+            <p>{`"` + post.message + `"`}</p>
+          </CardContent>
+        }
       </Card>
     </>
   )
