@@ -266,7 +266,11 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
             <Child xs={12} sm={8}>
               <Column justify="center" alignItems="center">
                 <Child xs={12}>
+                {role &&
+                  <>
                   {welcomeName()}
+                  </>
+                }
                 </Child>
 
                 <Child xs={12}>
