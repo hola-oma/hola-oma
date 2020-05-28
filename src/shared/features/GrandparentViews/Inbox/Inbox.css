@@ -8,12 +8,23 @@
   background:#37474f;
 }
 
+.inboxGridList {
+  height:100%;
+  width:100%;
+  align-items:flex-start;
+  align-content:flex-start;
+  justify-items:center;
+  justify-content:flex-start;
+  flex-wrap:wrap;
+}
+
 .noInboxMargin.MuiGrid-item {
   margin-top:0px !important;
 }
 
 @media screen and (max-width:830px) {
   .inboxBox {
-    border-radius:0px;
+    border-radius:0%;
+    width:100%;
   }
 }

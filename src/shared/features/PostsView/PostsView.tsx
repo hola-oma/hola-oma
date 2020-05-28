@@ -293,6 +293,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
                   }
 
                 </Child>
+                
               </Column>
             </Child>
 
@@ -311,7 +312,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
           </Row>
 
           {/* COLUMN CHILD 2 - CREATE NEW POST and VIEW OLD POSTS */ }
-          <Child xs>
+          <Child xs={12} id="inboxChild" className="inboxSizer">
 
             <Row>
               <Child xs={12}>

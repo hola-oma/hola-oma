@@ -28,15 +28,6 @@ const useStyles = makeStyles(() => ({
       color: 'black',
       textAlign: 'center'
     },
-    gridList: {
-      height: '100%',
-      width: '100%',
-      flexWrap: 'wrap',
-      alignItems: 'center',
-      justifyContent: 'center',
-      // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-      transform: 'translateZ(0)',
-    },
     titleBar: {
       height: '40px',
       background: '#faf9f9',
@@ -74,7 +65,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
         <Grid item xs={12} className={`noInboxMargin ${classes.root}`} id="inbox-grid">
           <Box
             id="inbox-box"
-            className="grandparentBoxWidth inboxBox"
+            className={`grandparentBoxWidth inboxBox`}
             border={1}
             mx={"auto"}
             fontSize={20}
@@ -99,7 +90,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
             {/*If mailbox not empty*/}
             {posts.length > 0 &&
               <GridList 
-                  className={classes.gridList}
+                  className={`inboxGridList`}
                   spacing={2}
                   id="grid-list-inbox"
                 >

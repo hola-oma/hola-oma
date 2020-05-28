@@ -79,11 +79,11 @@
 
 @media screen and (max-width:1000px) {
   .envelopeCard {
-    width: 47%;
+    width: 47.91%;
   }
 }
 
-@media screen and (max-width:700px) {
+@media screen and (max-width:740px) {
   .envelopeCard {
     width: 100%;
   }
