@@ -30,12 +30,12 @@ interface IAuthContext {
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: blueGrey[800]
+      main: '#16344d'
     },
     secondary: {
-      main: teal[200],
-      contrastText: '#000',
-      dark: teal[800]
+      main: 'rgb(73,132,180)',
+      contrastText: '#fff',
+      dark: 'rgb(73,132,180)'
     }
   },
   spacing: 4,
