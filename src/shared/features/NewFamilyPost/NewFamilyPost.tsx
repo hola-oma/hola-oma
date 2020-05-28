@@ -186,6 +186,16 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
         setPhotoURL("");
     }
 
+    const sortNames = (a: any, b: any) => {
+        if (a.name.toUpperCase() < b.name.toUpperCase()) {
+            return -1;
+        }
+        if (a.name.toUpperCase() > b.name.toUpperCase()) {
+            return 1;
+        }
+        return 0;
+    }
+
     useEffect(() => {
         getUserProfile()
         .then((userProfile:any) => {
@@ -210,15 +220,7 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
                     rcvrs.push(receiver);
                 }
             }
-            setReceivers(rcvrs.sort((a, b) => {
-                if (a.name.toUpperCase() < b.name.toUpperCase()) {
-                    return -1;
-                }
-                if (a.name.toUpperCase() > b.name.toUpperCase()) {
-                    return 1;
-                }
-                return 0;
-                }));
+            setReceivers(rcvrs.sort(sortNames));
         });
         if (currentPost) {
             setEditing(true);
