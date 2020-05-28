@@ -209,7 +209,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
       variant="contained"
       color="primary"
       size="large"
-      className="bigButton noMargin"
+      className=""
       onClick={goToNewPost}
       startIcon={<AddCommentIcon />}
       >
@@ -261,8 +261,6 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
           {/* COLUMN CHILD 1: Welcome, X read letters, invitations alert */ }
           <Row justify="center" id="postsViewRow">
-            {/* ROW CHILD 1 - empty spacer to balance 'invite' button on right */}
-            <Child xs>{/* Intentionally empty */}</Child>
 
             {/* ROW CHILD 2 - welcome message and replies message */}
             <Child xs={12} sm={8}>
@@ -296,26 +294,22 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
                 
               </Column>
             </Child>
-
-            {/* ROW CHILD 3 * - invite button OR empty spacer */ }
-            {role === roles.poster &&
-            <Child container xs justify="center" alignItems="center" style={{display: 'flex'}}>
-              {inviteButton()}
-            </Child>
-            }
-
-            {role === roles.receiver &&
-            <Child xs>
-              {/* Intentionally empty so the user's name centers without INVITE FOLLOWER button present*/}
-            </Child>
-            }
           </Row>
 
           {/* COLUMN CHILD 2 - CREATE NEW POST and VIEW OLD POSTS */ }
-          <Child xs={12} id="inboxChild" className="inboxSizer">
+          <Child xs={12} id="inboxChild" className="inboxSizer noMargin">
 
             <Row>
               <Child xs={12}>
+
+                {role === roles.poster &&
+                  <Row justify="center">
+                    <Child>
+                      {inviteButton()}
+                    </Child>
+                  </Row>
+                }
+
                 {role === roles.poster &&
                 <>
                   {!verifiedReceivers &&
