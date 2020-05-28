@@ -342,15 +342,15 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
                 </Row>
             }
             <Row justify="center">
-                Recipients
+                <b>Recipients</b>
             </Row>
             {
                 receivers.map((receiver: IReceiver, index: number) => {
                     return (
-                        <Row justify="center" key={receiver.id}>
+                        <Row justify="flex-start" key={receiver.id}>
                             <label>
-                                {receiver.name}
                                 <Checkbox name={receiver.id} checked={receiver.checked} onChange={e => handleCheckboxes(e, index)} />
+                                {receiver.name}
                             </label>
                         </Row>
                     )
