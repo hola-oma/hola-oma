@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import uuid from 'react-uuid';
 
 import { useLocation, useHistory } from "react-router";
 
-import {mailIcons, replyEmojiPNGs} from "../../../../Icons";
+import {mailIcons} from "../../../../Icons";
 import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
-import {Grid} from "@material-ui/core";
 import {Post} from "../../../models/post.model";
 import { REPLY_TYPES } from "../../../models/reply.model";
 
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 
-import '../Grandparent.css';
 import Child from 'shared/components/Child/Child';
 import Row from 'shared/components/Row/Row';
+
+import '../Grandparent.css';
 
 export const SentGrandparentReply: React.FC = () => {
   const history = useHistory();
@@ -51,58 +50,6 @@ export const SentGrandparentReply: React.FC = () => {
   if (replyContent.replyType === REPLY_TYPES.VOICE) {
     boxContent = buildSentMessage("Your reply was sent!");
   }
-
-  {/* 
-
-  if (replyContent.replyType === REPLY_TYPES.EMOJI) {
-    const sentEmojis: Array<string> = [];
-    const allEmojis: Array<string> = replyEmojiPNGs();
-    (replyContent.message).forEach(function(index: number) {
-      sentEmojis.push(allEmojis[index]);
-    })
-
-    boxContent =
-      <Grid container justify={"center"}>
-        {sentEmojis.map((icon, index: number) => (
-          <ButtonBase
-            key={uuid()}
-            className={classes.image}
-            style={{width: '33%'}}
-            >
-            <span className={classes.imageSrc} style={{backgroundImage: `url(${icon})` }} />
-          </ButtonBase>
-        ))}
-      </Grid>
-  }
-
-  if (replyContent.replyType === REPLY_TYPES.PHOTO) {
-    boxContent =
-      <Grid container
-            spacing={0}
-            direction={"column"}
-            alignItems="center"
-            justify="center"
-            style={{ height: "100%", overflowY: "hidden" }}
-      >
-        <img className="photoPreview" src={replyContent.message} alt="Sent message"/>
-      </Grid>
-  }
-
-  if (replyContent.replyType === REPLY_TYPES.VOICE) {
-    boxContent =
-      <Grid container
-            spacing={0}
-            direction={"column"}
-            alignItems="center"
-            justify="center"
-            style={{ height: "100%", overflowY: "hidden" }}
-      >
-        <Typography variant="h5" align={replyContent.message.length <= 50 ? "center" : "left"} >
-          {replyContent.message}
-        </Typography>
-      </Grid>
-  }
-*/}
 
   useEffect(() => {
     const animationTimeout = setTimeout(() => {

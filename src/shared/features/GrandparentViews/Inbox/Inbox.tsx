@@ -2,9 +2,6 @@ import React from 'react';
 import {useHistory} from "react-router-dom";
 import {makeStyles} from '@material-ui/core/styles';
 
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-
 import {
   Box,
   Card,
@@ -59,16 +56,6 @@ let currentPost: Post;
 
 const Inbox: React.FC<IInbox> = ({ posts }) => {
 
-  const theme = useTheme();
-
-  // this looks wacky but React doesn't let you use 'useMediaQuery' inside a function
-  const screenExtraLarge = useMediaQuery(theme.breakpoints.only('xl'));
-  const screenLarge = useMediaQuery(theme.breakpoints.only('lg'));
-  const screenMedium = useMediaQuery(theme.breakpoints.only('md'));
-  const screenSmall = useMediaQuery(theme.breakpoints.only('sm'));
-  const screenExtraSmall = useMediaQuery(theme.breakpoints.only('xs'));
-  const screenNarrow = useMediaQuery('(max-width:340px)');
-
   const classes = useStyles();
   const history = useHistory();
 
@@ -89,7 +76,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
             id="inbox-box"
             className="grandparentBoxWidth inboxBox"
             border={1}
-            borderRadius="borderRadius"
             mx={"auto"}
             fontSize={20}
             display={"flex"}
@@ -118,7 +104,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                   id="grid-list-inbox"
                 >
                 {posts.map((post, index: number) => (
-                  <InboxLetter post={post} onClickHandler={pressEnvelope}/>
+                  <InboxLetter post={post} key={post.pid} onClickHandler={pressEnvelope}/>
                 ))}
               </GridList>
             }

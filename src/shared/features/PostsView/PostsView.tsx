@@ -124,6 +124,8 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
   useEffect(() => {
     setNewPostsCount(countNewPosts(posts));
+    // don't put functions in here
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [posts]);
 
   const acceptInvite = () => {
