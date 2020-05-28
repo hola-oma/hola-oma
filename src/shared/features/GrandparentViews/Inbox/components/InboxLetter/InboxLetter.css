@@ -76,16 +76,6 @@
   object-fit:contain;
 }
 
-.inboxLetterInfo .MuiGridListTileBar-titleWrap .MuiGridListTileBar-title {
-  font-size:1.4rem;
-  line-height:32px;
-  color:black !important;
-}
-
-.inboxLetterInfo .MuiGridListTileBar-titleWrap .MuiGridListTileBar-subtitle {
-  font-size:1.2rem;
-  color:#666 !important;
-}
 
 @media screen and (max-width:1000px) {
   .envelopeCard {
@@ -98,11 +88,18 @@
     width: 100%;
   }
 
-  .inboxLetterInfo .MuiGridListTileBar-titleWrap .MuiGridListTileBar-title {
-    font-size:1.0rem;
-  }
-  
-  .inboxLetterInfo .MuiGridListTileBar-titleWrap .MuiGridListTileBar-subtitle {
+  .inboxLongName {
     font-size:0.8rem;
+  }
+}
+
+@media screen and (max-width:300px) {
+
+  .inboxLongName {
+    height:20px;
+    overflow-y:hidden;
+    word-break:break-all;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
 }

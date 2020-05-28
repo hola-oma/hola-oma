@@ -16,7 +16,7 @@ interface IInboxLetter {
 
 const formatFrom = (name: string) => {
   return (
-    <li><span className={`inboxFrom ${name.length > 16 ? 'inboxLongName' : ''}`}>{name}</span></li>
+    <li><div className={`inboxFrom ${name.length > 16 ? 'inboxLongName' : ''}`}>{name}</div></li>
   )
 }
 
