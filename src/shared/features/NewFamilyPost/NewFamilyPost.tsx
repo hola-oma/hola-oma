@@ -210,7 +210,15 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
                     rcvrs.push(receiver);
                 }
             }
-            setReceivers(rcvrs);
+            setReceivers(rcvrs.sort((a, b) => {
+                if (a.name.toUpperCase() < b.name.toUpperCase()) {
+                    return -1;
+                }
+                if (a.name.toUpperCase() > b.name.toUpperCase()) {
+                    return 1;
+                }
+                return 0;
+                }));
         });
         if (currentPost) {
             setEditing(true);
