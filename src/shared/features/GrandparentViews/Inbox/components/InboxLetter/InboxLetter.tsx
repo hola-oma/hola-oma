@@ -61,14 +61,36 @@ const InboxLetter: React.FC<IInboxLetter> = ({ post, onClickHandler }) => {
 
         {/* {displayReadStatus(postReadByCurrentUser)} */}
 
-        <CardContent className={`letterSenderInfo ${postReadByCurrentUser ? 'letterSenderInfoBack backLines' : 'letterSenderInfoFront'}`}>
-            <p>
-            {formatFrom(post.from)}
-            </p>
+        <CardContent className={`letterSenderInfo ${postReadByCurrentUser ? 'letterSenderInfoBack' : 'letterSenderInfoFront'}`}>
+            {!postReadByCurrentUser &&
+              <>
+                <p>
+                {formatFrom(post.from)}
+                </p>
 
-            <p>
-            {formatSentDate(post.date)}
-            </p>
+                <p>
+                {formatSentDate(post.date)}
+                </p>
+              </>
+            }
+
+            {postReadByCurrentUser &&
+              <>
+              {post?.message.length > 0 && 
+                <div className="letterMessagePreview letterItemShadow">{post.message}</div>
+              }
+
+              {post.photoURL.length > 0 && 
+                <div className="letterPhotoPreview letterItemShadow"></div>
+              }
+
+              {post.videoURL.length > 0 && 
+                <div className="letterPhotoPreview letterItemShadow"></div>
+              }
+
+              <div className="envelopeBackShape"></div>
+              </>
+            }
 
         </CardContent>
         

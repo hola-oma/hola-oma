@@ -82,6 +82,7 @@
 
 .letterSenderInfoBack {
   height:100%;
+  padding:0 !important;
 }
 
 .messagePreview {
@@ -137,22 +138,61 @@
   object-fit:contain;
 }
 
-/* Lines and shapes that make up the "back" of the envelope */
+.letterItemShadow {
+  box-shadow: -5px 5px 10px 0px gray, 
+               5px 5px 10px 0px gray;
+}
 
-.backLines {
-  background: 
-      linear-gradient(to top left,
-          rgb(175, 175, 175) 50%,
-          rgba(0,0,0,0) calc(50% - 0.8px),
+/* Lines and shapes that make up the "back" of the envelope */
+.letterMessagePreview {
+  position:absolute;
+  background-color:white;
+  word-wrap:break-word;
+  text-align:left;
+  padding:5px;
+  color:gray;
+  height:92%;
+  width:60%;
+  z-index:1; /* so it draws under the photo if photo is there */
+}
+
+.letterPhotoPreview {
+  background: pink; /* linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(121,9,76,1) 35%, rgba(0,212,255,1) 100%); */
+  background-image:url('../../../../../../icons/media-attached.png');
+  background-size: cover;
+  position: absolute;
+  top:20px;
+  right:90px;
+  height:80px;
+  width:80px;
+  padding:5px;
+  border:3px solid white;
+  z-index:2; /* draw over the paper, if the paper is there */
+}
+
+.envelopeBackShape {
+  width:100%;
+  height:100%;
+  background:  /* first one is the "mask" that hides the line from the last ones */
+      linear-gradient(to top right,
+          rgba(190,190,190) 50%,
+          rgba(0,0,0,0) calc(50% - 2px),
           rgba(0,0,0,0) 50%,
-          rgba(0,0,0,0) calc(50% + 0.8px),
+          rgba(0,0,0,0) calc(50% + 2px),
+          rgba(0,0,0,0) 100%),
+      linear-gradient(to top left,
+          rgb(190, 190, 190) 50%,
+          rgba(0,0,0,0) calc(50% - 2px),
+          rgba(0,0,0,1) 50%,
+          rgba(0,0,0,0) calc(50% + 2px),
           rgba(0,0,0,0) 100%),
       linear-gradient(to top right,
-          rgba(175,175,175) 50%,
-          rgba(0,0,0,0) calc(50% - 0.8px),
-          rgba(0,0,0,0) 50%,
-          rgba(0,0,0,0) calc(50% + 0.8px),
+          rgba(190,190,190) 50%,
+          rgba(0,0,0,0) calc(50% - 2px),
+          rgba(0,0,0,1) 50%,
+          rgba(0,0,0,0) calc(50% + 2px),
           rgba(0,0,0,0) 100%);
+  z-index:3;
 }
 
 
