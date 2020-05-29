@@ -61,7 +61,7 @@ const InboxLetter: React.FC<IInboxLetter> = ({ post, onClickHandler }) => {
 
         {/* {displayReadStatus(postReadByCurrentUser)} */}
 
-        <CardContent className={`letterSenderInfo ${postReadByCurrentUser ? 'letterSenderInfoBack' : 'letterSenderInfoFront'}`}>
+        <CardContent className={`letterSenderInfo ${postReadByCurrentUser ? 'letterSenderInfoBack backLines' : 'letterSenderInfoFront'}`}>
             <p>
             {formatFrom(post.from)}
             </p>

@@ -137,6 +137,24 @@
   object-fit:contain;
 }
 
+/* Lines and shapes that make up the "back" of the envelope */
+
+.backLines {
+  background: 
+      linear-gradient(to top left,
+          rgb(175, 175, 175) 50%,
+          rgba(0,0,0,0) calc(50% - 0.8px),
+          rgba(0,0,0,0) 50%,
+          rgba(0,0,0,0) calc(50% + 0.8px),
+          rgba(0,0,0,0) 100%),
+      linear-gradient(to top right,
+          rgba(175,175,175) 50%,
+          rgba(0,0,0,0) calc(50% - 0.8px),
+          rgba(0,0,0,0) 50%,
+          rgba(0,0,0,0) calc(50% + 0.8px),
+          rgba(0,0,0,0) 100%);
+}
+
 
 @media screen and (max-width:1000px) {
   .envelopeCard {
