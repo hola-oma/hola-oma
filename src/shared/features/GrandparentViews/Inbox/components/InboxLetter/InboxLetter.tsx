@@ -88,7 +88,15 @@ const InboxLetter: React.FC<IInboxLetter> = ({ post, onClickHandler }) => {
                 <div className="letterPhotoPreview letterItemShadow letterVideoPreview"></div>
               }
 
-              <div className="envelopeBackShape"></div>
+              <div className="envelopeBackShape">
+                <p>
+                  {formatFrom(post.from)}
+                </p>
+
+                <p>
+                  {formatSentDate(post.date)}
+                </p>
+              </div>
               </>
             }
 

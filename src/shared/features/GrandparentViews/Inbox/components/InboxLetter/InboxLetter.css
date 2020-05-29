@@ -30,7 +30,7 @@
 }
 
 .read {
-  background-color:#ddd !important; 
+  background-color:#999 !important; 
 }
 
 .envelopeIcon {
@@ -50,39 +50,34 @@
 .letterSenderInfo {
   margin-top:auto;
   margin-bottom:auto;
+  flex-direction:column;
   justify-content:center;
   align-content:center;
   height:100px;
-}
-
-.letterSenderInfo ul {
-  list-style:none;
-}
-
-.letterSenderInfo {
   display: flex;
-  flex-direction:column;
-  text-align:center;
-  justify-content: center;
-  align-items: center;
-  font-size:1rem;
-}
-
-.letterSenderInfo p {
-  margin:0 !important;
+  justify-content: flex-start;
 }
 
 .letterSenderInfo p:nth-of-type(1) {
-  margin-top:20px !important;
-}
-
-.letterSenderInfoFront {
-  height:100%;
+  margin-top:0px !important;
 }
 
 .letterSenderInfoBack {
   height:100%;
+  align-items:center; /* letter needs this to be centered */
   padding:0 !important;
+}
+
+.letterSenderInfoBack p {
+  font-size:1.1rem !important;
+  color:#333;
+  text-align:left;
+  margin:0px !important;
+  padding-left:5px;
+}
+
+.letterSenderInfoBack p:nth-of-type(2) {
+  margin-bottom:5px !important;
 }
 
 .messagePreview {
@@ -114,19 +109,18 @@
   white-space:nowrap;
 }
 
-.inboxDate {
-  font-size:1.0rem;
-}
-
 .inboxLetterInfo {
   text-align:center;
   height:52px !important;
   background:transparent !important;
 }
 
-.inboxLongName {
-  font-size:1.1rem !important;
+.inboxLetterFrom {
+  width:96%;
+  word-wrap:break-word;
 }
+
+
 
 .inboxLetter {
   width:80%;
@@ -153,6 +147,7 @@
   color:gray;
   height:92%;
   width:60%;
+  top:5px;
   z-index:1; /* so it draws under the photo if photo is there */
 }
 
@@ -199,6 +194,9 @@
           rgba(0,0,0,0) calc(50% + 2px),
           rgba(0,0,0,0) 100%);
   z-index:3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 
