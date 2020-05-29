@@ -1,11 +1,30 @@
-.icon {
-  font-size:72px !important;
-}
-
 .inboxCard {
   margin: 20px;
 }
 
-/*html, body {*/
-/*  overflow: hidden;*/
-/*}*/
+.inboxBox {
+  height:calc(70vh - 50px);
+  border-radius:10px;
+  background:#16344d;
+}
+
+.inboxGridList {
+  height:100%;
+  width:100%;
+  align-items:flex-start;
+  align-content:flex-start;
+  justify-items:center;
+  justify-content:flex-start;
+  flex-wrap:wrap;
+}
+
+.noInboxMargin.MuiGrid-item {
+  margin-top:0px !important;
+}
+
+@media screen and (max-width:830px) {
+  .inboxBox {
+    border-radius:0%;
+    width:100%;
+  }
+}

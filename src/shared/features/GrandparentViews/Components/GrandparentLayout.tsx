@@ -1,26 +1,31 @@
 import React from 'react';
 
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {Grid, Box, Button, SvgIconProps, Typography} from '@material-ui/core';
+import {Box, Button, SvgIconProps, Typography} from '@material-ui/core';
 import {Alert} from "@material-ui/lab";
 
-import Column from 'shared/components/Column/Column';
+import ViewWrapper from 'shared/components/ViewWrapper';
+import Child from 'shared/components/Child/Child';
+
+import '../Grandparent.css';
+import Row from 'shared/components/Row/Row';
 
 export const boxDimensions = {
-  height: 486,   // 16:9 ratio
-  width: 864
+  height: '80vh',   // 16:9 ratio, was 486 at first 
+  width: '80vw'  // was 864
 }
 
 export const buttonText = {
   // Navigation
-  inbox: "Go back to Inbox",
-  replyOptions: "Go back to Reply Options",
-  backToMessage: "Go back to Message",
+  inbox: "Go to Inbox",
+  back: "Go Back",
+  replyOptions: "Go Back",
+  backToMessage: "Go Back",
   // Reply options
   smiley: "Smiley",
-  voice: "Voice Message",
-  photo: "Your Picture",
-  send: "Send Reply",
+  voice: "Message",
+  photo: "Photo",
+  send: "Send",
   // Photo options
   take: "Take Photo",
   retake: "Retake Photo",
@@ -30,14 +35,6 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
-    },
-    button: {
-      margin: theme.spacing(3),
-    },
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
     },
     title: {
       textAlign: 'center',
@@ -55,63 +52,73 @@ interface IGrandparentLayout {
   buttonActions: { (arg0: any): void } [];   //  Array of functions
   buttonIcons: React.ReactElement<SvgIconProps>[];
   buttonDisabled?: boolean[];
+  buttonClasses?: string[];
+  showReplyWith?: boolean;
+  justifyButtons?: any;
 }
 
-export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerText, header2Text, alertText, boxContent, buttonText,  buttonActions, buttonIcons, buttonDisabled = [] }) => {
+export const GrandparentLayout: React.FC<IGrandparentLayout> = ({ from, headerText, alertText, boxContent, buttonText,  buttonActions, buttonIcons, buttonDisabled = [], buttonClasses = [], showReplyWith=false, justifyButtons="space-between" }) => {
 
   const classes = useStyles();
 
   return (
-    <Column justify="center">
-
+    <ViewWrapper>
+      
       {/*Header*/}
-      <Grid item xs={12} className={classes.title}>
-        <Typography variant="h4" gutterBottom>{headerText} {from}</Typography>
-        { (header2Text && !alertText) && <Typography variant="h5" align={"center"}>{header2Text}</Typography> }
-      </Grid>
+      <Child xs={12} className={classes.title} style={{flexBasis: 0}}>
+        <Typography variant="h5">{headerText} {from}</Typography>
+      </Child>
 
       {/*Alert*/}
       {alertText &&  <Alert className="error" severity="error">{alertText}</Alert>}
       
-        {/*Content Box*/}
-        <Grid item xs={12} className={classes.root}>
+      {/*Content Box*/}
+      <Child xs={12} className={classes.root}>
           <Box
-            border={1}
+            id="grandparentLayout-Box"
+            className="grandparentBox grandparentBoxWidth grandparentBoxHeight"
             borderRadius="borderRadius"
             mx={"auto"}
-            fontSize={24}
             display={"flex"}
-            height={boxDimensions.height}
-            width={boxDimensions.width}
+            style={{height: '100%'}}
           >
           {boxContent}
         </Box>
-      </Grid>
+      </Child>
 
       {/*Bottom buttons*/}
+      <div id="button-wrapper">
       {buttonIcons.length > 0 &&
-          <Grid container
-                direction="row"
-                justify="space-around"
-                alignItems="center">
+          <Row
+            className="grandparentBoxWidth marginLRAuto grandparentOptionsButtons"
+            justify={justifyButtons} // pass in "space-between" or "flex-end" to make buttons evenly spaced or right justified
+            alignItems="center"
+          >
+
+            {showReplyWith && 
+              <span className="landscapeOnly"><i>Reply with...</i></span>
+            }
+
             {buttonIcons.map((button: React.ReactElement<SvgIconProps>, index: number) => {
               return (
                 <Button
                   variant="contained"
                   color="primary"
-                  className={classes.button}
+                  className={`bigButton grandparentOptionsButton ${buttonClasses[index]}`}
                   startIcon={buttonIcons[index]}
                   onClick={buttonActions[index]}
                   disabled={buttonDisabled[index]}
                   key={index}
+                  style={{height: '100px'}}
                 >
                   {buttonText[index]}
                 </Button>
               )
             })}
-          </Grid>
-      }
-    </Column>
+          </Row>
+        }
+      </div>
+    </ViewWrapper>
 )}
 
 export default GrandparentLayout;

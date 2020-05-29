@@ -11,6 +11,8 @@ import {Grid} from "@material-ui/core";
 
 import { isIOS, isSafari } from 'react-device-detect';
 
+import '../Grandparent.css';
+
 
 // Reminder: https://stackoverflow.com/questions/29642685/maintain-aspect-ratio-of-image-with-full-width-in-react-native
 const videoConstraints = {
@@ -77,7 +79,7 @@ const GetPhotoReply: React.FC = () => {
       { currentPost &&
         <GrandparentLayout
             from={currentPost.from}
-            headerText={ !photoPreview ? "Take a photo to send to " : "Sending photo to "}
+            headerText={ !photoPreview ? "Send a photo to " : "Sending photo to "}
             boxContent={
               <>
                 { supportedDeviceBrowser &&
@@ -93,15 +95,15 @@ const GetPhotoReply: React.FC = () => {
                       <Webcam
                         audio={false}
                         ref={webcamRef}
-                        // width={848}
-                        height={477}
+                        height={400}
+                        width='100%'
                         screenshotFormat="image/jpeg"
                         videoConstraints={videoConstraints}
                       />
                     }
 
                     {photoPreview &&
-                      <img src={photoPreview} alt="Current selfie"/>
+                      <img className="photoPreview" src={photoPreview} alt="Current selfie"/>
                     }
 
                     </Grid>

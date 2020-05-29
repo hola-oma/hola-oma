@@ -13,7 +13,7 @@ const FormError: React.FC<IFormError> = ({ error, severity="error" }) => {
   return (
     <>
       {error && 
-        <Child item xs={12}>
+        <Child item xs={12} className="formErrorChild">
           <Alert severity={severity} className={`${severity+'Alert'}`}>{error}</Alert>
         </Child>
       }

@@ -1,0 +1,223 @@
+.grandparentReplyText {
+  font-size:inherit;
+  width:100%;
+  height:100%;
+}
+
+.grandparentSubtitle {
+  line-height:1.2em !important;
+  margin-bottom:1px !important;
+}
+
+.grandparentBoxHeight {
+  height:calc(70vh - 100px);
+}
+
+.grandparentBoxWidth {
+  width:calc(100vw - 60px) !important;
+}
+
+/* the grandparent buttons are just like big buttons but a bit shorter and without a top margin*/
+.grandparentOptionsButton {
+  height:58px !important;
+  margin-top:0 !important;
+  margin-left:16px !important;
+  margin-right:0px !important;
+}
+
+.grandparentOptionsButton .MuiButton-iconSizeMedium > *:first-child {
+  font-size:32px;
+}
+
+.grandparent-card {
+  background-color:transparent !important;
+  box-shadow:none !important;
+}
+
+.grandparent-cardActionArea {
+  position:relative;
+  background-color:transparent !important;
+  box-shadow:none !important;
+}
+
+.grandarent-imagePreview {
+  height:80%;
+}
+
+.grandparentFontSizeBig {
+  font-size:2.0rem !important;
+}
+
+.grandparentFontSizeMedium {
+  font-size:1.8rem !important;
+}
+
+.grandparentFontSizeSmall {
+  font-size:1.4rem !important;
+}
+
+.photoPreview {
+  height:400px;
+}
+
+.opacityTransition {
+  transition: opacity 6s linear;
+}
+
+.hideEnvelope {
+  visibility:hidden !important;
+  border:1px solid red;
+}
+ 
+.fadeIn {
+  -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 2s; /* Firefox < 16 */
+   -ms-animation: fadein 2s; /* Internet Explorer */
+    -o-animation: fadein 2s; /* Opera < 12.1 */
+       animation: fadein 2s;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.envelopeContainer {
+  height:180px;
+  font-size:180px;
+  text-align:center;
+}
+
+.envelopeAnimation {
+  color:#2d6898;
+  animation-name: fly;
+  animation-duration:6s;
+  animation-timing-function: ease-in;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+  animation-play-state:running;
+}
+
+.envelope .MuiSvgIcon-root{
+  font-size:300px;
+}
+
+.replyWasSentText p {
+  font-size:1.8rem;
+  text-align:center;
+}
+
+@keyframes fly {
+  0% { 
+    transform: scale(.4,.4); 
+    
+    /* -webkit-transform: scale(2,2); */ /** Chrome & Safari **/
+    /* -o-transform: scale(2,2); */ /** Opera **/
+    /* -moz-transform: scale(2,2); */ /** Firefox **/
+  }
+  
+  /* come into view */
+  10% { 
+    transform: scale(1.1,1.1) translateY(0); 
+  }
+
+  /* bounce a bit */
+  12% { 
+    transform: scale(1,1) translateY(0); 
+  }
+
+  /* back to normal */
+  20% { 
+    transform: scale(1,1) translateY(0); 
+  }
+
+  /* sit idle before taking off*/
+  30% { 
+    transform: scale(1,1) translateY(0); 
+  }
+
+  /* compress as if gearing up to leave */
+  35% { 
+    transform: scale(.8,1); 
+  }
+
+  40% {
+    transform: scale(1,1) skewX(-10deg);
+  }
+
+  /* launch it offscreen */
+  50% {
+    transform: scale(1.1,1) translate(1000px, 0) skewX(-20deg); 
+  } 
+}
+
+@media screen and (max-width: 830px) {
+
+  .grandparentBoxWidth {
+    width:100% !important;
+  }
+
+  .grandparentOptionsButtons {
+    font-size:0.8rem !important;
+  }
+
+  .grandparentOptionsButtons .MuiButton-iconSizeMedium > *:first-child {
+    font-size:20px;
+    padding:1px !important;
+  }
+  
+  /* note: singular 'button' here is intentional */
+  .grandparentOptionsButton {
+    margin-top:2px !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  .grandparentOptionsButtons {
+    justify-content:right !important;
+  }
+}
+
+@media screen and (max-width: 500px) {
+
+  .grandparentOptionsButtons {
+    font-size:0.6rem !important;
+  }
+
+  .grandparentFontSizeBig {
+    font-size:1.8rem !important;
+  }
+  
+  .grandparentFontSizeMedium {
+    font-size:1.6rem !important;
+  }
+  
+  .grandparentFontSizeSmall {
+    font-size:1.2rem !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+
+  /* note: singular 'button' here is intentional */
+  .grandparentOptionsButton {    
+    width:100% !important;
+    margin-bottom:20px !important;
+    margin-top:2px !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  .grandparentOptionsButtons {
+    margin-left:auto;
+    margin-right:auto;
+    justify-content:center !important;
+  }
+}

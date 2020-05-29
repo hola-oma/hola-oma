@@ -11,10 +11,10 @@ import LoginHelp from "shared/components/LoginHelp";
 import Column from "shared/components/Column/Column";
 import Row from "shared/components/Row/Row";
 import Child from "shared/components/Child/Child";
-import CredentialsWrapper from "shared/components/CredentialsWrapper";
 
 import { Hidden } from "@material-ui/core";
 import CredentialsForm from "shared/components/CredentialsForm/CredentialsForm";
+import ViewWrapper from "shared/components/ViewWrapper";
 
 interface ISignIn {
   history?: any;
@@ -93,8 +93,7 @@ const SignIn: React.FC<ISignIn> = ({ history }) => {
   };
 
   return (
-    <CredentialsWrapper>
-
+    <ViewWrapper showCopyright={true}>
       {/* Row contains side-by-side form elements */}
       <Row justify="space-around">
 
@@ -113,11 +112,11 @@ const SignIn: React.FC<ISignIn> = ({ history }) => {
           <Column justify="center" alignItems="center">
             <CredentialsForm onSubmit={handleEmailAndPasswordLogin} submitText="Sign in" error={error}>
 
-              <Child item xs={12}>
+              <Child xs={12}>
                 {emailAddressInput()}
               </Child>
 
-              <Child item xs={12}>
+              <Child xs={12}>
                 {passwordInput()}
               </Child>
 
@@ -129,7 +128,8 @@ const SignIn: React.FC<ISignIn> = ({ history }) => {
           </Column>
         </Child>
       </Row>
-    </CredentialsWrapper>
+
+    </ViewWrapper>
   );
 };
 

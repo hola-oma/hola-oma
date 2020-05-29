@@ -1,9 +1,9 @@
 import React from "react";
-import CredentialsWrapper from "shared/components/CredentialsWrapper";
 import Child from "shared/components/Child/Child";
 import Row from "shared/components/Row/Row";
 import GitHubIcon from '@material-ui/icons/GitHub';
 import { Button } from "@material-ui/core";
+import ViewWrapper from "shared/components/ViewWrapper";
 
 const About: React.FC = () => {
 
@@ -24,7 +24,7 @@ const About: React.FC = () => {
   )
 
   return (
-    <CredentialsWrapper>
+    <ViewWrapper showCopyright={true}>
       <Row justify="space-around">
 
             <Child xs={12} sm={8}>
@@ -45,7 +45,7 @@ const About: React.FC = () => {
             </Child>
 
       </Row>
-    </CredentialsWrapper>
+    </ViewWrapper>
   );
 };
 

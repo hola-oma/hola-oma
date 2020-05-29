@@ -17,12 +17,12 @@ import { RouteComponentProps, useLocation } from 'react-router-dom'; // give us 
 
 import { verifyActionCode, resetPassword } from 'services/user';
 import BigInput from "shared/components/BigInput/BigInput";
-import CredentialsWrapper from "shared/components/CredentialsWrapper";
 import Child from "shared/components/Child/Child";
 import CredentialsForm from "shared/components/CredentialsForm/CredentialsForm";
 import Row from "shared/components/Row/Row";
 import Column from "shared/components/Column/Column";
 import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
+import ViewWrapper from "shared/components/ViewWrapper";
 
 interface MatchParams {
   mode: string;
@@ -137,7 +137,7 @@ const HandleReset: React.FC<IHandleReset> = () => {
   }
 
   return (
-    <CredentialsWrapper>
+    <ViewWrapper showCopyright={true}>
       <Row justify="center">
         <Child xs={12} sm={8} md={6} lg={4}>
           {/* Invalid oobCode, don't show form. Show error message */}
@@ -164,7 +164,7 @@ const HandleReset: React.FC<IHandleReset> = () => {
           }
         </Child>
       </Row>
-    </CredentialsWrapper>
+    </ViewWrapper>
   );
 };
 

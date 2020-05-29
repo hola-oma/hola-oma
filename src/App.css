@@ -2,12 +2,26 @@
   font-size:1.2em;
 }
 
+.landscapeOnly {
+  display:inline-block;
+}
+
 body {
   -webkit-overflow-scrolling: touch;
 }
 
+.marginLRAuto {
+  margin-left:auto;
+  margin-right:auto;
+}
+
 .fullHeight {
   height: calc(100vh - 100px);
+  display:block;
+}
+
+.fullHeightMobile {
+  height: calc(100vh - 200px);
   display:block;
 }
 
@@ -22,6 +36,12 @@ body {
 
 .padDialog {
   padding:20px !important;
+}
+
+.viewWrapperDiv {
+  display:flex;
+  flex-direction:column;
+  width:100%;
 }
 
 .credentialsForm {
@@ -91,7 +111,6 @@ input {
 .bigButton {
   height:100px;
   font-size:1.6em !important;
-  margin-top:40px !important;
   line-height:1.2em !important;
   color:#fff;
   border: 1px solid #2d6898 !important;
@@ -115,7 +134,6 @@ input {
   -webkit-box-shadow: 0px 6px 0px #2b638f, 0px 3px 15px rgba(0,0,0,.4), inset 0px 1px 0px rgba(255,255,255,.3), inset 0px 0px 3px rgba(255,255,255,.5) !important;
   -moz-box-shadow: 0px 6px 0px #2b638f, 0px 3px 15px rgba(0,0,0,.4), inset 0px 1px 0px rgba(255,255,255,.3), inset 0px 0px 3px rgba(255,255,255,.5) !important;
   box-shadow: 0px 6px 0px #2b638f, 0px 3px 15px rgba(0,0,0,.4), inset 0px 1px 0px rgba(255,255,255,.3), inset 0px 0px 3px rgba(255,255,255,.5) !important;
-
 }
 
 .bigButton:active {
@@ -132,6 +150,15 @@ input {
       color-stop(0, rgb(88,154,204)),
       color-stop(1, rgb(90,150,199))
   );
+}
+
+.bigButton:disabled {
+  background-image:none;
+  background-color:#bbb !important;
+  border: 1px solid #444 !important;
+  -webkit-box-shadow: 0px 6px 0px #555, 0px 3px 15px rgba(0,0,0,.4), inset 0px 1px 0px rgba(255,255,255,.3), inset 0px 0px 3px rgba(255,255,255,.5) !important;
+  -moz-box-shadow: 0px 6px 0px #555, 0px 3px 15px rgba(0,0,0,.4), inset 0px 1px 0px rgba(255,255,255,.3), inset 0px 0px 3px rgba(255,255,255,.5) !important;
+  box-shadow: 0px 6px 0px #555, 0px 3px 15px rgba(0,0,0,.4), inset 0px 1px 0px rgba(255,255,255,.3), inset 0px 0px 3px rgba(255,255,255,.5) !important;
 }
 
 .colorYes {
@@ -230,11 +257,25 @@ Use: <Box className="devBox">...stuff here...</Box> */
   margin-bottom:10px;
 }
 
-.listenError .errorAlert {
+.recordingAlertChild {
   margin-top:0 !important;
   margin-bottom:0 !important;
 }
 
 .wrapReply {
   overflow-wrap:break-word;
+}
+
+@media screen and (max-width: 700px) {
+  .landscapeOnly {
+    display:none; 
+  }
+}
+
+@media screen and (max-width: 400px) {
+
+  .viewWrapperBox {
+    padding-left:0 !important;
+    padding-right:0 !important;
+  }
 }

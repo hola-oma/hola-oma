@@ -90,6 +90,16 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const emojiIcons = replyEmojiArray();
     let history = useHistory();
 
+    const sortNames = (a: any, b: any) => {
+        if (a.name.toUpperCase() < b.name.toUpperCase()) {
+            return -1;
+        }
+        if (a.name.toUpperCase() > b.name.toUpperCase()) {
+            return 1;
+        }
+        return 0;
+    }
+
     useEffect(() => {
         //Get connected accounts to populate receiver list
         getLinkedAccounts()
@@ -104,7 +114,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                     rcvrs.push(receiver);
                 }
             }
-            setReceivers(rcvrs);
+            setReceivers(rcvrs.sort(sortNames));
         });
         getRepliesToPost(post.pid).then((replyArray: any) => {
             let replies: Reply[];
@@ -206,7 +216,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                     </Column>
                 </Paper>
             </Grid>
-            <Grid item sm={3} xs={12}>
+            <Grid item sm={3} xs={12} className="padLeft">
                 <Column justify="center" alignItems="center">
                     <Typography variant="caption" align="center">
                         Sent <Moment format="MMMM Do YYYY, h:mm a">{post.date}</Moment>
@@ -217,7 +227,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                     {
                         receivers.map((receiver: IReceiver, index: number) => {
                             return (
-                            <Grid container alignItems="center" justify="center" key={index}>
+                            <Grid container alignItems="flex-start" justify="flex-start" key={index}>
                                 {post.read[receiver.id] === true ? <CheckBoxIcon fontSize="small"/> : <CheckBoxOutlineBlankIcon fontSize="small"/>}
                                 <Typography variant="caption" align="center">
                                     {receiver.name}
@@ -255,11 +265,11 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 Replies
             </Typography>
             <Row alignItems="center" justify="center">
-                {emojiReplies && emojiReplies.filter(reply => {return reply.length}).map((reply, index: number) => {
-                    return (
+                {emojiReplies && emojiReplies.map((reply, index: number) => {
+                    return reply.length > 0 && (
                         <Tooltip title={getTooltip(reply)} key={index} arrow>
                             <Typography variant="h5" className={classes.emojis}>
-                                {emojiIcons[index] }
+                                {emojiIcons[index]}
                             </Typography>
                         </Tooltip>
                     )

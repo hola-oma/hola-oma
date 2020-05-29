@@ -9,35 +9,24 @@ import {
   CardMedia,
   Grid,
   GridList,
-  GridListTile,
-  GridListTileBar,
   Typography
 } from '@material-ui/core';
 
 import {Post} from 'shared/models/post.model';
 
 import './Inbox.css';
-import {getPostReadByCurrentUser, markPostRead} from "../../../../services/post";
+
+import {markPostRead} from "../../../../services/post";
 import Column from "../../../components/Column/Column";
-import {boxDimensions} from "../Components/GrandparentLayout";
+import InboxLetter from './components/InboxLetter/InboxLetter';
 
 const useStyles = makeStyles(() => ({
     root: {
       flexGrow: 1,
     },
     title: {
-      fontSize: 22,
       color: 'black',
       textAlign: 'center'
-    },
-    gridList: {
-      height: '500px',
-      width: '100%',
-      flexWrap: 'wrap',
-      alignItems: 'center',
-      justifyContent: 'center',
-      // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-      transform: 'translateZ(0)',
     },
     titleBar: {
       height: '40px',
@@ -62,26 +51,25 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
   const history = useHistory();
 
   const pressEnvelope = async function (envelopePost: Post) {
-      currentPost = envelopePost;
-      let postID = currentPost?.pid;
-      await markPostRead(postID);
-      history.push({pathname: '/startReply', state: envelopePost } );
-    }
+    currentPost = envelopePost;
+    let postID = currentPost?.pid;
+    await markPostRead(postID);
+    history.push({pathname: '/startReply', state: envelopePost } );
+  }
 
   return (
     <>
       <Column justify="center">
 
         {/*Content Box*/}
-        <Grid item xs={12} className={classes.root}>
+        <Grid item xs={12} className={`noInboxMargin ${classes.root}`} id="inbox-grid">
           <Box
+            id="inbox-box"
+            className={`grandparentBoxWidth inboxBox`}
             border={1}
-            borderRadius="borderRadius"
             mx={"auto"}
-            fontSize={24}
+            fontSize={20}
             display={"flex"}
-            height={478}
-            width={boxDimensions.width}
             alignItems={"center"}
             style={{ overflowY: "hidden" }}>
 
@@ -101,22 +89,13 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
             {/*If mailbox not empty*/}
             {posts.length > 0 &&
-              <GridList className={classes.gridList} cols={3}>
+              <GridList 
+                  className={`inboxGridList`}
+                  spacing={2}
+                  id="grid-list-inbox"
+                >
                 {posts.map((post, index: number) => (
-                  <GridListTile
-                    key={post.pid}
-                    onClick={() => pressEnvelope(post)}
-                    rows={1.25} >
-                    <img src={getPostReadByCurrentUser(post) ? require("../../../../icons/mail-open.png") : require("../../../../icons/mail-closed.png")}
-                       alt={"Letter from " + post.from} />
-
-                  <GridListTileBar
-                    title={"From: " + post.from}
-                    classes={{
-                      root: classes.titleBar,
-                      title: classes.title,
-                    }} />
-                  </GridListTile>
+                  <InboxLetter post={post} key={post.pid} onClickHandler={pressEnvelope}/>
                 ))}
               </GridList>
             }

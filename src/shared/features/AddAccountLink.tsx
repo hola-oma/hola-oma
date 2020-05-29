@@ -4,13 +4,13 @@ import { RouteComponentProps } from 'react-router-dom'; // give us 'history' obj
 import { createLinkByEmail } from 'services/accountLink';
 
 import BigInput from 'shared/components/BigInput/BigInput';
-import CredentialsWrapper from 'shared/components/CredentialsWrapper';
 import Row from 'shared/components/Row/Row';
 import Child from 'shared/components/Child/Child';
 import CredentialsLeftTitle from 'shared/components/CredentialsLeftTitle';
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import CredentialsForm from 'shared/components/CredentialsForm/CredentialsForm';
+import ViewWrapper from 'shared/components/ViewWrapper';
 
 interface IAddAccountLink extends RouteComponentProps {
   // empty for now, just need this for the "extends RouteComponentProps" part 
@@ -62,7 +62,7 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
   }
 
   return (
-    <CredentialsWrapper>
+    <ViewWrapper showCopyright={true}>
       <Row justify="center">
         <Child xs={12} sm={8} md={6} lg={4}>
           <CredentialsLeftTitle icon={<AccountCircleIcon />} title="Link up with a family member" subtitle="Invite a family member or close friend to see your posts. The person you invite must already have an Hola, Oma! account." />
@@ -76,7 +76,7 @@ const AddAccountLink: React.FC<IAddAccountLink> = ({ history }) => {
           </CredentialsForm>
         </Child>
       </Row>
-    </CredentialsWrapper>
+    </ViewWrapper>
   );
 }
 

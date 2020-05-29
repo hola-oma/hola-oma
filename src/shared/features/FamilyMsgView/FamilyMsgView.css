@@ -14,3 +14,7 @@
 .replyActions {
     justify-content: space-between;
 }
+
+.padLeft {
+    padding-left:8px;
+}

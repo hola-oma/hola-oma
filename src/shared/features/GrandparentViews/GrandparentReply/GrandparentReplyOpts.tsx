@@ -6,6 +6,8 @@ import { replyOptionIcons } from "../../../../Icons";
 import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
 import {MEDIA_TYPES} from "../../../models/post.model";
 
+import '../Grandparent.css';
+
 const GrandparentReplyOpts: React.FC = () => {
 
   const history = useHistory();
@@ -45,6 +47,8 @@ const GrandparentReplyOpts: React.FC = () => {
           () => history.push({pathname: '/photo', state: currentPost}),
         ]}
         buttonIcons={[replyOptionIcons.emoji, replyOptionIcons.voicemail, replyOptionIcons.photo]}
+        showReplyWith={true}
+        justifyButtons={"flex-end"}
       />
 
      </>

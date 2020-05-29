@@ -9,13 +9,13 @@ import 'firebase/database'; // for additional user properties, like role
 import { createNewUserWithEmailAndPassword } from "services/user";
 import BigInput from "shared/components/BigInput/BigInput";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import CredentialsWrapper from "shared/components/CredentialsWrapper";
 import Row from "shared/components/Row/Row";
 import Child from "shared/components/Child/Child";
 import Column from "shared/components/Column/Column";
 import CredentialsLeftTitle from "shared/components/CredentialsLeftTitle";
 
 import CredentialsForm from "shared/components/CredentialsForm/CredentialsForm";
+import ViewWrapper from "shared/components/ViewWrapper";
 
 interface IJoin {
   history?: any;
@@ -93,8 +93,7 @@ const Join: React.FC<IJoin> = ({ history }) => {
   }
 
   return (
-    <CredentialsWrapper>
-
+    <ViewWrapper showCopyright={true}>
       {/* Row contains side-by-side form elements */}
       <Row justify="space-around">
 
@@ -123,7 +122,7 @@ const Join: React.FC<IJoin> = ({ history }) => {
           </Column>  
         </Child>
       </Row>
-    </CredentialsWrapper>
+    </ViewWrapper>
   );
 };
 

@@ -23,12 +23,12 @@ import Alert from '@material-ui/lab/Alert';
 
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AddCommentIcon from '@material-ui/icons/AddComment';
-import CredentialsWrapper from 'shared/components/CredentialsWrapper';
 import Column from 'shared/components/Column/Column';
 import Child from 'shared/components/Child/Child';
 import Row from 'shared/components/Row/Row';
 
 import './PostsView.css';
+import { Reply } from 'shared/models/reply.model';
 
 interface IPostsView extends RouteComponentProps<any> {
   setIsLoading: (loading: boolean) => void;
@@ -46,6 +46,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   const [invitationModalOpen, setInvitationModalOpen] = useState<boolean>(false);
   const [unreadRepliesTotal, setUnreadRepliesTotal] = useState(0);
   const [verifiedReceivers, setVerifiedReceivers] = useState<boolean>(false);
+  const [newPostsCount, setNewPostsCount] = useState(0);
 
   const updatePendingInvitations = (dataArr: AccountLink[]) => {
     if (dataArr.length > 0) {
@@ -69,22 +70,19 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   const processUnreadReplies = async (userPosts: Post[]) => {
     let repliesTotal = 0;
     for await (let post of userPosts) {
-        const replyArray: any = await getRepliesToPost(post.pid);
-          replyArray.forEach((reply: any) => {
-            post.totalReplyCount = replyArray.length;
-            if (!reply.read) {
-              // found an unread reply! - mark this particular post as having new replies
-              post.unreadReplyCount = (post.unreadReplyCount ?? 0) + 1;
-              // increase the 'global' count of unread replies 
-              repliesTotal++;
-            }
-          });
-      };
-      setUnreadRepliesTotal(repliesTotal);
+      const replyArray: Array<Reply> = await getRepliesToPost(post.pid);
+      post.totalReplyCount = replyArray.length;
+        for (let reply of replyArray) {
+          if (!reply.read) {
+            post.unreadReplyCount = (post.unreadReplyCount ?? 0) + 1;
+            repliesTotal++;
+          }
+        };
+    };
+    setUnreadRepliesTotal(repliesTotal);
   }
 
   const processPosts = async () => {
-    // db call, get the posts for this user 
     const docs = await getPosts();
       setPosts(docs)
       await processUnreadReplies(docs);
@@ -123,6 +121,13 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     // don't put the processPage function in here, that's unreasonable 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setIsLoading]);
+
+
+  useEffect(() => {
+    setNewPostsCount(countNewPosts(posts));
+    // don't put functions in here
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [posts, userID]);
 
   const acceptInvite = () => {
     if (invite) {
@@ -174,7 +179,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
   const countNewPosts = (posts: Array<Post>) => {
     let unreadCount = 0;
-    posts.forEach(function(post) {
+    posts.forEach(function(post) {;
       if (!post.read[userID]) {unreadCount++}
     })
     return unreadCount;
@@ -183,7 +188,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   const welcomeName = () => (
     <div className="welcomeName">
       <span className="boldText">
-        Welcome, {displayName}!
+        Welcome, {displayName.trim()}!
       </span>
     </div>
   )
@@ -205,7 +210,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
       variant="contained"
       color="primary"
       size="large"
-      className="bigButton noMargin"
+      className=""
       onClick={goToNewPost}
       startIcon={<AddCommentIcon />}
       >
@@ -251,21 +256,22 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
   )
 
   return (
-    <div style={{overflow: role === roles.receiver ? 'hidden' : 'auto'}}>
-      <CredentialsWrapper>
+    <div style={{overflow: role === roles.receiver ? 'visible' : ''}} id="posts-view-div">
 
         <Column justify="center" alignItems="center" id="postViewColumn">
 
           {/* COLUMN CHILD 1: Welcome, X read letters, invitations alert */ }
           <Row justify="center" id="postsViewRow">
-            {/* ROW CHILD 1 - empty spacer to balance 'invite' button on right */}
-            <Child xs>{/* Intentionally empty */}</Child>
 
             {/* ROW CHILD 2 - welcome message and replies message */}
             <Child xs={12} sm={8}>
               <Column justify="center" alignItems="center">
                 <Child xs={12}>
+                {role &&
+                  <>
                   {welcomeName()}
+                  </>
+                }
                 </Child>
 
                 <Child xs={12}>
@@ -275,34 +281,40 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
                   </Typography>
                   }
                   { (role === roles.receiver && pendingInvitations.length === 0) &&
-                  <Typography variant="subtitle1">
-                      You have {countNewPosts(posts)} new letter(s).
+                  <Typography variant="subtitle1" className="grandparentSubtitle">
+                        {newPostsCount > 0 &&
+                          <>
+                          You have {newPostsCount} new letter{newPostsCount > 1 ? 's' : ''}.
+                          </>
+                        }
+                        {newPostsCount === 0 &&
+                          <>
+                          You have no new letters.
+                          </>
+                        }
                   </Typography>
                   }
 
                 </Child>
+                
               </Column>
             </Child>
-
-            {/* ROW CHILD 3 * - invite button OR empty spacer */ }
-            {role === roles.poster &&
-            <Child container xs justify="center" alignItems="center" style={{display: 'flex'}}>
-              {inviteButton()}
-            </Child>
-            }
-
-            {role === roles.receiver &&
-            <Child xs>
-              {/* Intentionally empty so the user's name centers without INVITE FOLLOWER button present*/}
-            </Child>
-            }
           </Row>
 
           {/* COLUMN CHILD 2 - CREATE NEW POST and VIEW OLD POSTS */ }
-          <Child xs>
+          <Child xs={12} id="inboxChild" className="inboxSizer noMargin">
 
             <Row>
               <Child xs={12}>
+
+                {role === roles.poster &&
+                  <Row justify="center">
+                    <Child>
+                      {inviteButton()}
+                    </Child>
+                  </Row>
+                }
+
                 {role === roles.poster &&
                 <>
                   {!verifiedReceivers &&
@@ -350,7 +362,6 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
           </Child>
         </Column>
-      </CredentialsWrapper>
     </div>
 
   )

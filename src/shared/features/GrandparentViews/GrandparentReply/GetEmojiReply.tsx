@@ -2,7 +2,7 @@ import React, {useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import uuid from 'react-uuid';
 
-import { ButtonBase,  Grid } from "@material-ui/core";
+import { ButtonBase } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
@@ -11,6 +11,9 @@ import { setReplyContent, submitReply } from "../../../../services/reply";
 import { REPLY_TYPES } from "../../../models/reply.model";
 import { getUserProfile } from "../../../../services/user";
 import { replyEmojiPNGs, mailIcons } from "../../../../Icons";
+import Row from 'shared/components/Row/Row';
+
+import '../Grandparent.css';
 
 let choicesList: Array<number> = [];
 
@@ -44,7 +47,7 @@ const GetEmojiReply: React.FC = () => {
         right: 0,
         top: 0,
         bottom: 0,
-        backgroundColor: theme.palette.common.black,
+        backgroundColor: "rgb(73,132,180)",
         opacity: 0.4,
         transition: theme.transitions.create('opacity'),
       },
@@ -120,6 +123,23 @@ const GetEmojiReply: React.FC = () => {
     }
   }
 
+  const getEmojis = () => (
+    <>
+    {
+      emojiIcons.map((icon, index: number) => (
+        <ButtonBase
+          key={uuid()}
+          className={classes.image}
+          style={{width: '30%', height: '45%'}}
+          onClick={() => getChoices(index)} >
+          <span className={classes.imageSrc} style={{backgroundImage: `url(${icon})` }} />
+          <span className={highlightedList[index] ? classes.highlight : classes.noHighlight} />
+        </ButtonBase>
+      ))
+    }
+    </>
+  );
+
   return (
     <>
       {currentPost &&
@@ -129,24 +149,17 @@ const GetEmojiReply: React.FC = () => {
             header2Text={"Choose which smileys to send!"}
             alertText={getAlertText()}
             boxContent={
-              <Grid container>
-                {emojiIcons.map((icon, index: number) => (
-                  <ButtonBase
-                    key={uuid()}
-                    className={classes.image}
-                    style={{width: '33%'}}
-                    onClick={() => getChoices(index)} >
-                    <span className={classes.imageSrc} style={{backgroundImage: `url(${icon})` }} />
-                    <span className={highlightedList[index] ? classes.highlight : classes.noHighlight} />
-                  </ButtonBase>
-                ))}
-              </Grid>
+              <Row justify="space-around" alignItems="center">
+                {getEmojis()}
+              </Row>
             }
             buttonText={[buttonText.replyOptions, buttonText.send]}
             buttonActions={[
               () => history.goBack(),
               e => buildReply(e) ] }
             buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]}
+            buttonDisabled={[false, (highlightedList.every((element) => element === false))]}
+            buttonClasses={['','']}
         />
       }
     </>

@@ -1,0 +1,123 @@
+.envelopeCard {
+  margin:8px;
+  width: 31.5%;
+  height:150px;
+  position: relative;
+}
+
+.unread {
+  background-color:white !important;
+}
+
+.read {
+  background-color:#ddd !important; 
+}
+
+.envelopeIcon {
+  width:100px;
+  height:100px;
+  float:left;
+}
+
+.letterStatus {
+  font-style:italic;
+  position:absolute;
+  padding-top:6px;
+  padding-left:26px;
+  color:green;
+}
+
+.letterSenderInfo {
+  height:100px;
+}
+
+.letterSenderInfo ul {
+  list-style:none;
+}
+
+.inboxLetterFrom {
+  font-style:italic;
+  font-size:0.8rem;
+  text-align:top;
+}
+
+.messagePreview {
+  padding:10px !important;
+  height:60px;
+}
+
+.hide {
+  display: none !important;
+}
+
+.show {
+  display: visible !important;
+}
+
+.messagePreview p {
+  height:100%;
+  overflow-y:hidden;
+  overflow-x:hidden;
+  text-overflow:ellipsis;
+  color:#333;
+  font-style:italic;
+  font-size:1.0rem !important;
+  line-height:20px;
+  margin:0 !important;
+  text-align:left;
+  word-break:normal;
+  vertical-align:top;
+  white-space:nowrap;
+}
+
+.inboxDate {
+  font-size:1.0rem;
+}
+
+.inboxLetterInfo {
+  text-align:center;
+  height:52px !important;
+  background:transparent !important;
+}
+
+.inboxLongName {
+  font-size:1.1rem !important;
+}
+
+.inboxLetter {
+  width:80%;
+}
+
+.inboxLetter img {
+  display:block;
+  height:100%;
+  object-fit:contain;
+}
+
+
+@media screen and (max-width:1000px) {
+  .envelopeCard {
+    width: 47.91%;
+  }
+}
+
+@media screen and (max-width:740px) {
+  .envelopeCard {
+    width: 100%;
+  }
+
+  .inboxLongName {
+    font-size:0.8rem;
+  }
+}
+
+@media screen and (max-width:300px) {
+
+  .inboxLongName {
+    height:20px;
+    overflow-y:hidden;
+    word-break:break-all;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+}

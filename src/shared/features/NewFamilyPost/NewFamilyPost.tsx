@@ -186,6 +186,16 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
         setPhotoURL("");
     }
 
+    const sortNames = (a: any, b: any) => {
+        if (a.name.toUpperCase() < b.name.toUpperCase()) {
+            return -1;
+        }
+        if (a.name.toUpperCase() > b.name.toUpperCase()) {
+            return 1;
+        }
+        return 0;
+    }
+
     useEffect(() => {
         getUserProfile()
         .then((userProfile:any) => {
@@ -210,7 +220,7 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
                     rcvrs.push(receiver);
                 }
             }
-            setReceivers(rcvrs);
+            setReceivers(rcvrs.sort(sortNames));
         });
         if (currentPost) {
             setEditing(true);
@@ -342,15 +352,15 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
                 </Row>
             }
             <Row justify="center">
-                Recipients
+                <b>Recipients</b>
             </Row>
             {
                 receivers.map((receiver: IReceiver, index: number) => {
                     return (
-                        <Row justify="center" key={receiver.id}>
+                        <Row justify="flex-start" key={receiver.id}>
                             <label>
-                                {receiver.name}
                                 <Checkbox name={receiver.id} checked={receiver.checked} onChange={e => handleCheckboxes(e, index)} />
+                                {receiver.name}
                             </label>
                         </Row>
                     )

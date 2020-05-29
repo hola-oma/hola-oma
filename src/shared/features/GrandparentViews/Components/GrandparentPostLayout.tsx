@@ -1,40 +1,25 @@
 import React, { useState } from 'react';
 
 import {
-  Theme, Grid, Typography, Modal, Card,
-  CardContent, CardMedia, CardActionArea,
+  Theme, Grid, Modal,
+  CardContent, CardMedia,
 } from '@material-ui/core';
 import { makeStyles,  createStyles } from "@material-ui/core/styles";
 
 import { viewPostIcons } from "../../../../Icons";
 import {MEDIA_TYPES} from "../../../models/post.model";
 
+import '../Grandparent.css';
+import MessageTextDisplay from './MessageTextDisplay/MessageTextDisplay';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     objectFit: {
       objectFit: 'contain',
     },
-    media: {
-      height: 425,
-    },
-    shortText: {
-      height: 400,
-    },
-    mediumShortText: {
-      height: 350,
-    },
-    mediumText: {
-      height: 300,
-    },
-    largeText: {
-      height: 200,
-    },
     paper: {
       position: 'absolute',
       maxWidth: 800,
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
     },
   }),
@@ -71,14 +56,6 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
     imageModalOpen ? setImageModalOpen(false) : setImageModalOpen(true)
   }
 
-  const getStyle = (length: number) => {
-    if (length <= 50) return `${classes.media} ${classes.objectFit}`;
-    if (length <= 100) return `${classes.shortText} ${classes.objectFit}`;
-    if (length <= 150) return `${classes.mediumShortText} ${classes.objectFit}`;
-    if (length <= 200) return `${classes.mediumText} ${classes.objectFit}`;
-    else return `${classes.largeText} ${classes.objectFit}`;
-  }
-
   const modalBody = (
     <div style={modalStyle} className={classes.paper}>
 
@@ -113,17 +90,18 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
           spacing={0}
           direction={"column"}
           alignItems="center"
-          justify="center"
-          style={{ height: "100%", overflowY: "hidden" }} >
+          justify="flex-start"
+          style={{ height: "auto", overflowY: "hidden" }} >
       {mediaURL &&
-        <Grid item xs={12} style={{display: "inline-block"}}>
-          <Card >
-            <CardActionArea>
-                <div style={{ position: 'relative' }} >
+        <div style={{display: "inline-block"}}>
+          <div id={`card-${mediaURL}`} className="grandparent-card" style={{height: '100%'}}>
+            <div className="grandparent-cardActionArea" style={{display: 'flex', flexDirection: 'column'}}>
+                <div className="grandparent-cardActionArea">
                     <CardMedia
                         component={mediaType === MEDIA_TYPES.IMAGE ? "img" : "video"}
-                        className={getStyle(message.length)}
+                        className="grandarent-imagePreview"
                         image={mediaURL}
+                        style={{maxHeight: '30vh', maxWidth: '70%', marginLeft: 'auto', marginRight: 'auto', objectFit: 'contain'}}
                         onClick={handleClick} />
                       <div
                         onClick={handleClick}
@@ -138,30 +116,19 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
                           { mediaType === MEDIA_TYPES.IMAGE && viewPostIcons.magnify }
                           { mediaType === MEDIA_TYPES.VIDEO && viewPostIcons.play }
                       </div>
-
                   </div>
                 {message &&
                 <CardContent>
-                    <Typography
-                        variant="h5"
-                        color="textPrimary"
-                        component="p"
-                        style={{overflowWrap: "break-word"}}
-                        align={message.length <= 50 ? "center" : "left"}
-                    >
-                      {message}
-                    </Typography>
+                  <MessageTextDisplay message={message}/>
                 </CardContent>
                 }
-              </CardActionArea>
-          </Card>
-        </Grid>
+              </div>
+          </div>
+        </div>
       }
 
       {!mediaURL &&
-        <Typography variant="h5" align={message.length <= 50 ? "center" : "left"} >
-          {message}
-        </Typography>
+        <MessageTextDisplay message={message}/>
       }
       <Modal
         open={imageModalOpen}
