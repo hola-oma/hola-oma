@@ -127,7 +127,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     setNewPostsCount(countNewPosts(posts));
     // don't put functions in here
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [posts]);
+  }, [posts, userID]);
 
   const acceptInvite = () => {
     if (invite) {
@@ -179,7 +179,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
 
   const countNewPosts = (posts: Array<Post>) => {
     let unreadCount = 0;
-    posts.forEach(function(post) {
+    posts.forEach(function(post) {;
       if (!post.read[userID]) {unreadCount++}
     })
     return unreadCount;
