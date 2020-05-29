@@ -1,13 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { Post } from 'shared/models/post.model';
 import Moment from 'react-moment';
-import { Card, CardMedia, CardContent } from '@material-ui/core';
+import { Card, CardContent } from '@material-ui/core';
 import {getPostReadByCurrentUser} from "../../../../../../services/post";
 
 import './InboxLetter.css';
-
-import mailOpen from '../../../../../../icons/mail-open.png';
-import mailClosed from '../../../../../../icons/mail-closed.png';
 
 interface IInboxLetter {
   post: Post;
@@ -16,13 +13,13 @@ interface IInboxLetter {
 
 const formatFrom = (name: string) => {
   return (
-    <div className={`inboxLetterFrom ${name.length > 16 ? 'inboxLongName' : ''}`}>{name}</div>
+    <span className={`inboxLetterFrom ${name.length > 16 ? 'inboxLongName' : ''}`}>{name}</span>
   )
 }
 
 const formatSentDate = (dateToFormat: number) => {
   return (
-    <div className="inboxDate"><Moment fromNow date={dateToFormat}/></div>
+    <span className="inboxDate"><Moment fromNow date={dateToFormat}/></span>
   )
 }
 
@@ -38,6 +35,15 @@ const displayStamp = (name: string) => {
   )
 }
 
+const rotate = () => {
+  let randomNumber = Math.floor(Math.random() * (100 - 1) + 1);
+  if (randomNumber % 2 === 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 const InboxLetter: React.FC<IInboxLetter> = ({ post, onClickHandler }) => {
 
   const [postReadByCurrentUser, setPostReadByCurrentUser] = useState<boolean>(false);
@@ -48,7 +54,7 @@ const InboxLetter: React.FC<IInboxLetter> = ({ post, onClickHandler }) => {
 
   return (
     <>
-      <Card className={`envelopeCard ${postReadByCurrentUser ? 'read' : 'unread'}`} 
+      <Card className={`envelopeCard ${postReadByCurrentUser ? 'read' : 'unread'} ${rotate() ? 'rotateLeft' : 'rotateRight'}`} 
         id={`inbox-letter-${post.pid}`}
         key={post.pid}
         onClick={() => onClickHandler(post)}
@@ -88,7 +94,7 @@ const InboxLetter: React.FC<IInboxLetter> = ({ post, onClickHandler }) => {
                 <div className="letterPhotoPreview letterItemShadow letterVideoPreview"></div>
               }
 
-              <div className="envelopeBackShape">
+              <div className="envelopeBackShape inboxLetterFromOnBack">
                 <p>
                   {formatFrom(post.from)}
                 </p>

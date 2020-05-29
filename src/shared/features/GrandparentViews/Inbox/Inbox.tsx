@@ -9,7 +9,8 @@ import {
   CardMedia,
   Grid,
   GridList,
-  Typography
+  Typography,
+  Button
 } from '@material-ui/core';
 
 import {Post} from 'shared/models/post.model';
@@ -19,6 +20,11 @@ import './Inbox.css';
 import {markPostRead} from "../../../../services/post";
 import Column from "../../../components/Column/Column";
 import InboxLetter from './components/InboxLetter/InboxLetter';
+import AlarmIcon from '@material-ui/icons/Alarm';
+import Child from 'shared/components/Child/Child';
+import Row from 'shared/components/Row/Row';
+
+import { mailIcons } from "../../../../Icons";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -89,17 +95,28 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
             {/*If mailbox not empty*/}
             {posts.length > 0 &&
-              <GridList 
-                  className={`inboxGridList`}
-                  spacing={2}
-                  id="grid-list-inbox"
-                >
-                {posts.map((post, index: number) => (
-                  <InboxLetter post={post} key={post.pid} onClickHandler={pressEnvelope}/>
-                ))}
-              </GridList>
-            }
+              <>
+              <Row>
+                <Child xs={12}>
+                  <GridList 
+                      className={`inboxGridList`}
+                      spacing={2}
+                      id="grid-list-inbox"
+                    >
+                    {posts.map((post, index: number) => (
+                      <InboxLetter post={post} key={post.pid} onClickHandler={pressEnvelope}/>
+                    ))
+                    }
+                  </GridList>
+                </Child>
 
+                <Child container xs={12} justify="flex-end">
+                  {/* mailIcons.paperAirplane */}
+                  <Button endIcon={mailIcons.paperAirplane} className="olderLettersButton">View older letters</Button>
+                </Child>
+              </Row>
+              </>
+            }
           </Box>
         </Grid>
       </Column>

@@ -1,8 +1,17 @@
 .envelopeCard {
-  margin:8px;
-  width: 31.5%;
-  height:150px;
+  margin:18px;
+  min-width: 29%;
+  max-width:29%;
+  height:140px;
   position: relative;
+}
+
+.rotateLeft {
+  transform: rotate(1deg);
+}
+
+.rotateRight {
+  transform: rotate(-1deg);
 }
 
 .stamp {
@@ -75,6 +84,10 @@
   margin-top:0px !important;
 }
 
+.letterSenderInfoFront {
+  width:95%;
+}
+
 .letterSenderInfoBack {
   height:100%;
   align-items:center; /* letter needs this to be centered */
@@ -133,6 +146,13 @@
   word-wrap:break-word;
 }
 
+.inboxLetterFromOnFront p {
+  font-size:1.1rem;
+}
+
+.inboxLetterFromOnBack p {
+  font-size:1.0rem !important;
+}
 
 .inboxLetter {
   width:80%;
@@ -213,20 +233,33 @@
   justify-content: flex-end;
 }
 
-
 @media screen and (max-width:1000px) {
   .envelopeCard {
-    width: 47.91%;
+    min-width:40%;
+    max-width: 50%;
   }
 }
 
 @media screen and (max-width:740px) {
   .envelopeCard {
-    width: 100%;
+    margin:10px;
+    margin-left:auto;
+    margin-right:auto;
+    min-width: 60%;
+    max-width: 80%;
   }
 
   .inboxLongName {
-    font-size:0.8rem;
+    font-size:0.9rem;
+  }
+}
+
+@media screen and (max-width:500px) {
+  .envelopeCard {
+    margin-left:auto;
+    margin-right:auto;
+    min-width: 90%;
+    max-width: 96%;
   }
 }
 
