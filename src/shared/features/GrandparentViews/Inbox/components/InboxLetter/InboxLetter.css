@@ -47,6 +47,11 @@
   color:green;
 }
 
+.newBadge {
+  color:green;
+  font-style:italic;
+}
+
 .letterSenderInfo {
   margin-top:auto;
   margin-bottom:auto;
@@ -56,6 +61,14 @@
   height:100px;
   display: flex;
   justify-content: flex-start;
+  padding:8px !important;
+}
+
+.letterSentDate {
+  position:absolute;
+  bottom:1px;
+  margin-bottom:4px;
+  color:#555;
 }
 
 .letterSenderInfo p:nth-of-type(1) {
@@ -101,7 +114,7 @@
   color:#333;
   font-style:italic;
   font-size:1.0rem !important;
-  line-height:20px;
+  line-height:16px;
   margin:0 !important;
   text-align:left;
   word-break:normal;
@@ -119,7 +132,6 @@
   width:96%;
   word-wrap:break-word;
 }
-
 
 
 .inboxLetter {
@@ -144,7 +156,9 @@
   word-wrap:break-word;
   text-align:left;
   padding:5px;
-  color:gray;
+  font-size:1.3rem;
+  line-height:20px;
+  color:#aaa;
   height:92%;
   width:60%;
   top:5px;

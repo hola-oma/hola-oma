@@ -68,8 +68,8 @@ const InboxLetter: React.FC<IInboxLetter> = ({ post, onClickHandler }) => {
                 {formatFrom(post.from)}
                 </p>
 
-                <p>
-                {formatSentDate(post.date)}
+                <p className="letterSentDate">
+                <span className="newBadge">New!</span>{/* {formatSentDate(post.date)} */}
                 </p>
               </>
             }
