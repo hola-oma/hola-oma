@@ -9,7 +9,7 @@ import { getLinkedAccounts } from "services/accountLink";
 import { deletePost } from "services/post";
 import { getRepliesToPost, markReplyRead } from "services/reply";
 import { Reply } from "../../models/reply.model";
-import { replyEmojiArray } from "../../../Icons";
+import { replyEmojiPNGs } from "../../../Icons";
 import ManageConfirmDelete from "./ManageConfirmDelete";
 import NewFamilyPost from "../NewFamilyPost/NewFamilyPost";
 
@@ -54,7 +54,9 @@ const useStyles = makeStyles((theme: Theme) =>
         width: '100%'
     },
     emojis: {
-        margin: '5px'
+        margin: '5px',
+        height: "5%",
+        width: "5%"
     }
   })
 );
@@ -87,7 +89,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState<boolean>(false);
     const [editPost, setEditPost] = useState(false);
 
-    const emojiIcons = replyEmojiArray();
+    const emojiIcons = replyEmojiPNGs();
     let history = useHistory();
 
     const sortNames = (a: any, b: any) => {
@@ -268,9 +270,11 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 {emojiReplies && emojiReplies.map((reply, index: number) => {
                     return reply.length > 0 && (
                         <Tooltip title={getTooltip(reply)} key={index} arrow>
-                            <Typography variant="h5" className={classes.emojis}>
-                                {emojiIcons[index]}
-                            </Typography>
+                            <img
+                                src={emojiIcons[index]}
+                                className={classes.emojis}
+                                alt="Emoji reply"
+                            />
                         </Tooltip>
                     )
                 })}
