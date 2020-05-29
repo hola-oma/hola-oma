@@ -42,7 +42,7 @@ const InboxLetter: React.FC<IInboxLetter> = ({ post, onClickHandler }) => {
 
   return (
     <>
-      <Card className="envelopeCard" 
+      <Card className={`envelopeCard ${postReadByCurrentUser ? 'read' : 'unread'}`} 
         id={`inbox-letter-${post.pid}`}
         key={post.pid}
         onClick={() => onClickHandler(post)}
@@ -59,7 +59,7 @@ const InboxLetter: React.FC<IInboxLetter> = ({ post, onClickHandler }) => {
         </CardContent>
         
         {post.message.length > 0 && 
-          <CardContent className="messagePreview">
+          <CardContent className={`messagePreview ${postReadByCurrentUser ? 'show' : 'hide'}`}>
             <p>{`"` + post.message + `"`}</p>
           </CardContent>
         }

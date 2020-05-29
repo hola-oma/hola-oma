@@ -2,6 +2,15 @@
   margin:8px;
   width: 31.5%;
   height:150px;
+  position: relative;
+}
+
+.unread {
+  background-color:white !important;
+}
+
+.read {
+  background-color:#ddd !important; 
 }
 
 .envelopeIcon {
@@ -35,6 +44,14 @@
 .messagePreview {
   padding:10px !important;
   height:60px;
+}
+
+.hide {
+  display: none !important;
+}
+
+.show {
+  display: visible !important;
 }
 
 .messagePreview p {
