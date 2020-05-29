@@ -71,6 +71,7 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
     let repliesTotal = 0;
     for await (let post of userPosts) {
       const replyArray: Array<Reply> = await getRepliesToPost(post.pid);
+      post.totalReplyCount = replyArray.length;
         for (let reply of replyArray) {
           if (!reply.read) {
             post.unreadReplyCount = (post.unreadReplyCount ?? 0) + 1;
