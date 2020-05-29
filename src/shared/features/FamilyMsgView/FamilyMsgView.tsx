@@ -50,13 +50,16 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: '5px'
     },
     message: {
-        margin: '10',
-        width: '100%'
+        margin: '10px',
+        maxWidth: '95%'
     },
     emojis: {
         margin: '5px',
         height: "5%",
         width: "5%"
+    },
+    bottomMargin: {
+        marginBottom: '10px'
     }
   })
 );
@@ -279,7 +282,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                     )
                 })}
             </Row>
-            <Grid container>
+            <Grid container className={classes.bottomMargin}>
                 {
                 replies.map((reply: Reply, index: number) => {
                     return (
