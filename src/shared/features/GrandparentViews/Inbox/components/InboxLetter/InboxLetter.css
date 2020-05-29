@@ -5,6 +5,26 @@
   position: relative;
 }
 
+.stamp {
+  width:36px;
+  height:40px;
+  line-height: 40px;
+  background-color:rgb(73,132,180);
+  font-style:bold;
+  right:0;
+  top:0;
+  margin-right:10px;
+  margin-top:10px;
+  position:absolute;
+  color:white;
+  text-align:center;
+  justify-content:center;
+  vertical-align:center;
+  outline-style:dotted;
+  outline-color:rgb(73,132,180);
+  outline-width:2px;
+}
+
 .unread {
   background-color:white !important;
 }
@@ -28,6 +48,10 @@
 }
 
 .letterSenderInfo {
+  margin-top:auto;
+  margin-bottom:auto;
+  justify-content:center;
+  align-content:center;
   height:100px;
 }
 
@@ -35,10 +59,29 @@
   list-style:none;
 }
 
-.inboxLetterFrom {
-  font-style:italic;
-  font-size:0.8rem;
-  text-align:top;
+.letterSenderInfo {
+  display: flex;
+  flex-direction:column;
+  text-align:center;
+  justify-content: center;
+  align-items: center;
+  font-size:1rem;
+}
+
+.letterSenderInfo p {
+  margin:0 !important;
+}
+
+.letterSenderInfo p:nth-of-type(1) {
+  margin-top:20px !important;
+}
+
+.letterSenderInfoFront {
+  height:100%;
+}
+
+.letterSenderInfoBack {
+  height:100%;
 }
 
 .messagePreview {

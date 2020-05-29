@@ -16,19 +16,25 @@ interface IInboxLetter {
 
 const formatFrom = (name: string) => {
   return (
-    <li><div className={`inboxFrom ${name.length > 16 ? 'inboxLongName' : ''}`}>{name}</div></li>
+    <div className={`inboxLetterFrom ${name.length > 16 ? 'inboxLongName' : ''}`}>{name}</div>
   )
 }
 
 const formatSentDate = (dateToFormat: number) => {
   return (
-    <li><span className="inboxDate"><Moment format="MM/DD/YY -- M:HHa" date={dateToFormat}/></span></li> 
+    <div className="inboxDate"><Moment fromNow date={dateToFormat}/></div>
   )
 }
 
 const displayReadStatus = (postHasBeenRead: boolean) => {
   return (
     <span className="letterStatus">{postHasBeenRead ? '' : 'New!'}</span>
+  )
+}
+
+const displayStamp = (name: string) => {
+  return (
+    <span className="stamp">{name.length > 0 ? name[0] : ':)'}</span>
   )
 }
 
@@ -47,15 +53,23 @@ const InboxLetter: React.FC<IInboxLetter> = ({ post, onClickHandler }) => {
         key={post.pid}
         onClick={() => onClickHandler(post)}
         >
-        {displayReadStatus(postReadByCurrentUser)}
-        <CardMedia className="envelopeIcon" image={postReadByCurrentUser ? mailOpen : mailClosed}/>
+        {!postReadByCurrentUser && 
+          <>
+          {displayStamp(post.from)}
+          </>
+        }
 
-        <CardContent className="letterSenderInfo">
-          <ul>
+        {/* {displayReadStatus(postReadByCurrentUser)} */}
+
+        <CardContent className={`letterSenderInfo ${postReadByCurrentUser ? 'letterSenderInfoBack' : 'letterSenderInfoFront'}`}>
+            <p>
             {formatFrom(post.from)}
-            {/* <li className="inboxLetterFrom">Received on</li> */}
+            </p>
+
+            <p>
             {formatSentDate(post.date)}
-          </ul>
+            </p>
+
         </CardContent>
         
         {post.message.length > 0 && 
