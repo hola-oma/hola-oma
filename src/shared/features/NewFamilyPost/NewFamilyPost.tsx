@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef, useMemo } from 'react';
 
 import { useHistory } from "react-router";
 
@@ -15,6 +15,7 @@ import Row from 'shared/components/Row/Row';
 import './NewFamilyPost.css';
 // @ts-ignore
 import Resizer from 'react-image-file-resizer';
+import VideoPreview from './components/VideoPreview/VideoPreview';
 
 interface IReceiver {
     id: string
@@ -177,7 +178,7 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
 
     const getImageAsUrl = () => {
         let urlCreator = window.URL || window.webkitURL;
-        let imageUrl: string = urlCreator.createObjectURL(selectedFile);
+        let imageUrl: string = selectedFile ? urlCreator.createObjectURL(selectedFile): '';
         return imageUrl;
     }
 
@@ -244,6 +245,11 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
         }
     }, [textValue]); // fires when text changes
 
+    // use memo tells it to recompute only when selectedFile 
+    const renderVideo = useMemo(() => (
+        <VideoPreview videoSrc={getImageAsUrl()}/>
+    ), [selectedFile])
+
     return (
         <>
         <Column justify="center" alignItems="center">
@@ -286,14 +292,7 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
                         </Row>
                     }
                     {fileType === 'video' &&
-                        <Row justify="center">
-                            <video src={getImageAsUrl()}
-                                className="photo"
-                                preload="auto"
-                                controls
-                                style={{height: '95%', width: '95%'}}
-                            />
-                        </Row>
+                        renderVideo
                     }
                     <Row justify="center">
                         <Button
