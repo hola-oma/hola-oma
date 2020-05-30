@@ -9,7 +9,7 @@ import { getLinkedAccounts } from "services/accountLink";
 import { deletePost } from "services/post";
 import { getRepliesToPost, markReplyRead } from "services/reply";
 import { Reply } from "../../models/reply.model";
-import { replyEmojiArray } from "../../../Icons";
+import { replyEmojiPNGs } from "../../../Icons";
 import ManageConfirmDelete from "./ManageConfirmDelete";
 import NewFamilyPost from "../NewFamilyPost/NewFamilyPost";
 
@@ -50,11 +50,16 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: '5px'
     },
     message: {
-        margin: '10',
-        width: '100%'
+        margin: '10px',
+        maxWidth: '95%'
     },
     emojis: {
-        margin: '5px'
+        margin: '5px',
+        height: "5%",
+        width: "5%"
+    },
+    bottomMargin: {
+        marginBottom: '10px'
     }
   })
 );
@@ -87,7 +92,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState<boolean>(false);
     const [editPost, setEditPost] = useState(false);
 
-    const emojiIcons = replyEmojiArray();
+    const emojiIcons = replyEmojiPNGs();
     let history = useHistory();
 
     const sortNames = (a: any, b: any) => {
@@ -227,7 +232,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                     {
                         receivers.map((receiver: IReceiver, index: number) => {
                             return (
-                            <Grid container alignItems="flex-start" justify="flex-start" key={index}>
+                            <Grid container alignItems={receivers.length === 1 ? "center" : "flex-start"} justify={receivers.length === 1 ? "center" : "flex-start"} key={index}>
                                 {post.read[receiver.id] === true ? <CheckBoxIcon fontSize="small"/> : <CheckBoxOutlineBlankIcon fontSize="small"/>}
                                 <Typography variant="caption" align="center">
                                     {receiver.name}
@@ -268,14 +273,16 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 {emojiReplies && emojiReplies.map((reply, index: number) => {
                     return reply.length > 0 && (
                         <Tooltip title={getTooltip(reply)} key={index} arrow>
-                            <Typography variant="h5" className={classes.emojis}>
-                                {emojiIcons[index]}
-                            </Typography>
+                            <img
+                                src={emojiIcons[index]}
+                                className={classes.emojis}
+                                alt="Emoji reply"
+                            />
                         </Tooltip>
                     )
                 })}
             </Row>
-            <Grid container>
+            <Grid container className={classes.bottomMargin}>
                 {
                 replies.map((reply: Reply, index: number) => {
                     return (

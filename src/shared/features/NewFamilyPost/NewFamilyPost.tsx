@@ -2,7 +2,7 @@ import React, { useState, useEffect, createRef, useMemo } from 'react';
 
 import { useHistory } from "react-router";
 
-import { TextField, Button, Checkbox, Typography, Tooltip } from '@material-ui/core';
+import { TextField, Button, Checkbox, Typography } from '@material-ui/core';
 import { createPost, updatePostID, uploadFile, updatePost } from "services/post";
 import { Post } from "../../models/post.model";
 import { getUserProfile } from "services/user";
@@ -166,7 +166,7 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
                 'blob'
             );
         } else if (file && file.type.indexOf('video') !== -1) {
-            if (file.type === 'video/mp4' || file.type === 'video/ogg' || file.type === 'video/webm') {
+            if (file.type === 'video/mp4') {
                 setSelectedFile(file);
                 setFileType('video');
             }
@@ -263,15 +263,13 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
             <form className="newFamilyPostForm" noValidate onSubmit={e => submitPost(e)}>
             {(!selectedFile && !photoURL && !videoURL) &&
                 <Row justify="center">
-                    <Tooltip title="Supported video formats: mp4, webm, ogv">
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            size="small"
-                            onClick={clickFileUpload}>
-                            Select a photo or video
-                        </Button>
-                    </Tooltip>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        size="small"
+                        onClick={clickFileUpload}>
+                        Select a photo or mp4 video
+                    </Button>
                     <input
                         type="file"
                         id="file-upload"
