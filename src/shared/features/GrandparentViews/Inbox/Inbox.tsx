@@ -108,22 +108,25 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
             {/*If mailbox not empty*/}
             {posts.length > 0 &&
               <>
-                <Row>
-                  <Child xs={12}>
+                <Row className="height100">
+                  <Child xs={12} className="height100">
                     <GridList 
                         className={`inboxGridList`}
                         spacing={2}
                         id="grid-list-inbox"
                       >
                       {posts.map((post, index: number) => (
-                        <InboxLetter post={post} key={post.pid} onClickHandler={pressEnvelope}/>
+                        <>
+                        {index < 6 && 
+                          <InboxLetter post={post} key={post.pid} onClickHandler={pressEnvelope}/>
+                        }
+                        </>
                       ))
                       }
+                      <Child container xs={12} justify="flex-end" style={{height:'auto'}}>
+                        <Button style={{height:'auto'}} endIcon={mailIcons.paperAirplane} onClick={openModal} className="olderLettersButton">View all letters</Button>
+                      </Child>
                     </GridList>
-                  </Child>
-
-                  <Child container xs={12} justify="flex-end">
-                    <Button endIcon={mailIcons.paperAirplane} onClick={openModal} className="olderLettersButton">View all letters</Button>
                   </Child>
                 </Row>
               </>

@@ -6,7 +6,7 @@ import { Post } from '../shared/models/post.model';
 import {authenticateFromStore, getUserRoleByID} from "./user";
 import {roles} from "../enums/enums";
 
-export const grandparentInboxLimit = 6;
+export const grandparentInboxLimit = 30;
 export const familyLimit = 120;
 
 export const getPosts = async (): Promise<Post[]> => {
