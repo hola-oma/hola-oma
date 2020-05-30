@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {useHistory} from "react-router-dom";
 import {makeStyles} from '@material-ui/core/styles';
 
@@ -10,7 +10,8 @@ import {
   Grid,
   GridList,
   Typography,
-  Button
+  Button,
+  Modal
 } from '@material-ui/core';
 
 import {Post} from 'shared/models/post.model';
@@ -20,11 +21,12 @@ import './Inbox.css';
 import {markPostRead} from "../../../../services/post";
 import Column from "../../../components/Column/Column";
 import InboxLetter from './components/InboxLetter/InboxLetter';
-import AlarmIcon from '@material-ui/icons/Alarm';
 import Child from 'shared/components/Child/Child';
 import Row from 'shared/components/Row/Row';
 
 import { mailIcons } from "../../../../Icons";
+
+import ExtendedInbox from './components/ExtendedInbox/ExtendedInbox';
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -56,11 +58,21 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
   const classes = useStyles();
   const history = useHistory();
 
+  const [extendedInboxOpen, setExtendedInboxOpen] = useState<boolean>(false);
+
   const pressEnvelope = async function (envelopePost: Post) {
     currentPost = envelopePost;
     let postID = currentPost?.pid;
     await markPostRead(postID);
     history.push({pathname: '/startReply', state: envelopePost } );
+  }
+
+  const openModal = () => {
+    setExtendedInboxOpen(true);
+  }
+
+  const handleModalClose = () => {
+    setExtendedInboxOpen(false);
   }
 
   return (
@@ -96,30 +108,39 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
             {/*If mailbox not empty*/}
             {posts.length > 0 &&
               <>
-              <Row>
-                <Child xs={12}>
-                  <GridList 
-                      className={`inboxGridList`}
-                      spacing={2}
-                      id="grid-list-inbox"
-                    >
-                    {posts.map((post, index: number) => (
-                      <InboxLetter post={post} key={post.pid} onClickHandler={pressEnvelope}/>
-                    ))
-                    }
-                  </GridList>
-                </Child>
+                <Row>
+                  <Child xs={12}>
+                    <GridList 
+                        className={`inboxGridList`}
+                        spacing={2}
+                        id="grid-list-inbox"
+                      >
+                      {posts.map((post, index: number) => (
+                        <InboxLetter post={post} key={post.pid} onClickHandler={pressEnvelope}/>
+                      ))
+                      }
+                    </GridList>
+                  </Child>
 
-                <Child container xs={12} justify="flex-end">
-                  {/* mailIcons.paperAirplane */}
-                  <Button endIcon={mailIcons.paperAirplane} className="olderLettersButton">View older letters</Button>
-                </Child>
-              </Row>
+                  <Child container xs={12} justify="flex-end">
+                    {/* mailIcons.paperAirplane */}
+                    <Button endIcon={mailIcons.paperAirplane} onClick={openModal} className="olderLettersButton">View all letters</Button>
+                  </Child>
+                </Row>
               </>
             }
           </Box>
         </Grid>
       </Column>
+
+      <Modal
+        open={extendedInboxOpen}
+        onClose={handleModalClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <ExtendedInbox posts={posts}/>
+      </Modal>
     </>
   )
 }

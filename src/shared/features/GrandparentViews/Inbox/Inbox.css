@@ -3,11 +3,11 @@
   height:80px;
   width:300px;
   font-size:1.4rem !important;
-  border:1px solid red;
   display:block;
   margin-left:auto;
   margin-right:auto;
 }
+
 .inboxBox {
   height:calc(70vh - 50px);
   border-radius:10px;
@@ -29,6 +29,7 @@
 .noInboxMargin.MuiGrid-item {
   margin-top:0px !important;
 }
+
 
 @media screen and (max-width:830px) {
   .inboxGridList {

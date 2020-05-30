@@ -1,0 +1,11 @@
+.extendedInboxModalContent {
+  width:70%;
+  height:100%;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:0;
+  background-color: white;
+  border-radius:10px;
+  box-shadow: -5px 5px 10px 0px #333, 
+  5px 5px 10px 0px #333;
+}
