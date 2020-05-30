@@ -111,7 +111,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                 <Row className="height100">
                   <Child xs={12} className="height100">
                     <GridList 
-                        className={`inboxGridList`}
+                        className="inboxGridList"
                         spacing={2}
                         id="grid-list-inbox"
                       >
@@ -123,7 +123,7 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                         </>
                       ))
                       }
-                      <Child container xs={12} justify="flex-end" style={{height:'auto'}}>
+                      <Child container xs={12} justify="flex-end" style={{height:'auto', paddingTop:'15px'}}>
                         <Button style={{height:'auto'}} endIcon={mailIcons.paperAirplane} onClick={openModal} className="olderLettersButton">View all letters</Button>
                       </Child>
                     </GridList>

@@ -10,3 +10,14 @@
   5px 5px 10px 0px #333;
   overflow-y:scroll;
 }
+
+.unlockPremium {
+  display:flex;
+  text-align:center;
+}
+
+@media screen and (max-width:830px) {
+  .extendedInboxModalContent {
+    width:86%;
+  }
+}

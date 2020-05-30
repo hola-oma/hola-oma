@@ -10,6 +10,8 @@ import ExtendedInboxLetter from './components/ExtendedInboxLetter';
 
 import { markPostRead } from "../../../../../../services/post";
 
+import LockIcon from '@material-ui/icons/Lock';
+
 import './ExtendedInbox.css';
 
 interface IExtendedInbox {
@@ -44,6 +46,9 @@ const ExtendedInbox: React.FC<IExtendedInbox> = ({posts}) => {
               <ExtendedInboxLetter post={post} key={post.pid} onClickHandler={pressEnvelope}/>
             ))
             }
+            <div className="unlockPremium">
+              <p><LockIcon /><br/>Showing your 30 most recent letters. Upgrade to <i>Hola, Oma!</i> Premium to see all letters.</p>
+            </div>
           </List>
         </Child>
       </Row>

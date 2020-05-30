@@ -32,7 +32,7 @@ const ExtendedInboxLetter: React.FC<IExtendedInboxLetter> = ({ post, onClickHand
   }, [post]);
 
   return (
-    <ListItem onClick={() => onClickHandler(post)}>
+    <ListItem onClick={() => onClickHandler(post)} divider>
       <ListItemAvatar>
         <Avatar className={`${postReadByCurrentUser? 'avatarColorRead' : 'avatarColorUnread'}`}>
           {postReadByCurrentUser ? <DraftsIcon /> : <EmailIcon />}
