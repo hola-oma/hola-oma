@@ -23,12 +23,6 @@ const formatSentDate = (dateToFormat: number) => {
   )
 }
 
-const displayReadStatus = (postHasBeenRead: boolean) => {
-  return (
-    <span className="letterStatus">{postHasBeenRead ? '' : 'New!'}</span>
-  )
-}
-
 const displayStamp = (name: string) => {
   return (
     <span className="stamp">{name.length > 0 ? name[0] : ':)'}</span>
@@ -64,8 +58,6 @@ const InboxLetter: React.FC<IInboxLetter> = ({ post, onClickHandler }) => {
           {displayStamp(post.from)}
           </>
         }
-
-        {/* {displayReadStatus(postReadByCurrentUser)} */}
 
         <CardContent className={`letterSenderInfo ${postReadByCurrentUser ? 'letterSenderInfoBack' : 'letterSenderInfoFront'}`}>
             {!postReadByCurrentUser &&

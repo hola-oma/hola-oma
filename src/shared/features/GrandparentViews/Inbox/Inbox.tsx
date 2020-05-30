@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import {useHistory} from "react-router-dom";
-import {makeStyles} from '@material-ui/core/styles';
-
 import {
   Box,
-  Card,
   CardContent,
   CardMedia,
   Grid,
@@ -28,18 +25,6 @@ import { mailIcons } from "../../../../Icons";
 
 import ExtendedInbox from './components/ExtendedInbox/ExtendedInbox';
 
-const useStyles = makeStyles(() => ({
-    title: {
-      color: 'black',
-      textAlign: 'center'
-    },
-    titleBar: {
-      height: '40px',
-      background: '#faf9f9',
-    },
-  }),
-);
-
 interface IInbox {
   posts: Array<Post>; // array of type "Post"
 }
@@ -48,7 +33,6 @@ let currentPost: Post;
 
 const Inbox: React.FC<IInbox> = ({ posts }) => {
 
-  const classes = useStyles();
   const history = useHistory();
 
   const [extendedInboxOpen, setExtendedInboxOpen] = useState<boolean>(false);
