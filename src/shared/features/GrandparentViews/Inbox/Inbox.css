@@ -1,3 +1,12 @@
+.centeredEmptyMailbox {
+  justify-content:center;
+  background-color:white !important;
+}
+.emptyMailbox {
+  height:250px;
+  background-size:contain !important;
+}
+
 .olderLettersButton {
   color:white !important;
   height:80px;

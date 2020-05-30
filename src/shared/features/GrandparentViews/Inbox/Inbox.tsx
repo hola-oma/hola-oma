@@ -29,9 +29,6 @@ import { mailIcons } from "../../../../Icons";
 import ExtendedInbox from './components/ExtendedInbox/ExtendedInbox';
 
 const useStyles = makeStyles(() => ({
-    root: {
-      flexGrow: 1,
-    },
     title: {
       color: 'black',
       textAlign: 'center'
@@ -39,10 +36,6 @@ const useStyles = makeStyles(() => ({
     titleBar: {
       height: '40px',
       background: '#faf9f9',
-    },
-    media: {
-      height: 400,
-      objectFit: "scale-down"
     },
   }),
 );
@@ -80,10 +73,10 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
       <Column justify="center">
 
         {/*Content Box*/}
-        <Grid item xs={12} className={`noInboxMargin ${classes.root}`} id="inbox-grid">
+        <Grid item xs={12} className={`noInboxMargin`} id="inbox-grid">
           <Box
             id="inbox-box"
-            className={`grandparentBoxWidth inboxBox`}
+            className={`grandparentBoxWidth inboxBox ${posts.length === 0 ? 'centeredEmptyMailbox' : ''}`}
             border={1}
             mx={"auto"}
             fontSize={20}
@@ -93,15 +86,15 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
 
             {/*If mailbox empty*/}
             {posts.length === 0 &&
-              <Grid item xs={12}>
-                <Card>
-                  <CardMedia className={classes.media}
+              <Grid item xs={8}>
+                <div>
+                  <CardMedia className={`emptyMailbox`}
                              image={require("../../../../icons/empty-mailbox.png")}
                              title="Empty Mailbox" />
                   <CardContent>
                       <Typography variant="h4" align={"center"}>Your mailbox is empty</Typography>
                   </CardContent>
-                </Card>
+                </div>
               </Grid>
             }
 
