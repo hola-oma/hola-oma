@@ -1,3 +1,11 @@
+.modalWrap {
+  padding-left:40px;
+  padding-right:40px;
+  height:100%;
+  overflow-y:hidden;
+  overflow:scroll;
+}
+
 .extendedInboxModalContent {
   width:70%;
   height:100%;
@@ -12,12 +20,17 @@
 }
 
 .unlockPremium {
-  display:flex;
+  width:100%;
   text-align:center;
 }
 
 @media screen and (max-width:830px) {
   .extendedInboxModalContent {
     width:86%;
+  }
+
+  .modalWrap {
+    padding-left:6px;
+    padding-right:6px;
   }
 }

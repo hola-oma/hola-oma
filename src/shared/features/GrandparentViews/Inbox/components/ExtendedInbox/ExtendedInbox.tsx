@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef, Ref } from 'react';
 import {useHistory} from "react-router-dom";
 
 import Row from 'shared/components/Row/Row';
@@ -20,7 +20,7 @@ interface IExtendedInbox {
 
 let currentPost: Post;
 
-const ExtendedInbox: React.FC<IExtendedInbox> = ({posts}) => {
+const ExtendedInbox: React.FC<IExtendedInbox> = forwardRef(({posts}, ref: Ref<HTMLDivElement>) => {
 
   const history = useHistory();
 
@@ -32,15 +32,15 @@ const ExtendedInbox: React.FC<IExtendedInbox> = ({posts}) => {
   }
 
   return (
-    <div className="extendedInboxModalContent">
-      <Row justify="flex-start">
+    <div ref={ref} className="extendedInboxModalContent" tabIndex={-1}>
+      <Row justify="center" className="modalWrap">
         <Child xs={12}>
           <div className="welcomeName">
             <span className="boldText">All Letters</span>
           </div>
         </Child>
 
-        <Child>
+        <Child xs={12}>
           <List id="grid-list-extended-inbox">
             {posts.map((post, index: number) => (
               <ExtendedInboxLetter post={post} key={post.pid} onClickHandler={pressEnvelope}/>
@@ -54,6 +54,6 @@ const ExtendedInbox: React.FC<IExtendedInbox> = ({posts}) => {
       </Row>
     </div>
   )
-}
+});
 
 export default ExtendedInbox;

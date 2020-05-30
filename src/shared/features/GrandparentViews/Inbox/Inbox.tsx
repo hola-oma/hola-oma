@@ -93,13 +93,11 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                         id="grid-list-inbox"
                       >
                       {posts.map((post, index: number) => (
-                        <>
-                        {index < 6 && 
-                          <InboxLetter post={post} key={post.pid} onClickHandler={pressEnvelope}/>
-                        }
-                        </>
+                        index < 6 && 
+                          <InboxLetter key={post.pid} post={post} onClickHandler={pressEnvelope}/>
+                        
                       ))
-                      }
+                      } 
                       <Child container xs={12} justify="flex-end" style={{height:'auto', paddingTop:'15px'}}>
                         <Button style={{height:'auto'}} endIcon={mailIcons.paperAirplane} onClick={openModal} className="olderLettersButton">View all letters</Button>
                       </Child>
