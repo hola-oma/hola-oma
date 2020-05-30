@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 800,
       padding: theme.spacing(2, 4, 3),
     },
+    videoModal: {
+      maxHeight: '90vh'
+    }
   }),
 );
 
@@ -64,7 +67,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
         <img src={mediaURL} alt={"Message content"}/>
       }
       {mediaType === MEDIA_TYPES.VIDEO &&
-        <video controls autoPlay preload="auto">
+        <video controls autoPlay preload="auto" className={classes.videoModal}>
           <source src={mediaURL}/>
         </video>
       }

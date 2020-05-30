@@ -4,7 +4,7 @@ import { useLocation, useHistory } from "react-router-dom";
 import { GrandparentPostLayout } from "../Components/GrandparentPostLayout";
 import { replyOptionIcons } from "../../../../Icons";
 import GrandparentLayout, {buttonText} from "../Components/GrandparentLayout";
-import {MEDIA_TYPES} from "../../../models/post.model";
+import { MEDIA_TYPES } from "../../../models/post.model";
 
 import '../Grandparent.css';
 
