@@ -123,7 +123,6 @@ const Inbox: React.FC<IInbox> = ({ posts }) => {
                   </Child>
 
                   <Child container xs={12} justify="flex-end">
-                    {/* mailIcons.paperAirplane */}
                     <Button endIcon={mailIcons.paperAirplane} onClick={openModal} className="olderLettersButton">View all letters</Button>
                   </Child>
                 </Row>

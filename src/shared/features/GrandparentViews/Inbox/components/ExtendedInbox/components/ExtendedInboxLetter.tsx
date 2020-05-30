@@ -15,6 +15,7 @@ import './ExtendedInboxLetter.css';
 
 interface IExtendedInboxLetter {
   post: Post;
+  onClickHandler: (Post: any) => {};
 }
 
 const formatDate = (dateToFormat: number) => {
@@ -23,7 +24,7 @@ const formatDate = (dateToFormat: number) => {
   )
 }
 
-const ExtendedInboxLetter: React.FC<IExtendedInboxLetter> = ({post}) => {
+const ExtendedInboxLetter: React.FC<IExtendedInboxLetter> = ({ post, onClickHandler }) => {
   const [postReadByCurrentUser, setPostReadByCurrentUser] = useState<boolean>(false);
 
   useEffect(() => {
@@ -31,7 +32,7 @@ const ExtendedInboxLetter: React.FC<IExtendedInboxLetter> = ({post}) => {
   }, [post]);
 
   return (
-    <ListItem>
+    <ListItem onClick={() => onClickHandler(post)}>
       <ListItemAvatar>
         <Avatar className={`${postReadByCurrentUser? 'avatarColorRead' : 'avatarColorUnread'}`}>
           {postReadByCurrentUser ? <DraftsIcon /> : <EmailIcon />}
