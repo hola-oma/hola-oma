@@ -83,7 +83,7 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
       variant="contained"
       color="secondary"
       size="large"
-      className=""
+      className="headerButton"
       onClick={() => goToRegistration()}
       startIcon={<AccountCircleIcon />}
     >
@@ -96,7 +96,7 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
       variant="contained"
       color="secondary"
       size="large"
-      className=""
+      className="headerButton"
       onClick={() => goToSignIn()}
       startIcon={<AccountCircleIcon />}
       >
@@ -143,7 +143,7 @@ const Header: React.FC<IHeader> = ({ isLoggedIn, settingsComplete }) => {
       variant="contained"
       color="secondary"
       size="medium"
-      className=""
+      className="headerButton"
       onClick={toggleDrawer(true)}
       startIcon={<MenuIcon />}
     >
