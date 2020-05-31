@@ -41,22 +41,12 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
         minHeight: 300
     },
-    postStyle: {
-      height: "100%",
-      width: '50%',
-      margin: 'auto'
-    },
     spacing: {
         margin: '5px'
     },
     message: {
         margin: '10px',
         maxWidth: '95%'
-    },
-    emojis: {
-        margin: '5px',
-        height: "5%",
-        width: "5%"
     },
     bottomMargin: {
         marginBottom: '10px'
@@ -204,149 +194,149 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     }
     if (post) {
         return (
-            <>
-            <Container>
-                <Typography component="h2" variant="h5" align="center">
-                    Sent Message
-                </Typography>
-            </Container>
-            <Grid container alignItems="center">
-                <Grid item sm={3}></Grid>
-                <Grid item sm={6} xs={12}>
-                    <Paper className={classes.paper}>
-                        <Column justify="center" alignItems="center">
-                            {post.photoURL && <img
-                                src={post.photoURL}
-                                className="photo"
-                                alt="Attached img"
-                            />}
-                            {post.videoURL && <video
-                                src={post.videoURL}
-                                preload="auto"
-                                controls
-                                className="photo"
-                            />}
-                            <br/>
-                            <Typography variant="h5" className={[classes.message, "wrapReply"].join(' ')}>
-                                {post.message}
-                            </Typography>
-                        </Column>
-                    </Paper>
-                </Grid>
-                <Grid item sm={3} xs={12} className="padLeft">
+        <>
+        <Container>
+            <Typography component="h2" variant="h5" align="center">
+                Sent Message
+            </Typography>
+        </Container>
+        <Grid container alignItems="center">
+            <Grid item sm={3}></Grid>
+            <Grid item sm={6} xs={12}>
+                <Paper className={classes.paper}>
                     <Column justify="center" alignItems="center">
-                        <Typography variant="caption" align="center">
-                            Sent <Moment format="MMMM Do YYYY, h:mm a">{post.date}</Moment>
-                            <br/>
-                            <br/>
-                            Seen by:
+                        {post.photoURL && <img
+                            src={post.photoURL}
+                            className="photo"
+                            alt="Attached img"
+                        />}
+                        {post.videoURL && <video
+                            src={post.videoURL}
+                            preload="auto"
+                            controls
+                            className="photo"
+                        />}
+                        <br/>
+                        <Typography variant="h5" className={[classes.message, "wrapReply"].join(' ')}>
+                            {post.message}
                         </Typography>
-                        {
-                            receivers.map((receiver: IReceiver, index: number) => {
-                                return (
-                                <Grid container alignItems={receivers.length === 1 ? "center" : "flex-start"} justify={receivers.length === 1 ? "center" : "flex-start"} key={index}>
-                                    {post.read[receiver.id] === true ? <CheckBoxIcon fontSize="small"/> : <CheckBoxOutlineBlankIcon fontSize="small"/>}
-                                    <Typography variant="caption" align="center">
-                                        {receiver.name}
-                                    </Typography>
-                                </Grid>
-                                )
-                            })
-                        }
-                        <br/>
-                        <br/>
-                        <Button
-                            variant="contained"
-                            size="small"
-                            color="secondary"
-                            className={classes.spacing}
-                            startIcon={<EditIcon />}
-                            onClick={handleEditModal}>
-                            Edit Post
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            color="primary"
-                            size="small"
-                            className={classes.spacing}
-                            startIcon={<DeleteIcon />}
-                            onClick={onClickDelete}>
-                            Delete Post
-                        </Button>
                     </Column>
-                </Grid>
+                </Paper>
             </Grid>
-            <Container>
-                <hr />
-                <Typography component="h2" variant="h5" align="center">
-                    Replies
-                </Typography>
-                <Row alignItems="center" justify="center">
-                    {emojiReplies && emojiReplies.map((reply, index: number) => {
-                        return reply.length > 0 && (
-                            <Tooltip title={getTooltip(reply)} key={index} arrow>
-                                <img
-                                    src={emojiIcons[index]}
-                                    className={classes.emojis}
-                                    alt="Emoji reply"
-                                />
-                            </Tooltip>
-                        )
-                    })}
-                </Row>
-                <Grid container className={classes.bottomMargin}>
-                    {
-                    replies.map((reply: Reply, index: number) => {
-                        return (
-                        <Child xs={12} key={index}>
-                            <div className={classes.postStyle}>
-                                <Card variant="outlined" className="replyCard">
-                                    <CardContent className="replyContent">
-                                        {isMessage(reply) && 
-                                            <p>{reply.message}</p>
-                                        }
-
-                                        {isPhoto(reply) &&
-                                            <img
-                                                src={messageAsString(reply)}
-                                                className="photo"
-                                                alt="Reply img"
-                                            />
-                                        }
-                                    </CardContent>
-                                    <CardActions className="replyActions">
-                                        <Typography variant="caption">
-                                            Sent by {reply.from}
-                                            <br/>
-                                            <Moment format="MMMM Do YYYY, h:mm a">{reply.date}</Moment>
-                                        </Typography>
-                                    </CardActions>
-                                </Card>
-                            </div>
-                        </Child>
-                        )
-                    })
-                    }
-                </Grid>
-                {(repliesSet && replies.length === 0) &&
-                    <Typography variant="caption" style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-                        You have no message or photo replies to this post.
+            <Grid item sm={3} xs={12} className="padLeft">
+                <Column justify="center" alignItems="center">
+                    <Typography variant="caption" align="center">
+                        Sent <Moment format="MMMM Do YYYY, h:mm a">{post.date}</Moment>
+                        <br/>
+                        <br/>
+                        Seen by:
                     </Typography>
-                }
-                <Modal open={editModalOpen} onClose={handleEditModal} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-                <div className={classes.editModal}>
-                    {editPost && <NewFamilyPost currentPost={post} closeModal={doneEditing}/>}
-                </div>
-                </Modal>
-            </Container>
+                    {
+                        receivers.map((receiver: IReceiver, index: number) => {
+                            return (
+                            <Grid container alignItems={receivers.length === 1 ? "center" : "flex-start"} justify={receivers.length === 1 ? "center" : "flex-start"} key={index}>
+                                {post.read[receiver.id] === true ? <CheckBoxIcon fontSize="small"/> : <CheckBoxOutlineBlankIcon fontSize="small"/>}
+                                <Typography variant="caption" align="center">
+                                    {receiver.name}
+                                </Typography>
+                            </Grid>
+                            )
+                        })
+                    }
+                    <br/>
+                    <br/>
+                    <Button
+                        variant="contained"
+                        size="small"
+                        color="secondary"
+                        className={classes.spacing}
+                        startIcon={<EditIcon />}
+                        onClick={handleEditModal}>
+                        Edit Post
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        className={classes.spacing}
+                        startIcon={<DeleteIcon />}
+                        onClick={onClickDelete}>
+                        Delete Post
+                    </Button>
+                </Column>
+            </Grid>
+        </Grid>
+        <Container>
+            <hr />
+            <Typography component="h2" variant="h5" align="center">
+                Replies
+            </Typography>
+            <Row alignItems="center" justify="center">
+                {emojiReplies && emojiReplies.map((reply, index: number) => {
+                    return reply.length > 0 && (
+                        <Tooltip title={getTooltip(reply)} key={index} arrow>
+                            <img
+                                src={emojiIcons[index]}
+                                className="emojiReply"
+                                alt="Emoji reply"
+                            />
+                        </Tooltip>
+                    )
+                })}
+            </Row>
+            <Grid container className={classes.bottomMargin}>
+                {
+                replies.map((reply: Reply, index: number) => {
+                    return (
+                    <Child xs={12} key={index}>
+                        <div className="postStyle">
+                            <Card variant="outlined" className="replyCard">
+                                <CardContent className="replyContent">
+                                    {isMessage(reply) && 
+                                        <p>{reply.message}</p>
+                                    }
 
-            <ManageConfirmDelete 
-                isOpen={confirmDeleteModalOpen} 
-                deleteConfirmed={() => deleteCurrentPost()}
-                onClose={handleConfirmDeleteModalClose} 
-            />
-        </>
-        )
+                                    {isPhoto(reply) &&
+                                        <img
+                                            src={messageAsString(reply)}
+                                            className="photo"
+                                            alt="Reply img"
+                                        />
+                                    }
+                                </CardContent>
+                                <CardActions className="replyActions">
+                                    <Typography variant="caption">
+                                        Sent by {reply.from}
+                                        <br/>
+                                        <Moment format="MMMM Do YYYY, h:mm a">{reply.date}</Moment>
+                                    </Typography>
+                                </CardActions>
+                            </Card>
+                        </div>
+                    </Child>
+                    )
+                })
+                }
+            </Grid>
+            {(repliesSet && replies.length === 0) &&
+                <Typography variant="caption" style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+                    You have no message or photo replies to this post.
+                </Typography>
+            }
+            <Modal open={editModalOpen} onClose={handleEditModal} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <div className={classes.editModal}>
+                {editPost && <NewFamilyPost currentPost={post} closeModal={doneEditing}/>}
+            </div>
+            </Modal>
+        </Container>
+
+        <ManageConfirmDelete 
+            isOpen={confirmDeleteModalOpen} 
+            deleteConfirmed={() => deleteCurrentPost()}
+            onClose={handleConfirmDeleteModalClose} 
+        />
+     </>
+    )
     } else {
         return (
             <>
