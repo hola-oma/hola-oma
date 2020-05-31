@@ -258,7 +258,6 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
             {editing && <Typography component="h2" variant="h5" align="center">
                 Edit Post
             </Typography>}
-            <br/>
             <form className="newFamilyPostForm" noValidate onSubmit={e => submitPost(e)}>
             {(!selectedFile && !photoURL && !videoURL) &&
                 <Row justify="center">
@@ -266,6 +265,7 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
                         variant="contained"
                         color="secondary"
                         size="small"
+                        className="marginTop"
                         onClick={clickFileUpload}>
                         Select a photo or mp4 video
                     </Button>
@@ -282,11 +282,11 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
             {selectedFile &&
                 <>
                     {fileType === 'image' &&
-                        <Row justify="center">
+                        <div>
                             <img src={getImageAsUrl()}
                                 className="photo"
                                 alt="Attached img"/>
-                        </Row>
+                        </div>
                     }
                     {fileType === 'video' &&
                         renderVideo

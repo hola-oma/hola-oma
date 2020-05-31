@@ -2,3 +2,9 @@
     width: 50%;
     margin: auto;
 }
+
+@media screen and (max-width:800px) {
+    .newFamilyPostForm {
+        width: 90%;
+    }
+}

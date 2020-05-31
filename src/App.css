@@ -35,6 +35,10 @@ body {
   display:block;
 }
 
+.marginTop {
+  margin-top:10px !important;
+}
+
 .padBottom {
   padding-bottom:20px !important;
 }
@@ -47,6 +51,8 @@ body {
   display:flex;
   flex-direction:column;
   width:100%;
+  padding-left:10px;
+  padding-right:10px;
 }
 
 .credentialsForm {

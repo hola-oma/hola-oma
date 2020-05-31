@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
       position: 'absolute',
       maxWidth: 800,
-      padding: theme.spacing(2, 4, 3),
     },
     videoModal: {
       maxHeight: '90vh'
@@ -60,7 +59,7 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
   }
 
   const modalBody = (
-    <div style={modalStyle} className={classes.paper}>
+    <div style={modalStyle} className={`${classes.paper} imagePresentation`}>
 
       {/*Display image or video*/}
       {mediaType === MEDIA_TYPES.IMAGE &&
@@ -75,15 +74,9 @@ export const GrandparentPostLayout: React.FC<IPostLayout> = ({from, mediaURL, me
       {/*Div for closing 'x' overlay*/}
       <div
         onClick={handleClick}
-        style={{
-          position: 'absolute',
-          backgroundColor: '#d8e0e440',
-          color: 'black',
-          top: '0%',
-          right: '0%',
-        }}
+        className="imageXButton"
       >
-        {viewPostIcons.close}
+        <span className="xIcon">{viewPostIcons.close}</span>
       </div>
     </div>
   );
