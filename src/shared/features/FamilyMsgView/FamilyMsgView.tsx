@@ -41,22 +41,12 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
         minHeight: 300
     },
-    postStyle: {
-      height: "100%",
-      width: '50%',
-      margin: 'auto'
-    },
     spacing: {
         margin: '5px'
     },
     message: {
         margin: '10px',
         maxWidth: '95%'
-    },
-    emojis: {
-        margin: '5px',
-        height: "5%",
-        width: "5%"
     },
     bottomMargin: {
         marginBottom: '10px'
@@ -275,7 +265,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                         <Tooltip title={getTooltip(reply)} key={index} arrow>
                             <img
                                 src={emojiIcons[index]}
-                                className={classes.emojis}
+                                className="emojiReply"
                                 alt="Emoji reply"
                             />
                         </Tooltip>
@@ -287,7 +277,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 replies.map((reply: Reply, index: number) => {
                     return (
                     <Child xs={12} key={index}>
-                        <div className={classes.postStyle}>
+                        <div className="postStyle">
                             <Card variant="outlined" className="replyCard">
                                 <CardContent className="replyContent">
                                     {isMessage(reply) && 

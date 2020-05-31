@@ -6,6 +6,19 @@
     max-height:400px;
     height:auto;
 }
+
+.postStyle {
+    height: 100%;
+    width: 50%;
+    margin: auto;
+}
+
+.emojiReply {
+    margin: 5px;
+    height: 7%;
+    width: 7%;
+}
+
 .replyCard {
     display: flex;
     flex-direction: column;
@@ -21,4 +34,17 @@
 
 .padLeft {
     padding-left:8px;
+}
+
+@media screen and (max-width:800px) {
+    .postStyle {
+        width: 100%;
+        margin: 6px;
+    }
+
+    .emojiReply {
+        margin: 5px;
+        height: 12%;
+        width: 12%;
+    }
 }
