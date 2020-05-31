@@ -160,7 +160,6 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
                 100,
                 0,
                 (blob: Blob) => {
-                    console.log(blob);
                     setSelectedFile(blob);
                 },
                 'blob'

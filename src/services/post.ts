@@ -36,7 +36,6 @@ export const getPosts = async (): Promise<Post[]> => {
     postRef.onSnapshot(snapshot => {           // listen for state change
       const currentPosts: Post[] = [];
       snapshot.forEach(doc => {
-        // console.log(doc.id, '->', doc.data()["from"]);
         const data = doc.data();
         currentPosts.push({
           pid: data.pid,
@@ -81,7 +80,6 @@ export const createPost = async (post: Post) => {
       receiverIDs: post.receiverIDs
       })
       .then(function(docRef) {
-      console.log("Document written with ID: ", docRef.id);
       postID = docRef.id;
 
       })
@@ -102,18 +100,15 @@ export const updatePostID = async (postID: string) => {
     "pid": postID,
   })
     .then(function() {
-      console.log("Document successfully updated with post ID!");
     });
 }
 
 export const updatePost = async (post: Post) => {
   const db = firebase.firestore();
-  console.log(post);
 
   try {
     await db.collection("posts").doc(post.pid).set(post)
       .then(function() {
-      console.log("Document successfully updated");
       })
   } catch(e) {
     console.log(e.message);

@@ -48,7 +48,6 @@ export const createReplyDocument = async (reply: Reply) => {
       receiverID: reply.receiverID
     })
       .then(function(docRef) {
-        console.log("New reply document written with ID: ", docRef.id);
         replyID = docRef.id;
 
       })
@@ -69,7 +68,6 @@ export const updateReplyID = async (replyID: string) => {
     "rid": replyID,
   })
     .then(function() {
-      // console.log("Reply successfully updated with reply ID");
     });
 }
 
@@ -102,7 +100,6 @@ export const getRepliesToPost = async (postId: string) => {
       .orderBy("date", "desc")
     .get().then((snapshot) => {
       snapshot.forEach(doc => {
-        // console.log(doc.id, '->', doc.data());
         const reply = doc.data();
         currentReplies.push({
           date: reply.date,

@@ -55,8 +55,6 @@ const LinkedAccountManagement: React.FC<ILinkedAccountManagement> = ({ role }) =
   }
 
   const acceptAccountLink = (friend: AccountLink) => {
-    console.log("accepting friend request from: ", friend.id);
-
     const accepted = acceptLink(friend?.id);
     if (accepted) {      
       // remove from pending (works for any list, really)
