@@ -6,6 +6,13 @@
     max-height:400px;
     height:auto;
 }
+
+.postStyle {
+    height: 100%;
+    width: 50%;
+    margin: auto;
+}
+
 .replyCard {
     display: flex;
     flex-direction: column;
@@ -21,4 +28,11 @@
 
 .padLeft {
     padding-left:8px;
+}
+
+@media screen and (max-width:800px) {
+    .postStyle {
+        width: 100%;
+        margin: 6px;
+    }
 }

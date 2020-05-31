@@ -41,11 +41,6 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
         minHeight: 300
     },
-    postStyle: {
-      height: "100%",
-      width: '50%',
-      margin: 'auto'
-    },
     spacing: {
         margin: '5px'
     },
@@ -287,7 +282,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 replies.map((reply: Reply, index: number) => {
                     return (
                     <Child xs={12} key={index}>
-                        <div className={classes.postStyle}>
+                        <div className="postStyle">
                             <Card variant="outlined" className="replyCard">
                                 <CardContent className="replyContent">
                                     {isMessage(reply) && 
