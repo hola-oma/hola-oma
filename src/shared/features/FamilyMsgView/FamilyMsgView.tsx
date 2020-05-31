@@ -48,11 +48,6 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: '10px',
         maxWidth: '95%'
     },
-    emojis: {
-        margin: '5px',
-        height: "5%",
-        width: "5%"
-    },
     bottomMargin: {
         marginBottom: '10px'
     }
@@ -270,7 +265,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                         <Tooltip title={getTooltip(reply)} key={index} arrow>
                             <img
                                 src={emojiIcons[index]}
-                                className={classes.emojis}
+                                className="emojiReply"
                                 alt="Emoji reply"
                             />
                         </Tooltip>

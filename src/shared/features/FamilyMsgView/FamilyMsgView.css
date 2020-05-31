@@ -13,6 +13,12 @@
     margin: auto;
 }
 
+.emojiReply {
+    margin: 5px;
+    height: 7%;
+    width: 7%;
+}
+
 .replyCard {
     display: flex;
     flex-direction: column;
@@ -34,5 +40,11 @@
     .postStyle {
         width: 100%;
         margin: 6px;
+    }
+
+    .emojiReply {
+        margin: 5px;
+        height: 12%;
+        width: 12%;
     }
 }
