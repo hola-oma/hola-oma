@@ -304,6 +304,14 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
           {/* COLUMN CHILD 2 - CREATE NEW POST and VIEW OLD POSTS */ }
           <Child xs={12} id="inboxChild" className="inboxSizer noMargin">
 
+          <div className="noMargin">
+          {role === roles.receiver && pendingInvitations.length > 0 &&
+                <>
+                  {pendingInviteAlert()}
+                </>
+                }
+                </div>
+
             <Row>
               <Child xs={12}>
 
@@ -344,12 +352,6 @@ const PostsView: React.FC<IPostsView> = ({ setIsLoading, history }) => {
                       </Child>
                   </Row>
                   }
-                </>
-                }
-
-                {role === roles.receiver && pendingInvitations.length > 0 &&
-                <>
-                  {pendingInviteAlert()}
                 </>
                 }
 

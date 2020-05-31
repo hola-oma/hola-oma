@@ -2,6 +2,10 @@
   text-align:center;
 }
 
+.noMarginBanner {
+  margin:0 !important;
+}
+
 @media screen and (max-width:830px) {
   .inboxSizer {
     width:100%;
