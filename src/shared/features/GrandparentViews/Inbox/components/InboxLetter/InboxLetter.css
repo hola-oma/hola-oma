@@ -1,7 +1,7 @@
 .envelopeCard {
   margin:18px;
   min-width: 29%;
-  max-width:29%;
+  max-width: 29%;
   height:140px;
   position: relative;
 }
@@ -85,7 +85,7 @@
 }
 
 .letterSenderInfoFront {
-  width:95%;
+  width:100%;
 }
 
 .letterSenderInfoBack {
@@ -142,7 +142,7 @@
 }
 
 .inboxLetterFrom {
-  width:96%;
+  width:100%;
   word-wrap:break-word;
 }
 
@@ -235,8 +235,8 @@
 
 @media screen and (max-width:1000px) {
   .envelopeCard {
-    min-width:40%;
-    max-width: 50%;
+    min-width: 40%;
+    max-width: 40%;
   }
 }
 
@@ -246,7 +246,7 @@
     margin-left:auto;
     margin-right:auto;
     min-width: 60%;
-    max-width: 80%;
+    max-width: 60%;
   }
 
   .inboxLongName {
@@ -258,8 +258,8 @@
   .envelopeCard {
     margin-left:auto;
     margin-right:auto;
-    min-width: 90%;
-    max-width: 96%;
+    min-width: 92%;
+    max-width: 92%;
   }
 }
 
