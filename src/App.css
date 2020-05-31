@@ -35,6 +35,10 @@ body {
   display:block;
 }
 
+.marginTop {
+  margin-top:10px !important;
+}
+
 .padBottom {
   padding-bottom:20px !important;
 }
