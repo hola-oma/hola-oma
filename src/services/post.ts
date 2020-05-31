@@ -6,7 +6,7 @@ import { Post } from '../shared/models/post.model';
 import {authenticateFromStore, getUserRoleByID} from "./user";
 import {roles} from "../enums/enums";
 
-export const grandparentLimit = 18;
+export const grandparentInboxLimit = 30;
 export const familyLimit = 120;
 
 export const getPosts = async (): Promise<Post[]> => {
@@ -20,14 +20,13 @@ export const getPosts = async (): Promise<Post[]> => {
   let userRole: string = await getUserRoleByID(user?.uid as string);
   let fieldPath = (userRole === roles.receiver) ? "receiverIDs" : "creatorID";
   let opStr = (userRole === roles.receiver) ? "array-contains" : "==";
-  let limit = (userRole === roles.receiver) ? grandparentLimit : familyLimit;
+  let limit = (userRole === roles.receiver) ? grandparentInboxLimit : familyLimit;
   let resolvePostPromise = (posts: Post[]) => {};
 
   // this is what we'll return from this function
   const postPromise: Promise<Post[]> = new Promise((resolve)=> {
     resolvePostPromise = resolve;
   });
-
 
   try {
     const postRef = db.collection('posts')

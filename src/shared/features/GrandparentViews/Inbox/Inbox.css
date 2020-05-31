@@ -1,5 +1,21 @@
-.inboxCard {
-  margin: 20px;
+.centeredEmptyMailbox {
+  justify-content:center;
+  background-color:white !important;
+}
+.emptyMailbox {
+  height:250px;
+  background-size:contain !important;
+}
+
+.olderLettersButton {
+  color:white !important;
+  height:80px;
+  width:300px;
+  font-size:1.4rem !important;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:20px;
 }
 
 .inboxBox {
@@ -9,20 +25,32 @@
 }
 
 .inboxGridList {
+  padding:20px !important;
   height:100%;
   width:100%;
   align-items:flex-start;
   align-content:flex-start;
   justify-items:center;
-  justify-content:flex-start;
+  justify-content:center;
   flex-wrap:wrap;
+  overflow-y:hidden !important;
 }
 
 .noInboxMargin.MuiGrid-item {
   margin-top:0px !important;
 }
 
+@media screen and (max-width:1000px) {
+  .inboxGridList {
+    overflow-y:scroll !important;
+  }
+}
+
 @media screen and (max-width:830px) {
+  .inboxGridList {
+    padding:2px !important;
+  }
+
   .inboxBox {
     border-radius:0%;
     width:100%;

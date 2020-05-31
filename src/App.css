@@ -1,9 +1,14 @@
 .App {
   font-size:1.2em;
+  min-width:350px;
 }
 
 .landscapeOnly {
   display:inline-block;
+}
+
+.height100 {
+  height:100%;
 }
 
 body {
