@@ -64,6 +64,33 @@ export const getPosts = async (): Promise<Post[]> => {
   return postPromise;
 }
 
+export const getPostById = async (postId: string): Promise<Post> => {
+  const db = firebase.firestore();
+  let postRef: firebase.firestore.DocumentReference;
+  let post: Post = {pid: "", creatorID: "", from: "", message: "", photoURL: "", videoURL: "", read: {}, date: 0, receiverIDs: []};
+    
+  postRef = db.collection("posts").doc(postId);
+  await postRef.get().then(function(doc) {
+    const data = doc.data();
+    if (data) {
+      post = {
+        pid: data.pid,
+        creatorID: data.creatorID,
+        from: data.from,
+        message: data.message,
+        photoURL: data.photoURL,
+        videoURL: data.videoURL,
+        read: data.read,
+        date: data.date,
+        receiverIDs: data.receiverIDs,
+        unreadReplyCount:0,
+        totalReplyCount:0
+      }
+    }
+  })
+  return post;
+}
+
 export const createPost = async (post: Post) => {
   const db = firebase.firestore();
   let postID = ""

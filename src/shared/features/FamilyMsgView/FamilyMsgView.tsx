@@ -6,7 +6,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 import { Post } from 'shared/models/post.model';
 import { getLinkedAccounts } from "services/accountLink";
-import { deletePost } from "services/post";
+import { deletePost, getPostById } from "services/post";
 import { getRepliesToPost, markReplyRead } from "services/reply";
 import { Reply } from "../../models/reply.model";
 import { replyEmojiPNGs } from "../../../Icons";
@@ -63,7 +63,7 @@ interface ISubProps {
 }
 
 interface ISubSubProps {
-    post: Post
+    postId: string
 }
 
 interface IReceiver {
@@ -74,7 +74,7 @@ interface IReceiver {
 const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const classes = useStyles();
     const [editModalOpen, setEditModalOpen] = useState(false);
-    const [post, setPost] = useState(props.location.state.post);
+    const [post, setPost] = useState<Post>();
     const [receivers, setReceivers] = useState<IReceiver[]>([]);
     const [replies, setReplies] = useState<Reply[]>([]);
     const [repliesSet, setRepliesSet] = useState<boolean>(false);
@@ -96,42 +96,52 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     }
 
     useEffect(() => {
-        //Get connected accounts to populate receiver list
-        getLinkedAccounts()
-        .then((linkedAccounts) => {
-            let rcvrs = [];
-            for (let i = 0; i < linkedAccounts.length; i++) {
-                if (linkedAccounts[i].verified === true) {
-                    let displayName = linkedAccounts[i].displayName ? linkedAccounts[i].displayName : "Unknown Username";
-                    let receiver = {
-                        id: linkedAccounts[i].id,
-                        name: displayName};
-                    rcvrs.push(receiver);
-                }
-            }
-            setReceivers(rcvrs.sort(sortNames));
+        //Get post from id
+        let id = props.location.state.postId;
+        getPostById(id).then((returnedPost) => {
+            setPost(returnedPost);
         });
-        getRepliesToPost(post.pid).then((replyArray: any) => {
-            let replies: Reply[];
-            replies = [];
-            let emojiReplies: Array<Array<string>>;
-            emojiReplies = [[], [], [], [], [], []];
-            for (let i = 0; i < replyArray.length; i++) {
-                markReplyRead(replyArray[i].rid);
-                if (replyArray[i].replyType === "emoji") {
-                    for (let j = 0; j < replyArray[i].message.length; j++) {
-                        let emojiIndex = replyArray[i].message[j];
-                        emojiReplies[emojiIndex].push(replyArray[i].from);
+    }, [props.location.state.postId]); // fires on page load if this is empty [] 
+
+    useEffect(() => {
+        if (post) {
+            //Get connected accounts to populate receiver list
+            getLinkedAccounts()
+            .then((linkedAccounts) => {
+                let rcvrs = [];
+                for (let i = 0; i < linkedAccounts.length; i++) {
+                    if (linkedAccounts[i].verified === true) {
+                        let displayName = linkedAccounts[i].displayName ? linkedAccounts[i].displayName : "Unknown Username";
+                        let receiver = {
+                            id: linkedAccounts[i].id,
+                            name: displayName};
+                        rcvrs.push(receiver);
                     }
-                } else {
-                    replies.push(replyArray[i]);
                 }
-            }
-            setReplies(replies);
-            setRepliesSet(true);
-            setEmojiReplies(emojiReplies);
-        });
-    }, [post.pid]); // fires on page load if this is empty [] 
+                setReceivers(rcvrs.sort(sortNames));
+            });
+            getRepliesToPost(post.pid).then((replyArray: any) => {
+                let replies: Reply[];
+                replies = [];
+                let emojiReplies: Array<Array<string>>;
+                emojiReplies = [[], [], [], [], [], []];
+                for (let i = 0; i < replyArray.length; i++) {
+                    markReplyRead(replyArray[i].rid);
+                    if (replyArray[i].replyType === "emoji") {
+                        for (let j = 0; j < replyArray[i].message.length; j++) {
+                            let emojiIndex = replyArray[i].message[j];
+                            emojiReplies[emojiIndex].push(replyArray[i].from);
+                        }
+                    } else {
+                        replies.push(replyArray[i]);
+                    }
+                }
+                setReplies(replies);
+                setRepliesSet(true);
+                setEmojiReplies(emojiReplies);
+            });
+        }
+    }, [post]); // fires on page load if this is empty [] 
 
     const handleEditModal = () => {
         setEditModalOpen(!editModalOpen);
@@ -152,9 +162,11 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     }
 
     const deleteCurrentPost = () => {
-        setConfirmDeleteModalOpen(false);
-        deletePost(post.pid);
-        history.push('/posts')
+        if (post) {
+            setConfirmDeleteModalOpen(false);
+            deletePost(post.pid);
+            history.push('/posts')
+        }
     }
 
     const messageAsString = (reply: Reply) => {
@@ -180,8 +192,8 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
             </React.Fragment>
           );
     }
-
-    return (
+    if (post) {
+        return (
         <>
         <Container>
             <Typography component="h2" variant="h5" align="center">
@@ -325,6 +337,13 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
         />
      </>
     )
+    } else {
+        return (
+            <>
+            Post not found.
+            </>
+        )
+    }
 };
 
 export default FamilyMsgView;

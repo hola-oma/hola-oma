@@ -84,7 +84,7 @@ const PostManagement: React.FC<IPostManagement> = ({ displayName, posts }) => {
                 <div className={classes.postStyle}>
                   <Link to={{
                     pathname: "/postDetails",
-                    state: {post: post}
+                    state: {postId: post.pid}
                   }}>
                   <Card variant="outlined" className={classes.postStyle}>
                     <CardHeader 
