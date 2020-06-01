@@ -254,7 +254,7 @@ const GetVoiceReply: React.FC = () => {
           buttonActions={[
             () => history.goBack(),
             e => buildReply(e) ] }
-          buttonIcons={[ mailIcons.closedEnvelope, mailIcons.paperAirplane ]}
+          buttonIcons={[ mailIcons.openEnvelope, mailIcons.paperAirplane ]}
           buttonDisabled={[false,(replyTooLong || !completeReply.trim())]} />
 
       }
