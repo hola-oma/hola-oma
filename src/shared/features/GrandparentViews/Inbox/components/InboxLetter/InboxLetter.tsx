@@ -78,12 +78,12 @@ const InboxLetter: React.FC<IInboxLetter> = ({ post, onClickHandler }) => {
                 <div className="letterMessagePreview letterItemShadow">{post.message}</div>
               }
 
-              {post.photoURL.length > 0 && 
-                <div className="letterPhotoPreview letterItemShadow"></div>
+              {post.photoURL?.length > 0 &&
+                <div className="letterPhotoPreview letterItemShadow"/>
               }
 
-              {post.videoURL.length > 0 && 
-                <div className="letterPhotoPreview letterItemShadow letterVideoPreview"></div>
+              {post.videoURL?.length > 0 &&
+                <div className="letterPhotoPreview letterItemShadow letterVideoPreview"/>
               }
 
               <div className="envelopeBackShape inboxLetterFromOnBack">
