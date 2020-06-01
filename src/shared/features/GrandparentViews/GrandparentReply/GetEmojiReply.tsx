@@ -80,6 +80,11 @@ const GetEmojiReply: React.FC = () => {
     choicesList = [];
   }
 
+  const returnToPost  = () => {
+    clearChoices();
+    history.goBack();
+  }
+
   const handleHighlight = (index: number) => {
     let copy = [...highlightedList];
     copy[index] = ( !copy[index] );   // Change to opposite value
@@ -155,10 +160,10 @@ const GetEmojiReply: React.FC = () => {
             }
             buttonText={[buttonText.replyOptions, buttonText.send]}
             buttonActions={[
-              () => history.goBack(),
-              e => buildReply(e) ] }
+              returnToPost,
+              e => buildReply(e) ]}
             buttonIcons={[ mailIcons.openEnvelope, mailIcons.paperAirplane ]}
-            buttonDisabled={[false, (highlightedList.every((element) => element === false))]}
+            buttonDisabled={[false, (highlightedList.every((element) => !element))]}
             buttonClasses={['','']}
         />
       }

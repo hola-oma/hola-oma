@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 import { useHistory } from "react-router";
 
@@ -247,7 +247,7 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
     // use memo tells it to recompute only when selectedFile 
     const renderVideo = useMemo(() => (
         <VideoPreview videoSrc={getImageAsUrl()}/>
-    ), [selectedFile])
+    ), [selectedFile]) //t
 
     return (
         <>
