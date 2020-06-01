@@ -375,6 +375,7 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
                 <Button
                     type="submit"
                     variant="contained"
+                    color="primary"
                     disabled={postTooLong}>
                     Send Post
                 </Button>
