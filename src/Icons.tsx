@@ -5,7 +5,7 @@ import SendIcon from '@material-ui/icons/Send';
 import DraftsIcon from '@material-ui/icons/Drafts';
 
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
-import PermPhoneMsgIcon from '@material-ui/icons/PermPhoneMsg';
+import MicIcon from '@material-ui/icons/Mic';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
@@ -40,7 +40,7 @@ export const mailIcons = {
 export const replyOptionIcons = {
   closedEnvelope: <MailIcon />,
   emoji: <InsertEmoticonIcon />,
-  voicemail: <PermPhoneMsgIcon />,
+  voicemail: <MicIcon />,
   photo: <PhotoCameraIcon />
 }
 
