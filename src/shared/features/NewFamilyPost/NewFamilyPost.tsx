@@ -247,7 +247,7 @@ const NewFamilyPost: React.FC<IPost> = ({currentPost, closeModal}) => {
     // use memo tells it to recompute only when selectedFile 
     const renderVideo = useMemo(() => (
         <VideoPreview videoSrc={getImageAsUrl()}/>
-    ), [selectedFile]) //t
+    ), [selectedFile])
 
     return (
         <>
