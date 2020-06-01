@@ -25,6 +25,7 @@ import Child from 'shared/components/Child/Child';
 import Moment from 'react-moment';
 
 import './FamilyMsgView.css';
+import { AccountLink } from 'shared/models/accountLink.model';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -66,16 +67,11 @@ interface ISubSubProps {
     postId: string
 }
 
-interface IReceiver {
-    id: string
-    name: string
-}
-
 const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     const classes = useStyles();
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [post, setPost] = useState<Post>();
-    const [receivers, setReceivers] = useState<IReceiver[]>([]);
+    const [receivers, setReceivers] = useState<AccountLink[]>([]);
     const [replies, setReplies] = useState<Reply[]>([]);
     const [repliesSet, setRepliesSet] = useState<boolean>(false);
     const [emojiReplies, setEmojiReplies] = useState<Array<Array<string>>>();
@@ -86,10 +82,10 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
     let history = useHistory();
 
     const sortNames = (a: any, b: any) => {
-        if (a.name.toUpperCase() < b.name.toUpperCase()) {
+        if (a.displayName.toUpperCase() < b.displayName.toUpperCase()) {
             return -1;
         }
-        if (a.name.toUpperCase() > b.name.toUpperCase()) {
+        if (a.displayName.toUpperCase() > b.displayName.toUpperCase()) {
             return 1;
         }
         return 0;
@@ -105,21 +101,14 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
 
     useEffect(() => {
         if (post) {
-            //Get connected accounts to populate receiver list
             getLinkedAccounts()
-            .then((linkedAccounts) => {
-                let rcvrs = [];
-                for (let i = 0; i < linkedAccounts.length; i++) {
-                    if (linkedAccounts[i].verified === true) {
-                        let displayName = linkedAccounts[i].displayName ? linkedAccounts[i].displayName : "Unknown Username";
-                        let receiver = {
-                            id: linkedAccounts[i].id,
-                            name: displayName};
-                        rcvrs.push(receiver);
-                    }
-                }
-                setReceivers(rcvrs.sort(sortNames));
-            });
+                .then((linkedAccounts) => {
+                    let rcvrs = linkedAccounts.filter(account => post.receiverIDs.some(id => {
+                        return (id === account.id && account.verified === true);
+                    }));
+                    setReceivers(rcvrs.sort(sortNames));
+                });
+
             getRepliesToPost(post.pid).then((replyArray: any) => {
                 let replies: Reply[];
                 replies = [];
@@ -141,7 +130,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                 setEmojiReplies(emojiReplies);
             });
         }
-    }, [post]); // fires on page load if this is empty [] 
+    }, [post]);
 
     const handleEditModal = () => {
         setEditModalOpen(!editModalOpen);
@@ -232,12 +221,12 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                         Seen by:
                     </Typography>
                     {
-                        receivers.map((receiver: IReceiver, index: number) => {
+                        receivers.map((receiver: AccountLink, index: number) => {
                             return (
                             <Grid container alignItems={receivers.length === 1 ? "center" : "flex-start"} justify={receivers.length === 1 ? "center" : "flex-start"} key={index}>
                                 {post.read[receiver.id] === true ? <CheckBoxIcon fontSize="small"/> : <CheckBoxOutlineBlankIcon fontSize="small"/>}
                                 <Typography variant="caption" align="center">
-                                    {receiver.name}
+                                    {receiver.displayName}
                                 </Typography>
                             </Grid>
                             )
