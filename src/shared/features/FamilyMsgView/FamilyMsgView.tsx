@@ -206,7 +206,7 @@ const FamilyMsgView: React.FC<IFamilyMsgView> = (props) => {
                             className="photo"
                         />}
                         <br/>
-                        <Typography variant="h5" className={[classes.message, "wrapReply"].join(' ')}>
+                        <Typography variant="body1" className={[classes.message, "wrapReply"].join(' ')}>
                             {post.message}
                         </Typography>
                     </Column>
